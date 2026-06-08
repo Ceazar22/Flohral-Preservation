@@ -176,6 +176,10 @@
     border: 0;
   }
 
+  #shopify-section-{{ section.id }} .prep__media-overlay{
+    display: none;
+  }
+
   /* Desktop: keep the right media stable */
   @media (min-width: 990px){
     #shopify-section-{{ section.id }} .prep__media{
@@ -191,9 +195,27 @@
 
   /* Mobile: stack and keep ratio */
   @media (max-width: 989px){
+    #shopify-section-{{ section.id }} .prep > .prep__eyebrow,
+    #shopify-section-{{ section.id }} .prep > .prep__heading{
+      display: none;
+    }
+
     #shopify-section-{{ section.id }} .prep__grid{
       grid-template-columns: 1fr;
-      gap: 18px;
+      gap: 0;
+      margin-top: 0;
+    }
+
+    #shopify-section-{{ section.id }} .prep__media{
+      order: -1;
+      height: auto !important;
+    }
+
+    #shopify-section-{{ section.id }} .prep-acc{
+      order: 1;
+      border-top: 0;
+      padding-inline: 18px;
+      background: var(--bg);
     }
 
     #shopify-section-{{ section.id }} .prep__media{
@@ -204,6 +226,45 @@
       height: auto !important;
       aspect-ratio: var(--media-aspect-ratio, 16 / 9);
       padding-bottom: 0 !important;
+    }
+
+    #shopify-section-{{ section.id }} .prep__media .media::after{
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: rgba(0, 0, 0, .28);
+      pointer-events: none;
+    }
+
+    #shopify-section-{{ section.id }} .prep__media-overlay{
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      color: #fff;
+      pointer-events: none;
+    }
+
+    #shopify-section-{{ section.id }} .prep__media-overlay .prep__eyebrow{
+      margin: 0 0 10px;
+      color: currentColor;
+      opacity: .9;
+    }
+
+    #shopify-section-{{ section.id }} .prep__media-overlay .prep__heading{
+      color: currentColor;
+      max-width: 92%;
+      text-shadow: 0 1px 18px rgba(0, 0, 0, .22);
+    }
+
+    #shopify-section-{{ section.id }} .prep-acc summary{
+      padding: 16px 0;
     }
   }
 </style>
@@ -290,6 +351,16 @@
               {{ 'hero-apparel-3' | placeholder_svg_tag: 'placeholder-svg' }}
             {%- endif -%}
           {%- endif -%}
+
+          <div class="prep__media-overlay">
+            {%- if section.settings.eyebrow != blank -%}
+              <p class="prep__eyebrow">{{ section.settings.eyebrow }}</p>
+            {%- endif -%}
+
+            <{{ section.settings.heading_tag }} class="prep__heading {{ section.settings.heading_size }}">
+              {{ section.settings.heading }}
+            </{{ section.settings.heading_tag }}>
+          </div>
         </div>
       </div>
     </div>

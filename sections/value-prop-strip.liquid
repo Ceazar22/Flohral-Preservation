@@ -57,6 +57,21 @@
     flex: 0 0 auto;
   }
 
+  #shopify-section-{{ section.id }} .value-strip__mobile-slider{
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .value-strip__mobile-nav{
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .value-strip__desktop-items{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--strip-gap);
+  }
+
   #shopify-section-{{ section.id }} .value-strip__item a{
     color: inherit;
     text-decoration: none;
@@ -136,51 +151,59 @@
   }
   {% endif %}
 
-  @media (prefers-reduced-motion: reduce){
-    #shopify-section-{{ section.id }} .value-strip__track{
-      animation: none !important;
-      transform: none !important;
-    }
-  }
-
   @keyframes px-strip-marquee{
     from { transform: translateX(0); }
     to   { transform: translateX(-25%); }
   }
 
   /* =========================
-     MOBILE MANUAL SLIDER MODE
+     MOBILE AUTO SLIDER MODE
      ========================= */
-  #shopify-section-{{ section.id }} .value-strip__mobile-nav{
-    display: none;
-  }
-
   @media (max-width: 989px){
-    #shopify-section-{{ section.id }} .value-strip--manual .value-strip__wrap{
+    #shopify-section-{{ section.id }} .value-strip__wrap{
       overflow: hidden;
     }
 
-    #shopify-section-{{ section.id }} .value-strip--manual .value-strip__inner{
-      position: relative;
-      justify-content: center;
+    #shopify-section-{{ section.id }} .value-strip__inner{
+      justify-content: flex-start;
+      flex-wrap: nowrap;
       overflow: hidden;
       min-height: calc(var(--strip-icon-size) + 4px);
+      padding-left: 0;
+      padding-right: 0;
     }
 
-    #shopify-section-{{ section.id }} .value-strip--manual .value-strip__item,
-    #shopify-section-{{ section.id }} .value-strip--manual .value-strip__icon{
+    #shopify-section-{{ section.id }} .value-strip__desktop-items,
+    #shopify-section-{{ section.id }} .value-strip__track{
       display: none;
-      justify-content: center;
-      text-align: center;
-      margin: 0 auto;
-      max-width: 100%;
     }
 
-    #shopify-section-{{ section.id }} .value-strip--manual .value-strip__mobile-slide.is-active{
+    #shopify-section-{{ section.id }} .value-strip__mobile-slider{
+      display: grid;
+      place-items: center;
+      width: 100%;
+      min-height: calc(var(--strip-icon-size) + 4px);
+      font-size: var(--strip-font-size);
+      letter-spacing: var(--strip-letter-spacing);
+      font-weight: var(--strip-font-weight);
+      line-height: 1;
+      overflow: hidden;
+    }
+
+    #shopify-section-{{ section.id }} .value-strip__mobile-slide{
+      display: none;
+      align-items: center;
+      justify-content: center;
+      max-width: 100%;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    #shopify-section-{{ section.id }} .value-strip__mobile-slide.is-active{
       display: inline-flex;
     }
 
-    #shopify-section-{{ section.id }} .value-strip--manual .value-strip__mobile-nav{
+    #shopify-section-{{ section.id }} .value-strip__mobile-nav{
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -190,7 +213,7 @@
       z-index: 2;
     }
 
-    #shopify-section-{{ section.id }} .value-strip--manual .value-strip__nav-btn{
+    #shopify-section-{{ section.id }} .value-strip__nav-btn{
       pointer-events: auto;
       display: inline-flex;
       align-items: center;
@@ -205,23 +228,18 @@
       flex: 0 0 auto;
     }
 
-    #shopify-section-{{ section.id }} .value-strip--manual .value-strip__nav-btn svg{
+    #shopify-section-{{ section.id }} .value-strip__nav-btn svg{
       width: 14px;
       height: 14px;
       display: block;
     }
 
-    #shopify-section-{{ section.id }} .value-strip--manual .value-strip__nav-btn--prev{
+    #shopify-section-{{ section.id }} .value-strip__nav-btn--prev{
       margin-left: -4px;
     }
 
-    #shopify-section-{{ section.id }} .value-strip--manual .value-strip__nav-btn--next{
+    #shopify-section-{{ section.id }} .value-strip__nav-btn--next{
       margin-right: -4px;
-    }
-
-    #shopify-section-{{ section.id }} .value-strip--manual .value-strip__inner{
-      padding-left: 26px;
-      padding-right: 26px;
     }
   }
 </style>
@@ -283,85 +301,104 @@
         </div>
         <span class="visually-hidden">{{ strip_items | strip_html }}</span>
       {%- else -%}
-        {{ strip_items }}
+        <div class="value-strip__desktop-items">
+          {{ strip_items }}
+        </div>
       {%- endif -%}
+      <div class="value-strip__mobile-slider" id="value-strip-mobile-slider-{{ section.id }}" aria-label="Highlights">
+        {{ strip_items }}
+      </div>
     </div>
 
-    {%- if section.settings.enable_carousel == false -%}
-      <div class="value-strip__mobile-nav" id="value-strip-nav-{{ section.id }}">
-        <button type="button" class="value-strip__nav-btn value-strip__nav-btn--prev" aria-label="Previous value">
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path d="M15.5 4.5L8 12l7.5 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <button type="button" class="value-strip__nav-btn value-strip__nav-btn--next" aria-label="Next value">
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path d="M8.5 4.5L16 12l-7.5 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-    {%- endif -%}
+    <div class="value-strip__mobile-nav" id="value-strip-mobile-nav-{{ section.id }}">
+      <button type="button" class="value-strip__nav-btn value-strip__nav-btn--prev" aria-label="Previous value">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M15.5 4.5L8 12l7.5 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button type="button" class="value-strip__nav-btn value-strip__nav-btn--next" aria-label="Next value">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M8.5 4.5L16 12l-7.5 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
   </div>
 </div>
 
-{%- if section.settings.enable_carousel == false -%}
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const sectionEl = document.getElementById('shopify-section-{{ section.id }}');
-      if (!sectionEl) return;
+<script>
+  (() => {
+    const initValueStripMobileSlider = () => {
+      const slider = document.getElementById('value-strip-mobile-slider-{{ section.id }}');
+      if (!slider || slider.dataset.mobileSliderReady === 'true') return;
 
-      const inner = sectionEl.querySelector('#value-strip-inner-{{ section.id }}');
-      const nav = sectionEl.querySelector('#value-strip-nav-{{ section.id }}');
-      if (!inner || !nav) return;
+      const slides = Array.from(slider.querySelectorAll('.value-strip__mobile-slide'));
+      const nav = document.getElementById('value-strip-mobile-nav-{{ section.id }}');
+      const prevBtn = nav ? nav.querySelector('.value-strip__nav-btn--prev') : null;
+      const nextBtn = nav ? nav.querySelector('.value-strip__nav-btn--next') : null;
+      if (!slides.length) return;
 
-      const slides = Array.from(inner.querySelectorAll('.value-strip__mobile-slide'));
-      const prevBtn = nav.querySelector('.value-strip__nav-btn--prev');
-      const nextBtn = nav.querySelector('.value-strip__nav-btn--next');
-
-      if (!slides.length || !prevBtn || !nextBtn) return;
+      slider.dataset.mobileSliderReady = 'true';
 
       let currentIndex = 0;
+      let autoplayTimer = null;
 
-      function isMobile() {
-        return window.innerWidth <= 989;
-      }
-
-      function showSlide(index) {
-        slides.forEach(function (slide, i) {
-          slide.classList.toggle('is-active', i === index);
+      const showSlide = (index) => {
+        slides.forEach((slide, slideIndex) => {
+          slide.classList.toggle('is-active', slideIndex === index);
         });
-      }
+      };
 
-      function resetDesktop() {
-        slides.forEach(function (slide) {
-          slide.classList.remove('is-active');
-        });
-      }
+      showSlide(currentIndex);
 
-      function applyMode() {
-        if (isMobile()) {
-          showSlide(currentIndex);
-        } else {
-          resetDesktop();
-        }
-      }
+      if (slides.length < 2) return;
 
-      prevBtn.addEventListener('click', function () {
-        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-        showSlide(currentIndex);
-      });
-
-      nextBtn.addEventListener('click', function () {
+      const nextSlide = () => {
         currentIndex = (currentIndex + 1) % slides.length;
         showSlide(currentIndex);
-      });
+      };
 
-      window.addEventListener('resize', applyMode);
+      const previousSlide = () => {
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        showSlide(currentIndex);
+      };
 
-      applyMode();
+      const restartAutoplay = () => {
+        if (autoplayTimer) {
+          window.clearInterval(autoplayTimer);
+        }
+
+        autoplayTimer = window.setInterval(nextSlide, 2500);
+      };
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+          previousSlide();
+          restartAutoplay();
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          nextSlide();
+          restartAutoplay();
+        });
+      }
+
+      restartAutoplay();
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initValueStripMobileSlider);
+    } else {
+      initValueStripMobileSlider();
+    }
+
+    document.addEventListener('shopify:section:load', (event) => {
+      if (!event.target || event.target.id !== 'shopify-section-{{ section.id }}') return;
+      initValueStripMobileSlider();
     });
-  </script>
-{%- endif -%}
+  })();
+</script>
 
 {% schema %}
 {

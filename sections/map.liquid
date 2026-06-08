@@ -42,10 +42,45 @@
     width: 100%;
   }
 
+  #shopify-section-{{ section.id }} .map-split__header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 760px;
+    margin: 0 auto 24px;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .map-split__header .eyebrow-heading__title{
+    margin: 0 0 10px;
+    width: 100%;
+    text-align: center;
+    color: rgb(var(--color-heading));
+    line-height: 1.1;
+    font-size: clamp(
+      calc(var(--font-heading-scale) * 2.8rem),
+      4vw,
+      calc(var(--font-heading-scale) * 4rem)
+    );
+  }
+
+  #shopify-section-{{ section.id }} .map-split__header-address{
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+    color: rgb(var(--color-foreground));
+  }
+
+  #shopify-section-{{ section.id }} .map-split__header-address p{
+    margin: 0;
+  }
+
   #shopify-section-{{ section.id }} .map-split__grid{
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 0;
+    align-items: stretch;
   }
 
   #shopify-section-{{ section.id }} .map-split__media{
@@ -73,14 +108,21 @@
     position: relative;
   }
 
+  #shopify-section-{{ section.id }} .map-split__map .map-split__media{
+    height: 100%;
+    min-height: 360px;
+  }
+
   /* Google Maps iframe fills the whole left side */
   #shopify-section-{{ section.id }} .px-google-map{
     position: absolute;
     inset: 0;
+    z-index: 1;
     width: 100%;
     height: 100%;
     border: 0;
     display: block;
+    pointer-events: auto;
     background: #f2f2f2;
   }
 
@@ -88,6 +130,7 @@
   #shopify-section-{{ section.id }} .px-google-map-shell{
     position: absolute;
     inset: 0;
+    z-index: 0;
     width: 100%;
     height: 100%;
     background:
@@ -96,89 +139,22 @@
       linear-gradient(135deg, rgba(0,0,0,.04), rgba(0,0,0,.02));
   }
 
-  #shopify-section-{{ section.id }} .map-split__card{
-    position: absolute;
-    z-index: 2;
-    max-width: min(420px, 88%);
-    background: rgba(var(--color-background), var(--color-background-opacity));
-    color: rgb(var(--color-foreground));
-    padding: 22px 22px;
-    box-shadow: 0 12px 30px rgba(0,0,0,.18);
-  }
-
-  #shopify-section-{{ section.id }} .map-split__card--top-left{
-    top: 22px;
-    left: 22px;
-  }
-
-  #shopify-section-{{ section.id }} .map-split__card--top-center{
-    top: 22px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  #shopify-section-{{ section.id }} .map-split__card--top-right{
-    top: 22px;
-    right: 22px;
-  }
-
-  #shopify-section-{{ section.id }} .map-split__card--middle-left{
-    top: 50%;
-    left: 22px;
-    transform: translateY(-50%);
-  }
-
-  #shopify-section-{{ section.id }} .map-split__card--middle-center{
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  #shopify-section-{{ section.id }} .map-split__card--middle-right{
-    top: 50%;
-    right: 22px;
-    transform: translateY(-50%);
-  }
-
-  #shopify-section-{{ section.id }} .map-split__card--bottom-left{
-    bottom: 22px;
-    left: 22px;
-  }
-
-  #shopify-section-{{ section.id }} .map-split__card--bottom-center{
-    bottom: 22px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  #shopify-section-{{ section.id }} .map-split__card--bottom-right{
-    bottom: 22px;
-    right: 22px;
-  }
-
-  #shopify-section-{{ section.id }} .map-split__card .banner__heading{
-    margin: 0 0 10px;
-  }
-
-  #shopify-section-{{ section.id }} .map-split__card .banner__subheading{
-    margin: 0 0 10px;
-    opacity: .9;
-  }
-
-  #shopify-section-{{ section.id }} .map-split__card .banner__text{
-    margin: 0 0 14px;
-  }
-
-  #shopify-section-{{ section.id }} .map-split__card .button{
-    margin-top: 6px;
-  }
-
   #shopify-section-{{ section.id }} .map-split__image img{
     width: 100%;
     height: 100%;
     display: block;
-    object-fit: cover;
+    object-fit: contain;
     object-position: var(--image-position);
+  }
+
+  #shopify-section-{{ section.id }} .map-split__image .map-split__media{
+    height: auto;
+    padding-bottom: var(--ratio-percent);
+  }
+
+  #shopify-section-{{ section.id }} .map-split__image .map-split__media > *{
+    position: absolute;
+    inset: 0;
   }
 
   @media (max-width: 989px){
@@ -205,43 +181,62 @@
     {% endif %}
 
     {% if mobile_ratio != 'adapt' %}
-      #shopify-section-{{ section.id }} .map-split__media{
+      #shopify-section-{{ section.id }} .map-split__map .map-split__media{
         height: {{ mobile_ratio }};
+        min-height: 0;
       }
     {% else %}
-      #shopify-section-{{ section.id }} .map-split__media{
+      #shopify-section-{{ section.id }} .map-split__map .map-split__media{
         height: auto;
+        min-height: 0;
         padding-bottom: var(--ratio-percent);
       }
 
-      #shopify-section-{{ section.id }} .map-split__media > *{
+      #shopify-section-{{ section.id }} .map-split__map .map-split__media > *{
         position: absolute;
         inset: 0;
       }
     {% endif %}
 
-    #shopify-section-{{ section.id }} .map-split__card{
-      left: 16px !important;
-      right: 16px !important;
-      max-width: none;
-      transform: none !important;
-    }
-
-    #shopify-section-{{ section.id }} .map-split__card--middle-left,
-    #shopify-section-{{ section.id }} .map-split__card--middle-center,
-    #shopify-section-{{ section.id }} .map-split__card--middle-right{
-      top: auto;
-      bottom: 16px;
-    }
   }
 </style>
 
 <div class="section--padding{% if section.settings.show_divider %} section--divider{% endif %}">
   <div class="page-width{% if section.settings.full_width %} page-width--full-width{% endif %}">
+    <div class="title-wrapper center map-split__header">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'heading' -%}
+          <{{ block.settings.heading_tag }} class="eyebrow-heading__title" {{ block.shopify_attributes }}>
+            {%- render 'highlight-text',
+              hl_input: block.settings.heading,
+              hl_style: block.settings.highlight_style,
+              hl_enable: block.settings.enable_highlight,
+              hl_animateWrap: true
+            -%}
+          </{{ block.settings.heading_tag }}>
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'text' -%}
+          <div class="map-split__header-address typeset rte">
+            {%- render 'highlight-text',
+              hl_input: block.settings.text,
+              hl_style: block.settings.highlight_style,
+              hl_enable: false,
+              hl_animateWrap: true
+            -%}
+          </div>
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
     <div class="map-split">
       <div class="map-split__grid">
 
-        <!-- LEFT: GOOGLE MAPS BACKGROUND + CARD -->
+        <!-- LEFT: GOOGLE MAPS -->
         <div class="map-split__map">
           <div class="map-split__media">
 
@@ -255,81 +250,6 @@
               referrerpolicy="no-referrer-when-downgrade"
               src="https://maps.google.com/maps?q={{ dest_encoded }}&z={{ section.settings.map_zoom }}&output=embed">
             </iframe>
-
-            {%- if section.blocks.size > 0 -%}
-              <div class="map-split__card map-split__card--{{ section.settings.text_box_position }} {{ section.settings.text_alignment }} mobile-{{ section.settings.mobile_text_alignment }}">
-                {%- for block in section.blocks -%}
-                  {%- case block.type -%}
-
-                    {%- when 'heading' -%}
-                      <{{ block.settings.heading_tag }} class="banner__heading {{ block.settings.heading_size }}" {{ block.shopify_attributes }}>
-                        {%- render 'highlight-text',
-                          hl_input: block.settings.heading,
-                          hl_style: block.settings.highlight_style,
-                          hl_enable: block.settings.enable_highlight,
-                          hl_animateWrap: true
-                        -%}
-                      </{{ block.settings.heading_tag }}>
-
-                    {%- when 'subheading' -%}
-                      <p class="banner__subheading{% if block.settings.secondary_color %} banner__subheading--colored{% endif %} {{ block.settings.subheading_size }}" {{ block.shopify_attributes }}>
-                        {%- render 'highlight-text',
-                          hl_input: block.settings.subheading,
-                          hl_style: block.settings.highlight_style,
-                          hl_enable: block.settings.enable_highlight,
-                          hl_animateWrap: true
-                        -%}
-                      </p>
-
-                    {%- when 'text' -%}
-                      <div class="banner__text{% if block.settings.secondary_color %} image-with-text__text--colored{% endif %} {{ block.settings.text_size }} rte" {{ block.shopify_attributes }}>
-                        {%- render 'highlight-text',
-                          hl_input: block.settings.text,
-                          hl_style: block.settings.highlight_style,
-                          hl_enable: block.settings.enable_highlight,
-                          hl_animateWrap: true
-                        -%}
-                      </div>
-
-                    {%- when 'custom_liquid' -%}
-                      <div class="banner__text rte" {{ block.shopify_attributes }}>
-                        {{ block.settings.custom_liquid }}
-                      </div>
-
-                    {%- when 'button' -%}
-                      {%- if block.settings.button_label != blank -%}
-                        {%- assign button_href = block.settings.button_link -%}
-
-                        {%- if button_href == blank -%}
-                          {%- assign button_href = 'https://www.google.com/maps/dir/?api=1&destination=' | append: dest_encoded -%}
-                        {%- endif -%}
-
-                        {%- if block.settings.button_style_secondary -%}
-                          <a
-                            class="button button--cta button--{{ block.settings.button_size }}"
-                            href="{{ button_href }}"
-                            target="_blank"
-                            rel="noopener"
-                            {{ block.shopify_attributes }}>
-                            <span class="label">{{ block.settings.button_label | escape }}</span>
-                            {% render 'icon', icon: 'arrow' %}
-                          </a>
-                        {%- else -%}
-                          <a
-                            class="button button--{{ block.settings.button_size }}"
-                            href="{{ button_href }}"
-                            target="_blank"
-                            rel="noopener"
-                            {{ block.shopify_attributes }}>
-                            {{ block.settings.button_label | escape }}
-                          </a>
-                        {%- endif -%}
-                      {%- endif -%}
-
-                  {%- endcase -%}
-                {%- endfor -%}
-              </div>
-            {%- endif -%}
 
           </div>
         </div>

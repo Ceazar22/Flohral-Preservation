@@ -36,16 +36,18 @@
                   {%- assign src_2000 = img | image_url: width: 2000 -%}
 
                   <div class="tx-media">
-                    <img
-                      class="tx-img"
-                      loading="lazy"
-                      alt="{{ alt_text }}"
-                      width="{{ img.width }}"
-                      height="{{ img.height }}"
-                      src="{{ src_800 }}"
-                      srcset="{{ src_320 }} 320w, {{ src_480 }} 480w, {{ src_640 }} 640w, {{ src_800 }} 800w, {{ src_1000 }} 1000w, {{ src_1200 }} 1200w, {{ src_1600 }} 1600w, {{ src_2000 }} 2000w"
-                      sizes="(max-width: 749px) 80vw, (max-width: 989px) 45vw, 360px"
-                    >
+                    <a class="tx-media__link" href="{{ src_2000 }}" aria-label="Open {{ alt_text }} full screen">
+                      <img
+                        class="tx-img"
+                        loading="lazy"
+                        alt="{{ alt_text }}"
+                        width="{{ img.width }}"
+                        height="{{ img.height }}"
+                        src="{{ src_800 }}"
+                        srcset="{{ src_320 }} 320w, {{ src_480 }} 480w, {{ src_640 }} 640w, {{ src_800 }} 800w, {{ src_1000 }} 1000w, {{ src_1200 }} 1200w, {{ src_1600 }} 1600w, {{ src_2000 }} 2000w"
+                        sizes="(max-width: 749px) 82vw, (max-width: 989px) 45vw, 360px"
+                      >
+                    </a>
                   </div>
                 {% else %}
                   <div class="tx-media tx-media--placeholder">
@@ -59,6 +61,11 @@
       </div>
     </div>
 
+  </div>
+
+  <div class="tx-lightbox" data-tx-lightbox hidden>
+    <button class="tx-lightbox__close" type="button" data-tx-lightbox-close aria-label="Close full screen image">X</button>
+    <img class="tx-lightbox__img" data-tx-lightbox-img alt="">
   </div>
 </section>
 
@@ -143,6 +150,50 @@
     display: block;
   }
 
+  #tx-{{ section.id }} .tx-media__link{
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: zoom-in;
+  }
+
+  #tx-{{ section.id }} .tx-lightbox[hidden]{
+    display: none;
+  }
+
+  #tx-{{ section.id }} .tx-lightbox{
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: rgba(0,0,0,.88);
+  }
+
+  #tx-{{ section.id }} .tx-lightbox__img{
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  #tx-{{ section.id }} .tx-lightbox__close{
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(255,255,255,.45);
+    border-radius: 50%;
+    background: rgba(0,0,0,.35);
+    color: #fff;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
   /* Show whole image (no crop) */
   #tx-{{ section.id }}.tx-show-whole .tx-media{
     aspect-ratio: auto;
@@ -164,18 +215,49 @@
   }
 
   @media (max-width: 749px){
+    #tx-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top | divided_by: 2 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | divided_by: 2 }}px;
+    }
+
+    #tx-{{ section.id }} .tx-eyebrow{
+      font-size: max(8px, calc(var(--tx-eyebrow-size) - 2px));
+      margin-bottom: 4px;
+    }
+
+    #tx-{{ section.id }} .tx-title{
+      font-size: clamp(20px, 6vw, 26px);
+      margin-bottom: 14px;
+    }
+
     #tx-{{ section.id }} .tx-slide{
-      flex-basis: var(--tx-slide-w-mobile);
-      max-width: var(--tx-slide-w-mobile);
+      flex-basis: min(82vw, var(--tx-slide-w-mobile));
+      max-width: min(82vw, var(--tx-slide-w-mobile));
     }
 
     #tx-{{ section.id }} .tx-media{
       aspect-ratio: {{ section.settings.aspect_ratio_mobile }};
+      border-radius: 0;
+      background: transparent;
+    }
+
+    #tx-{{ section.id }} .tx-img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: transparent;
     }
 
     #tx-{{ section.id }}.tx-show-whole .tx-media{
-      aspect-ratio: auto;
-      height: var(--tx-media-h-mobile);
+      aspect-ratio: {{ section.settings.aspect_ratio_mobile }};
+      height: auto;
+    }
+
+    #tx-{{ section.id }}.tx-show-whole .tx-img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: transparent;
     }
   }
 </style>
@@ -191,6 +273,9 @@
     const viewport = root.querySelector('.tx-viewport');
     const track = root.querySelector('.tx-track');
     const carousel = root.querySelector('.tx-carousel');
+    const lightbox = root.querySelector('[data-tx-lightbox]');
+    const lightboxImg = root.querySelector('[data-tx-lightbox-img]');
+    const lightboxClose = root.querySelector('[data-tx-lightbox-close]');
     if (!viewport || !track) return;
 
     const autoplay = carousel && carousel.dataset.autoplay === 'true';
@@ -229,6 +314,7 @@
     let startX = 0;
     let startTransformX = 0;
     let x = 0;
+    let didDrag = false;
 
     function setX(val) {
       x = val;
@@ -238,6 +324,7 @@
 
     function pointerDown(e) {
       isDown = true;
+      didDrag = false;
       viewport.classList.add('is-dragging');
       const pointX = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
       startX = pointX;
@@ -248,6 +335,7 @@
       if (!isDown) return;
       const pointX = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
       const dx = pointX - startX;
+      if (Math.abs(dx) > 6) didDrag = true;
       setX(startTransformX + dx);
     }
 
@@ -263,6 +351,48 @@
     viewport.addEventListener('touchstart', pointerDown, { passive: true });
     viewport.addEventListener('touchmove', pointerMove, { passive: true });
     viewport.addEventListener('touchend', pointerUp);
+
+    function openLightbox(link, img) {
+      if (!lightbox || !lightboxImg || !link || !img) return;
+      lightboxImg.src = link.href || img.currentSrc || img.src;
+      lightboxImg.alt = img.alt || '';
+      lightbox.hidden = false;
+      document.documentElement.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      if (!lightbox || !lightboxImg) return;
+      lightbox.hidden = true;
+      lightboxImg.removeAttribute('src');
+      lightboxImg.alt = '';
+      document.documentElement.style.overflow = '';
+    }
+
+    track.addEventListener('click', (event) => {
+      const link = event.target.closest('.tx-media__link');
+      if (!link) return;
+
+      event.preventDefault();
+      if (didDrag) {
+        didDrag = false;
+        return;
+      }
+
+      const img = link.querySelector('.tx-img');
+      openLightbox(link, img);
+    });
+
+    if (lightbox) {
+      lightbox.addEventListener('click', (event) => {
+        if (event.target === lightbox) closeLightbox();
+      });
+    }
+
+    if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && lightbox && !lightbox.hidden) closeLightbox();
+    });
 
     let isHover = false;
     viewport.addEventListener('mouseenter', () => isHover = true);
