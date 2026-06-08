@@ -7,7 +7,15 @@
   Downsell "Not now" goes to checkout.
 {% endcomment %}
 
-{%- if request.page_type == 'cart' -%}
+{%- liquid
+  assign has_rainer_paid_tag = false
+
+  if customer and customer.tags contains 'Rainer Paid'
+    assign has_rainer_paid_tag = true
+  endif
+-%}
+
+{%- if request.page_type == 'cart' and has_rainer_paid_tag -%}
   {%- liquid
     assign downsell_collection = collections['all']
     assign comparison_price = 0
