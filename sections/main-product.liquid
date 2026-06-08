@@ -61,7 +61,7 @@
   }
 
   @media screen and (min-width: 750px) {
-    .product--thumbnail_slider #Slider-Gallery-{{ section.id }} .media--adapt_first {
+    #Slider-Gallery-{{ section.id }} .media--adapt_first {
       padding-bottom: {{ first_image_ratio }}%;
     }
   }
@@ -118,12 +118,16 @@
                   assign media_width = 0.45
                 endif
 
-                assign image_ratio = 'adapt'
-                if section.settings.gallery_layout != 'stacked'
-                  assign image_ratio = section.settings.image_ratio
+                assign image_ratio = section.settings.image_ratio
+                assign mobile_image_ratio = section.settings.mobile_image_ratio
+
+                if image_ratio == 'adapt'
+                  assign image_ratio = 'adapt_first'
                 endif
 
-                assign mobile_image_ratio = section.settings.mobile_image_ratio
+                if mobile_image_ratio == 'adapt'
+                  assign mobile_image_ratio = 'adapt_first'
+                endif
               -%}
 
               {%- if featured_media != null -%}
@@ -303,7 +307,7 @@
                   endif
                 -%}
                 <li id="Slide-Thumbnails-{{ section.id }}-0"
-                  class="thumbnail-list__item slider__slide{% if section.settings.hide_variants and variant_images contains featured_media.src %} thumbnail-list_item--variant{% endif %} is-active media-wrapper media-wrapper--small{% if gang_media_active == true %} gang__active{% endif %}"
+                  class="thumbnail-list__item slider__slide is-active media-wrapper media-wrapper--small{% if gang_media_active == true %} gang__active{% endif %}"
                   data-target="{{ section.id }}-{{ featured_media.id }}"
                   data-media-position="{{ media_index }}"
                   data-media-id="thumbnail--{{ section.id }}-{{ featured_media.id }}"
@@ -315,7 +319,7 @@
                     aria-controls="GalleryViewer-{{ section.id }}"
                     aria-describedby="Thumbnail-{{ section.id }}-0"
                   >
-                    {%- capture sizes -%}(min-width: {{ settings.page_width }}px) calc(({{ settings.page_width | minus: 100 | times: media_width | round }} - 4rem) / 4), (min-width: 990px) calc(({{ media_width | times: 100 }}vw - 4rem) / 4), (min-width: 750px) calc((100vw - 15rem) / 8), calc((100vw - 14rem) / 3){%- endcapture -%}
+                    {%- capture sizes -%}(min-width: {{ settings.page_width }}px) calc(({{ settings.page_width | minus: 100 | times: media_width | round }} - 2.4rem) / 5), (min-width: 990px) calc(({{ media_width | times: 100 }}vw - 2.4rem) / 5), (min-width: 750px) calc((100vw - 2.4rem) / 5), calc((100vw - 2.4rem) / 5){%- endcapture -%}
                     {%- liquid
                       assign image_id = 'Thumbnail-' | append: section.id | append: '-0'
                       assign alt = featured_media.alt | escape | split: '#' | first
@@ -376,7 +380,7 @@
                     endif
                   -%}
                   <li id="Slide-Thumbnails-{{ section.id }}-{{ forloop.index }}"
-                    class="thumbnail-list__item slider__slide{% if section.settings.hide_variants and variant_images contains media.src %} thumbnail-list_item--variant{% endif %}{% if media_active == true %} is-active{% endif %} media-wrapper media-wrapper--small{% if gang_media_active == true %} gang__active{% endif %}"
+                    class="thumbnail-list__item slider__slide{% if media_active == true %} is-active{% endif %} media-wrapper media-wrapper--small{% if gang_media_active == true %} gang__active{% endif %}"
                     data-target="{{ section.id }}-{{ media.id }}"
                     data-media-position="{{ media_index }}"
                     data-media-id="thumbnail--{{ section.id }}-{{ featured_media.id }}"
@@ -400,7 +404,7 @@
                       aria-controls="GalleryViewer-{{ section.id }}"
                       aria-describedby="Thumbnail-{{ section.id }}-{{ forloop.index }}"
                     >
-                      {%- capture sizes -%}(min-width: {{ settings.page_width }}px) calc(({{ settings.page_width | minus: 100 | times: media_width | round }} - 4rem) / 4), (min-width: 990px) calc(({{ media_width | times: 100 }}vw - 4rem) / 4), (min-width: 750px) calc((100vw - 15rem) / 8), calc((100vw - 14rem) / 3){%- endcapture -%}
+                      {%- capture sizes -%}(min-width: {{ settings.page_width }}px) calc(({{ settings.page_width | minus: 100 | times: media_width | round }} - 2.4rem) / 5), (min-width: 990px) calc(({{ media_width | times: 100 }}vw - 2.4rem) / 5), (min-width: 750px) calc((100vw - 2.4rem) / 5), calc((100vw - 2.4rem) / 5){%- endcapture -%}
                       {%- liquid
                         assign image_id = 'Thumbnail-' | append: section.id | append: '-' | append: forloop.index
                         assign alt = media.alt | escape | split: '#' | first
@@ -411,9 +415,9 @@
                 {%- endunless -%}
               {%- endfor -%}
             </ul>
-            <div class="slider-buttons{% if media_count <= 3 %} small-hide{% endif %}{% if media_count <= 4 %} medium-hide large-up-hide{% endif %}">
-              <button type="button" class="slider-button slider-button--prev" name="previous" aria-label="{{ 'general.slider.previous_slide' | t }}" aria-controls="GalleryThumbnails-{{ section.id }}" data-step="3">{% render 'icon', icon: 'caret' %}</button>
-              <button type="button" class="slider-button slider-button--next" name="next" aria-label="{{ 'general.slider.next_slide' | t }}" aria-controls="GalleryThumbnails-{{ section.id }}" data-step="3">{% render 'icon', icon: 'caret' %}</button>
+            <div class="slider-buttons{% if product.media.size <= 5 %} hidden{% endif %}">
+              <button type="button" class="slider-button slider-button--prev" name="previous" aria-label="{{ 'general.slider.previous_slide' | t }}" aria-controls="Slider-Thumbnails-{{ section.id }}" data-step="1">{% render 'icon', icon: 'caret' %}</button>
+              <button type="button" class="slider-button slider-button--next" name="next" aria-label="{{ 'general.slider.next_slide' | t }}" aria-controls="Slider-Thumbnails-{{ section.id }}" data-step="1">{% render 'icon', icon: 'caret' %}</button>
             </div>
           </thumbnail-slider>
         {%- endif -%}
