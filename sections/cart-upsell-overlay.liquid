@@ -58,13 +58,13 @@
     #CartUpsellOverlay-{{ section.id }} .cu-overlay__modal {
       position: relative;
       z-index: 2;
-      width: min(100%, 920px);
+      width: min(100%, 1180px);
       max-height: calc(100vh - 40px);
       overflow-y: auto;
       background: {{ section.settings.modal_background }};
       color: {{ section.settings.text_color }};
       border-radius: {{ section.settings.border_radius }}px;
-      padding: 34px;
+      padding: 44px;
       box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24);
     }
 
@@ -87,7 +87,7 @@
     }
 
     #CartUpsellOverlay-{{ section.id }} .cu-overlay__text {
-      max-width: 620px;
+      max-width: 720px;
       margin: 0 auto 26px;
       font-size: 15px;
       line-height: 1.55;
@@ -98,15 +98,15 @@
     #CartUpsellOverlay-{{ section.id }} .cu-products {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 14px;
-      margin-bottom: 24px;
+      gap: 18px;
+      margin-bottom: 28px;
     }
 
     #CartUpsellOverlay-{{ section.id }} .cu-product {
       display: flex;
       flex-direction: column;
       min-height: 100%;
-      padding: 12px;
+      padding: 14px;
       border: 1px solid rgba(0, 0, 0, 0.1);
       border-radius: 14px;
       background: rgba(0, 0, 0, 0.02);
