@@ -1,0 +1,712 @@
+{% comment %}
+  Cart Downsell Overlay
+  Cart page only.
+  Opens only when cart-upsell-overlay.liquid calls window.CartDownsellOverlay.open().
+  Shows up to 5 random downsell products.
+  Downsell products are lower than the highest-priced product currently in the cart.
+  Downsell "Not now" goes to checkout.
+{% endcomment %}
+
+{%- if request.page_type == 'cart' -%}
+  {%- liquid
+    assign downsell_collection = collections['all']
+    assign comparison_price = 0
+
+    for item in cart.items
+      assign current_item_price = item.final_price
+
+      if current_item_price > comparison_price
+        assign comparison_price = current_item_price
+      endif
+    endfor
+  -%}
+
+  <style>
+    #CartDownsellOverlay-{{ section.id }} {
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    #CartDownsellOverlay-{{ section.id }}.is-active {
+      display: flex;
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-overlay__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.48);
+      backdrop-filter: blur(3px);
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-overlay__modal {
+      position: relative;
+      z-index: 2;
+      width: min(100%, 920px);
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+      background: {{ section.settings.modal_background }};
+      color: {{ section.settings.text_color }};
+      border-radius: {{ section.settings.border_radius }}px;
+      padding: 34px;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24);
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-overlay__eyebrow {
+      margin: 0 0 8px;
+      font-size: 12px;
+      line-height: 1.2;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      opacity: 0.65;
+      text-align: center;
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-overlay__heading {
+      margin: 0 0 10px;
+      font-size: 32px;
+      line-height: 1.12;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-overlay__text {
+      max-width: 620px;
+      margin: 0 auto 26px;
+      font-size: 15px;
+      line-height: 1.55;
+      opacity: 0.78;
+      text-align: center;
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-products {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-product {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      padding: 12px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 14px;
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-product[hidden] {
+      display: none !important;
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-product__image-wrapper {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.06);
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-product__image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-product__image-placeholder {
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.06);
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-product__content {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-product__title {
+      margin: 0 0 8px;
+      font-size: 14px;
+      line-height: 1.35;
+      font-weight: 500;
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-product__price {
+      margin: 0 0 12px;
+      font-size: 14px;
+      line-height: 1.2;
+      font-weight: 600;
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-product__button {
+      width: 100%;
+      min-height: 42px;
+      margin-top: auto;
+      border: 0;
+      border-radius: {{ section.settings.button_radius }}px;
+      cursor: pointer;
+      background: {{ section.settings.button_background }};
+      color: {{ section.settings.button_text_color }};
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-product__button:hover {
+      opacity: 0.88;
+      transform: translateY(-1px);
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-product__button:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+      transform: none;
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-product__button.is-loading {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-overlay__actions {
+      display: grid;
+      gap: 10px;
+      max-width: 360px;
+      margin: 0 auto;
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-overlay__button {
+      width: 100%;
+      min-height: 52px;
+      border: 0;
+      border-radius: {{ section.settings.button_radius }}px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-overlay__button:hover {
+      opacity: 0.88;
+      transform: translateY(-1px);
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-overlay__button--secondary {
+      background: transparent;
+      color: {{ section.settings.text_color }};
+      border: 1px solid rgba(0, 0, 0, 0.18);
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-overlay__error {
+      display: none;
+      max-width: 520px;
+      margin: 14px auto 0;
+      color: #b00020;
+      font-size: 13px;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    #CartDownsellOverlay-{{ section.id }} .cd-overlay__error.is-active {
+      display: block;
+    }
+
+    body.cd-cart-refreshing {
+      cursor: progress;
+    }
+
+    @media screen and (max-width: 989px) {
+      #CartDownsellOverlay-{{ section.id }} .cd-products {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media screen and (max-width: 749px) {
+      #CartDownsellOverlay-{{ section.id }} {
+        align-items: flex-end;
+        padding: 12px;
+      }
+
+      #CartDownsellOverlay-{{ section.id }} .cd-overlay__modal {
+        width: 100%;
+        padding: 28px 18px 20px;
+        border-radius: {{ section.settings.border_radius }}px {{ section.settings.border_radius }}px 0 0;
+      }
+
+      #CartDownsellOverlay-{{ section.id }} .cd-overlay__heading {
+        font-size: 24px;
+      }
+
+      #CartDownsellOverlay-{{ section.id }} .cd-products {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      #CartDownsellOverlay-{{ section.id }} .cd-product {
+        padding: 10px;
+      }
+
+      #CartDownsellOverlay-{{ section.id }} .cd-product__title,
+      #CartDownsellOverlay-{{ section.id }} .cd-product__price {
+        font-size: 13px;
+      }
+
+      #CartDownsellOverlay-{{ section.id }} .cd-product__button {
+        min-height: 40px;
+        font-size: 10px;
+      }
+    }
+
+    @media screen and (max-width: 420px) {
+      #CartDownsellOverlay-{{ section.id }} .cd-products {
+        grid-template-columns: 1fr;
+      }
+
+      #CartDownsellOverlay-{{ section.id }} .cd-product {
+        display: grid;
+        grid-template-columns: 88px 1fr;
+        gap: 12px;
+        align-items: center;
+      }
+
+      #CartDownsellOverlay-{{ section.id }} .cd-product__image-wrapper {
+        margin-bottom: 0;
+      }
+    }
+  </style>
+
+  <div
+    id="CartDownsellOverlay-{{ section.id }}"
+    class="cd-overlay"
+    aria-hidden="true"
+    data-downsell-enabled="{% if section.settings.enable_downsell %}true{% else %}false{% endif %}"
+  >
+    <div class="cd-overlay__backdrop" data-cd-skip></div>
+
+    <div class="cd-overlay__modal" role="dialog" aria-modal="true">
+      <p class="cd-overlay__eyebrow">{{ section.settings.downsell_eyebrow }}</p>
+      <h2 class="cd-overlay__heading">{{ section.settings.downsell_heading }}</h2>
+      <p class="cd-overlay__text">{{ section.settings.downsell_text }}</p>
+
+      <div class="cd-products" data-cd-products>
+        {%- if downsell_collection != blank -%}
+          {%- paginate downsell_collection.products by 250 -%}
+            {%- for downsell_product in downsell_collection.products -%}
+              {%- liquid
+                assign downsell_variant = downsell_product.selected_or_first_available_variant
+                assign product_already_in_cart = false
+
+                for item in cart.items
+                  if item.product.id == downsell_product.id
+                    assign product_already_in_cart = true
+                  endif
+                endfor
+              -%}
+
+              {%- if downsell_variant != blank and downsell_variant.available and product_already_in_cart == false and downsell_variant.price > 0 and downsell_variant.price < comparison_price -%}
+                <div class="cd-product" data-cd-product-card hidden>
+                  <div class="cd-product__image-wrapper">
+                    {%- if downsell_product.featured_image != blank -%}
+                      {{
+                        downsell_product.featured_image
+                        | image_url: width: 400
+                        | image_tag:
+                          class: 'cd-product__image',
+                          loading: 'lazy',
+                          alt: downsell_product.title
+                      }}
+                    {%- else -%}
+                      <div class="cd-product__image-placeholder"></div>
+                    {%- endif -%}
+                  </div>
+
+                  <div class="cd-product__content">
+                    <h3 class="cd-product__title">{{ downsell_product.title }}</h3>
+
+                    <p class="cd-product__price">
+                      {%- if settings.currency_code_enabled -%}
+                        {{ downsell_variant.price | money_with_currency }}
+                      {%- else -%}
+                        {{ downsell_variant.price | money }}
+                      {%- endif -%}
+                    </p>
+
+                    <button
+                      type="button"
+                      class="cd-product__button"
+                      data-cd-add-product
+                      data-variant-id="{{ downsell_variant.id }}"
+                      {% unless downsell_variant.available %}disabled{% endunless %}
+                    >
+                      {%- if downsell_variant.available -%}
+                        {{ section.settings.product_button_label }}
+                      {%- else -%}
+                        Sold out
+                      {%- endif -%}
+                    </button>
+                  </div>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endpaginate -%}
+        {%- endif -%}
+      </div>
+
+      <div class="cd-overlay__actions">
+        <button type="button" class="cd-overlay__button cd-overlay__button--secondary" data-cd-skip>
+          {{ section.settings.skip_label }}
+        </button>
+      </div>
+
+      <div class="cd-overlay__error" data-cd-error></div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const overlay = document.getElementById('CartDownsellOverlay-{{ section.id }}');
+
+      if (!overlay) return;
+
+      const errorBox = overlay.querySelector('[data-cd-error]');
+      const downsellEnabled = overlay.dataset.downsellEnabled === 'true';
+      const maxProductsToShow = 5;
+
+      let isProcessing = false;
+
+      const getShopifyRoot = () => {
+        if (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) {
+          return window.Shopify.routes.root;
+        }
+
+        return '/';
+      };
+
+      const goToCheckout = () => {
+        window.location.href = getShopifyRoot() + 'checkout';
+      };
+
+      const clearError = () => {
+        if (!errorBox) return;
+
+        errorBox.textContent = '';
+        errorBox.classList.remove('is-active');
+      };
+
+      const showError = (message) => {
+        if (!errorBox) return;
+
+        errorBox.textContent = message || 'Something went wrong. Please try again.';
+        errorBox.classList.add('is-active');
+      };
+
+      const randomizeDownsellProducts = () => {
+        const productGrid = overlay.querySelector('[data-cd-products]');
+
+        if (!productGrid) return 0;
+
+        const cards = Array.from(productGrid.querySelectorAll('[data-cd-product-card]'));
+
+        if (!cards.length) return 0;
+
+        cards.forEach((card) => {
+          card.hidden = true;
+        });
+
+        for (let index = cards.length - 1; index > 0; index -= 1) {
+          const randomIndex = Math.floor(Math.random() * (index + 1));
+          const currentCard = cards[index];
+
+          cards[index] = cards[randomIndex];
+          cards[randomIndex] = currentCard;
+        }
+
+        cards.slice(0, maxProductsToShow).forEach((card) => {
+          card.hidden = false;
+          productGrid.appendChild(card);
+        });
+
+        return Math.min(cards.length, maxProductsToShow);
+      };
+
+      const openOverlay = () => {
+        clearError();
+
+        if (!downsellEnabled) {
+          console.warn('[Cart Downsell] Downsell is disabled.');
+          return false;
+        }
+
+        const shownProducts = randomizeDownsellProducts();
+
+        if (shownProducts === 0) {
+          console.warn('[Cart Downsell] No eligible downsell products found. Product prices must be lower than the highest-priced cart item.');
+          return false;
+        }
+
+        overlay.classList.add('is-active');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.documentElement.style.overflow = 'hidden';
+
+        return true;
+      };
+
+      const closeOverlay = () => {
+        overlay.classList.remove('is-active');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.documentElement.style.overflow = '';
+      };
+
+      const refreshCartSections = async () => {
+        document.body.classList.add('cd-cart-refreshing');
+
+        const response = await fetch(window.location.pathname + '?_=' + Date.now(), {
+          method: 'GET',
+          headers: {
+            Accept: 'text/html'
+          }
+        });
+
+        const html = await response.text();
+        const parser = new DOMParser();
+        const newDocument = parser.parseFromString(html, 'text/html');
+
+        const selectorsToRefresh = [
+          'cart-items',
+          '#main-cart-items',
+          '#MainCartItems',
+          '#main-cart-footer',
+          '.cart__footer-wrapper',
+          '.cart-count-bubble',
+          '#cart-icon-bubble',
+          'cart-icon-bubble',
+          '#CartDownsellOverlay-{{ section.id }} [data-cd-products]',
+          '[id^="CartUpsellOverlay-"] [data-cu-products]'
+        ];
+
+        selectorsToRefresh.forEach((selector) => {
+          const currentElement = document.querySelector(selector);
+          const newElement = newDocument.querySelector(selector);
+
+          if (currentElement && newElement) {
+            currentElement.innerHTML = newElement.innerHTML;
+          }
+        });
+
+        document.body.classList.remove('cd-cart-refreshing');
+
+        document.dispatchEvent(new CustomEvent('cart:refresh'));
+        document.dispatchEvent(new CustomEvent('cart:updated'));
+      };
+
+      const addVariantToCart = async (variantId, button) => {
+        if (!variantId) {
+          throw new Error('Missing product variant ID.');
+        }
+
+        button.classList.add('is-loading');
+        button.disabled = true;
+        button.dataset.originalText = button.textContent.trim();
+        button.textContent = '{{ section.settings.loading_label | escape }}';
+
+        const response = await fetch(getShopifyRoot() + 'cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+          },
+          body: JSON.stringify({
+            items: [
+              {
+                id: Number(variantId),
+                quantity: 1
+              }
+            ]
+          })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.description || result.message || 'Unable to add this product.');
+        }
+
+        return result;
+      };
+
+      const resetProductButton = (button) => {
+        if (!button) return;
+
+        button.classList.remove('is-loading');
+        button.disabled = false;
+
+        if (button.dataset.originalText) {
+          button.textContent = button.dataset.originalText;
+        }
+      };
+
+      overlay.addEventListener('click', async (event) => {
+        const addButton = event.target.closest('[data-cd-add-product]');
+        const skipButton = event.target.closest('[data-cd-skip]');
+
+        if (addButton && overlay.contains(addButton)) {
+          if (isProcessing) return;
+
+          const variantId = addButton.dataset.variantId;
+
+          clearError();
+
+          try {
+            isProcessing = true;
+
+            await addVariantToCart(variantId, addButton);
+
+            closeOverlay();
+
+            await refreshCartSections();
+
+            isProcessing = false;
+          } catch (error) {
+            isProcessing = false;
+            resetProductButton(addButton);
+            showError(error.message);
+          }
+
+          return;
+        }
+
+        if (skipButton && overlay.contains(skipButton)) {
+          if (isProcessing) return;
+
+          clearError();
+          closeOverlay();
+          goToCheckout();
+        }
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (!overlay.classList.contains('is-active')) return;
+
+        if (event.key === 'Escape') {
+          clearError();
+          closeOverlay();
+          goToCheckout();
+        }
+      });
+
+      window.CartDownsellOverlay = {
+        open: openOverlay,
+        close: closeOverlay
+      };
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Cart downsell",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_downsell",
+      "label": "Enable downsell popup",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "downsell_eyebrow",
+      "label": "Small text",
+      "default": "One more option"
+    },
+    {
+      "type": "text",
+      "id": "downsell_heading",
+      "label": "Heading",
+      "default": "Something smaller?"
+    },
+    {
+      "type": "textarea",
+      "id": "downsell_text",
+      "label": "Description",
+      "default": "No worries — here are a few lower-priced items you might still like."
+    },
+    {
+      "type": "text",
+      "id": "product_button_label",
+      "label": "Product add button",
+      "default": "Add"
+    },
+    {
+      "type": "text",
+      "id": "loading_label",
+      "label": "Loading button text",
+      "default": "Adding..."
+    },
+    {
+      "type": "text",
+      "id": "skip_label",
+      "label": "Skip button",
+      "default": "Not now"
+    },
+    {
+      "type": "color",
+      "id": "modal_background",
+      "label": "Popup background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Popup text color",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "#bd3365"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Popup button text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Popup border radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Button border radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cart downsell"
+    }
+  ]
+}
+{% endschema %}

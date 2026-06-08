@@ -1,0 +1,1240 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "name": "Page Description",
+      "settings": {
+        "narrow": true,
+        "padding_top": 60,
+        "padding_bottom": 72
+      }
+    },
+    "image_banner_bJP364": {
+      "type": "image-banner",
+      "blocks": {
+        "subheading_k4qeR4": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "<strong>check out our</strong>",
+            "subheading_size": "h4",
+            "secondary_color": false,
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        },
+        "heading_69gQBk": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Flohral Preservation Gallery</strong>",
+            "heading_size": "h1",
+            "heading_tag": "h2",
+            "enable_highlight": true,
+            "highlight_style": "squiggle"
+          }
+        },
+        "text_yMCwmn": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Your love story, captured in petals and preserved as art.</strong></p>",
+            "text_size": "typeset",
+            "secondary_color": false,
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_k4qeR4",
+        "heading_69gQBk",
+        "text_yMCwmn"
+      ],
+      "name": "Discover Flohral Hero",
+      "settings": {
+        "image": "shopify://shop_images/Resin_wedding_flower_preservation_c83a3a1b-2251-4d13-b82f-e781a9562e7e.webp",
+        "image_position": "center center",
+        "text_box_position": "center",
+        "text_alignment": "center",
+        "image_ratio": "400px",
+        "show_text_box": false,
+        "full_width": true,
+        "show_divider": false,
+        "image_behavior": "ambient",
+        "mobile_image": "shopify://shop_images/Resin_flower_preservation_2f17eb14-3130-431b-a6d6-4f739dcb1c34.webp",
+        "mobile_text_alignment": "center",
+        "mobile_image_ratio": "auto",
+        "stack_images_on_mobile": false,
+        "show_text_below": false,
+        "colors_button_label": "#1a1b18",
+        "colors_button_background": "#ffffff",
+        "colors_text": "#212326",
+        "colors_overlay": "#000000",
+        "colors_overlay_opacity": 0,
+        "colors_highlight": "#ffb503",
+        "bottom_border_size": 20,
+        "bottom_border_color": "#b23b5a",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "value_prop_strip_Mzbc4H": {
+      "type": "value-prop-strip",
+      "blocks": {
+        "text_ntkKJj": {
+          "type": "text",
+          "settings": {
+            "text": "Ships Nationwide Across the USA",
+            "link": ""
+          }
+        },
+        "text_GzRw7X": {
+          "type": "text",
+          "settings": {
+            "text": "Trusted by top florists in the usa",
+            "link": ""
+          }
+        },
+        "text_8XecxN": {
+          "type": "text",
+          "settings": {
+            "text": "One-of-a-Kind Preservation Pieces",
+            "link": ""
+          }
+        },
+        "text_PgqRqE": {
+          "type": "text",
+          "settings": {
+            "text": "<strong>VIP communication & Custom Service</strong>",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_ntkKJj",
+        "text_GzRw7X",
+        "text_8XecxN",
+        "text_PgqRqE"
+      ],
+      "name": "Value prop strip",
+      "settings": {
+        "full_width": true,
+        "disable_default_content": false,
+        "bg_color": "#b23b5a",
+        "text_color": "#ffffff",
+        "border_size": 0,
+        "border_color": "#b23b5a",
+        "padding_y": 10,
+        "padding_x": 16,
+        "gap": 36,
+        "font_size": 11,
+        "letter_spacing": 12,
+        "font_weight": "700",
+        "uppercase": true,
+        "text_opacity": 100,
+        "icon_size": 18,
+        "icon_opacity": 100,
+        "enable_carousel": true,
+        "carousel_speed": 16,
+        "pause_on_hover": true,
+        "mobile_behavior": "scroll"
+      }
+    },
+    "filter_gallery_chips_YDpXjK": {
+      "type": "filter-gallery-chips",
+      "blocks": {
+        "item_EhG9jj": {
+          "type": "item",
+          "name": "Sentimental Details",
+          "settings": {
+            "image": "shopify://shop_images/Sentimental_Details_Handerchief.webp",
+            "tags": "Sentimental Details",
+            "link": ""
+          }
+        },
+        "item_6M8f4G": {
+          "type": "item",
+          "name": "Sentimental Details",
+          "settings": {
+            "image": "shopify://shop_images/Sentimental_detail_cake_topper_Square.webp",
+            "tags": "Sentimental Details",
+            "link": ""
+          }
+        },
+        "item_qzgneb": {
+          "type": "item",
+          "name": "Sentimental Details",
+          "settings": {
+            "image": "shopify://shop_images/hex_sentimental_item_wedding_sleeve.webp",
+            "tags": "Sentimental Details",
+            "link": ""
+          }
+        },
+        "item_9cKyK6": {
+          "type": "item",
+          "name": "Sentimental Details",
+          "settings": {
+            "image": "shopify://shop_images/Hexagon_sentimental_shoes.webp",
+            "tags": "Sentimental Details",
+            "link": ""
+          }
+        },
+        "item_K7xUJi": {
+          "type": "item",
+          "name": "Sentimental Details",
+          "settings": {
+            "image": "shopify://shop_images/IMG_3952.webp",
+            "tags": "Sentimental Details",
+            "link": ""
+          }
+        },
+        "item_prCTn3": {
+          "type": "item",
+          "name": "Sentimental Details",
+          "settings": {
+            "image": "shopify://shop_images/Sentimental_Detail_1ea3081f-b84e-4a84-b57a-2df9ee0d3026.webp",
+            "tags": "Sentimental Details",
+            "link": ""
+          }
+        },
+        "item_dJ8rw3": {
+          "type": "item",
+          "name": "Sentimental Details",
+          "settings": {
+            "image": "shopify://shop_images/IMG_5165.webp",
+            "tags": "Sentimental Details",
+            "link": ""
+          }
+        },
+        "item_kNimNG": {
+          "type": "item",
+          "name": "Sentimental Details",
+          "settings": {
+            "image": "shopify://shop_images/Cross_sentimental_item.webp",
+            "tags": "Sentimental Details",
+            "link": ""
+          }
+        },
+        "item_qGLdYb": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/B5D80AD5-DF83-4653-A1BE-31E11708731B.webp",
+            "tags": "Engraving",
+            "link": ""
+          }
+        },
+        "item_m4mMmA": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/Vanity_resin_floral_preservation.webp",
+            "tags": "Engraving",
+            "link": ""
+          }
+        },
+        "item_gaakpE": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/IMG_4952.webp",
+            "tags": "Engraving",
+            "link": ""
+          }
+        },
+        "item_77t8pV": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/IMG_6590.webp",
+            "tags": "Engraving",
+            "link": ""
+          }
+        },
+        "item_tHMaWa": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/IMG_6585.webp",
+            "tags": "Engraving",
+            "link": ""
+          }
+        },
+        "item_Lpwp9B": {
+          "type": "item",
+          "name": "Funeral",
+          "settings": {
+            "image": "shopify://shop_images/ba2391b4-5f56-49eb-8522-52ece15c2375.webp",
+            "tags": "Funeral Flowers",
+            "link": ""
+          }
+        },
+        "item_c6rUae": {
+          "type": "item",
+          "name": "Funeral",
+          "settings": {
+            "image": "shopify://shop_images/IMG_3912.webp",
+            "tags": "Funeral Flowers",
+            "link": ""
+          }
+        },
+        "item_TYgTq8": {
+          "type": "item",
+          "name": "Funeral",
+          "settings": {
+            "image": "shopify://shop_images/WhatsApp_Image_2026-04-25_at_5.24.59_AM_1.webp",
+            "tags": "Funeral Flowers",
+            "link": ""
+          }
+        },
+        "item_iGEW6e": {
+          "type": "item",
+          "name": "Funeral",
+          "settings": {
+            "image": "shopify://shop_images/flower-keepsake.webp",
+            "tags": "Funeral Flowers",
+            "link": ""
+          }
+        },
+        "item_TDFH9T": {
+          "type": "item",
+          "name": "Funeral",
+          "settings": {
+            "image": "shopify://shop_images/d4b8d743-b670-4e8b-83f5-c1d7a9166c17_630f0169-b915-46e5-a1b3-a6193f066174.webp",
+            "tags": "Funeral Flowers",
+            "link": ""
+          }
+        },
+        "item_grEX6t": {
+          "type": "item",
+          "name": "Funeral",
+          "settings": {
+            "image": "shopify://shop_images/3b564892-8ecf-4857-9c9c-76d313489efe.webp",
+            "tags": "Funeral Flowers",
+            "link": ""
+          }
+        },
+        "item_wJiAPk": {
+          "type": "item",
+          "name": "Funeral",
+          "settings": {
+            "image": "shopify://shop_images/funeral-resin-keepsakes.webp",
+            "tags": "Funeral Flowers",
+            "link": ""
+          }
+        },
+        "item_PNMNk4": {
+          "type": "item",
+          "name": "Funeral",
+          "settings": {
+            "image": "shopify://shop_images/IMG_3203.webp",
+            "tags": "Funeral Flowers",
+            "link": ""
+          }
+        },
+        "item_D9V3LL": {
+          "type": "item",
+          "name": "Engraving",
+          "settings": {
+            "image": "shopify://shop_images/floral_preservation.webp",
+            "tags": "Engraving",
+            "link": ""
+          }
+        },
+        "item_W8r3CY": {
+          "type": "item",
+          "name": "Engraving",
+          "settings": {
+            "image": "shopify://shop_images/Ring_holder_engraving_hex.webp",
+            "tags": "Engraving",
+            "link": ""
+          }
+        },
+        "item_ak3VrN": {
+          "type": "item",
+          "name": "Engraving",
+          "settings": {
+            "image": "shopify://shop_images/a1cdf3bd-119e-4a90-86c7-8faaddf0fb73_6d5ca98f-0d57-4569-8f39-42c48f0bd4a8.webp",
+            "tags": "Engraving",
+            "link": ""
+          }
+        },
+        "item_EnUiRf": {
+          "type": "item",
+          "name": "Funeral",
+          "settings": {
+            "image": "shopify://shop_images/d4b8d743-b670-4e8b-83f5-c1d7a9166c17.webp",
+            "tags": "Funeral",
+            "link": ""
+          }
+        },
+        "item_rMfmHh": {
+          "type": "item",
+          "name": "Funeral",
+          "settings": {
+            "image": "shopify://shop_images/funeral_bouquet_preservation.webp",
+            "tags": "Funeral",
+            "link": ""
+          }
+        },
+        "item_YBzQd8": {
+          "type": "item",
+          "name": "Bridal",
+          "settings": {
+            "image": "shopify://shop_images/1BD264AC-EAB0-4223-B362-4B5F73DE8221.jpg",
+            "tags": "Bridal Shows",
+            "link": ""
+          }
+        },
+        "item_wCpULg": {
+          "type": "item",
+          "name": "Bridal",
+          "settings": {
+            "image": "shopify://shop_images/f0f3a362-c418-4d27-8059-54fdb7e5970a.jpg",
+            "tags": "Bridal Shows",
+            "link": ""
+          }
+        },
+        "item_b6YHg4": {
+          "type": "item",
+          "name": "Bridal",
+          "settings": {
+            "image": "shopify://shop_images/IMG_6606.jpg",
+            "tags": "Bridal Shows",
+            "link": ""
+          }
+        },
+        "item_EMYBf4": {
+          "type": "item",
+          "name": "Bridal",
+          "settings": {
+            "image": "shopify://shop_images/IMG_6607.jpg",
+            "tags": "Bridal Shows",
+            "link": ""
+          }
+        },
+        "item_qNdgEi": {
+          "type": "item",
+          "name": "Bridal",
+          "settings": {
+            "image": "shopify://shop_images/IMG_6608.jpg",
+            "tags": "Bridal Shows",
+            "link": ""
+          }
+        },
+        "item_qUaNMd": {
+          "type": "item",
+          "name": "Bridal",
+          "settings": {
+            "image": "shopify://shop_images/IMG_6606_3d819d60-6813-4fee-82e7-caa998f89225.jpg",
+            "tags": "Bridal Shows",
+            "link": ""
+          }
+        },
+        "item_9brnJW": {
+          "type": "item",
+          "name": "Bridal",
+          "settings": {
+            "image": "shopify://shop_images/IMG_6603.jpg",
+            "tags": "Bridal Shows",
+            "link": ""
+          }
+        },
+        "item_GgMyae": {
+          "type": "item",
+          "name": "BTS",
+          "settings": {
+            "image": "shopify://shop_images/c7454f56-8884-4d9e-9ba5-73388ab70b1d.jpg",
+            "tags": "Behind the scenes",
+            "link": ""
+          }
+        },
+        "item_nQtmne": {
+          "type": "item",
+          "name": "BTS",
+          "settings": {
+            "image": "shopify://shop_images/WhatsApp_Image_2026-01-17_at_2.23.15_AM.webp",
+            "tags": "Behind the Scenes",
+            "link": ""
+          }
+        },
+        "item_DiyRzq": {
+          "type": "item",
+          "name": "BTS",
+          "settings": {
+            "image": "shopify://shop_images/7f674b6a-449c-43b9-8283-3bcd160708ca.jpg",
+            "tags": "Behind the Scenes",
+            "link": ""
+          }
+        },
+        "item_Fpn4TX": {
+          "type": "item",
+          "name": "BTS",
+          "settings": {
+            "image": "shopify://shop_images/984b4bfc-2c47-4ef1-a86a-661b9ea5bf5c.jpg",
+            "tags": "Behind the Scenes",
+            "link": ""
+          }
+        },
+        "item_a68tiW": {
+          "type": "item",
+          "name": "BTS",
+          "settings": {
+            "image": "shopify://shop_images/WhatsApp_Image_2026-05-01_at_3.46.52_AM.jpg",
+            "tags": "Behind the Scenes",
+            "link": ""
+          }
+        },
+        "item_XE74mC": {
+          "type": "item",
+          "name": "BTS",
+          "settings": {
+            "image": "shopify://shop_images/Revised_Flohral_Preservation_13.webp",
+            "tags": "Behind the Scenes",
+            "link": ""
+          }
+        },
+        "item_APLE6n": {
+          "type": "item",
+          "name": "BTS",
+          "settings": {
+            "image": "shopify://shop_images/628c82cd-9b61-4f87-a933-184f826ab0ca.webp",
+            "tags": "Behind the Scenes",
+            "link": ""
+          }
+        },
+        "item_VBchhL": {
+          "type": "item",
+          "name": "BTS",
+          "settings": {
+            "image": "shopify://shop_images/Pouring_resin_in_mold_28defaeb-0424-48fa-bf95-f43e342e0218.webp",
+            "tags": "Behind the Scenes",
+            "link": ""
+          }
+        },
+        "item_jg6fdE": {
+          "type": "item",
+          "name": "Baby Bloomers",
+          "settings": {
+            "image": "shopify://shop_images/57f8b4d7-fc00-4d18-8355-932ffdd6d486.webp",
+            "tags": "Baby Bloomers",
+            "link": ""
+          }
+        },
+        "item_CLUbLF": {
+          "type": "item",
+          "name": "Baby Bloomers",
+          "settings": {
+            "image": "shopify://shop_images/IMG_8150.webp",
+            "tags": "Baby Bloomers",
+            "link": ""
+          }
+        },
+        "item_diRmcT": {
+          "type": "item",
+          "name": "Baby Bloomers",
+          "settings": {
+            "image": "shopify://shop_images/IMG_8153.webp",
+            "tags": "Baby Bloomers",
+            "link": ""
+          }
+        },
+        "item_NMg3cR": {
+          "type": "item",
+          "name": "Baby Bloomers",
+          "settings": {
+            "image": "shopify://shop_images/IMG_8148.webp",
+            "tags": "Baby Bloomers",
+            "link": ""
+          }
+        },
+        "item_wqT4Fb": {
+          "type": "item",
+          "name": "Baby Bloomers",
+          "settings": {
+            "image": "shopify://shop_images/IMG_2675_jpg.webp",
+            "tags": "Baby Bloomers",
+            "link": ""
+          }
+        },
+        "item_N8W7T8": {
+          "type": "item",
+          "name": "Just Because",
+          "settings": {
+            "image": "shopify://shop_images/bff6d636-fc8c-4bfe-b31a-5f795035dc94.webp",
+            "tags": "Just Because",
+            "link": ""
+          }
+        },
+        "item_rjzCk7": {
+          "type": "item",
+          "name": "Just Because",
+          "settings": {
+            "image": "shopify://shop_images/0a53b94a-fa4c-432c-a38f-c4160d825ce8.webp",
+            "tags": "Just Because",
+            "link": ""
+          }
+        },
+        "item_36zRrk": {
+          "type": "item",
+          "name": "Just Because",
+          "settings": {
+            "image": "shopify://shop_images/IMG_9756.webp",
+            "tags": "Just Because",
+            "link": ""
+          }
+        },
+        "item_JBHPDj": {
+          "type": "item",
+          "name": "Just Because",
+          "settings": {
+            "image": "shopify://shop_images/IMG_8622.webp",
+            "tags": "Just Because",
+            "link": ""
+          }
+        },
+        "item_C4NMWt": {
+          "type": "item",
+          "name": "Just Because",
+          "settings": {
+            "image": "shopify://shop_images/4978af73-7420-4446-8077-1cb3fb05c501.webp",
+            "tags": "Just Because",
+            "link": ""
+          }
+        },
+        "item_w7M4BV": {
+          "type": "item",
+          "name": "Just Because",
+          "settings": {
+            "image": "shopify://shop_images/IMG_2562_jpg.webp",
+            "tags": "Just Because",
+            "link": ""
+          }
+        },
+        "item_YwaeJV": {
+          "type": "item",
+          "name": "Just Because",
+          "settings": {
+            "image": "shopify://shop_images/984f4f7c-8b5f-49b7-b7c3-713eeaf7f1cc.webp",
+            "tags": "Just Because",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "item_EhG9jj",
+        "item_6M8f4G",
+        "item_qzgneb",
+        "item_9cKyK6",
+        "item_K7xUJi",
+        "item_prCTn3",
+        "item_dJ8rw3",
+        "item_kNimNG",
+        "item_qGLdYb",
+        "item_m4mMmA",
+        "item_gaakpE",
+        "item_77t8pV",
+        "item_tHMaWa",
+        "item_Lpwp9B",
+        "item_c6rUae",
+        "item_TYgTq8",
+        "item_iGEW6e",
+        "item_TDFH9T",
+        "item_grEX6t",
+        "item_wJiAPk",
+        "item_PNMNk4",
+        "item_D9V3LL",
+        "item_W8r3CY",
+        "item_ak3VrN",
+        "item_EnUiRf",
+        "item_rMfmHh",
+        "item_YBzQd8",
+        "item_wCpULg",
+        "item_b6YHg4",
+        "item_EMYBf4",
+        "item_qNdgEi",
+        "item_qUaNMd",
+        "item_9brnJW",
+        "item_GgMyae",
+        "item_nQtmne",
+        "item_DiyRzq",
+        "item_Fpn4TX",
+        "item_a68tiW",
+        "item_XE74mC",
+        "item_APLE6n",
+        "item_VBchhL",
+        "item_jg6fdE",
+        "item_CLUbLF",
+        "item_diRmcT",
+        "item_NMg3cR",
+        "item_wqT4Fb",
+        "item_N8W7T8",
+        "item_rjzCk7",
+        "item_36zRrk",
+        "item_JBHPDj",
+        "item_C4NMWt",
+        "item_w7M4BV",
+        "item_YwaeJV"
+      ],
+      "name": "Filter gallery (chips)",
+      "settings": {
+        "full_width": false,
+        "eyebrow": "VIEW REAL BRIDAL BOUQUETS WE'VE TRANSFORMED.",
+        "heading": "Explore Our Preservations",
+        "heading_tag": "h2",
+        "heading_size": "h1",
+        "heading_color": "#b23b5a",
+        "subheading_color": "#6b6b6b",
+        "show_filters": true,
+        "filter_list": "Engraving, Funeral Flowers, Baby Bloomers, Bridal Shows, Sentimental details, Behind the Scenes, Just Because",
+        "enable_show_all": true,
+        "initial_items_desktop": 8,
+        "initial_items_tablet": 6,
+        "initial_items_mobile": 4,
+        "show_all_label": "Show all",
+        "show_less_label": "Show less",
+        "chip_border": "#b23b5a",
+        "chip_text": "#b23b5a",
+        "chip_active_bg": "#f7b7cf",
+        "chip_active_text": "#b23b5a",
+        "columns_desktop": 4,
+        "grid_gap": 18,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "custom_heading_nDCPVm": {
+      "type": "custom-heading",
+      "name": "Heading",
+      "settings": {
+        "show_divider": false,
+        "eyebrow": "Why Brides Are Falling in Love with FLOHRal Preservation",
+        "heading": "<strong>Message’s From Our Happy Brides</strong>",
+        "subheading": "<p>Trusted for over 2 Decades by 12,500 Brides Nationwide</p>",
+        "use_highlight": false,
+        "highlight_style": "marker",
+        "heading_tag": "h2",
+        "heading_size_mode": "theme",
+        "heading_size_manual": 54,
+        "bg_color": "#ffffff",
+        "eyebrow_color": "#6b6b6b",
+        "heading_color": "#b23b5a",
+        "subheading_color": "#111111",
+        "padding_top": 48,
+        "padding_bottom": 0
+      }
+    },
+    "custom_liquid_nr9ANJ": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "<script type='text/javascript' src='https://the.flohralpreservation.com/reputation/assets/review-widget.js'></script><iframe class='lc_reviews_widget' src='https://the.flohralpreservation.com/reputation/widgets/review_widget/iTbTQB2eC2H5NGagjWtZ' frameborder='0' scrolling='no' style='min-width: 100%; width: 100%;'></iframe>",
+        "full_width": false,
+        "show_divider": false,
+        "padding_top": 0,
+        "padding_bottom": 36
+      }
+    },
+    "quote_image_strip_9f6azV": {
+      "type": "quote-image-strip",
+      "name": "Quote image strip",
+      "settings": {
+        "full_width": true,
+        "show_divider": false,
+        "bg_image": "shopify://shop_images/Copy_of_Copy_of_blush_pink_roses_romantic_floral_background.webp",
+        "image_position": "center center",
+        "image_zoom": 100,
+        "overlay_color": "#000000",
+        "overlay_opacity": 90,
+        "quote": "\"Your Love Story Forever Captured.\"",
+        "author": "—Debbie Flohr",
+        "text_align": "center",
+        "quote_color": "#212326",
+        "author_color": "#212326",
+        "enable_shadow": false,
+        "quote_size": 34,
+        "author_size": 20,
+        "text_max_width": 90,
+        "height_desktop": 180,
+        "height_mobile": 140,
+        "radius": 0,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "belhor_and_after_HkNx9f": {
+      "type": "belhor-and-after",
+      "blocks": {
+        "slide_yMHDPD": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/0337F227-74E3-4F09-9B59-BB3B7A2267A0.webp",
+            "alt_text": "Transformation"
+          }
+        },
+        "slide_nKQpqf": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/9C6944C1-455F-4ABA-842B-C5EB775CAAEE.webp",
+            "alt_text": "Transformation"
+          }
+        },
+        "slide_MXhLY8": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/DB01ACD8-C7C7-4F1A-A52E-08B4A46B8A18.webp",
+            "alt_text": "Transformation"
+          }
+        },
+        "slide_GqaTx8": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Copy_of_F19E3DEF-AB0D-465E-A648-6148956A3DCF.png",
+            "alt_text": "Transformation"
+          }
+        },
+        "slide_YiVhrb": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Copy_of_88A4BD34-8037-4348-825C-3F2FC666A997.png",
+            "alt_text": "Transformation"
+          }
+        },
+        "slide_MTqaFT": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Copy_of_1E984158-9D84-4AAD-B2CF-D6E637B53505.png",
+            "alt_text": "Transformation"
+          }
+        }
+      },
+      "block_order": [
+        "slide_yMHDPD",
+        "slide_nKQpqf",
+        "slide_MXhLY8",
+        "slide_GqaTx8",
+        "slide_YiVhrb",
+        "slide_MTqaFT"
+      ],
+      "custom_css": [],
+      "name": "Transformations carousel",
+      "settings": {
+        "eyebrow": "OUR TRANSFORMATIONS",
+        "title": "BeFlohr & After",
+        "heading_tag": "h2",
+        "heading_size": 42,
+        "eyebrow_size": 11,
+        "heading_color": "#bb3263",
+        "eyebrow_color": "#2b2b2b",
+        "autoplay": true,
+        "speed": 1.2,
+        "slide_width": 300,
+        "slide_width_mobile": 240,
+        "gap": 14,
+        "radius": 6,
+        "aspect_ratio_desktop": "3 / 4",
+        "aspect_ratio_mobile": "3 / 4",
+        "show_whole_image": true,
+        "media_height": 530,
+        "media_height_mobile": 360,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "custom_lead_capture_banner_UPrTYr": {
+      "type": "custom-lead-capture-banner",
+      "name": "Lead capture banner",
+      "settings": {
+        "bg_image": "shopify://shop_images/Copy_of_Copy_of_blush_pink_roses_romantic_floral_background.webp",
+        "card_max_width": 1200,
+        "card_bg": "#ffffff",
+        "card_radius": 0,
+        "card_padding_y": 34,
+        "card_padding_x": 34,
+        "side_padding": 20,
+        "left_image": "shopify://shop_images/Copy_of_Resource_B1_184234f7-bd0f-438a-aebb-3650a5ee0ca9.webp",
+        "right_image": "shopify://shop_images/Copy_of_Resource_B2_2e67f382-122a-4e47-9b7c-9c2c206b4962.webp",
+        "side_image_width": 180,
+        "image_tilt": 8,
+        "text_max_width": 520,
+        "eyebrow": "Before You Finalize Your Wedding Plans",
+        "heading": "<strong>10 Things Most Brides Forget Before The Big Day </strong>(But  Smart Ones Don’t)",
+        "heading_tag": "h2",
+        "heading_size": 30,
+        "button_label": "DOWNLOAD THE GUIDE",
+        "button_link": "https://flohralpreservations.com/10-things-brides-forget",
+        "button_bg": "#b23b5a",
+        "button_text": "#ffffff",
+        "button_radius": 2,
+        "eyebrow_color": "#6b6b6b",
+        "heading_color": "#b23b5a",
+        "use_highlight": false,
+        "highlight_style": "marker",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "custom_heading_VCB6kh": {
+      "type": "custom-heading",
+      "name": "Heading",
+      "settings": {
+        "show_divider": false,
+        "eyebrow": "",
+        "heading": "<strong>Here's What to Expect</strong>",
+        "subheading": "",
+        "use_highlight": false,
+        "highlight_style": "marker",
+        "heading_tag": "h2",
+        "heading_size_mode": "theme",
+        "heading_size_manual": 54,
+        "bg_color": "#ffffff",
+        "eyebrow_color": "#6b6b6b",
+        "heading_color": "#b23b5a",
+        "subheading_color": "#111111",
+        "padding_top": 48,
+        "padding_bottom": 0
+      }
+    },
+    "before_after_transformations_wjTY3p": {
+      "type": "before-after-transformations",
+      "blocks": {
+        "pair_44Yf6P": {
+          "type": "pair",
+          "settings": {
+            "before_image": "shopify://shop_images/Bride_holding_wedding_bouquet.png",
+            "after_image": "shopify://shop_images/Bookend_resin_preservation.png",
+            "start_position": 50,
+            "hide_on_mobile": false,
+            "show_caption": false,
+            "caption": "Caption"
+          }
+        },
+        "pair_hdRfHT": {
+          "type": "pair",
+          "settings": {
+            "before_image": "shopify://shop_images/Bride_holding_wedding_flowers.png",
+            "after_image": "shopify://shop_images/Flower_resin_preservation.png",
+            "start_position": 50,
+            "hide_on_mobile": true,
+            "show_caption": false,
+            "caption": "Caption"
+          }
+        }
+      },
+      "block_order": [
+        "pair_44Yf6P",
+        "pair_hdRfHT"
+      ],
+      "name": "Before & After grid",
+      "settings": {
+        "full_width": false,
+        "show_divider": false,
+        "eyebrow": "",
+        "heading": "",
+        "heading_tag": "h2",
+        "heading_size": "h1",
+        "eyebrow_color": "#6b6b6b",
+        "heading_color": "#b23b5a",
+        "content_max_width": 1200,
+        "columns_desktop": 2,
+        "grid_gap": 18,
+        "height_desktop": 520,
+        "height_mobile": 420,
+        "radius": 0,
+        "handle_line_color": "#ffffff",
+        "handle_knob_bg": "#ffffff",
+        "handle_knob_fg": "#111111",
+        "padding_top": 0,
+        "padding_bottom": 40
+      }
+    },
+    "value_prop_strip_9YP8Hf": {
+      "type": "value-prop-strip",
+      "blocks": {
+        "text_pexHeK": {
+          "type": "text",
+          "settings": {
+            "text": "WOMAN OWNED AND OPERATED",
+            "link": ""
+          }
+        },
+        "text_nLqcaf": {
+          "type": "text",
+          "settings": {
+            "text": "TRUSTED BY TOP FLORISTS IN NEW YORK",
+            "link": ""
+          }
+        },
+        "text_Kqf7eY": {
+          "type": "text",
+          "settings": {
+            "text": "LIMITED SPOTS EACH MONTH",
+            "link": ""
+          }
+        },
+        "text_4GVmei": {
+          "type": "text",
+          "settings": {
+            "text": "VIP COMMUNICATION & CUSTOM SERVICE",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_pexHeK",
+        "text_nLqcaf",
+        "text_Kqf7eY",
+        "text_4GVmei"
+      ],
+      "custom_css": [],
+      "name": "Value prop strip",
+      "settings": {
+        "full_width": true,
+        "disable_default_content": false,
+        "bg_color": "#bb3263",
+        "text_color": "#ffffff",
+        "border_size": 0,
+        "border_color": "#bb3263",
+        "padding_y": 10,
+        "padding_x": 16,
+        "gap": 36,
+        "font_size": 11,
+        "letter_spacing": 12,
+        "font_weight": "700",
+        "uppercase": true,
+        "text_opacity": 100,
+        "icon_size": 18,
+        "icon_opacity": 100,
+        "enable_carousel": false,
+        "carousel_speed": 16,
+        "pause_on_hover": true,
+        "mobile_behavior": "scroll"
+      }
+    },
+    "custom_split_section_pJEP97": {
+      "type": "custom-split-section",
+      "blocks": {
+        "benefit_dmyaFY": {
+          "type": "benefit",
+          "settings": {
+            "label": "WOMAN OWNED AND OPERATED"
+          }
+        },
+        "benefit_X9Rhpq": {
+          "type": "benefit",
+          "settings": {
+            "label": "TRUSTED BY TOP FLORISTS IN NEW YORK"
+          }
+        },
+        "benefit_hQm3MA": {
+          "type": "benefit",
+          "settings": {
+            "label": "LIMITED SPOTS EACH MONTH"
+          }
+        },
+        "benefit_zMYqtt": {
+          "type": "benefit",
+          "settings": {
+            "label": "VIP COMMUNICATION & CUSTOM SERVICE"
+          }
+        }
+      },
+      "block_order": [
+        "benefit_dmyaFY",
+        "benefit_X9Rhpq",
+        "benefit_hQm3MA",
+        "benefit_zMYqtt"
+      ],
+      "name": "Split hero + benefit bar",
+      "settings": {
+        "show_divider": false,
+        "image": "shopify://shop_images/Multifaceted_resin_preservation.jpg",
+        "reverse_layout": false,
+        "eyebrow": "FROM PETALS TO LIFETIME HEIRLOOMS",
+        "heading": "Preserve the moment your heart said “yes”",
+        "text": "<p>Your wedding day is a once-in-a-lifetime moment. Your flowers witnessed your vows, your tears, and your joy. We turn those blooms into timeless keepsakes, so your love story can live on forever.</p>",
+        "heading_tag": "h2",
+        "heading_size": "h1",
+        "content_bg_color": "#fff8fb",
+        "content_bg_image": "shopify://shop_images/0007-4734888450427919022.png",
+        "content_overlay_opacity": 0,
+        "button_label": "RESERVE MY SPOT",
+        "button_link": "shopify://products/wedding-bouquet-preservation-reservation-deposit",
+        "use_theme_button": false,
+        "button_bg": "#b23b5a",
+        "button_text": "#ffffff",
+        "show_bar": false,
+        "bar_bg_color": "#b23b5a",
+        "bar_text_color": "#ffffff",
+        "bar_gap": 16,
+        "radius": 0,
+        "min_height_desktop": 520,
+        "min_height_mobile": 460,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "video_testimonials_V4TYBG": {
+      "type": "video-testimonials",
+      "blocks": {
+        "testimonial_XDEnUF": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify://shop_images/Copy_of_01.webp",
+            "alt": "Video testimonial",
+            "caption": "",
+            "badge_text": ""
+          }
+        },
+        "testimonial_iHwb7m": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify://shop_images/Copy_of_03.webp",
+            "alt": "Video testimonial",
+            "caption": "",
+            "badge_text": ""
+          }
+        },
+        "testimonial_d9rXnY": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify://shop_images/Copy_of_07.webp",
+            "alt": "Video testimonial",
+            "caption": "",
+            "badge_text": ""
+          }
+        },
+        "testimonial_4r6LPQ": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify://shop_images/Copy_of_2.webp",
+            "alt": "Video testimonial",
+            "caption": "",
+            "badge_text": ""
+          }
+        },
+        "testimonial_nRiqAk": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify://shop_images/Copy_of_3.webp",
+            "alt": "Video testimonial",
+            "caption": "",
+            "badge_text": ""
+          }
+        },
+        "testimonial_pzkAJz": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify://shop_images/Copy_of_1F70BA85-485E-4618-802C-4D4CCFDFE608.jpg",
+            "alt": "Testimonial image",
+            "caption": "",
+            "badge_text": ""
+          }
+        },
+        "testimonial_Q3tzDc": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify://shop_images/Copy_of_1.webp",
+            "alt": "Testimonial image",
+            "caption": "",
+            "badge_text": ""
+          }
+        },
+        "testimonial_nR6fzG": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify://shop_images/Copy_of_5_de91fa4c-cc9c-43c5-b962-8410c19ab108.webp",
+            "alt": "Testimonial image",
+            "caption": "",
+            "badge_text": ""
+          }
+        },
+        "testimonial_BmXikD": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify://shop_images/Copy_of_02.webp",
+            "alt": "Testimonial image",
+            "caption": "",
+            "badge_text": ""
+          }
+        },
+        "testimonial_ykyLgh": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify://shop_images/Copy_of_6_3b128a06-1263-4401-85e8-a19b6bed26c6.webp",
+            "alt": "Testimonial image",
+            "caption": "",
+            "badge_text": ""
+          }
+        },
+        "testimonial_xkfwED": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify://shop_images/Copy_of_06.webp",
+            "alt": "Testimonial image",
+            "caption": "",
+            "badge_text": ""
+          }
+        },
+        "testimonial_3N7NXj": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify://shop_images/Copy_of_04.webp",
+            "alt": "Testimonial image",
+            "caption": "",
+            "badge_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_XDEnUF",
+        "testimonial_iHwb7m",
+        "testimonial_d9rXnY",
+        "testimonial_4r6LPQ",
+        "testimonial_nRiqAk",
+        "testimonial_pzkAJz",
+        "testimonial_Q3tzDc",
+        "testimonial_nR6fzG",
+        "testimonial_BmXikD",
+        "testimonial_ykyLgh",
+        "testimonial_xkfwED",
+        "testimonial_3N7NXj"
+      ],
+      "name": "Video testimonials",
+      "settings": {
+        "eyebrow": "Straight From",
+        "heading": "Our Instagram Brides",
+        "heading_bold": true,
+        "subheading": "<p>Reviews from clients whose blooms we transformed into lasting keepsakes.</p>",
+        "background": "#ffffff",
+        "eyebrow_color": "#6b6b6b",
+        "heading_color": "#bb3263",
+        "subheading_color": "#6b6b6b",
+        "gap": 18,
+        "radius": 6,
+        "scroll_speed": 32,
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    }
+  },
+  "order": [
+    "main",
+    "image_banner_bJP364",
+    "value_prop_strip_Mzbc4H",
+    "filter_gallery_chips_YDpXjK",
+    "custom_heading_nDCPVm",
+    "custom_liquid_nr9ANJ",
+    "quote_image_strip_9f6azV",
+    "belhor_and_after_HkNx9f",
+    "custom_lead_capture_banner_UPrTYr",
+    "custom_heading_VCB6kh",
+    "before_after_transformations_wjTY3p",
+    "value_prop_strip_9YP8Hf",
+    "custom_split_section_pJEP97",
+    "video_testimonials_V4TYBG"
+  ]
+}

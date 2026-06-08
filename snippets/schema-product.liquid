@@ -1,0 +1,23 @@
+{% if template contains 'product' %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "{{ product.title | strip_html | escape }}",
+  "image": "https:{{ product.featured_image | img_url: 'master' }}",
+  "description": "{{ product.description | strip_html | escape }}",
+  "brand": {
+    "@type": "Brand",
+    "name": "Flohral Preservation"
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": "{{ shop.url }}{{ product.url }}",
+    "priceCurrency": "{{ shop.currency }}",
+    "price": "{{ product.price | money_without_currency | remove: ',' }}",
+    "availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+    "itemCondition": "https://schema.org/NewCondition"
+  }
+}
+</script>
+{% endif %}

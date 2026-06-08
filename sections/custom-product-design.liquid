@@ -1,0 +1,357 @@
+{%- comment -%}
+  Figma Product Card (single file)
+  Liquid:
+    - Title: product.title
+    - Price: product.price | money
+    - Material: product.metafields.custom.material  (shows "Performance Velvet"-style line)
+    - Swatches: product.metafields.custom.swatches (max 4, visual only)
+  JS:
+    - Fetch product page HTML from Alo URL and extract main image (og:image / JSON-LD)
+    - Do NOT hardcode final image URL
+{%- endcomment -%}
+
+{%- assign card_product = product | default: section.settings.product -%}
+
+<div id="pc-{{ section.id }}" class="pc-wrap">
+  {%- if card_product == blank -%}
+    <div class="pc-empty">Select a product in the section settings (or use on a product page).</div>
+  {%- else -%}
+    <article class="pc-card" aria-label="{{ card_product.title | escape }}">
+      <a class="pc-media" href="{{ card_product.url }}" aria-label="{{ card_product.title | escape }}">
+        <img
+          class="pc-img"
+          data-js-image
+          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='1000'%3E%3Crect width='100%25' height='100%25' fill='%23f3f3f3'/%3E%3C/svg%3E"
+          alt="{{ card_product.title | escape }}"
+          loading="lazy"
+          width="800"
+          height="1000"
+        >
+
+        <div class="pc-overlay" aria-hidden="true">
+          <div class="pc-swatches">
+            {%- assign swatches_mf = card_product.metafields.custom.swatches -%}
+            {%- if swatches_mf != blank and swatches_mf.value != blank -%}
+              {%- assign sw_list = swatches_mf.value -%}
+              {%- assign count = 0 -%}
+              {%- for sw in sw_list -%}
+                {%- if count >= 4 -%}{%- break -%}{%- endif -%}
+                {%- assign count = count | plus: 1 -%}
+
+                {%- assign sw_color = '' -%}
+                {%- if sw contains '#' or sw contains 'rgb' or sw contains 'hsl' -%}
+                  {%- assign sw_color = sw -%}
+                {%- elsif sw.color != blank -%}
+                  {%- assign sw_color = sw.color -%}
+                {%- elsif sw.hex != blank -%}
+                  {%- assign sw_color = sw.hex -%}
+                {%- endif -%}
+
+                <span
+                  class="pc-dot{% if forloop.first %} is-active{% endif %}"
+                  style="{% if sw_color != blank %}--pc-swatch: {{ sw_color }};{% endif %}"
+                ></span>
+              {%- endfor -%}
+            {%- else -%}
+              <span class="pc-dot is-active" style="--pc-swatch:#111;"></span>
+              <span class="pc-dot" style="--pc-swatch:#d9d9d9;"></span>
+              <span class="pc-dot" style="--pc-swatch:#cfe8ff;"></span>
+              <span class="pc-dot" style="--pc-swatch:#ffd7f0;"></span>
+            {%- endif -%}
+
+            <span class="pc-plus" aria-hidden="true">+</span>
+          </div>
+
+          <button class="pc-quickadd" type="button" aria-label="Quick add (visual only)">
+            {%- comment -%} Rounded-square button + bag icon similar to reference {%- endcomment -%}
+            <svg class="pc-quickadd-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 9.2V8.1C7 5.8 8.9 4 11.2 4h1.6C15.1 4 17 5.8 17 8.1v1.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M6.6 9.2h10.8c.7 0 1.2.6 1.1 1.3l-1 8.2c-.1.7-.7 1.3-1.5 1.3H8.1c-.7 0-1.4-.6-1.5-1.3l-1-8.2c-.1-.7.4-1.3 1-1.3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+              <path d="M9.4 12.1h5.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </a>
+
+      <div class="pc-meta">
+        <a class="pc-title" href="{{ card_product.url }}">{{ card_product.title }}</a>
+
+        {%- assign material = card_product.metafields.custom.material -%}
+        {%- if material != blank -%}
+          <div class="pc-material">{{ material.value | default: material }}</div>
+        {%- else -%}
+          <div class="pc-material">&nbsp;</div>
+        {%- endif -%}
+
+        <div class="pc-price">{{ card_product.price | money }}</div>
+      </div>
+    </article>
+  {%- endif -%}
+</div>
+
+<style>
+  #pc-{{ section.id }}.pc-wrap{
+    --pc-card-w: 260px;
+    --pc-bg: #ffffff;
+    --pc-text: #111111;
+    --pc-muted: #8f8f8f;
+    --pc-border: rgba(0,0,0,.08);
+
+    --pc-dot: 12px;
+    --pc-dot-gap: 8px;
+
+    --pc-quick: 34px;
+    --pc-pill-radius: 999px;
+    --pc-quick-radius: 10px;
+
+    width: var(--pc-card-w);
+  }
+
+  #pc-{{ section.id }} .pc-empty{
+    padding: 16px;
+    font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,.08);
+  }
+
+  /* Card should have NO border radius (per your request) */
+  #pc-{{ section.id }} .pc-card{
+    background: var(--pc-bg);
+    color: var(--pc-text);
+    border: 1px solid var(--pc-border);
+    overflow: hidden;
+    border-radius: 0;
+  }
+
+  #pc-{{ section.id }} .pc-media{
+    position: relative;
+    display: block;
+    padding: 12px 12px 0 12px;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 0;
+  }
+
+  /* Shorter image */
+  #pc-{{ section.id }} .pc-img{
+    display: block;
+    width: 100%;
+    height: 360px;
+    object-fit: cover;
+    object-position: center;
+    background: #f3f3f3;
+    border-radius: 0;
+  }
+
+  #pc-{{ section.id }} .pc-overlay{
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    pointer-events: none; /* visual-only */
+  }
+
+  /* Swatch pill (rounded like reference) */
+  #pc-{{ section.id }} .pc-swatches{
+    display: inline-flex;
+    align-items: center;
+    gap: var(--pc-dot-gap);
+    padding: 6px 10px;
+    border-radius: var(--pc-pill-radius);
+    background: rgba(242,242,242,.92);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 0 2px 10px rgba(0,0,0,.10);
+  }
+
+  /* Dots stay circular */
+  #pc-{{ section.id }} .pc-dot{
+    width: var(--pc-dot);
+    height: var(--pc-dot);
+    border-radius: 999px;
+    background: var(--pc-swatch, #d9d9d9);
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.16);
+    display: inline-block;
+  }
+
+  /* Active dot: subtle white ring like the reference */
+  #pc-{{ section.id }} .pc-dot.is-active{
+    box-shadow:
+      inset 0 0 0 1px rgba(0,0,0,.18),
+      0 0 0 2px rgba(255,255,255,.95);
+  }
+
+  /* Plus button: small rounded circle on the right */
+  #pc-{{ section.id }} .pc-plus{
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.95);
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.14);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font: 600 12px/1 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    color: #111;
+    margin-left: 2px;
+  }
+
+  /* Cart icon button: rounded-square like reference */
+  #pc-{{ section.id }} .pc-quickadd{
+    pointer-events: none; /* visual-only */
+    width: var(--pc-quick);
+    height: var(--pc-quick);
+    border-radius: var(--pc-quick-radius);
+    border: 1px solid rgba(0,0,0,.12);
+    background: rgba(255,255,255,.92);
+    box-shadow: 0 2px 10px rgba(0,0,0,.10);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #pc-{{ section.id }} .pc-quickadd-ico{
+    width: 18px;
+    height: 18px;
+    color: #111;
+  }
+
+  #pc-{{ section.id }} .pc-meta{
+    padding: 10px 14px 14px 14px;
+  }
+
+  #pc-{{ section.id }} .pc-title{
+    display: block;
+    font: 600 14px/1.25 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    letter-spacing: -0.01em;
+    color: var(--pc-text);
+    text-decoration: none;
+    margin: 0 0 6px 0;
+  }
+
+  #pc-{{ section.id }} .pc-material{
+    font: 400 12px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    color: var(--pc-muted);
+    margin: 0 0 10px 0;
+    min-height: 14px;
+  }
+
+  #pc-{{ section.id }} .pc-price{
+    font: 700 14px/1 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    color: var(--pc-text);
+  }
+
+  @media (hover:hover){
+    #pc-{{ section.id }} .pc-title:hover{
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+  }
+
+  @media (max-width: 480px){
+    #pc-{{ section.id }}.pc-wrap{ --pc-card-w: 240px; }
+    #pc-{{ section.id }} .pc-img{ height: 420px; }
+  }
+</style>
+
+<script>
+  (function () {
+    const root = document.getElementById('pc-{{ section.id }}');
+    if (!root) return;
+
+    const imgEl = root.querySelector('[data-js-image]');
+    if (!imgEl) return;
+
+    const SOURCE_URL = 'https://www.aloyoga.com/en-ph/products/w51428r-airlift-high-waist-suit-up-legging-olive-tree-olive-tree';
+
+    function absolutizeUrl(url) {
+      if (!url) return '';
+      if (url.startsWith('//')) return window.location.protocol + url;
+      try { return new URL(url, SOURCE_URL).href; } catch (e) { return url; }
+    }
+
+    function pickImageFromHtml(html) {
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+
+      const og = doc.querySelector('meta[property="og:image"], meta[name="og:image"]');
+      if (og && og.getAttribute('content')) return og.getAttribute('content');
+
+      const scripts = Array.from(doc.querySelectorAll('script[type="application/ld+json"]'));
+      for (const s of scripts) {
+        try {
+          const data = JSON.parse(s.textContent || '{}');
+          const nodes = Array.isArray(data) ? data : [data];
+
+          for (const n of nodes) {
+            const graph = (n && n['@graph'] && Array.isArray(n['@graph'])) ? n['@graph'] : null;
+            const pool = graph ? graph : [n];
+
+            for (const item of pool) {
+              if (!item) continue;
+              const type = item['@type'] || item.type;
+              const isProduct = type === 'Product' || (Array.isArray(type) && type.indexOf('Product') !== -1);
+              if (!isProduct) continue;
+
+              const image = item.image;
+              if (typeof image === 'string') return image;
+              if (Array.isArray(image) && image[0]) return image[0];
+            }
+          }
+        } catch (e) {}
+      }
+
+      return '';
+    }
+
+    async function fetchHtml(url) {
+      const res = await fetch(url, { method: 'GET' });
+      if (!res.ok) throw new Error('Fetch failed: ' + res.status);
+      return await res.text();
+    }
+
+    async function fetchWithFallbacks() {
+      try { return await fetchHtml(SOURCE_URL); } catch (e1) {}
+
+      try {
+        const proxied = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(SOURCE_URL);
+        return await fetchHtml(proxied);
+      } catch (e2) {}
+
+      try {
+        const jina = 'https://r.jina.ai/http://' + SOURCE_URL.replace(/^https?:\/\//, '');
+        return await fetchHtml(jina);
+      } catch (e3) {}
+
+      return '';
+    }
+
+    async function replaceImage() {
+      try {
+        const html = await fetchWithFallbacks();
+        if (!html) return;
+
+        const picked = pickImageFromHtml(html);
+        if (!picked) return;
+
+        imgEl.src = absolutizeUrl(picked);
+      } catch (e) {}
+    }
+
+    replaceImage();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Figma Product Card",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product" }
+  ],
+  "presets": [
+    { "name": "Figma Product Card" }
+  ]
+}
+{% endschema %}

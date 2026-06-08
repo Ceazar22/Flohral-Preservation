@@ -1,0 +1,389 @@
+{% comment %}
+  Section: PX - Download Cards (2-up)
+  File: sections/px-download-cards.liquid
+{% endcomment %}
+
+<section
+  class="px-dlc"
+  style="
+    --px-bg: {{ section.settings.bg_color }};
+    --px-pt: {{ section.settings.padding_top }}px;
+    --px-pb: {{ section.settings.padding_bottom }}px;
+
+    --px-max: {{ section.settings.max_width }}px;
+    --px-gap: {{ section.settings.gap }}px;
+
+    --px-card-bg: {{ section.settings.card_bg }};
+    --px-card-radius: {{ section.settings.card_radius }}px;
+    --px-card-shadow: {{ section.settings.card_shadow }};
+
+    --px-title: {{ section.settings.title_color }};
+    --px-text: {{ section.settings.text_color }};
+
+    --px-btn-bg: {{ section.settings.button_bg }};
+    --px-btn-text: {{ section.settings.button_text }};
+    --px-btn-radius: {{ section.settings.button_radius }}px;
+
+    --px-img-h-desktop: {{ section.settings.image_height_desktop }}px;
+    --px-img-h-mobile: {{ section.settings.image_height_mobile }}px;
+  "
+>
+  <div class="px-dlc__inner">
+    <div class="px-dlc__grid">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'card' -%}
+          <article class="px-dlc__card" {{ block.shopify_attributes }}>
+            <div class="px-dlc__media">
+              {%- if block.settings.image != blank -%}
+                {{
+                  block.settings.image
+                  | image_url: width: 2000
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '375, 550, 750, 1100, 1500, 2000',
+                    sizes: '(max-width: 749px) 100vw, (max-width: 989px) 50vw, 520px',
+                    alt: block.settings.heading,
+                    class: 'px-dlc__img'
+                }}
+              {%- else -%}
+                <div class="px-dlc__img px-dlc__img--placeholder"></div>
+              {%- endif -%}
+            </div>
+
+            <div class="px-dlc__content">
+              {%- if block.settings.heading != blank -%}
+                <h3 class="px-dlc__title">{{ block.settings.heading }}</h3>
+              {%- endif -%}
+
+              {%- if block.settings.text != blank -%}
+                <div class="px-dlc__text rte">
+                  {{ block.settings.text }}
+                </div>
+              {%- endif -%}
+
+              {%- if block.settings.button_label != blank and block.settings.button_link != blank -%}
+                <a
+                  class="px-dlc__btn"
+                  href="{{ block.settings.button_link }}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {{ block.settings.button_label }}
+                </a>
+              {%- endif -%}
+            </div>
+          </article>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <style>
+    #shopify-section-{{ section.id }} .px-dlc{
+      background: var(--px-bg);
+      padding-top: var(--px-pt);
+      padding-bottom: var(--px-pb);
+    }
+
+    #shopify-section-{{ section.id }} .px-dlc__inner{
+      max-width: var(--px-max);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    #shopify-section-{{ section.id }} .px-dlc__grid{
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--px-gap);
+    }
+
+    @media (min-width: 750px){
+      #shopify-section-{{ section.id }} .px-dlc__grid{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    #shopify-section-{{ section.id }} .px-dlc__card{
+      background: var(--px-card-bg);
+      border-radius: var(--px-card-radius);
+      overflow: hidden;
+      box-shadow: var(--px-card-shadow);
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    /* Image area - fixed height control */
+    #shopify-section-{{ section.id }} .px-dlc__media{
+      position: relative;
+      width: 100%;
+      height: var(--px-img-h-mobile);
+      background: rgba(0,0,0,0.04);
+      overflow: hidden;
+    }
+
+    @media (min-width: 750px){
+      #shopify-section-{{ section.id }} .px-dlc__media{
+        height: var(--px-img-h-desktop);
+      }
+    }
+
+    #shopify-section-{{ section.id }} .px-dlc__img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    #shopify-section-{{ section.id }} .px-dlc__img--placeholder{
+      width: 100%;
+      height: 100%;
+      background:
+        linear-gradient(135deg, rgba(0,0,0,0.05), rgba(0,0,0,0.02)),
+        repeating-linear-gradient(45deg, rgba(0,0,0,0.04) 0 12px, rgba(0,0,0,0.02) 12px 24px);
+    }
+
+    /* Content */
+    #shopify-section-{{ section.id }} .px-dlc__content{
+      padding: 18px 18px 20px;
+    }
+
+    #shopify-section-{{ section.id }} .px-dlc__title{
+      margin: 0 0 6px;
+      color: var(--px-title);
+      font-size: 18px;
+      line-height: 1.25;
+      font-weight: 700;
+    }
+
+    #shopify-section-{{ section.id }} .px-dlc__text{
+      color: var(--px-text);
+      font-size: 13px;
+      line-height: 1.45;
+      margin: 0 0 14px;
+      max-width: 52ch;
+    }
+
+    #shopify-section-{{ section.id }} .px-dlc__text p{
+      margin: 0;
+    }
+
+    /* Button */
+    #shopify-section-{{ section.id }} .px-dlc__btn{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 16px;
+      background: var(--px-btn-bg);
+      color: var(--px-btn-text);
+      border-radius: var(--px-btn-radius);
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 700;
+      transition: transform .12s ease, opacity .12s ease;
+    }
+
+    #shopify-section-{{ section.id }} .px-dlc__btn:hover{
+      opacity: .92;
+      transform: translateY(-1px);
+    }
+  </style>
+</section>
+
+{% schema %}
+{
+  "name": "PX - Download cards",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 720,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "label": "Max width",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 8,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap between cards",
+      "default": 28
+    },
+    {
+      "type": "header",
+      "content": "Image height"
+    },
+    {
+      "type": "range",
+      "id": "image_height_desktop",
+      "min": 160,
+      "max": 520,
+      "step": 10,
+      "unit": "px",
+      "label": "Image height (desktop)",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "image_height_mobile",
+      "min": 140,
+      "max": 420,
+      "step": 10,
+      "unit": "px",
+      "label": "Image height (mobile)",
+      "default": 240
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card background",
+      "default": "#f4f4f4"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#6b6b6b"
+    },
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "Button background",
+      "default": "#b23666"
+    },
+    {
+      "type": "color",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Card radius",
+      "default": 8
+    },
+    {
+      "type": "text",
+      "id": "card_shadow",
+      "label": "Card shadow (CSS box-shadow)",
+      "default": "0 2px 10px rgba(0,0,0,0.08)"
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "min": 0,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "label": "Button radius",
+      "default": 4
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Bouquet Shipping Checklist"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Download this checklist to help your bouquet arrive safely and in the best possible condition.</p>"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Download file"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "PX - Download cards",
+      "blocks": [
+        { "type": "card" },
+        { "type": "card" }
+      ]
+    }
+  ]
+}
+{% endschema %}

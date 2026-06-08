@@ -1,0 +1,530 @@
+{% comment %}
+  Section: PX - History Timeline (Left text + 1-row slider with arrows)
+  File: sections/px-history-timeline.liquid
+{% endcomment %}
+
+<section
+  id="px-history-{{ section.id }}"
+  class="px-history"
+  style="
+    --px-pt: {{ section.settings.padding_top }}px;
+    --px-pb: {{ section.settings.padding_bottom }}px;
+
+    --px-max: {{ section.settings.max_width }}px;
+    --px-gap: {{ section.settings.gap }}px;
+    --px-side-gap: {{ section.settings.side_gap }}px;
+
+    --px-left-w: {{ section.settings.left_width }}px;
+
+    --px-img-h: {{ section.settings.image_height }}px;
+    --px-radius: {{ section.settings.radius }}px;
+    --px-panel-radius: {{ section.settings.panel_radius }}px;
+
+    --px-year-size: {{ section.settings.year_size }}px;
+
+    --px-panel-h: {{ section.settings.panel_height }}px;
+    --px-desc-lines: {{ section.settings.desc_lines }};
+
+    --px-bg: {{ section.settings.bg_color }};
+    --px-card-bg-1: {{ section.settings.card_bg_1 }};
+    --px-card-bg-2: {{ section.settings.card_bg_2 }};
+
+    --px-eyebrow: {{ section.settings.eyebrow_color }};
+    --px-title: {{ section.settings.title_color }};
+    --px-text: {{ section.settings.text_color }};
+    --px-link: {{ section.settings.link_color }};
+
+    --px-panel-bg-1: {{ section.settings.panel_bg_1 }};
+    --px-panel-bg-2: {{ section.settings.panel_bg_2 }};
+    --px-panel-text: {{ section.settings.panel_text }};
+    --px-year-text: {{ section.settings.year_text }};
+
+    --px-shadow: {{ section.settings.shadow_opacity | divided_by: 100.0 }};
+  "
+>
+  <div class="px-history__inner">
+    <div class="px-history__row">
+      <!-- LEFT CONTENT -->
+      <div class="px-history__left">
+        <div class="px-history__left-inner">
+          {% if section.settings.eyebrow != blank %}
+            <p class="px-history__eyebrow">{{ section.settings.eyebrow }}</p>
+          {% endif %}
+
+          {% if section.settings.heading != blank %}
+            <h2 class="px-history__title">{{ section.settings.heading }}</h2>
+          {% endif %}
+
+          {% if section.settings.body != blank %}
+            <div class="px-history__body rte">{{ section.settings.body }}</div>
+          {% endif %}
+
+          {% if section.settings.link_label != blank and section.settings.link_url != blank %}
+            <a class="px-history__link" href="{{ section.settings.link_url }}">
+              {{ section.settings.link_label }}
+              <span aria-hidden="true" class="px-history__linkicon">→</span>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- RIGHT SLIDER -->
+      <div class="px-history__right">
+        <div class="px-history__slider" data-px-slider>
+          <button class="px-history__nav px-history__nav--prev" type="button" aria-label="Previous" data-px-prev>
+            <span aria-hidden="true">‹</span>
+          </button>
+
+          <div class="px-history__viewport" data-px-viewport>
+            <div class="px-history__track" data-px-track>
+              {%- for block in section.blocks -%}
+                {%- if block.type != 'item' -%}{% continue %}{%- endif -%}
+
+                {%- liquid
+                  assign img = block.settings.image
+                  assign year = block.settings.year
+                  assign txt = block.settings.text
+                  assign url = block.settings.url
+                  assign newtab = block.settings.new_tab
+                -%}
+
+                <div class="px-history__slide" {{ block.shopify_attributes }}>
+                  {%- if url != blank -%}
+                    <a class="px-card" href="{{ url }}" {% if newtab %}target="_blank" rel="noopener"{% endif %}>
+                  {%- else -%}
+                    <div class="px-card">
+                  {%- endif -%}
+
+                      <div class="px-card__imgwrap">
+                        <div class="px-card__img">
+                          {% if img != blank %}
+                            {{ img | image_url: width: 1400 | image_tag: loading: 'lazy', class: 'px-card__imgtag', alt: img.alt | escape }}
+                          {% else %}
+                            <div class="px-card__placeholder"></div>
+                          {% endif %}
+                        </div>
+                      </div>
+
+                      <div class="px-card__panel">
+                        {% if year != blank %}
+                          <div class="px-card__year">{{ year }}</div>
+                        {% endif %}
+                        {% if txt != blank %}
+                          <div class="px-card__desc">{{ txt }}</div>
+                        {% endif %}
+                      </div>
+
+                  {%- if url != blank -%}
+                    </a>
+                  {%- else -%}
+                    </div>
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+
+          <button class="px-history__nav px-history__nav--next" type="button" aria-label="Next" data-px-next>
+            <span aria-hidden="true">›</span>
+          </button>
+        </div>
+
+        {%- assign hint_clean = section.settings.hint | strip -%}
+        {% if hint_clean != blank and hint_clean != 'Optional' %}
+          <p class="px-history__hint">{{ hint_clean }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #px-history-{{ section.id }}.px-history{
+    background: var(--px-bg);
+    padding-top: var(--px-pt);
+    padding-bottom: var(--px-pb);
+  }
+
+  #px-history-{{ section.id }} .px-history__inner{
+    max-width: var(--px-max);
+    margin: 0 auto;
+    padding: 0 var(--px-side-gap);
+  }
+
+  /* Row layout like reference (left text + right slider) */
+  #px-history-{{ section.id }} .px-history__row{
+    display: flex;
+    align-items: stretch;
+    gap: clamp(16px, 2vw, 34px);
+  }
+
+  /* LEFT */
+  #px-history-{{ section.id }} .px-history__left{
+    flex: 0 0 auto;
+    width: min(100%, var(--px-left-w));
+  }
+
+  #px-history-{{ section.id }} .px-history__left-inner{
+    max-width: var(--px-left-w);
+  }
+
+  #px-history-{{ section.id }} .px-history__eyebrow{
+    margin: 0 0 10px 0;
+    color: var(--px-eyebrow);
+    font-size: 12px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  #px-history-{{ section.id }} .px-history__title{
+    margin: 0 0 14px 0;
+    color: var(--px-title);
+    line-height: 1.05;
+    font-size: clamp(26px, 2.6vw, 40px);
+    font-weight: 700;
+    white-space: pre-line;
+  }
+
+  #px-history-{{ section.id }} .px-history__body{
+    color: var(--px-text);
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 46ch;
+  }
+  #px-history-{{ section.id }} .px-history__body.rte p{ margin: 0 0 12px 0; }
+  #px-history-{{ section.id }} .px-history__body.rte p:last-child{ margin-bottom: 0; }
+
+  #px-history-{{ section.id }} .px-history__link{
+    display: inline-flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 14px;
+    color: var(--px-link);
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: .02em;
+  }
+  #px-history-{{ section.id }} .px-history__link:hover{ text-decoration: underline; }
+  #px-history-{{ section.id }} .px-history__linkicon{ font-size: 18px; line-height: 1; }
+
+  /* RIGHT */
+  #px-history-{{ section.id }} .px-history__right{
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  #px-history-{{ section.id }} .px-history__slider{
+    position: relative;
+    min-width: 0;
+  }
+
+  /* viewport uses scroll-snap (smooth + accessible) */
+  #px-history-{{ section.id }} .px-history__viewport{
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 46px; /* space so arrows don't cover cards */
+  }
+
+  /* hide scrollbar */
+  #px-history-{{ section.id }} .px-history__viewport{
+    scrollbar-width: none;
+  }
+  #px-history-{{ section.id }} .px-history__viewport::-webkit-scrollbar{
+    display: none;
+  }
+
+  #px-history-{{ section.id }} .px-history__track{
+    display: flex;
+    gap: var(--px-gap);
+    align-items: stretch;
+    padding-bottom: 6px; /* tiny breathing room */
+  }
+
+/* ✅ Desktop: show exactly 3 cards by default */
+#px-history-{{ section.id }} .px-history__slide{
+  flex: 0 0 calc((100% - (var(--px-gap) * 2)) / 3);
+  scroll-snap-align: start;
+  min-width: 0;
+}
+
+
+  /* Nav arrows */
+  #px-history-{{ section.id }} .px-history__nav{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    border: 1px solid rgba(0,0,0,.12);
+    background: rgba(255,255,255,.92);
+    box-shadow: 0 8px 20px rgba(0,0,0,.10);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    padding: 0;
+  }
+  #px-history-{{ section.id }} .px-history__nav span{
+    font-size: 22px;
+    line-height: 1;
+  }
+  #px-history-{{ section.id }} .px-history__nav:hover{
+    background: #fff;
+  }
+  #px-history-{{ section.id }} .px-history__nav[disabled]{
+    opacity: .35;
+    cursor: default;
+  }
+
+  #px-history-{{ section.id }} .px-history__nav--prev{ left: 0; }
+  #px-history-{{ section.id }} .px-history__nav--next{ right: 0; }
+
+  /* Cards (same styling as your original) */
+  #px-history-{{ section.id }} .px-card{
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-radius: calc(var(--px-radius) + 6px);
+    padding: 14px;
+    background: linear-gradient(180deg, var(--px-card-bg-1), var(--px-card-bg-2));
+    box-shadow: 0 10px 30px rgba(0,0,0,var(--px-shadow));
+    height: 100%;
+  }
+
+  #px-history-{{ section.id }} .px-card__imgwrap{
+    border-radius: var(--px-radius);
+    padding: 10px;
+    background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.45));
+  }
+
+  #px-history-{{ section.id }} .px-card__img{
+    height: var(--px-img-h);
+    border-radius: calc(var(--px-radius) - 2px);
+    overflow: hidden;
+    background: #f3f3f3;
+  }
+
+  #px-history-{{ section.id }} .px-card__imgtag{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  #px-history-{{ section.id }} .px-card__placeholder{
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0,0,0,.04), rgba(0,0,0,.08));
+  }
+
+  #px-history-{{ section.id }} .px-card__panel{
+    margin-top: 10px;
+    border-radius: var(--px-panel-radius);
+    padding: 12px 12px 14px;
+    background: linear-gradient(180deg, var(--px-panel-bg-1), var(--px-panel-bg-2));
+    color: var(--px-panel-text);
+
+    min-height: var(--px-panel-h);
+    display: flex;
+    flex-direction: column;
+  }
+
+  #px-history-{{ section.id }} .px-card__year{
+    font-weight: 800;
+    font-size: var(--px-year-size);
+    letter-spacing: .02em;
+    color: var(--px-year-text);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+
+  #px-history-{{ section.id }} .px-card__desc{
+    font-size: 12px;
+    line-height: 1.45;
+
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: var(--px-desc-lines);
+    -webkit-box-orient: vertical;
+  }
+
+  #px-history-{{ section.id }} .px-card:hover{
+    transform: translateY(-2px);
+    transition: transform .2s ease;
+  }
+
+  #px-history-{{ section.id }} .px-history__hint{
+    margin: 10px 0 0;
+    color: var(--px-text);
+    font-size: 12px;
+    opacity: .75;
+  }
+
+  /* Responsive */
+  @media (max-width: 990px){
+    #px-history-{{ section.id }} .px-history__row{
+      flex-direction: column;
+    }
+    #px-history-{{ section.id }} .px-history__left{
+      width: 100%;
+    }
+    #px-history-{{ section.id }} .px-history__left-inner{
+      max-width: 100%;
+    }
+    #px-history-{{ section.id }} .px-history__viewport{
+      padding: 0 42px;
+    }
+  }
+
+  @media (max-width: 520px){
+    #px-history-{{ section.id }} .px-history__viewport{
+      padding: 0 40px;
+    }
+    #px-history-{{ section.id }} .px-history__slide{
+      flex-basis: 78vw;
+    }
+  }
+</style>
+
+<script>
+(function(){
+  var root = document.getElementById('px-history-{{ section.id }}');
+  if (!root) return;
+
+  var slider = root.querySelector('[data-px-slider]');
+  var viewport = root.querySelector('[data-px-viewport]');
+  var track = root.querySelector('[data-px-track]');
+  var btnPrev = root.querySelector('[data-px-prev]');
+  var btnNext = root.querySelector('[data-px-next]');
+  if (!slider || !viewport || !track || !btnPrev || !btnNext) return;
+
+  function getStep(){
+    var slide = track.querySelector('.px-history__slide');
+    if (!slide) return viewport.clientWidth;
+    var slideStyles = window.getComputedStyle(slide);
+    var trackStyles = window.getComputedStyle(track);
+    var gap = parseFloat(trackStyles.columnGap || trackStyles.gap || 0) || 0;
+    var w = slide.getBoundingClientRect().width;
+    // Move by ~1 card at a time (like the reference)
+    return Math.max(1, Math.round(w + gap));
+  }
+
+  function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+
+  function updateButtons(){
+    var maxScroll = viewport.scrollWidth - viewport.clientWidth - 2;
+    btnPrev.disabled = viewport.scrollLeft <= 2;
+    btnNext.disabled = viewport.scrollLeft >= maxScroll;
+  }
+
+  function scrollByStep(dir){
+    var step = getStep();
+    viewport.scrollTo({ left: viewport.scrollLeft + (dir * step), behavior: 'smooth' });
+  }
+
+  btnPrev.addEventListener('click', function(){ scrollByStep(-1); });
+  btnNext.addEventListener('click', function(){ scrollByStep(1); });
+
+  viewport.addEventListener('scroll', function(){
+    window.requestAnimationFrame(updateButtons);
+  }, { passive: true });
+
+  // Keyboard support (when focused inside the slider)
+  slider.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowLeft') { e.preventDefault(); scrollByStep(-1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); scrollByStep(1); }
+  });
+
+  // Ensure correct state on load + resize
+  updateButtons();
+  var ro = new ResizeObserver(function(){ updateButtons(); });
+  ro.observe(viewport);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "PX - History Timeline",
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "max_width", "min": 900, "max": 1600, "step": 10, "default": 1200, "label": "Max width (px)" },
+    { "type": "range", "id": "side_gap", "min": 0, "max": 40, "step": 2, "default": 20, "label": "Side padding (px)" },
+
+    { "type": "range", "id": "left_width", "min": 220, "max": 520, "step": 10, "default": 360, "label": "Text content max width (px)" },
+
+    { "type": "range", "id": "gap", "min": 8, "max": 40, "step": 1, "default": 18, "label": "Card gap (px)" },
+    { "type": "range", "id": "image_height", "min": 140, "max": 520, "step": 10, "default": 280, "label": "Image height (px)" },
+    { "type": "range", "id": "radius", "min": 0, "max": 26, "step": 1, "default": 12, "label": "Card corner radius (px)" },
+
+    { "type": "range", "id": "panel_radius", "min": 0, "max": 26, "step": 1, "default": 12, "label": "Info box radius (px)" },
+    { "type": "range", "id": "year_size", "min": 10, "max": 22, "step": 1, "default": 13, "label": "Year font size (px)" },
+
+    { "type": "range", "id": "panel_height", "min": 80, "max": 220, "step": 4, "default": 140, "label": "Info box height (px)" },
+    { "type": "range", "id": "desc_lines", "min": 2, "max": 8, "step": 1, "default": 4, "label": "Description lines (clamp)" },
+
+    { "type": "range", "id": "shadow_opacity", "min": 0, "max": 20, "step": 1, "default": 10, "label": "Shadow opacity (%)" },
+
+    { "type": "header", "content": "Left content" },
+    { "type": "text", "id": "eyebrow", "default": "OUR HISTORY", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "default": "Our Story,\nThroughout\nThe Years", "label": "Heading" },
+    { "type": "richtext", "id": "body", "default": "<p>What started as a simple experiment preserving my own engagement flowers quickly turned into years of doing what I love.</p>", "label": "Body" },
+    { "type": "text", "id": "link_label", "default": "LEARN ABOUT OUR PROCESS", "label": "Link label" },
+    { "type": "url", "id": "link_url", "label": "Link URL" },
+
+    { "type": "text", "id": "hint", "default": "Optional", "label": "Small hint under timeline (optional)" },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg_color", "default": "#f5f7fb", "label": "Section background" },
+    { "type": "color", "id": "eyebrow_color", "default": "#8a8a8a", "label": "Eyebrow color" },
+    { "type": "color", "id": "title_color", "default": "#c2185b", "label": "Title color" },
+    { "type": "color", "id": "text_color", "default": "#222222", "label": "Body text color" },
+    { "type": "color", "id": "link_color", "default": "#222222", "label": "Link color" },
+
+    { "type": "header", "content": "Card gradient background" },
+    { "type": "color", "id": "card_bg_1", "default": "#ffffff", "label": "Card gradient top" },
+    { "type": "color", "id": "card_bg_2", "default": "#eef2f7", "label": "Card gradient bottom" },
+
+    { "type": "header", "content": "Info box gradient background" },
+    { "type": "color", "id": "panel_bg_1", "default": "#ffffff", "label": "Info box gradient top" },
+    { "type": "color", "id": "panel_bg_2", "default": "#e9edf4", "label": "Info box gradient bottom" },
+    { "type": "color", "id": "panel_text", "default": "#111111", "label": "Info box text color" },
+    { "type": "color", "id": "year_text", "default": "#111111", "label": "Year text color" },
+
+    { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "default": 40, "label": "Padding top (px)" },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "default": 40, "label": "Padding bottom (px)" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Timeline item",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "year", "default": "2004", "label": "Year" },
+        { "type": "textarea", "id": "text", "default": "Short description goes here.", "label": "Description" },
+        { "type": "url", "id": "url", "label": "Link (optional)" },
+        { "type": "checkbox", "id": "new_tab", "default": false, "label": "Open link in new tab" }
+      ]
+    }
+  ],
+  "max_blocks": 40,
+  "presets": [
+    {
+      "name": "PX - History Timeline",
+      "blocks": [
+        { "type": "item" },
+        { "type": "item" },
+        { "type": "item" },
+        { "type": "item" },
+        { "type": "item" },
+        { "type": "item" },
+        { "type": "item" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,464 @@
+{% comment %}
+  Section: PX Image + Accordion (Expectations)
+  File: sections/px-image-accordion.liquid
+{% endcomment %}
+
+{%- liquid
+  assign has_badge = false
+  if section.settings.badge_icon != blank or section.settings.badge_text != blank
+    assign has_badge = true
+  endif
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }}{
+    --px-pt: {{ section.settings.padding_top }}px;
+    --px-pb: {{ section.settings.padding_bottom }}px;
+
+    --px-bg: {{ section.settings.bg_color }};
+    --px-card: {{ section.settings.card_color }};
+    --px-heading: {{ section.settings.heading_color }};
+    --px-text: {{ section.settings.text_color }};
+    --px-muted: {{ section.settings.muted_color }};
+    --px-line: {{ section.settings.divider_color }};
+    --px-accent: {{ section.settings.accent_color }};
+
+    --px-max: {{ section.settings.max_width }}px;
+    --px-gap: {{ section.settings.gap }}px;
+
+    --px-radius: {{ section.settings.radius }}px;
+
+    --px-img-h-desktop: {{ section.settings.image_height_desktop }}px;
+    --px-img-h-mobile: {{ section.settings.image_height_mobile }}px;
+    --px-img-fit: {{ section.settings.image_fit }};
+
+    --px-badge-size: {{ section.settings.badge_size }}px;
+  }
+
+  #shopify-section-{{ section.id }} .px-exp{
+    background: var(--px-bg);
+    padding-top: var(--px-pt);
+    padding-bottom: var(--px-pb);
+  }
+
+  #shopify-section-{{ section.id }} .px-exp__inner{
+    max-width: var(--px-max);
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  #shopify-section-{{ section.id }} .px-exp__grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--px-gap);
+    align-items: center;
+  }
+
+  #shopify-section-{{ section.id }} .px-exp__media{
+    position: relative;
+    border-radius: var(--px-radius);
+    overflow: hidden;
+    background: var(--px-card);
+  }
+
+  #shopify-section-{{ section.id }} .px-exp__media::before{
+    content: "";
+    display: block;
+    height: var(--px-img-h-desktop);
+  }
+
+  #shopify-section-{{ section.id }} .px-exp__media img{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: var(--px-img-fit);
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .px-exp__content{
+    position: relative;
+    border-radius: var(--px-radius);
+    background: var(--px-bg);
+  }
+
+  #shopify-section-{{ section.id }} .px-exp__kicker{
+    margin: 0 0 10px;
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--px-muted);
+    font-weight: 600;
+  }
+
+  #shopify-section-{{ section.id }} .px-exp__heading{
+    margin: 0 0 10px;
+    font-size: clamp(24px, 2.3vw, 34px);
+    line-height: 1.15;
+    color: var(--px-heading);
+    font-weight: 700;
+  }
+
+  #shopify-section-{{ section.id }} .px-exp__intro{
+    margin: 0 0 18px;
+    color: var(--px-text);
+    font-size: 14px;
+    line-height: 1.55;
+    max-width: 58ch;
+  }
+
+  /* Accordion */
+  #shopify-section-{{ section.id }} .px-acc{
+    border-top: 1px solid var(--px-line);
+  }
+
+  #shopify-section-{{ section.id }} .px-acc__item{
+    border-bottom: 1px solid var(--px-line);
+  }
+
+  #shopify-section-{{ section.id }} .px-acc__btn{
+    width: 100%;
+    text-align: left;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    color: var(--px-heading);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.2;
+  }
+
+  #shopify-section-{{ section.id }} .px-acc__btn:focus-visible{
+    outline: 2px solid rgba(0,0,0,.25);
+    outline-offset: 3px;
+    border-radius: 8px;
+  }
+
+  #shopify-section-{{ section.id }} .px-acc__icon{
+    width: 20px;
+    height: 20px;
+    position: relative;
+    display: inline-block;
+  }
+
+  #shopify-section-{{ section.id }} .px-acc__icon::before,
+  #shopify-section-{{ section.id }} .px-acc__icon::after{
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 14px;
+    height: 2px;
+    background: var(--px-accent);
+    transform: translate(-50%, -50%);
+    border-radius: 999px;
+  }
+
+  #shopify-section-{{ section.id }} .px-acc__icon::after{
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+
+  #shopify-section-{{ section.id }} .px-acc__item[open] .px-acc__icon::after{
+    opacity: 0;
+  }
+
+  #shopify-section-{{ section.id }} .px-acc__panel{
+    padding: 0 0 14px;
+    color: var(--px-text);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  #shopify-section-{{ section.id }} .px-acc__panel p{
+    margin: 0 0 10px;
+  }
+  #shopify-section-{{ section.id }} .px-acc__panel p:last-child{
+    margin-bottom: 0;
+  }
+
+  /* Optional badge (top-right) */
+  #shopify-section-{{ section.id }} .px-exp__badge{
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(20%, -20%);
+    width: var(--px-badge-size);
+    height: var(--px-badge-size);
+    border-radius: 999px;
+    background: var(--px-card);
+    box-shadow: 0 8px 22px rgba(0,0,0,.12);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .px-exp__badge img{
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .px-exp__badgeText{
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--px-heading);
+    padding: 10px;
+    text-align: center;
+    line-height: 1.1;
+  }
+
+  #shopify-section-{{ section.id }} .px-exp__badgeDot{
+    position: absolute;
+    right: 14%;
+    top: 14%;
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: var(--px-accent);
+    box-shadow: 0 0 0 3px rgba(255,255,255,.9);
+  }
+
+  @media (max-width: 900px){
+    #shopify-section-{{ section.id }} .px-exp__grid{
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+    #shopify-section-{{ section.id }} .px-exp__media::before{
+      height: var(--px-img-h-mobile);
+    }
+    #shopify-section-{{ section.id }} .px-exp__badge{
+      transform: translate(10%, -30%);
+    }
+  }
+{%- endstyle -%}
+
+<section class="px-exp" data-px-exp="{{ section.id }}">
+  <div class="px-exp__inner">
+    <div class="px-exp__grid">
+      <!-- LEFT: IMAGE -->
+      <div class="px-exp__media">
+        {%- if section.settings.image != blank -%}
+          {{
+            section.settings.image
+            | image_url: width: 2000
+            | image_tag:
+              loading: 'lazy',
+              widths: '600, 800, 1000, 1400, 1800, 2000',
+              sizes: '(max-width: 900px) 100vw, 50vw',
+              alt: section.settings.image.alt | escape
+          }}
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+
+      <!-- RIGHT: CONTENT + ACCORDION -->
+      <div class="px-exp__content">
+        
+
+        {%- if section.settings.kicker != blank -%}
+          <p class="px-exp__kicker">{{ section.settings.kicker }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <h2 class="px-exp__heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.intro != blank -%}
+          <div class="px-exp__intro rte">{{ section.settings.intro }}</div>
+        {%- endif -%}
+
+        <div class="px-acc" role="region" aria-label="{{ section.settings.heading | escape }}">
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign is_open = false
+              if forloop.first and section.settings.first_open
+                assign is_open = true
+              endif
+            -%}
+
+            <details class="px-acc__item" {% if is_open %}open{% endif %} {{ block.shopify_attributes }}>
+              <summary class="px-acc__btn">
+                <span>{{ block.settings.title }}</span>
+                <span class="px-acc__icon" aria-hidden="true"></span>
+              </summary>
+              <div class="px-acc__panel rte">
+                {{ block.settings.content }}
+              </div>
+            </details>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function(){
+    const root = document.querySelector('[data-px-exp="{{ section.id }}"]');
+    if(!root) return;
+
+    const singleOpen = {{ section.settings.single_open | json }};
+    if(!singleOpen) return;
+
+    const items = root.querySelectorAll('details.px-acc__item');
+    items.forEach((d) => {
+      d.addEventListener('toggle', () => {
+        if(!d.open) return;
+        items.forEach((other) => {
+          if(other !== d) other.removeAttribute('open');
+        });
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "PX Image + Accordion",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "image_picker", "id": "image", "label": "Left image" },
+
+    { "type": "text", "id": "kicker", "label": "Eyebrow", "default": "BEFORE YOUR FLOWERS ARE PRESERVED" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Resin Preservation Expectations" },
+    { "type": "richtext", "id": "intro", "label": "Intro text", "default": "<p>Resin preservation captures real flowers in a lasting form. Because your flowers are natural and preserved by hand, subtle variations are part of the process.</p>" },
+
+    { "type": "checkbox", "id": "first_open", "label": "Open first item by default", "default": true },
+    { "type": "checkbox", "id": "single_open", "label": "Only allow one open at a time", "default": true },
+
+    { "type": "header", "content": "Badge (optional)" },
+    { "type": "image_picker", "id": "badge_icon", "label": "Badge icon image" },
+    { "type": "text", "id": "badge_text", "label": "Badge text (used if no icon)", "default": "?" },
+    { "type": "checkbox", "id": "badge_dot", "label": "Show accent dot", "default": true },
+    {
+      "type": "range",
+      "id": "badge_size",
+      "label": "Badge size",
+      "min": 44,
+      "max": 110,
+      "step": 2,
+      "default": 72
+    },
+
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width",
+      "min": 900,
+      "max": 1400,
+      "step": 20,
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Column gap",
+      "min": 10,
+      "max": 80,
+      "step": 2,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 16
+    },
+
+    { "type": "header", "content": "Image sizing" },
+    {
+      "type": "range",
+      "id": "image_height_desktop",
+      "label": "Image height (desktop)",
+      "min": 240,
+      "max": 760,
+      "step": 10,
+      "default": 520
+    },
+    {
+      "type": "range",
+      "id": "image_height_mobile",
+      "label": "Image height (mobile)",
+      "min": 200,
+      "max": 560,
+      "step": 10,
+      "default": 360
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image fit",
+      "default": "cover",
+      "options": [
+        { "value": "cover", "label": "Cover (cropped)" },
+        { "value": "contain", "label": "Contain (no crop)" }
+      ]
+    },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#fbf6f6" },
+    { "type": "color", "id": "card_color", "label": "Badge background", "default": "#ffffff" },
+    { "type": "color", "id": "heading_color", "label": "Heading", "default": "#c73762" },
+    { "type": "color", "id": "text_color", "label": "Body text", "default": "#2a2a2a" },
+    { "type": "color", "id": "muted_color", "label": "Eyebrow text", "default": "#6c6c6c" },
+    { "type": "color", "id": "divider_color", "label": "Dividers", "default": "rgba(0,0,0,0.18)" },
+    { "type": "color", "id": "accent_color", "label": "Plus/minus + dot", "default": "#c73762" },
+
+    { "type": "header", "content": "Spacing" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Accordion item",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Air bubbles" },
+        { "type": "richtext", "id": "content", "label": "Content", "default": "<p>Small bubbles may appear, especially near charms, brooches, or layered areas.</p>" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "PX Image + Accordion",
+      "blocks": [
+        { "type": "item", "settings": { "title": "Air bubbles" } },
+        { "type": "item", "settings": { "title": "Natural color changes", "content": "<p>Natural flowers may shift in color as they dry and are preserved.</p>" } },
+        { "type": "item", "settings": { "title": "Tiny silica beads", "content": "<p>Occasionally tiny beads can remain from the drying process.</p>" } },
+        { "type": "item", "settings": { "title": "Minor surface variations", "content": "<p>Small surface marks can occur from hand-finishing.</p>" } },
+        { "type": "item", "settings": { "title": "Delicate flyaway petals", "content": "<p>Some petals may sit slightly differently due to their natural shape.</p>" } },
+        { "type": "item", "settings": { "title": "Fabric and lace changes", "content": "<p>Fabric or lace elements may soften or shift slightly in resin.</p>" } },
+        { "type": "item", "settings": { "title": "Resin discoloration", "content": "<p>Over time, resin can warm slightly depending on light exposure.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

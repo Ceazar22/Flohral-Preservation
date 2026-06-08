@@ -1,0 +1,262 @@
+{% comment %}
+  Section: Partnered Vendors (Logo Grid)
+  File: sections/px-partnered-vendors.liquid
+{% endcomment %}
+
+<section
+  class="px-vendors"
+  style="
+    --px-bg: {{ section.settings.bg_color }};
+    --px-title: {{ section.settings.title_color }};
+    --px-eyebrow: {{ section.settings.eyebrow_color }};
+    --px-cols-desktop: {{ section.settings.columns_desktop }};
+    --px-cols-tablet: {{ section.settings.columns_tablet }};
+    --px-cols-mobile: {{ section.settings.columns_mobile }};
+    --px-gap: {{ section.settings.gap }}px;
+    --px-logo-h: {{ section.settings.logo_max_height }}px;
+  "
+>
+  {%- style -%}
+    #shopify-section-{{ section.id }} .px-vendors{
+      background: var(--px-bg);
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+      position: relative;
+      z-index: 1;
+    }
+
+    #shopify-section-{{ section.id }} .px-vendors__wrap{
+      width: 100%;
+      max-width: {{ section.settings.max_width }}px;
+      margin: 0 auto;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .px-vendors__wrap--full{
+      max-width: none;
+    }
+
+    #shopify-section-{{ section.id }} .px-vendors__head{
+      margin-bottom: 22px;
+    }
+
+    #shopify-section-{{ section.id }} .px-vendors__eyebrow{
+      margin: 0 0 8px;
+      color: var(--px-eyebrow);
+      font-size: 12px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    #shopify-section-{{ section.id }} .px-vendors__title{
+      margin: 0;
+      color: var(--px-title);
+      font-weight: 700;
+      line-height: 1.15;
+      font-size: clamp(24px, 3.2vw, 36px);
+    }
+
+    #shopify-section-{{ section.id }} .px-vendors__grid{
+      display: grid;
+      grid-template-columns: repeat(var(--px-cols-mobile), minmax(0, 1fr));
+      gap: var(--px-gap);
+      align-items: center;
+      justify-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      padding-top: 6px;
+      width: 100%;
+    }
+
+    @media (min-width: 750px){
+      #shopify-section-{{ section.id }} .px-vendors__grid{
+        grid-template-columns: repeat(var(--px-cols-tablet), minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 990px){
+      #shopify-section-{{ section.id }} .px-vendors__grid{
+        grid-template-columns: repeat(var(--px-cols-desktop), minmax(0, 1fr));
+      }
+    }
+
+    #shopify-section-{{ section.id }} .px-vendors__item{
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #shopify-section-{{ section.id }} .px-vendors__link{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      text-decoration: none;
+    }
+
+    /* frame controls the uniform row height */
+    #shopify-section-{{ section.id }} .px-vendors__frame{
+      width: 100%;
+      height: calc(var(--px-logo-h) + 16px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: visible; /* do NOT crop */
+    }
+
+    /*
+      ✅ BULLETPROOF OVERRIDE:
+      many themes force images to width/height:100% and object-fit:cover.
+      This resets those rules inside THIS section only.
+    */
+    #shopify-section-{{ section.id }} .px-vendors__frame img,
+    #shopify-section-{{ section.id }} .px-vendors__frame picture,
+    #shopify-section-{{ section.id }} .px-vendors__frame svg{
+      width: auto !important;
+      height: var(--px-logo-h) !important;
+      max-width: 100% !important;
+      max-height: 100% !important;
+      object-fit: contain !important;
+      object-position: center !important;
+      display: block !important;
+      margin: 0 auto !important;
+    }
+
+    /* if Shopify outputs a wrapper element with fixed rules */
+    #shopify-section-{{ section.id }} .px-vendors__frame *{
+      overflow: visible;
+    }
+
+    /* optional grayscale */
+    #shopify-section-{{ section.id }} .px-vendors__frame img{
+      transition: transform 180ms ease, opacity 180ms ease, filter 180ms ease;
+      {% if section.settings.grayscale %}filter: grayscale(1); opacity: 0.9;{% endif %}
+    }
+
+    #shopify-section-{{ section.id }} .px-vendors__item:hover .px-vendors__frame img{
+      transform: translateY(-1px);
+      {% if section.settings.grayscale %}filter: none; opacity: 1;{% endif %}
+    }
+
+    #shopify-section-{{ section.id }} .px-vendors__placeholder{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 240px;
+      height: var(--px-logo-h);
+      border-radius: 999px;
+      background: rgba(0,0,0,0.04);
+      color: rgba(0,0,0,0.55);
+      font-size: 14px;
+      padding: 8px 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  {%- endstyle -%}
+
+  <div class="px-vendors__wrap {% if section.settings.full_width %}px-vendors__wrap--full{% endif %}">
+    <header class="px-vendors__head">
+      {% if section.settings.eyebrow != blank %}
+        <p class="px-vendors__eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+
+      {% if section.settings.heading != blank %}
+        <h2 class="px-vendors__title">{{ section.settings.heading }}</h2>
+      {% endif %}
+    </header>
+
+    <div class="px-vendors__grid" role="list" aria-label="{{ section.settings.heading | escape }}">
+      {% for block in section.blocks %}
+        <div class="px-vendors__item" role="listitem" {{ block.shopify_attributes }}>
+          {% if block.settings.link != blank %}
+            <a class="px-vendors__link" href="{{ block.settings.link }}">
+          {% endif %}
+
+          <div class="px-vendors__frame">
+            {% if block.settings.logo != blank %}
+              {{ block.settings.logo
+                | image_url: width: 900
+                | image_tag:
+                  loading: 'lazy',
+                  decoding: 'async',
+                  widths: '200, 300, 400, 600, 900',
+                  sizes: '(min-width: 990px) 240px, (min-width: 750px) 33vw, 50vw',
+                  alt: block.settings.alt | default: block.settings.name | default: 'Vendor logo',
+                  class: 'px-vendors__img'
+              }}
+            {% else %}
+              <span class="px-vendors__placeholder">{{ block.settings.name | default: 'Vendor' }}</span>
+            {% endif %}
+          </div>
+
+          {% if block.settings.link != blank %}
+            </a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Partnered vendors",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow text", "default": "TRUSTED FLORISTS" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Our Partnered Vendors" },
+
+    { "type": "color", "id": "bg_color", "label": "Background color", "default": "#ffffff" },
+    { "type": "color", "id": "title_color", "label": "Heading color", "default": "#111111" },
+    { "type": "color", "id": "eyebrow_color", "label": "Eyebrow color", "default": "#111111" },
+
+    { "type": "checkbox", "id": "grayscale", "label": "Grayscale logos (color on hover)", "default": false },
+
+    { "type": "range", "id": "logo_max_height", "label": "Logo height (uniform)", "min": 30, "max": 120, "step": 2, "default": 56 },
+    { "type": "range", "id": "gap", "label": "Grid gap", "min": 8, "max": 40, "step": 2, "default": 18 },
+
+    { "type": "range", "id": "columns_desktop", "label": "Columns (desktop)", "min": 3, "max": 6, "step": 1, "default": 4 },
+    { "type": "range", "id": "columns_tablet", "label": "Columns (tablet)", "min": 2, "max": 5, "step": 1, "default": 4 },
+    { "type": "range", "id": "columns_mobile", "label": "Columns (mobile)", "min": 1, "max": 3, "step": 1, "default": 2 },
+
+    { "type": "checkbox", "id": "full_width", "label": "Full width", "default": false },
+    { "type": "range", "id": "max_width", "label": "Content max width", "min": 900, "max": 1600, "step": 20, "default": 1200 },
+
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 120, "step": 4, "default": 40 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 120, "step": 4, "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "vendor",
+      "name": "Vendor",
+      "settings": [
+        { "type": "image_picker", "id": "logo", "label": "Logo image" },
+        { "type": "url", "id": "link", "label": "Link (optional)" },
+        { "type": "text", "id": "name", "label": "Name (fallback)", "default": "Vendor" },
+        { "type": "text", "id": "alt", "label": "Alt text (optional)" }
+      ]
+    }
+  ],
+  "max_blocks": 70,
+  "presets": [
+    {
+      "name": "Partnered vendors",
+      "blocks": [
+        { "type": "vendor" },
+        { "type": "vendor" },
+        { "type": "vendor" },
+        { "type": "vendor" },
+        { "type": "vendor" },
+        { "type": "vendor" },
+        { "type": "vendor" },
+        { "type": "vendor" }
+      ]
+    }
+  ]
+}
+{% endschema %}

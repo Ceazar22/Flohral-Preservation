@@ -1,0 +1,387 @@
+{%- style -%}
+  #shopify-section-{{ section.id }}{
+    --pt: {{ section.settings.padding_top }}px;
+    --pb: {{ section.settings.padding_bottom }}px;
+
+    --outer-bg: {{ section.settings.outer_bg }};
+    --inner-bg: {{ section.settings.inner_bg }};
+    --inner-radius: {{ section.settings.inner_radius }}px;
+    --inner-padding: {{ section.settings.inner_padding }}px;
+
+    --title-color: {{ section.settings.title_color }};
+    --text-color: {{ section.settings.text_color }};
+    --muted-color: {{ section.settings.muted_color }};
+
+    --gap: {{ section.settings.column_gap }}px;
+    --side-col: {{ section.settings.sidebar_width }}%;
+  }
+
+  #shopify-section-{{ section.id }} .section--padding{
+    padding-top: var(--pt);
+    padding-bottom: var(--pb);
+    background: var(--outer-bg);
+  }
+{%- endstyle -%}
+
+<style>
+  #shopify-section-{{ section.id }} .contact-wrap{
+    background: var(--inner-bg);
+    border-radius: var(--inner-radius);
+    padding: var(--inner-padding);
+    box-sizing: border-box;
+  }
+
+  #shopify-section-{{ section.id }} .contact-grid{
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, var(--side-col));
+    gap: var(--gap);
+    align-items: start;
+  }
+
+  #shopify-section-{{ section.id }} .contact-title{
+    margin: 0 0 18px;
+    color: var(--title-color);
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  #shopify-section-{{ section.id }} .contact-embed{
+    color: var(--text-color);
+  }
+
+  /* make pasted iframes responsive */
+  #shopify-section-{{ section.id }} .contact-embed iframe{
+    width: 100% !important;
+    max-width: 100%;
+    border: 0;
+  }
+
+  /* Sidebar blocks */
+  #shopify-section-{{ section.id }} .contact-side{
+    color: var(--text-color);
+  }
+
+  #shopify-section-{{ section.id }} .side-block{
+    margin-bottom: 22px;
+  }
+
+  #shopify-section-{{ section.id }} .side-block__title{
+    margin: 0 0 6px;
+    font-weight: 800;
+    color: var(--text-color);
+  }
+
+  #shopify-section-{{ section.id }} .side-block__text{
+    margin: 0;
+    color: var(--muted-color);
+    line-height: 1.6;
+    font-size: 14px;
+  }
+
+  /* ✅ clickable email/phone styling */
+  #shopify-section-{{ section.id }} .side-block__text a{
+    color: inherit;
+    text-decoration: none;
+  }
+  #shopify-section-{{ section.id }} .side-block__text a:hover{
+    text-decoration: underline;
+  }
+
+  #shopify-section-{{ section.id }} .side-social{
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  #shopify-section-{{ section.id }} .side-social a{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    color: var(--text-color);
+    text-decoration: none;
+  }
+
+  #shopify-section-{{ section.id }} .side-social svg{
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+
+  #shopify-section-{{ section.id }} .side-logo img{
+    width: 100%;
+    max-width: var(--logo-max, 220px);
+    height: auto;
+    display: block;
+    margin-top: 10px;
+  }
+
+  @media (max-width: 989px){
+    #shopify-section-{{ section.id }} .contact-grid{
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+{%- comment -%}
+  Helper snippet:
+  - If the info block text is a single email like "<p>email@domain.com</p>" -> mailto link
+  - If it's a single phone like "<p>(845) 290-1072</p>" -> tel link
+  Otherwise renders original richtext.
+{%- endcomment -%}
+
+<div class="section--padding">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <div class="contact-wrap">
+      <div class="contact-grid">
+
+        <!-- LEFT -->
+        <div>
+          <div class="contact-embed">
+            {{ section.settings.form_embed }}
+          </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="contact-side">
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+
+ {%- when 'info' -%}
+  <div class="side-block" style="text-align: {{ block.settings.align }};" {{ block.shopify_attributes }}>
+    {%- if block.settings.heading != blank -%}
+      <p class="side-block__title">{{ block.settings.heading }}</p>
+    {%- endif -%}
+
+    {%- if block.settings.text != blank -%}
+      {%- liquid
+        assign raw_rich = block.settings.text
+        assign stripped = raw_rich | strip_html | strip
+
+        assign looks_email = false
+        if stripped contains '@' and stripped contains '.'
+          assign looks_email = true
+        endif
+
+        assign phone_candidate = stripped
+        assign phone_candidate = phone_candidate | replace: ' ', '' | replace: '-', '' | replace: '–', '' | replace: '—', '' | replace: '.', '' | replace: '(', '' | replace: ')', '' | replace: '+', '' | replace: '/', '' | replace: '\\', ''
+
+        assign digits = phone_candidate
+        assign digits_only = digits | remove: '0' | remove: '1' | remove: '2' | remove: '3' | remove: '4' | remove: '5' | remove: '6' | remove: '7' | remove: '8' | remove: '9'
+
+        assign has_only_digits = false
+        if digits_only == blank
+          assign has_only_digits = true
+        endif
+
+        assign looks_phone = false
+        if has_only_digits and digits.size >= 7
+          assign looks_phone = true
+        endif
+      -%}
+
+      <div class="side-block__text rte">
+        {%- if looks_email -%}
+          <a href="mailto:{{ stripped | escape }}">{{ raw_rich }}</a>
+
+        {%- elsif looks_phone -%}
+          {%- liquid
+            assign tel = stripped
+            assign tel = tel | replace: ' ', '' | replace: '-', '' | replace: '–', '' | replace: '—', '' | replace: '.', '' | replace: '(', '' | replace: ')', '' | replace: '/', '' | replace: '\\', ''
+
+            assign tel = tel | replace_first: '00', '+'
+            unless tel contains '+'
+              assign tel = '+' | append: tel
+            endunless
+          -%}
+          <a href="tel:{{ tel | escape }}">{{ raw_rich }}</a>
+
+        {%- else -%}
+          {{ raw_rich }}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+
+              {%- when 'social' -%}
+                <div class="side-block" style="text-align: {{ block.settings.align }};" {{ block.shopify_attributes }}>
+                  {%- if block.settings.heading != blank -%}
+                    <p class="side-block__title">{{ block.settings.heading }}</p>
+                  {%- endif -%}
+
+                  <div class="side-social" style="justify-content:
+                    {% if block.settings.align == 'center' %}center{% elsif block.settings.align == 'right' %}flex-end{% else %}flex-start{% endif %};
+                  ">
+                    {%- if block.settings.facebook != blank -%}
+                      <a href="{{ block.settings.facebook }}" target="_blank" rel="noopener" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.5 9.9v-7H8v-3h2.5V9.5A3.5 3.5 0 0 1 14.3 6h2.7v3h-2c-.7 0-1 .4-1 1v2h3l-.5 3h-2.5v7A10 10 0 0 0 22 12z"/></svg>
+                      </a>
+                    {%- endif -%}
+
+                    {%- if block.settings.instagram != blank -%}
+                      <a href="{{ block.settings.instagram }}" target="_blank" rel="noopener" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm-5 4.5A3.5 3.5 0 1 1 8.5 12 3.5 3.5 0 0 1 12 8.5zm0 2A1.5 1.5 0 1 0 13.5 12 1.5 1.5 0 0 0 12 10.5zM17.8 6.2a.8.8 0 1 1-.8-.8.8.8 0 0 1 .8.8z"/></svg>
+                      </a>
+                    {%- endif -%}
+
+                    {%- if block.settings.linkedin != blank -%}
+                      <a href="{{ block.settings.linkedin }}" target="_blank" rel="noopener" aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24"><path d="M6.5 6.5A1.9 1.9 0 1 1 6.5 2.7a1.9 1.9 0 0 1 0 3.8zM4.9 21.3h3.2V8.2H4.9v13.1zM9.9 8.2h3.1v1.8h.1a3.4 3.4 0 0 1 3.1-1.7c3.3 0 3.9 2.1 3.9 4.9v8.1H17v-7.2c0-1.7 0-3.9-2.4-3.9s-2.8 1.9-2.8 3.8v7.3H9.9V8.2z"/></svg>
+                      </a>
+                    {%- endif -%}
+                  </div>
+                </div>
+
+              {%- when 'logo' -%}
+                <div class="side-block side-logo" style="text-align: {{ block.settings.align }}; --logo-max: {{ block.settings.max_width }}px;" {{ block.shopify_attributes }}>
+                  {%- if block.settings.image != blank -%}
+                    {{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy' }}
+                  {%- endif -%}
+                </div>
+
+            {%- endcase -%}
+          {%- endfor -%}
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Contact embed + sidebar",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "checkbox", "id": "full_width", "label": "Full width", "default": false },
+
+    { "type": "header", "content": "Left column" },
+    { "type": "inline_richtext", "id": "title", "label": "Title", "default": "Get in Touch" },
+    {
+      "type": "select",
+      "id": "title_tag",
+      "label": "Title tag",
+      "options": [
+        { "value": "h1", "label": "h1" },
+        { "value": "h2", "label": "h2" },
+        { "value": "h3", "label": "h3" },
+        { "value": "div", "label": "div" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "title_size",
+      "label": "Title size class",
+      "options": [
+        { "value": "h0", "label": "Large" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h2", "label": "Small" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "liquid",
+      "id": "form_embed",
+      "label": "Form embed (paste iframe here)",
+      "default": "<div style=\"padding:18px;border:1px dashed #ccc;\">Paste your iframe/embed code in this field.</div>"
+    },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "sidebar_width", "label": "Right column width (%)", "min": 25, "max": 45, "step": 1, "default": 32 },
+    { "type": "range", "id": "column_gap", "label": "Column gap (px)", "min": 12, "max": 80, "step": 4, "default": 40 },
+
+    { "type": "header", "content": "Backgrounds" },
+    { "type": "color", "id": "outer_bg", "label": "Outer background", "default": "#ffffff" },
+    { "type": "color", "id": "inner_bg", "label": "Inner background", "default": "#ffffff" },
+    { "type": "range", "id": "inner_padding", "label": "Inner padding (px)", "min": 0, "max": 80, "step": 4, "default": 32 },
+    { "type": "range", "id": "inner_radius", "label": "Inner radius (px)", "min": 0, "max": 40, "step": 2, "default": 0 },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "title_color", "label": "Title color", "default": "#6b6b6b" },
+    { "type": "color", "id": "text_color", "label": "Sidebar heading color", "default": "#6b6b6b" },
+    { "type": "color", "id": "muted_color", "label": "Sidebar text color", "default": "#6b6b6b" },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 140, "step": 4, "unit": "px", "label": "Padding top", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 140, "step": 4, "unit": "px", "label": "Padding bottom", "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "info",
+      "name": "Info block",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Customer Service" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>email@domain.com</p>" },
+        {
+          "type": "select",
+          "id": "align",
+          "label": "Alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "left"
+        }
+      ]
+    },
+    {
+      "type": "social",
+      "name": "Social icons",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Follow Us" },
+        { "type": "url", "id": "facebook", "label": "Facebook URL" },
+        { "type": "url", "id": "instagram", "label": "Instagram URL" },
+        { "type": "url", "id": "linkedin", "label": "LinkedIn URL" },
+        {
+          "type": "select",
+          "id": "align",
+          "label": "Alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "left"
+        }
+      ]
+    },
+    {
+      "type": "logo",
+      "name": "Logo / image",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "range", "id": "max_width", "label": "Max width (px)", "min": 80, "max": 360, "step": 10, "default": 220 },
+        {
+          "type": "select",
+          "id": "align",
+          "label": "Alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "left"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact embed + sidebar",
+      "blocks": [
+        { "type": "info" },
+        { "type": "info", "settings": { "heading": "Contact Us", "text": "<p>(845) 290-1072</p>" } },
+        { "type": "social" },
+        { "type": "logo" }
+      ]
+    }
+  ]
+}
+{% endschema %}

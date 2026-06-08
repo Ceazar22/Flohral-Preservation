@@ -1,0 +1,567 @@
+{%- style -%}
+  #shopify-section-{{ section.id }}{
+    --pt: {{ section.settings.padding_top }}px;
+    --pb: {{ section.settings.padding_bottom }}px;
+
+    --chip-border: {{ section.settings.chip_border }};
+    --chip-text: {{ section.settings.chip_text }};
+    --chip-active-bg: {{ section.settings.chip_active_bg }};
+    --chip-active-text: {{ section.settings.chip_active_text }};
+
+    --heading-color: {{ section.settings.heading_color }};
+    --subheading-color: {{ section.settings.subheading_color }};
+
+    --grid-gap: {{ section.settings.grid_gap }}px;
+
+    /* Masonry tuning */
+    --masonry-row: 10px; /* smaller = smoother masonry */
+  }
+
+  #shopify-section-{{ section.id }} .section--padding{
+    padding-top: var(--pt);
+    padding-bottom: var(--pb);
+  }
+{%- endstyle -%}
+
+<style>
+  #shopify-section-{{ section.id }} .fg{
+    width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .fg__head{
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  #shopify-section-{{ section.id }} .fg__eyebrow{
+    margin: 0 0 8px;
+    color: var(--subheading-color);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    font-size: 11px;
+    line-height: 1.2;
+  }
+
+  #shopify-section-{{ section.id }} .fg__title{
+    margin: 0;
+    color: var(--heading-color);
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  #shopify-section-{{ section.id }} .fg__chips{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 16px auto 28px;
+    max-width: 1100px;
+    padding: 0 10px;
+  }
+
+  #shopify-section-{{ section.id }} .fg-chip{
+    appearance: none;
+    border: 1px solid var(--chip-border);
+    background: transparent;
+    color: var(--chip-text);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  #shopify-section-{{ section.id }} .fg-chip svg{
+    width: 14px;
+    height: 14px;
+    display: none;
+    fill: currentColor;
+  }
+
+  #shopify-section-{{ section.id }} .fg-chip.is-active{
+    background: var(--chip-active-bg);
+    color: var(--chip-active-text);
+    border-color: var(--chip-active-bg);
+  }
+
+  #shopify-section-{{ section.id }} .fg-chip.is-active svg{
+    display: inline-block;
+  }
+
+  /* Masonry grid */
+  #shopify-section-{{ section.id }} .fg-grid{
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0, 1fr));
+    gap: var(--grid-gap);
+    align-items: start;
+    grid-auto-flow: dense;
+    grid-auto-rows: var(--masonry-row);
+  }
+
+  #shopify-section-{{ section.id }} .fg-item{
+    position: relative;
+    overflow: hidden;
+    background: #f5f5f5;
+  }
+
+  #shopify-section-{{ section.id }} .fg-item a{
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  #shopify-section-{{ section.id }} .fg-item img,
+  #shopify-section-{{ section.id }} .fg-item svg{
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .fg__toggle-wrap{
+    display: flex;
+    justify-content: center;
+    margin-top: 26px;
+  }
+
+  #shopify-section-{{ section.id }} .fg-toggle{
+    appearance: none;
+    border: 1px solid var(--chip-border);
+    background: transparent;
+    color: var(--chip-text);
+    border-radius: 999px;
+    padding: 12px 22px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    line-height: 1;
+    cursor: pointer;
+    transition: all .2s ease;
+  }
+
+  #shopify-section-{{ section.id }} .fg-toggle:hover{
+    background: var(--chip-active-bg);
+    color: var(--chip-active-text);
+    border-color: var(--chip-active-bg);
+  }
+
+  @media (max-width: 989px){
+    #shopify-section-{{ section.id }} .fg-grid{
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 600px){
+    #shopify-section-{{ section.id }} .fg-grid{
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 767px){
+    #shopify-section-{{ section.id }} .fg__chips{
+      gap: 6px;
+      margin: 14px auto 22px;
+      padding: 0 6px;
+    }
+
+    #shopify-section-{{ section.id }} .fg-chip{
+      padding: 6px 10px;
+      font-size: 9px;
+      letter-spacing: .08em;
+      border-radius: 6px;
+      gap: 5px;
+    }
+
+    #shopify-section-{{ section.id }} .fg-chip svg{
+      width: 11px;
+      height: 11px;
+    }
+
+    #shopify-section-{{ section.id }} .fg-toggle{
+      padding: 11px 18px;
+      font-size: 10px;
+      letter-spacing: .08em;
+    }
+  }
+</style>
+
+<div class="section--padding">
+  <div class="{% if section.settings.full_width %}page-width--full-width{% else %}page-width{% endif %}">
+    <div
+      id="FilterGallery-{{ section.id }}"
+      class="fg"
+      data-fg-root
+      data-enable-show-all="{{ section.settings.enable_show_all }}"
+      data-limit-desktop="{{ section.settings.initial_items_desktop }}"
+      data-limit-tablet="{{ section.settings.initial_items_tablet }}"
+      data-limit-mobile="{{ section.settings.initial_items_mobile }}"
+      data-show-all-label="{{ section.settings.show_all_label | escape }}"
+      data-show-less-label="{{ section.settings.show_less_label | escape }}"
+    >
+
+      <div class="fg__head">
+        {%- if section.settings.eyebrow != blank -%}
+          <div class="fg__eyebrow">{{ section.settings.eyebrow }}</div>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <{{ section.settings.heading_tag }} class="fg__title {{ section.settings.heading_size }}">
+            {{ section.settings.heading }}
+          </{{ section.settings.heading_tag }}>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.show_filters -%}
+        <div class="fg__chips" role="tablist" aria-label="Gallery filters">
+          <button type="button" class="fg-chip is-active" data-filter="all" role="tab" aria-selected="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.2 16.6 4.9 12.3l1.4-1.4 2.9 2.9 8.5-8.5 1.4 1.4-9.9 9.9z"/></svg>
+            All
+          </button>
+
+          {%- assign manual_filters = section.settings.filter_list | strip -%}
+
+          {%- if manual_filters != blank -%}
+            {%- assign raw_filters = manual_filters | split: ',' -%}
+            {%- for f in raw_filters -%}
+              {%- assign label = f | strip -%}
+              {%- if label != blank -%}
+                <button
+                  type="button"
+                  class="fg-chip"
+                  data-filter="{{ label | handleize }}"
+                  role="tab"
+                  aria-selected="false"
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.2 16.6 4.9 12.3l1.4-1.4 2.9 2.9 8.5-8.5 1.4 1.4-9.9 9.9z"/></svg>
+                  {{ label }}
+                </button>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- else -%}
+            {%- assign seen = '' -%}
+            {%- for block in section.blocks -%}
+              {%- assign rawtags = block.settings.tags | split: ',' -%}
+              {%- for t in rawtags -%}
+                {%- assign label = t | strip -%}
+                {%- if label != blank -%}
+                  {%- assign handle = label | handleize -%}
+                  {%- assign key = '|' | append: handle | append: '|' -%}
+                  {%- unless seen contains key -%}
+                    <button
+                      type="button"
+                      class="fg-chip"
+                      data-filter="{{ handle }}"
+                      role="tab"
+                      aria-selected="false"
+                    >
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.2 16.6 4.9 12.3l1.4-1.4 2.9 2.9 8.5-8.5 1.4 1.4-9.9 9.9z"/></svg>
+                      {{ label }}
+                    </button>
+                    {%- assign seen = seen | append: key -%}
+                  {%- endunless -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <div class="fg-grid" data-fg-grid>
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign rawtags = block.settings.tags | split: ','
+            capture tag_handles
+              for t in rawtags
+                assign tt = t | strip
+                if tt != blank
+                  echo tt | handleize
+                  echo ' '
+                endif
+              endfor
+            endcapture
+          -%}
+
+          <div class="fg-item" data-tags="{{ tag_handles | strip }}" {{ block.shopify_attributes }}>
+            {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}">{%- endif -%}
+
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 2000 | image_tag: loading: 'lazy', widths: '480, 720, 960, 1200, 1600, 2000' }}
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+
+            {%- if block.settings.link != blank -%}</a>{%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <div class="fg__toggle-wrap" data-fg-toggle-wrap hidden>
+        <button type="button" class="fg-toggle" data-fg-toggle aria-expanded="false">
+          {{ section.settings.show_all_label }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  function getVisibleLimit(root) {
+    if (!root) return 0;
+
+    const desktop = parseInt(root.dataset.limitDesktop || '0', 10) || 0;
+    const tablet = parseInt(root.dataset.limitTablet || desktop, 10) || desktop;
+    const mobile = parseInt(root.dataset.limitMobile || tablet, 10) || tablet;
+
+    if (window.innerWidth <= 600) return mobile;
+    if (window.innerWidth <= 989) return tablet;
+
+    return desktop;
+  }
+
+  function calcMasonry(root) {
+    if (!root) return;
+    const grid = root.querySelector('[data-fg-grid]');
+    if (!grid) return;
+
+    const styles = window.getComputedStyle(grid);
+    const rowH = parseFloat(styles.getPropertyValue('grid-auto-rows')) || 10;
+    const gap = parseFloat(styles.getPropertyValue('gap')) || 0;
+
+    const items = Array.from(grid.querySelectorAll('.fg-item'));
+
+    items.forEach(item => {
+      if (item.hidden) {
+        item.style.gridRowEnd = '';
+        return;
+      }
+
+      const img = item.querySelector('img');
+      const content = img || item.firstElementChild || item;
+      const h = content ? content.getBoundingClientRect().height : item.getBoundingClientRect().height;
+      const span = Math.ceil((h + gap) / (rowH + gap));
+
+      item.style.gridRowEnd = 'span ' + Math.max(1, span);
+    });
+  }
+
+  function initFilterGallery(root) {
+    if (!root || root.dataset.fgInit === '1') return;
+    root.dataset.fgInit = '1';
+
+    const chips = Array.from(root.querySelectorAll('.fg-chip[data-filter]'));
+    const items = Array.from(root.querySelectorAll('.fg-item'));
+    const toggleWrap = root.querySelector('[data-fg-toggle-wrap]');
+    const toggleBtn = root.querySelector('[data-fg-toggle]');
+    const enableShowAll = root.dataset.enableShowAll === 'true';
+    const showAllLabel = root.dataset.showAllLabel || 'Show all';
+    const showLessLabel = root.dataset.showLessLabel || 'Show less';
+
+    const state = {
+      filter: 'all',
+      expanded: false
+    };
+
+    function itemMatchesFilter(item, filter) {
+      if (filter === 'all') return true;
+      const tags = (item.dataset.tags || '').split(' ').filter(Boolean);
+      return tags.includes(filter);
+    }
+
+    function setActive(btn) {
+      chips.forEach(b => {
+        const active = b === btn;
+        b.classList.toggle('is-active', active);
+        b.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+    }
+
+    function updateToggle(totalMatched) {
+      if (!toggleWrap || !toggleBtn) return;
+
+      const limit = getVisibleLimit(root);
+      const shouldShowToggle = enableShowAll && state.filter === 'all' && limit > 0 && totalMatched > limit;
+
+      toggleWrap.hidden = !shouldShowToggle;
+
+      if (!shouldShowToggle) {
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        toggleBtn.textContent = showAllLabel;
+        return;
+      }
+
+      toggleBtn.textContent = state.expanded ? showLessLabel : showAllLabel;
+      toggleBtn.setAttribute('aria-expanded', state.expanded ? 'true' : 'false');
+    }
+
+    function applyVisibility() {
+      const limit = getVisibleLimit(root);
+      const matchedItems = items.filter(item => itemMatchesFilter(item, state.filter));
+
+      items.forEach(item => {
+        item.hidden = !itemMatchesFilter(item, state.filter);
+      });
+
+      if (enableShowAll && state.filter === 'all' && !state.expanded && limit > 0) {
+        matchedItems.forEach((item, index) => {
+          if (index >= limit) item.hidden = true;
+        });
+      }
+
+      updateToggle(matchedItems.length);
+
+      requestAnimationFrame(() => calcMasonry(root));
+    }
+
+    chips.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filter = btn.dataset.filter || 'all';
+
+        state.filter = filter;
+        state.expanded = filter === 'all' ? false : true;
+
+        setActive(btn);
+        applyVisibility();
+      });
+    });
+
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => {
+        state.expanded = !state.expanded;
+        applyVisibility();
+      });
+    }
+
+    const imgs = Array.from(root.querySelectorAll('img'));
+    let pending = 0;
+
+    imgs.forEach(img => {
+      if (img.complete) return;
+      pending++;
+      img.addEventListener('load', () => {
+        pending--;
+        if (pending <= 0) calcMasonry(root);
+      }, { once: true });
+    });
+
+    setTimeout(() => applyVisibility(), 50);
+
+    let rAF = null;
+    window.addEventListener('resize', () => {
+      if (rAF) cancelAnimationFrame(rAF);
+      rAF = requestAnimationFrame(() => {
+        applyVisibility();
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initFilterGallery(document.getElementById('FilterGallery-{{ section.id }}'));
+  });
+
+  document.addEventListener('shopify:section:load', (e) => {
+    const root = e.target.querySelector('#FilterGallery-{{ section.id }}');
+    initFilterGallery(root);
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Filter gallery (chips)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "checkbox", "id": "full_width", "label": "Full width", "default": false },
+
+    { "type": "header", "content": "Heading" },
+    { "type": "text", "id": "eyebrow", "label": "Top small text", "default": "VIEW REAL BRIDAL BOUQUETS WE'VE TRANSFORMED." },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Explore Our Preservations" },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "options": [
+        { "value": "h1", "label": "h1" },
+        { "value": "h2", "label": "h2" },
+        { "value": "h3", "label": "h3" },
+        { "value": "div", "label": "div" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size class",
+      "options": [
+        { "value": "h0", "label": "Large" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h2", "label": "Small" }
+      ],
+      "default": "h1"
+    },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#b23b5a" },
+    { "type": "color", "id": "subheading_color", "label": "Top text color", "default": "#6b6b6b" },
+
+    { "type": "header", "content": "Filters" },
+    { "type": "checkbox", "id": "show_filters", "label": "Show filter chips", "default": true },
+    {
+      "type": "textarea",
+      "id": "filter_list",
+      "label": "Filter labels (optional, comma-separated)",
+      "info": "Example: Blocks, Hexagons, Bookends, Trays, Ring Holders. Leave blank to auto-generate from item tags."
+    },
+
+    { "type": "header", "content": "Show all button" },
+    { "type": "checkbox", "id": "enable_show_all", "label": "Enable Show all button on All filter", "default": true },
+    { "type": "range", "id": "initial_items_desktop", "label": "Initial items on desktop", "min": 1, "max": 24, "step": 1, "default": 8 },
+    { "type": "range", "id": "initial_items_tablet", "label": "Initial items on tablet", "min": 1, "max": 24, "step": 1, "default": 6 },
+    { "type": "range", "id": "initial_items_mobile", "label": "Initial items on mobile", "min": 1, "max": 24, "step": 1, "default": 4 },
+    { "type": "text", "id": "show_all_label", "label": "Show all button text", "default": "Show all" },
+    { "type": "text", "id": "show_less_label", "label": "Show less button text", "default": "Show less" },
+
+    { "type": "header", "content": "Chip styles" },
+    { "type": "color", "id": "chip_border", "label": "Chip border", "default": "#b23b5a" },
+    { "type": "color", "id": "chip_text", "label": "Chip text", "default": "#b23b5a" },
+    { "type": "color", "id": "chip_active_bg", "label": "Active chip background", "default": "#f7b7cf" },
+    { "type": "color", "id": "chip_active_text", "label": "Active chip text", "default": "#b23b5a" },
+
+    { "type": "header", "content": "Grid" },
+    { "type": "range", "id": "columns_desktop", "label": "Columns (desktop)", "min": 2, "max": 6, "step": 1, "default": 4 },
+    { "type": "range", "id": "grid_gap", "label": "Gap (px)", "min": 0, "max": 40, "step": 2, "default": 18 },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 140, "step": 4, "unit": "px", "label": "Padding top", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 140, "step": 4, "unit": "px", "label": "Padding bottom", "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Gallery item",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "tags", "label": "Tags (comma-separated)", "default": "Jewelry Box" },
+        { "type": "url", "id": "link", "label": "Optional link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Filter gallery (chips)",
+      "blocks": [
+        { "type": "item" },
+        { "type": "item" },
+        { "type": "item" },
+        { "type": "item" }
+      ]
+    }
+  ]
+}
+{% endschema %}

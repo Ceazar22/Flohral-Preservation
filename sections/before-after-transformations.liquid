@@ -1,0 +1,404 @@
+{%- liquid
+  assign pt = section.settings.padding_top
+  assign pb = section.settings.padding_bottom
+-%}
+
+{%- style -%}
+#shopify-section-{{ section.id }}{
+  --pt: {{ pt }}px;
+  --pb: {{ pb }}px;
+
+  --max-width: {{ section.settings.content_max_width }}px;
+
+  --eyebrow-color: {{ section.settings.eyebrow_color }};
+  --heading-color: {{ section.settings.heading_color }};
+
+  --grid-gap: {{ section.settings.grid_gap }}px;
+  --cols: {{ section.settings.columns_desktop }};
+
+  --card-radius: {{ section.settings.radius }}px;
+
+  --slide-height-desktop: {{ section.settings.height_desktop }}px;
+  --slide-height-mobile: {{ section.settings.height_mobile }}px;
+
+  --handle-line: {{ section.settings.handle_line_color }};
+  --handle-knob-bg: {{ section.settings.handle_knob_bg }};
+  --handle-knob-fg: {{ section.settings.handle_knob_fg }};
+}
+#shopify-section-{{ section.id }} .section--padding{
+  padding-top: var(--pt);
+  padding-bottom: var(--pb);
+}
+{%- endstyle -%}
+
+<style>
+  #shopify-section-{{ section.id }} .bat{
+    width: 100%;
+    margin: 0 auto;
+    max-width: var(--max-width);
+  }
+
+  #shopify-section-{{ section.id }} .bat__head{
+    text-align: center;
+    margin-bottom: 22px;
+  }
+
+  #shopify-section-{{ section.id }} .bat__eyebrow{
+    margin: 0 0 10px;
+    color: var(--eyebrow-color);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    font-size: 11px;
+    line-height: 1.2;
+    font-weight: 700;
+  }
+
+  #shopify-section-{{ section.id }} .bat__title{
+    margin: 0;
+    color: var(--heading-color);
+    font-weight: 800;
+    line-height: 1.15;
+  }
+
+  #shopify-section-{{ section.id }} .bat__grid{
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    gap: var(--grid-gap);
+    align-items: start;
+  }
+
+  @media (max-width: 989px){
+    #shopify-section-{{ section.id }} .bat__grid{
+      grid-template-columns: 1fr;
+    }
+
+    #shopify-section-{{ section.id }} .bat__item--hide-mobile{
+      display: none !important;
+    }
+  }
+
+  /* Slider */
+  #shopify-section-{{ section.id }} .ba{
+    position: relative;
+    width: 100%;
+    height: var(--slide-height-desktop);
+    border-radius: var(--card-radius);
+    overflow: hidden;
+    background: #eee;
+    --pos: 50%;
+    touch-action: none;
+  }
+
+  @media (max-width: 989px){
+    #shopify-section-{{ section.id }} .ba{
+      height: var(--slide-height-mobile);
+    }
+  }
+
+  #shopify-section-{{ section.id }} .ba__layer{
+    position: absolute;
+    inset: 0;
+  }
+
+  #shopify-section-{{ section.id }} .ba__layer img,
+  #shopify-section-{{ section.id }} .ba__layer svg{
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  /* "After" overlays the right side */
+  #shopify-section-{{ section.id }} .ba__after{
+    clip-path: inset(0 0 0 var(--pos));
+  }
+
+  /* Handle line */
+  #shopify-section-{{ section.id }} .ba__handle{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--pos);
+    transform: translateX(-50%);
+    z-index: 3;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #shopify-section-{{ section.id }} .ba__handle::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--handle-line);
+    opacity: .95;
+  }
+
+  /* Knob */
+  #shopify-section-{{ section.id }} .ba__knob{
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    background: var(--handle-knob-bg);
+    color: var(--handle-knob-fg);
+    display: grid;
+    place-items: center;
+    box-shadow: 0 10px 22px rgba(0,0,0,.18);
+    border: 1px solid rgba(0,0,0,.08);
+    position: relative;
+  }
+
+  #shopify-section-{{ section.id }} .ba__arrows{
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 14px;
+    line-height: 1;
+    user-select: none;
+  }
+
+  #shopify-section-{{ section.id }} .ba__arrows span{
+    display: inline-block;
+    transform: translateY(-1px);
+  }
+
+  /* Range input: invisible but clickable/drag-able */
+  #shopify-section-{{ section.id }} .ba__range{
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: ew-resize;
+  }
+
+  #shopify-section-{{ section.id }} .ba__caption{
+    margin-top: 10px;
+    text-align: center;
+    font-size: 12px;
+    color: rgba(0,0,0,.55);
+  }
+</style>
+
+<div class="section--padding{% if section.settings.show_divider %} section--divider{% endif %}">
+  <div class="{% if section.settings.full_width %}page-width--full-width{% else %}page-width{% endif %}">
+    <div class="bat" id="BAT-{{ section.id }}">
+
+      <div class="bat__head">
+        {%- if section.settings.eyebrow != blank -%}
+          <div class="bat__eyebrow">{{ section.settings.eyebrow }}</div>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <{{ section.settings.heading_tag }} class="bat__title {{ section.settings.heading_size }}">
+            {{ section.settings.heading }}
+          </{{ section.settings.heading_tag }}>
+        {%- endif -%}
+      </div>
+
+      <div class="bat__grid">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign before_img = block.settings.before_image
+            assign after_img  = block.settings.after_image
+            assign start_val  = block.settings.start_position
+          -%}
+
+          <div class="bat__item{% if block.settings.hide_on_mobile %} bat__item--hide-mobile{% endif %}" {{ block.shopify_attributes }}>
+            <div class="ba" data-start="{{ start_val }}">
+              <div class="ba__layer ba__before">
+                {%- if before_img != blank -%}
+                  {{ before_img | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '750,1100,1500,2000,2400' }}
+                {%- else -%}
+                  {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+              </div>
+
+              <div class="ba__layer ba__after">
+                {%- if after_img != blank -%}
+                  {{ after_img | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '750,1100,1500,2000,2400' }}
+                {%- else -%}
+                  {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+              </div>
+
+              <div class="ba__handle" aria-hidden="true">
+                <div class="ba__knob">
+                  <div class="ba__arrows">
+                    <span>‹</span><span>›</span>
+                  </div>
+                </div>
+              </div>
+
+              <input
+                class="ba__range"
+                type="range"
+                min="0"
+                max="100"
+                step="1"
+                value="{{ start_val }}"
+                aria-label="Before and after slider"
+              >
+            </div>
+
+            {%- if block.settings.show_caption and block.settings.caption != blank -%}
+            <div class="ba__caption">{{ block.settings.caption }}</div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  (() => {
+    const root = document.getElementById('BAT-{{ section.id }}');
+    if (!root) return;
+
+    const sliders = Array.from(root.querySelectorAll('.ba'));
+
+    const setPos = (el, value) => {
+      const v = Math.max(0, Math.min(100, Number(value) || 0));
+      el.style.setProperty('--pos', v + '%');
+      const input = el.querySelector('.ba__range');
+      if (input && String(input.value) !== String(v)) input.value = v;
+    };
+
+    const valueFromClientX = (el, clientX) => {
+      const rect = el.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const pct = (x / rect.width) * 100;
+      return Math.max(0, Math.min(100, pct));
+    };
+
+    sliders.forEach((ba) => {
+      const start = ba.dataset.start || 50;
+      setPos(ba, start);
+
+      const range = ba.querySelector('.ba__range');
+
+      range.addEventListener('input', (e) => {
+        setPos(ba, e.target.value);
+      });
+
+      let isDown = false;
+
+      const onDown = (e) => {
+        isDown = true;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        setPos(ba, valueFromClientX(ba, clientX));
+      };
+
+      const onMove = (e) => {
+        if (!isDown) return;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        setPos(ba, valueFromClientX(ba, clientX));
+      };
+
+      const onUp = () => { isDown = false; };
+
+      ba.addEventListener('mousedown', onDown);
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('mouseup', onUp);
+
+      ba.addEventListener('touchstart', onDown, { passive: true });
+      window.addEventListener('touchmove', onMove, { passive: true });
+      window.addEventListener('touchend', onUp);
+      window.addEventListener('touchcancel', onUp);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Before & After grid",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "checkbox", "id": "full_width", "label": "Full width", "default": false },
+    { "type": "checkbox", "id": "show_divider", "label": "Show divider", "default": false },
+
+    { "type": "header", "content": "Heading" },
+    { "type": "text", "id": "eyebrow", "label": "Top small text", "default": "BEFLOHR AND AFTER TRANSFORMATION" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "From Blooms to Timeless Keepsakes" },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "options": [
+        { "value": "h1", "label": "h1" },
+        { "value": "h2", "label": "h2" },
+        { "value": "h3", "label": "h3" },
+        { "value": "div", "label": "div" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size class",
+      "options": [
+        { "value": "h0", "label": "Large" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h2", "label": "Small" }
+      ],
+      "default": "h1"
+    },
+    { "type": "color", "id": "eyebrow_color", "label": "Top text color", "default": "#6b6b6b" },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#b23b5a" },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "content_max_width", "label": "Max content width (px)", "min": 900, "max": 1600, "step": 10, "default": 1200 },
+    { "type": "range", "id": "columns_desktop", "label": "Columns (desktop)", "min": 1, "max": 3, "step": 1, "default": 2 },
+    { "type": "range", "id": "grid_gap", "label": "Grid gap (px)", "min": 0, "max": 50, "step": 2, "default": 18 },
+
+    { "type": "header", "content": "Slider size" },
+    { "type": "range", "id": "height_desktop", "label": "Height desktop (px)", "min": 180, "max": 520, "step": 10, "default": 260 },
+    { "type": "range", "id": "height_mobile", "label": "Height mobile (px)", "min": 160, "max": 420, "step": 10, "default": 220 },
+    { "type": "range", "id": "radius", "label": "Corner radius (px)", "min": 0, "max": 30, "step": 2, "default": 0 },
+
+    { "type": "header", "content": "Handle colors" },
+    { "type": "color", "id": "handle_line_color", "label": "Handle line color", "default": "#ffffff" },
+    { "type": "color", "id": "handle_knob_bg", "label": "Handle knob background", "default": "#ffffff" },
+    { "type": "color", "id": "handle_knob_fg", "label": "Handle knob icon color", "default": "#111111" },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 140, "step": 4, "unit": "px", "label": "Padding top", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 140, "step": 4, "unit": "px", "label": "Padding bottom", "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "pair",
+      "name": "Before/After item",
+      "settings": [
+        { "type": "image_picker", "id": "before_image", "label": "Before image" },
+        { "type": "image_picker", "id": "after_image", "label": "After image" },
+        { "type": "range", "id": "start_position", "label": "Start position (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
+
+        { "type": "checkbox", "id": "hide_on_mobile", "label": "Hide this block on mobile", "default": false },
+
+        { "type": "checkbox", "id": "show_caption", "label": "Show caption", "default": false },
+        { "type": "text", "id": "caption", "label": "Caption text", "default": "Caption" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Before & After grid",
+      "blocks": [
+        { "type": "pair" },
+        { "type": "pair" }
+      ]
+    }
+  ]
+}
+{% endschema %}

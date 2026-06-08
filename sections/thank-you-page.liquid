@@ -1,0 +1,497 @@
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --ty-bg: {{ section.settings.bg_color }};
+    --ty-card-bg: {{ section.settings.card_bg_color }};
+    --ty-heading: {{ section.settings.heading_color }};
+    --ty-text: {{ section.settings.text_color }};
+    --ty-muted: {{ section.settings.muted_color }};
+    --ty-button-bg: {{ section.settings.button_bg }};
+    --ty-button-text: {{ section.settings.button_text }};
+    --ty-button-border: {{ section.settings.button_bg }};
+    --ty-button-secondary-bg: {{ section.settings.button_secondary_bg }};
+    --ty-button-secondary-text: {{ section.settings.button_secondary_text }};
+    --ty-button-secondary-border: {{ section.settings.button_secondary_border }};
+    --ty-radius: {{ section.settings.card_radius }}px;
+    --ty-max-width: {{ section.settings.content_max_width }}px;
+    --ty-pad-top: {{ section.settings.padding_top }}px;
+    --ty-pad-bottom: {{ section.settings.padding_bottom }}px;
+    --ty-image-radius: {{ section.settings.image_radius }}px;
+  }
+{%- endstyle -%}
+
+<style>
+  #shopify-section-{{ section.id }} .thank-you-page {
+    background: var(--ty-bg);
+  }
+
+  #shopify-section-{{ section.id }} .thank-you-page__inner {
+    padding-top: var(--ty-pad-top);
+    padding-bottom: var(--ty-pad-bottom);
+  }
+
+  #shopify-section-{{ section.id }} .thank-you-page__card {
+    max-width: var(--ty-max-width);
+    margin: 0 auto;
+    background: var(--ty-card-bg);
+    border-radius: var(--ty-radius);
+    padding: 40px 32px;
+    text-align: {{ section.settings.text_alignment }};
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  }
+
+  #shopify-section-{{ section.id }} .thank-you-page__eyebrow {
+    margin: 0 0 10px;
+    color: var(--ty-muted);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+
+  #shopify-section-{{ section.id }} .thank-you-page__heading {
+    margin: 0;
+    color: var(--ty-heading);
+    line-height: 1.1;
+  }
+
+  #shopify-section-{{ section.id }} .thank-you-page__message {
+    margin: 18px auto 0;
+    color: var(--ty-text);
+    max-width: 60ch;
+    line-height: 1.65;
+  }
+
+  #shopify-section-{{ section.id }} .thank-you-page__message p {
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .thank-you-page__image-wrap {
+    margin: 26px auto 0;
+    max-width: {{ section.settings.image_max_width }}px;
+  }
+
+  #shopify-section-{{ section.id }} .thank-you-page__image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--ty-image-radius);
+  }
+
+  #shopify-section-{{ section.id }} .thank-you-page__note {
+    margin: 22px auto 0;
+    max-width: 62ch;
+    color: var(--ty-muted);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  #shopify-section-{{ section.id }} .thank-you-page__note p {
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .thank-you-page__buttons {
+    margin-top: 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content:
+      {% if section.settings.text_alignment == 'left' %}
+        flex-start
+      {% elsif section.settings.text_alignment == 'right' %}
+        flex-end
+      {% else %}
+        center
+      {% endif %};
+  }
+
+  #shopify-section-{{ section.id }} .thank-you-page__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 12px 22px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: 0.2s ease;
+  }
+
+  #shopify-section-{{ section.id }} .thank-you-page__button--primary {
+    background: var(--ty-button-bg);
+    color: var(--ty-button-text);
+    border: 1px solid var(--ty-button-border);
+  }
+
+  #shopify-section-{{ section.id }} .thank-you-page__button--primary:hover {
+    opacity: 0.92;
+  }
+
+  #shopify-section-{{ section.id }} .thank-you-page__button--secondary {
+    background: var(--ty-button-secondary-bg);
+    color: var(--ty-button-secondary-text);
+    border: 1px solid var(--ty-button-secondary-border);
+  }
+
+  #shopify-section-{{ section.id }} .thank-you-page__button--secondary:hover {
+    opacity: 0.92;
+  }
+
+  #shopify-section-{{ section.id }} .thank-you-page__divider {
+    width: 80px;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.08);
+    margin:
+      {% if section.settings.text_alignment == 'left' %}
+        22px 0 0
+      {% elsif section.settings.text_alignment == 'right' %}
+        22px 0 0 auto
+      {% else %}
+        22px auto 0
+      {% endif %};
+  }
+
+  @media (max-width: 767px) {
+    #shopify-section-{{ section.id }} .thank-you-page__card {
+      padding: 28px 20px;
+    }
+
+    #shopify-section-{{ section.id }} .thank-you-page__message {
+      margin-top: 16px;
+    }
+
+    #shopify-section-{{ section.id }} .thank-you-page__buttons {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    #shopify-section-{{ section.id }} .thank-you-page__button {
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="thank-you-page">
+  <div class="thank-you-page__inner page-width">
+    <div class="thank-you-page__card">
+      {%- if section.settings.eyebrow != blank -%}
+        <div class="thank-you-page__eyebrow">{{ section.settings.eyebrow }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <{{ section.settings.heading_tag }} class="thank-you-page__heading {{ section.settings.heading_size }}">
+          {{ section.settings.heading }}
+        </{{ section.settings.heading_tag }}>
+      {%- endif -%}
+
+      {%- if section.settings.message != blank -%}
+        <div class="thank-you-page__message rte">
+          {{ section.settings.message }}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.show_divider -%}
+        <div class="thank-you-page__divider"></div>
+      {%- endif -%}
+
+      {%- if section.settings.image != blank -%}
+        <div class="thank-you-page__image-wrap">
+          {{
+            section.settings.image
+            | image_url: width: 1600
+            | image_tag:
+              loading: 'lazy',
+              widths: '480, 720, 960, 1200, 1600',
+              class: 'thank-you-page__image'
+          }}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.note != blank -%}
+        <div class="thank-you-page__note rte">
+          {{ section.settings.note }}
+        </div>
+      {%- endif -%}
+
+      {%- assign has_primary_button = false -%}
+      {%- assign has_secondary_button = false -%}
+
+      {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+        {%- assign has_primary_button = true -%}
+      {%- endif -%}
+
+      {%- if section.settings.secondary_button_label != blank and section.settings.secondary_button_link != blank -%}
+        {%- assign has_secondary_button = true -%}
+      {%- endif -%}
+
+      {%- if has_primary_button or has_secondary_button -%}
+        <div class="thank-you-page__buttons">
+          {%- if has_primary_button -%}
+            <a href="{{ section.settings.button_link }}" class="thank-you-page__button thank-you-page__button--primary">
+              {{ section.settings.button_label }}
+            </a>
+          {%- endif -%}
+
+          {%- if has_secondary_button -%}
+            <a href="{{ section.settings.secondary_button_link }}" class="thank-you-page__button thank-you-page__button--secondary">
+              {{ section.settings.secondary_button_label }}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Thank you page",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Thank You"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Your order has been received"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "default": "h1",
+      "options": [
+        { "value": "h1", "label": "h1" },
+        { "value": "h2", "label": "h2" },
+        { "value": "h3", "label": "h3" },
+        { "value": "div", "label": "div" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "default": "h1",
+      "options": [
+        { "value": "h0", "label": "Large" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h2", "label": "Small" }
+      ]
+    },
+    {
+      "type": "richtext",
+      "id": "message",
+      "label": "Main message",
+      "default": "<p>Thank you for your purchase. We’ve received your order and will begin processing it shortly.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "label": "Show divider",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Optional image"
+    },
+    {
+      "type": "range",
+      "id": "image_max_width",
+      "label": "Image max width",
+      "min": 200,
+      "max": 1000,
+      "step": 20,
+      "default": 520,
+      "unit": "px"
+    },
+    {
+      "type": "richtext",
+      "id": "note",
+      "label": "Support / extra note",
+      "default": "<p>You’ll receive an email confirmation soon. If you have any questions, feel free to contact us.</p>"
+    },
+
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Primary button label",
+      "default": "Continue Shopping"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_label",
+      "label": "Secondary button label",
+      "default": "Contact Us"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Secondary button link"
+    },
+
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Content max width",
+      "min": 500,
+      "max": 1200,
+      "step": 20,
+      "default": 760,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "Image radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 14,
+      "unit": "px"
+    },
+
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section background",
+      "default": "#faf7f8"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#BB3263"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#2b2b2b"
+    },
+    {
+      "type": "color",
+      "id": "muted_color",
+      "label": "Muted text color",
+      "default": "#6b6b6b"
+    },
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "Primary button background",
+      "default": "#BB3263"
+    },
+    {
+      "type": "color",
+      "id": "button_text",
+      "label": "Primary button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_secondary_bg",
+      "label": "Secondary button background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_secondary_text",
+      "label": "Secondary button text",
+      "default": "#BB3263"
+    },
+    {
+      "type": "color",
+      "id": "button_secondary_border",
+      "label": "Secondary button border",
+      "default": "#BB3263"
+    },
+
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Thank you page"
+    }
+  ]
+}
+{% endschema %}

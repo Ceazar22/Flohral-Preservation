@@ -1,0 +1,1072 @@
+{%- liquid
+  assign ratio_percent = 56.25
+  if section.settings.image != blank and section.settings.image.aspect_ratio
+    assign ratio_percent = 1 | divided_by: section.settings.image.aspect_ratio | times: 100
+  endif
+
+  assign mobile_ratio = section.settings.mobile_image_ratio
+  if mobile_ratio == 'auto'
+    assign mobile_ratio = section.settings.image_ratio
+  endif
+
+  assign dest_encoded = section.settings.map_address | url_encode
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }}{
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+
+    --color-highlight: {{ section.settings.colors_highlight.red }}, {{ section.settings.colors_highlight.green }}, {{ section.settings.colors_highlight.blue }};
+
+    --color-background-opacity: {{ section.settings.colors_overlay_opacity | divided_by: 100.0 }};
+    --color-background: {{ section.settings.colors_overlay.red }}, {{ section.settings.colors_overlay.green }}, {{ section.settings.colors_overlay.blue }};
+    --color-foreground: {{ section.settings.colors_text.red }}, {{ section.settings.colors_text.green }}, {{ section.settings.colors_text.blue }};
+    --color-button-background: {{ section.settings.colors_button_background.red }}, {{ section.settings.colors_button_background.green }}, {{ section.settings.colors_button_background.blue }};
+    --color-button-text: {{ section.settings.colors_button_label.red }}, {{ section.settings.colors_button_label.green }}, {{ section.settings.colors_button_label.blue }};
+
+    --image-position: {{ section.settings.image_position }};
+    --ratio-percent: {{ ratio_percent }}%;
+  }
+{%- endstyle -%}
+
+{{ 'section-map.css' | asset_url | stylesheet_tag }}
+
+<style>
+  #shopify-section-{{ section.id }} .section--padding{
+    padding-top: var(--section-padding-top);
+    padding-bottom: var(--section-padding-bottom);
+  }
+
+  #shopify-section-{{ section.id }} .map-split{
+    width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .map-split__grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  #shopify-section-{{ section.id }} .map-split__media{
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  {% if section.settings.image_ratio != 'adapt' %}
+    #shopify-section-{{ section.id }} .map-split__media{
+      height: {{ section.settings.image_ratio }};
+    }
+  {% else %}
+    #shopify-section-{{ section.id }} .map-split__media{
+      padding-bottom: var(--ratio-percent);
+    }
+
+    #shopify-section-{{ section.id }} .map-split__media > *{
+      position: absolute;
+      inset: 0;
+    }
+  {% endif %}
+
+  #shopify-section-{{ section.id }} .map-split__map{
+    position: relative;
+  }
+
+  /* Google Maps iframe fills the whole left side */
+  #shopify-section-{{ section.id }} .px-google-map{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    background: #f2f2f2;
+  }
+
+  /* Optional soft loading background behind iframe */
+  #shopify-section-{{ section.id }} .px-google-map-shell{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background:
+      radial-gradient(circle at 25% 30%, rgba(0,0,0,.06), transparent 55%),
+      radial-gradient(circle at 70% 70%, rgba(0,0,0,.05), transparent 60%),
+      linear-gradient(135deg, rgba(0,0,0,.04), rgba(0,0,0,.02));
+  }
+
+  #shopify-section-{{ section.id }} .map-split__card{
+    position: absolute;
+    z-index: 2;
+    max-width: min(420px, 88%);
+    background: rgba(var(--color-background), var(--color-background-opacity));
+    color: rgb(var(--color-foreground));
+    padding: 22px 22px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.18);
+  }
+
+  #shopify-section-{{ section.id }} .map-split__card--top-left{
+    top: 22px;
+    left: 22px;
+  }
+
+  #shopify-section-{{ section.id }} .map-split__card--top-center{
+    top: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  #shopify-section-{{ section.id }} .map-split__card--top-right{
+    top: 22px;
+    right: 22px;
+  }
+
+  #shopify-section-{{ section.id }} .map-split__card--middle-left{
+    top: 50%;
+    left: 22px;
+    transform: translateY(-50%);
+  }
+
+  #shopify-section-{{ section.id }} .map-split__card--middle-center{
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  #shopify-section-{{ section.id }} .map-split__card--middle-right{
+    top: 50%;
+    right: 22px;
+    transform: translateY(-50%);
+  }
+
+  #shopify-section-{{ section.id }} .map-split__card--bottom-left{
+    bottom: 22px;
+    left: 22px;
+  }
+
+  #shopify-section-{{ section.id }} .map-split__card--bottom-center{
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  #shopify-section-{{ section.id }} .map-split__card--bottom-right{
+    bottom: 22px;
+    right: 22px;
+  }
+
+  #shopify-section-{{ section.id }} .map-split__card .banner__heading{
+    margin: 0 0 10px;
+  }
+
+  #shopify-section-{{ section.id }} .map-split__card .banner__subheading{
+    margin: 0 0 10px;
+    opacity: .9;
+  }
+
+  #shopify-section-{{ section.id }} .map-split__card .banner__text{
+    margin: 0 0 14px;
+  }
+
+  #shopify-section-{{ section.id }} .map-split__card .button{
+    margin-top: 6px;
+  }
+
+  #shopify-section-{{ section.id }} .map-split__image img{
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: var(--image-position);
+  }
+
+  @media (max-width: 989px){
+    #shopify-section-{{ section.id }} .map-split__grid{
+      grid-template-columns: 1fr;
+    }
+
+    {% if section.settings.mobile_text_box_position == 'image_first' %}
+      #shopify-section-{{ section.id }} .map-split__image{
+        order: 1;
+      }
+
+      #shopify-section-{{ section.id }} .map-split__map{
+        order: 2;
+      }
+    {% else %}
+      #shopify-section-{{ section.id }} .map-split__map{
+        order: 1;
+      }
+
+      #shopify-section-{{ section.id }} .map-split__image{
+        order: 2;
+      }
+    {% endif %}
+
+    {% if mobile_ratio != 'adapt' %}
+      #shopify-section-{{ section.id }} .map-split__media{
+        height: {{ mobile_ratio }};
+      }
+    {% else %}
+      #shopify-section-{{ section.id }} .map-split__media{
+        height: auto;
+        padding-bottom: var(--ratio-percent);
+      }
+
+      #shopify-section-{{ section.id }} .map-split__media > *{
+        position: absolute;
+        inset: 0;
+      }
+    {% endif %}
+
+    #shopify-section-{{ section.id }} .map-split__card{
+      left: 16px !important;
+      right: 16px !important;
+      max-width: none;
+      transform: none !important;
+    }
+
+    #shopify-section-{{ section.id }} .map-split__card--middle-left,
+    #shopify-section-{{ section.id }} .map-split__card--middle-center,
+    #shopify-section-{{ section.id }} .map-split__card--middle-right{
+      top: auto;
+      bottom: 16px;
+    }
+  }
+</style>
+
+<div class="section--padding{% if section.settings.show_divider %} section--divider{% endif %}">
+  <div class="page-width{% if section.settings.full_width %} page-width--full-width{% endif %}">
+    <div class="map-split">
+      <div class="map-split__grid">
+
+        <!-- LEFT: GOOGLE MAPS BACKGROUND + CARD -->
+        <div class="map-split__map">
+          <div class="map-split__media">
+
+            <div class="px-google-map-shell" aria-hidden="true"></div>
+
+            <iframe
+              class="px-google-map"
+              title="Google Map"
+              loading="lazy"
+              allowfullscreen
+              referrerpolicy="no-referrer-when-downgrade"
+              src="https://maps.google.com/maps?q={{ dest_encoded }}&z={{ section.settings.map_zoom }}&output=embed">
+            </iframe>
+
+            {%- if section.blocks.size > 0 -%}
+              <div class="map-split__card map-split__card--{{ section.settings.text_box_position }} {{ section.settings.text_alignment }} mobile-{{ section.settings.mobile_text_alignment }}">
+                {%- for block in section.blocks -%}
+                  {%- case block.type -%}
+
+                    {%- when 'heading' -%}
+                      <{{ block.settings.heading_tag }} class="banner__heading {{ block.settings.heading_size }}" {{ block.shopify_attributes }}>
+                        {%- render 'highlight-text',
+                          hl_input: block.settings.heading,
+                          hl_style: block.settings.highlight_style,
+                          hl_enable: block.settings.enable_highlight,
+                          hl_animateWrap: true
+                        -%}
+                      </{{ block.settings.heading_tag }}>
+
+                    {%- when 'subheading' -%}
+                      <p class="banner__subheading{% if block.settings.secondary_color %} banner__subheading--colored{% endif %} {{ block.settings.subheading_size }}" {{ block.shopify_attributes }}>
+                        {%- render 'highlight-text',
+                          hl_input: block.settings.subheading,
+                          hl_style: block.settings.highlight_style,
+                          hl_enable: block.settings.enable_highlight,
+                          hl_animateWrap: true
+                        -%}
+                      </p>
+
+                    {%- when 'text' -%}
+                      <div class="banner__text{% if block.settings.secondary_color %} image-with-text__text--colored{% endif %} {{ block.settings.text_size }} rte" {{ block.shopify_attributes }}>
+                        {%- render 'highlight-text',
+                          hl_input: block.settings.text,
+                          hl_style: block.settings.highlight_style,
+                          hl_enable: block.settings.enable_highlight,
+                          hl_animateWrap: true
+                        -%}
+                      </div>
+
+                    {%- when 'custom_liquid' -%}
+                      <div class="banner__text rte" {{ block.shopify_attributes }}>
+                        {{ block.settings.custom_liquid }}
+                      </div>
+
+                    {%- when 'button' -%}
+                      {%- if block.settings.button_label != blank -%}
+                        {%- assign button_href = block.settings.button_link -%}
+
+                        {%- if button_href == blank -%}
+                          {%- assign button_href = 'https://www.google.com/maps/dir/?api=1&destination=' | append: dest_encoded -%}
+                        {%- endif -%}
+
+                        {%- if block.settings.button_style_secondary -%}
+                          <a
+                            class="button button--cta button--{{ block.settings.button_size }}"
+                            href="{{ button_href }}"
+                            target="_blank"
+                            rel="noopener"
+                            {{ block.shopify_attributes }}>
+                            <span class="label">{{ block.settings.button_label | escape }}</span>
+                            {% render 'icon', icon: 'arrow' %}
+                          </a>
+                        {%- else -%}
+                          <a
+                            class="button button--{{ block.settings.button_size }}"
+                            href="{{ button_href }}"
+                            target="_blank"
+                            rel="noopener"
+                            {{ block.shopify_attributes }}>
+                            {{ block.settings.button_label | escape }}
+                          </a>
+                        {%- endif -%}
+                      {%- endif -%}
+
+                  {%- endcase -%}
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+
+          </div>
+        </div>
+
+        <!-- RIGHT: SINGLE IMAGE -->
+        <div class="map-split__image">
+          <div class="map-split__media">
+            {%- if section.settings.image != blank -%}
+              {%- capture sizes -%}
+                {% if section.settings.full_width %}
+                  50vw
+                {% else %}
+                  (min-width: {{ settings.page_width }}px) {{ settings.page_width | divided_by: 2 }}px, 100vw
+                {% endif %}
+              {%- endcapture -%}
+
+              {{ section.settings.image | image_url: width: 3840 | image_tag:
+                loading: 'lazy',
+                sizes: sizes,
+                widths: '375, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+              }}
+            {%- else -%}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.map.name",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "map_address",
+      "label": "t:sections.map.settings.map_address.label",
+      "info": "Enter the address that should appear on Google Maps.",
+      "default": "620 King St W, Toronto, ON M5V 1M7, Canada"
+    },
+    {
+      "type": "range",
+      "id": "map_zoom",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "label": "t:sections.map.settings.map_zoom.label",
+      "default": 14
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Right side image (single image)"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "options": [
+        {
+          "value": "20% 0",
+          "label": "t:sections.all.image_position.options__1.label"
+        },
+        {
+          "value": "top center",
+          "label": "t:sections.all.image_position.options__2.label"
+        },
+        {
+          "value": "80% 0",
+          "label": "t:sections.all.image_position.options__3.label"
+        },
+        {
+          "value": "20% 50%",
+          "label": "t:sections.all.image_position.options__4.label"
+        },
+        {
+          "value": "center center",
+          "label": "t:sections.all.image_position.options__5.label"
+        },
+        {
+          "value": "80% 50%",
+          "label": "t:sections.all.image_position.options__6.label"
+        },
+        {
+          "value": "20% 100%",
+          "label": "t:sections.all.image_position.options__7.label"
+        },
+        {
+          "value": "bottom center",
+          "label": "t:sections.all.image_position.options__8.label"
+        },
+        {
+          "value": "80% 100%",
+          "label": "t:sections.all.image_position.options__9.label"
+        }
+      ],
+      "default": "center center",
+      "label": "t:sections.all.image_position.label",
+      "info": "t:sections.all.image_position.info"
+    },
+    {
+      "type": "select",
+      "id": "text_box_position",
+      "label": "t:sections.video-hero.settings.text_box_position.label",
+      "options": [
+        {
+          "value": "top-left",
+          "label": "t:sections.video-hero.settings.text_box_position.options__1.label"
+        },
+        {
+          "value": "top-center",
+          "label": "t:sections.video-hero.settings.text_box_position.options__2.label"
+        },
+        {
+          "value": "top-right",
+          "label": "t:sections.video-hero.settings.text_box_position.options__3.label"
+        },
+        {
+          "value": "middle-left",
+          "label": "t:sections.video-hero.settings.text_box_position.options__4.label"
+        },
+        {
+          "value": "middle-center",
+          "label": "t:sections.video-hero.settings.text_box_position.options__5.label"
+        },
+        {
+          "value": "middle-right",
+          "label": "t:sections.video-hero.settings.text_box_position.options__6.label"
+        },
+        {
+          "value": "bottom-left",
+          "label": "t:sections.video-hero.settings.text_box_position.options__7.label"
+        },
+        {
+          "value": "bottom-center",
+          "label": "t:sections.video-hero.settings.text_box_position.options__8.label"
+        },
+        {
+          "value": "bottom-right",
+          "label": "t:sections.video-hero.settings.text_box_position.options__9.label"
+        }
+      ],
+      "default": "middle-left"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.all.text_alignment.options__1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.all.text_alignment.options__2.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.all.text_alignment.options__3.label"
+        }
+      ],
+      "default": "left",
+      "label": "t:sections.all.text_alignment.label"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "label": "t:sections.all.image_ratio.options__1.label",
+          "value": "adapt"
+        },
+        {
+          "label": "t:sections.all.image_ratio.options__2.label",
+          "value": "400px"
+        },
+        {
+          "label": "t:sections.all.image_ratio.options__3.label",
+          "value": "450px"
+        },
+        {
+          "label": "t:sections.all.image_ratio.options__4.label",
+          "value": "500px"
+        },
+        {
+          "label": "t:sections.all.image_ratio.options__5.label",
+          "value": "550px"
+        },
+        {
+          "label": "t:sections.all.image_ratio.options__6.label",
+          "value": "600px"
+        },
+        {
+          "label": "t:sections.all.image_ratio.options__7.label",
+          "value": "650px"
+        },
+        {
+          "label": "t:sections.all.image_ratio.options__8.label",
+          "value": "700px"
+        },
+        {
+          "label": "t:sections.all.image_ratio.options__9.label",
+          "value": "750px"
+        },
+        {
+          "label": "t:sections.all.image_ratio.options__10.label",
+          "value": "100vh"
+        }
+      ],
+      "default": "550px",
+      "label": "t:sections.all.image_ratio.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": true,
+      "label": "t:sections.all.full_width.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "default": false,
+      "label": "t:sections.all.show_divider.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.mobile_layout.header.content"
+    },
+    {
+      "type": "select",
+      "id": "mobile_text_box_position",
+      "options": [
+        {
+          "value": "image_first",
+          "label": "t:sections.map.settings.mobile_text_box_position.options__1.label"
+        },
+        {
+          "value": "text_overlay",
+          "label": "t:sections.map.settings.mobile_text_box_position.options__2.label"
+        }
+      ],
+      "default": "image_first",
+      "label": "t:sections.map.settings.mobile_text_box_position.label"
+    },
+    {
+      "type": "select",
+      "id": "mobile_text_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.all.mobile_layout.mobile_text_alignment.options__1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.all.mobile_layout.mobile_text_alignment.options__2.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.all.mobile_layout.mobile_text_alignment.options__3.label"
+        }
+      ],
+      "default": "left",
+      "label": "t:sections.all.mobile_layout.mobile_text_alignment.label"
+    },
+    {
+      "type": "select",
+      "id": "mobile_image_ratio",
+      "options": [
+        {
+          "label": "t:sections.all.mobile_layout.mobile_image_ratio.options__1.label",
+          "value": "auto"
+        },
+        {
+          "label": "t:sections.all.mobile_layout.mobile_image_ratio.options__2.label",
+          "value": "200px"
+        },
+        {
+          "label": "t:sections.all.mobile_layout.mobile_image_ratio.options__3.label",
+          "value": "250px"
+        },
+        {
+          "label": "t:sections.all.mobile_layout.mobile_image_ratio.options__4.label",
+          "value": "300px"
+        },
+        {
+          "label": "t:sections.all.mobile_layout.mobile_image_ratio.options__5.label",
+          "value": "400px"
+        },
+        {
+          "label": "t:sections.all.mobile_layout.mobile_image_ratio.options__6.label",
+          "value": "500px"
+        },
+        {
+          "label": "t:sections.all.mobile_layout.mobile_image_ratio.options__7.label",
+          "value": "600px"
+        },
+        {
+          "label": "t:sections.all.mobile_layout.mobile_image_ratio.options__8.label",
+          "value": "100vh"
+        },
+        {
+          "label": "t:sections.all.mobile_layout.mobile_image_ratio.options__9.label",
+          "value": "adapt"
+        }
+      ],
+      "default": "400px",
+      "label": "t:sections.all.mobile_layout.mobile_image_ratio.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.colors.header.content"
+    },
+    {
+      "type": "color",
+      "id": "colors_button_label",
+      "label": "t:sections.all.colors.colors_button_label.label",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "colors_button_background",
+      "label": "t:sections.all.colors.colors_button_background.label",
+      "default": "#1a1b18"
+    },
+    {
+      "type": "color",
+      "id": "colors_text",
+      "label": "t:sections.all.colors.colors_text.label",
+      "default": "#1a1b18"
+    },
+    {
+      "type": "color",
+      "id": "colors_overlay",
+      "label": "t:sections.all.colors.colors_background.label",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color_background",
+      "id": "gradient_overlay",
+      "label": "t:sections.all.colors.gradient_background.label"
+    },
+    {
+      "type": "range",
+      "id": "colors_overlay_opacity",
+      "label": "t:sections.all.colors.background_opacity.label",
+      "default": 96,
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "t:sections.all.colors.background_opacity.unit"
+    },
+    {
+      "type": "color",
+      "id": "colors_highlight",
+      "label": "t:sections.all.colors.colors_highlight.label",
+      "default": "#ffb503"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.header.content"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "t:sections.all.padding.padding_top.unit",
+      "label": "t:sections.all.padding.padding_top.label",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "t:sections.all.padding.padding_bottom.unit",
+      "label": "t:sections.all.padding.padding_bottom.label",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "t:sections.map.blocks.heading.name",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "Store name",
+          "label": "t:sections.all.heading.label"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "options": [
+            {
+              "value": "h3",
+              "label": "t:sections.all.heading_size.options__1.label"
+            },
+            {
+              "value": "h2",
+              "label": "t:sections.all.heading_size.options__2.label"
+            },
+            {
+              "value": "h1",
+              "label": "t:sections.all.heading_size.options__3.label"
+            }
+          ],
+          "default": "h2",
+          "label": "t:sections.all.heading_size.label"
+        },
+        {
+          "type": "select",
+          "id": "heading_tag",
+          "options": [
+            {
+              "value": "h1",
+              "label": "t:sections.all.heading_tag.options__1.label"
+            },
+            {
+              "value": "h2",
+              "label": "t:sections.all.heading_tag.options__2.label"
+            },
+            {
+              "value": "h3",
+              "label": "t:sections.all.heading_tag.options__3.label"
+            },
+            {
+              "value": "h4",
+              "label": "t:sections.all.heading_tag.options__4.label"
+            },
+            {
+              "value": "h5",
+              "label": "t:sections.all.heading_tag.options__5.label"
+            },
+            {
+              "value": "h6",
+              "label": "t:sections.all.heading_tag.options__6.label"
+            },
+            {
+              "value": "div",
+              "label": "t:sections.all.heading_tag.options__7.label"
+            },
+            {
+              "value": "span",
+              "label": "t:sections.all.heading_tag.options__8.label"
+            },
+            {
+              "value": "p",
+              "label": "t:sections.all.heading_tag.options__9.label"
+            }
+          ],
+          "default": "h2",
+          "label": "t:sections.all.heading_tag.label",
+          "info": "t:sections.all.heading_tag.info"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.all.highlight.header.content"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_highlight",
+          "label": "t:sections.all.highlight.enable.label",
+          "info": "t:sections.all.highlight.enable.info",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "highlight_style",
+          "options": [
+            {
+              "value": "marker",
+              "label": "t:sections.all.highlight.style.options__1.label"
+            },
+            {
+              "value": "circle",
+              "label": "t:sections.all.highlight.style.options__2.label"
+            },
+            {
+              "value": "underline",
+              "label": "t:sections.all.highlight.style.options__3.label"
+            },
+            {
+              "value": "bold-underline",
+              "label": "t:sections.all.highlight.style.options__4.label"
+            },
+            {
+              "value": "modern-underline",
+              "label": "t:sections.all.highlight.style.options__5.label"
+            },
+            {
+              "value": "sketch-underline",
+              "label": "t:sections.all.highlight.style.options__6.label"
+            },
+            {
+              "value": "squiggle",
+              "label": "t:sections.all.highlight.style.options__7.label"
+            },
+            {
+              "value": "heavy-squiggle",
+              "label": "t:sections.all.highlight.style.options__8.label"
+            },
+            {
+              "value": "solid-color",
+              "label": "t:sections.all.highlight.style.options__9.label"
+            }
+          ],
+          "default": "marker",
+          "label": "t:sections.all.highlight.style.label"
+        }
+      ]
+    },
+    {
+      "type": "subheading",
+      "name": "t:sections.map.blocks.subheading.name",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "subheading",
+          "default": "Add a tagline",
+          "label": "t:sections.all.subheading.label"
+        },
+        {
+          "type": "select",
+          "id": "subheading_size",
+          "options": [
+            {
+              "value": "h5",
+              "label": "t:sections.all.subheading_size.options__1.label"
+            },
+            {
+              "value": "h4",
+              "label": "t:sections.all.subheading_size.options__2.label"
+            },
+            {
+              "value": "h3",
+              "label": "t:sections.all.subheading_size.options__3.label"
+            }
+          ],
+          "default": "h5",
+          "label": "t:sections.all.subheading_size.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "secondary_color",
+          "default": true,
+          "label": "t:sections.all.secondary_color.label"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.all.highlight.header.content"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_highlight",
+          "label": "t:sections.all.highlight.enable.label",
+          "info": "t:sections.all.highlight.enable.info",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "highlight_style",
+          "options": [
+            {
+              "value": "marker",
+              "label": "t:sections.all.highlight.style.options__1.label"
+            },
+            {
+              "value": "circle",
+              "label": "t:sections.all.highlight.style.options__2.label"
+            },
+            {
+              "value": "underline",
+              "label": "t:sections.all.highlight.style.options__3.label"
+            },
+            {
+              "value": "bold-underline",
+              "label": "t:sections.all.highlight.style.options__4.label"
+            },
+            {
+              "value": "modern-underline",
+              "label": "t:sections.all.highlight.style.options__5.label"
+            },
+            {
+              "value": "sketch-underline",
+              "label": "t:sections.all.highlight.style.options__6.label"
+            },
+            {
+              "value": "squiggle",
+              "label": "t:sections.all.highlight.style.options__7.label"
+            },
+            {
+              "value": "heavy-squiggle",
+              "label": "t:sections.all.highlight.style.options__8.label"
+            },
+            {
+              "value": "solid-color",
+              "label": "t:sections.all.highlight.style.options__9.label"
+            }
+          ],
+          "default": "marker",
+          "label": "t:sections.all.highlight.style.label"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "t:sections.map.blocks.text.name",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "default": "<p>620 King Street West<br>Toronto, ON M5V 1M7, Canada</p><p>Mon - Fri, 8:30am - 10:30pm<br>Saturday, 8:30am - 10:30pm<br>Sunday, 8:30am - 10:30pm</p>",
+          "label": "t:sections.all.text.label"
+        },
+        {
+          "type": "select",
+          "id": "text_size",
+          "options": [
+            {
+              "value": "typeset",
+              "label": "t:sections.all.text_size.options__1.label"
+            },
+            {
+              "value": "typeset2",
+              "label": "t:sections.all.text_size.options__2.label"
+            },
+            {
+              "value": "typeset3",
+              "label": "t:sections.all.text_size.options__3.label"
+            }
+          ],
+          "default": "typeset2",
+          "label": "t:sections.all.text_size.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "secondary_color",
+          "default": false,
+          "label": "t:sections.all.secondary_color.label"
+        }
+      ]
+    },
+    {
+      "type": "custom_liquid",
+      "name": "t:sections.custom-liquid.name",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "t:sections.custom-liquid.settings.custom_liquid.label",
+          "info": "t:sections.custom-liquid.settings.custom_liquid.info"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "t:sections.map.blocks.button.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "default": "Get directions",
+          "label": "t:sections.all.button_label.label",
+          "info": "t:sections.all.button_label.info"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "t:sections.all.button_link.label"
+        },
+        {
+          "type": "select",
+          "id": "button_size",
+          "options": [
+            {
+              "value": "small",
+              "label": "t:sections.all.button_size.options__1.label"
+            },
+            {
+              "value": "medium",
+              "label": "t:sections.all.button_size.options__2.label"
+            },
+            {
+              "value": "large",
+              "label": "t:sections.all.button_size.options__3.label"
+            }
+          ],
+          "default": "small",
+          "label": "t:sections.all.button_size.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_style_secondary",
+          "default": false,
+          "label": "t:sections.all.button_style_secondary.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Map split (Google map + image)",
+      "blocks": [
+        {
+          "type": "heading"
+        },
+        {
+          "type": "subheading"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "button"
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer",
+      "custom.overlay"
+    ]
+  }
+}
+{% endschema %}

@@ -1,0 +1,237 @@
+{%- style -%}
+  #shopify-section-{{ section.id }}{
+    --pt: {{ section.settings.padding_top }}px;
+    --pb: {{ section.settings.padding_bottom }}px;
+
+    --bg: {{ section.settings.bg_color }};
+
+    --eyebrow: {{ section.settings.eyebrow_color.red }}, {{ section.settings.eyebrow_color.green }}, {{ section.settings.eyebrow_color.blue }};
+    --heading: {{ section.settings.heading_color.red }}, {{ section.settings.heading_color.green }}, {{ section.settings.heading_color.blue }};
+    --text: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};
+
+    --text-size: {{ section.settings.text_size }}px;
+
+    --container-max: {{ section.settings.container_max_width }}px;
+    --side-pad: {{ section.settings.side_padding }}px;
+    --min-gap: {{ section.settings.min_gap }}px;
+
+    {%- if section.settings.heading_size_mode == 'theme' -%}
+      --heading-size: calc(var(--font-heading-scale) * 4rem);
+    {%- else -%}
+      --heading-size: {{ section.settings.heading_size_custom }}px;
+    {%- endif -%}
+  }
+
+  #shopify-section-{{ section.id }} .section--padding{
+    padding-top: var(--pt);
+    padding-bottom: var(--pb);
+    background: var(--bg);
+  }
+{%- endstyle -%}
+
+<style>
+  #shopify-section-{{ section.id }} .mission-split{
+    width: 100%;
+  }
+
+  /* Container width control */
+  #shopify-section-{{ section.id }} .mission-split__container{
+    width: 100%;
+    padding-left: var(--side-pad);
+    padding-right: var(--side-pad);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #shopify-section-{{ section.id }} .mission-split__container.is-contained{
+    max-width: var(--container-max);
+  }
+
+  /* Space-between layout */
+  #shopify-section-{{ section.id }} .mission-split__grid{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--min-gap); /* minimum space if it gets tight */
+  }
+
+  #shopify-section-{{ section.id }} .mission-split__left{
+    flex: 0 1 560px; /* grows/shrinks but doesn’t force equal columns */
+    text-align: left;
+  }
+
+  #shopify-section-{{ section.id }} .mission-split__right{
+    flex: 0 1 520px;
+    text-align: left;
+    margin-left: auto; /* helps it sit on the far right */
+    color: rgb(var(--text));
+    font-size: var(--text-size);
+    line-height: 1.6;
+    max-width: 55ch;
+  }
+
+  #shopify-section-{{ section.id }} .mission-split__eyebrow{
+    margin: 0 0 10px;
+    font-size: 11px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: rgb(var(--eyebrow));
+    opacity: .9;
+  }
+
+  #shopify-section-{{ section.id }} .mission-split__heading{
+    margin: 0;
+    color: rgb(var(--heading));
+    font-weight: 700;
+    line-height: 1.05;
+    font-size: var(--heading-size);
+    max-width: 22ch;
+  }
+
+  #shopify-section-{{ section.id }} .mission-split__right p{
+    margin: 0 0 14px;
+  }
+  #shopify-section-{{ section.id }} .mission-split__right p:last-child{
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 989px){
+    #shopify-section-{{ section.id }} .mission-split__grid{
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    #shopify-section-{{ section.id }} .mission-split__left,
+    #shopify-section-{{ section.id }} .mission-split__right{
+      flex: 1 1 auto;
+      margin-left: 0;
+      max-width: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .mission-split__heading{
+      max-width: 100%;
+      font-size: clamp(30px, 7vw, var(--heading-size));
+    }
+  }
+</style>
+
+<div class="section--padding{% if section.settings.show_divider %} section--divider{% endif %}">
+  <div class="mission-split">
+    <div class="mission-split__container{% unless section.settings.full_width %} is-contained{% endunless %}">
+      <div class="mission-split__grid">
+        <div class="mission-split__left">
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="mission-split__eyebrow">{{ section.settings.eyebrow }}</p>
+          {%- endif -%}
+
+          <{{ section.settings.heading_tag }} class="mission-split__heading">
+            {%- if section.settings.use_highlight -%}
+              {%- render 'highlight-text',
+                hl_input: section.settings.heading,
+                hl_style: section.settings.highlight_style,
+                hl_enable: true,
+                hl_animateWrap: true -%}
+            {%- else -%}
+              {{ section.settings.heading | newline_to_br }}
+            {%- endif -%}
+          </{{ section.settings.heading_tag }}>
+        </div>
+
+        <div class="mission-split__right rte">
+          {{ section.settings.text }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Mission split",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "checkbox", "id": "show_divider", "default": false, "label": "Show divider" },
+
+    { "type": "header", "content": "Width" },
+    { "type": "checkbox", "id": "full_width", "default": true, "label": "Full width" },
+    { "type": "range", "id": "container_max_width", "label": "Custom width (px) when not full width", "min": 700, "max": 1600, "step": 20, "default": 1200 },
+    { "type": "range", "id": "side_padding", "label": "Side padding (px)", "min": 0, "max": 80, "step": 4, "default": 24 },
+    { "type": "range", "id": "min_gap", "label": "Minimum space between columns (px)", "min": 0, "max": 140, "step": 4, "default": 84 },
+
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "OUR MISSION" },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Because We’re Not Just\nPreserving Flowers."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Right text",
+      "default": "<p>We’re protecting the feeling. The moment.<br>The magic of standing there, heart racing, saying “I do.”</p><p>Most brides watch their bouquet wilt…<br>But our brides hold their love story forever.</p>"
+    },
+
+    { "type": "header", "content": "Highlight (optional)" },
+    { "type": "checkbox", "id": "use_highlight", "label": "Use highlight-text snippet for heading", "default": false },
+    {
+      "type": "select",
+      "id": "highlight_style",
+      "options": [
+        { "value": "marker", "label": "Marker" },
+        { "value": "circle", "label": "Circle" },
+        { "value": "underline", "label": "Underline" },
+        { "value": "bold-underline", "label": "Bold underline" },
+        { "value": "modern-underline", "label": "Modern underline" },
+        { "value": "sketch-underline", "label": "Sketch underline" },
+        { "value": "squiggle", "label": "Squiggle" },
+        { "value": "heavy-squiggle", "label": "Heavy squiggle" },
+        { "value": "solid-color", "label": "Solid color" }
+      ],
+      "default": "marker",
+      "label": "Highlight style"
+    },
+
+    { "type": "header", "content": "Typography" },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "options": [
+        { "value": "h1", "label": "h1" },
+        { "value": "h2", "label": "h2" },
+        { "value": "h3", "label": "h3" },
+        { "value": "div", "label": "div" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "heading_size_mode",
+      "label": "Heading size mode",
+      "options": [
+        { "value": "theme", "label": "Theme (calc(var(--font-heading-scale) * 4rem))" },
+        { "value": "custom", "label": "Custom (px)" }
+      ],
+      "default": "theme"
+    },
+    { "type": "range", "id": "heading_size_custom", "label": "Custom heading size (px)", "min": 28, "max": 90, "step": 2, "default": 52 },
+    { "type": "range", "id": "text_size", "label": "Right text size (px)", "min": 12, "max": 22, "step": 1, "default": 13 },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "eyebrow_color", "label": "Eyebrow color", "default": "#6b6b6b" },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#b23b5a" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#6b6b6b" },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Padding top", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Padding bottom", "default": 40 }
+  ],
+  "presets": [
+    { "name": "Mission split" }
+  ],
+  "disabled_on": { "groups": ["header", "footer", "custom.overlay"] }
+}
+{% endschema %}

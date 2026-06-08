@@ -1,0 +1,835 @@
+{% comment %}
+  Cart Upsell Overlay
+  Cart page only.
+  Shows up to 5 random upsell products before checkout.
+  Automatically uses all store products.
+  Shows products with price higher than the highest-priced product currently in the cart.
+  Shows every time checkout is pressed.
+
+  Flow:
+  Checkout click -> Upsell popup.
+  Upsell "Not now" -> Opens cart-downsell-overlay.liquid if available.
+  If downsell file is not added or has no eligible products -> checkout.
+{% endcomment %}
+
+{%- if request.page_type == 'cart' -%}
+  {%- liquid
+    assign upsell_collection = collections['all']
+    assign comparison_price = 0
+
+    for item in cart.items
+      assign current_item_price = item.final_price
+
+      if current_item_price > comparison_price
+        assign comparison_price = current_item_price
+      endif
+    endfor
+  -%}
+
+  <style>
+    {%- if section.settings.hide_dynamic_checkout_buttons -%}
+      .cart__dynamic-checkout-buttons,
+      .additional-checkout-buttons {
+        display: none !important;
+      }
+    {%- endif -%}
+
+    #CartUpsellOverlay-{{ section.id }} {
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    #CartUpsellOverlay-{{ section.id }}.is-active {
+      display: flex;
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-overlay__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.48);
+      backdrop-filter: blur(3px);
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-overlay__modal {
+      position: relative;
+      z-index: 2;
+      width: min(100%, 920px);
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+      background: {{ section.settings.modal_background }};
+      color: {{ section.settings.text_color }};
+      border-radius: {{ section.settings.border_radius }}px;
+      padding: 34px;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24);
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-overlay__eyebrow {
+      margin: 0 0 8px;
+      font-size: 12px;
+      line-height: 1.2;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      opacity: 0.65;
+      text-align: center;
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-overlay__heading {
+      margin: 0 0 10px;
+      font-size: 32px;
+      line-height: 1.12;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-overlay__text {
+      max-width: 620px;
+      margin: 0 auto 26px;
+      font-size: 15px;
+      line-height: 1.55;
+      opacity: 0.78;
+      text-align: center;
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-products {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-product {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      padding: 12px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 14px;
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-product[hidden] {
+      display: none !important;
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-product__image-wrapper {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.06);
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-product__image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-product__image-placeholder {
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.06);
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-product__content {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-product__title {
+      margin: 0 0 8px;
+      font-size: 14px;
+      line-height: 1.35;
+      font-weight: 500;
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-product__price {
+      margin: 0 0 12px;
+      font-size: 14px;
+      line-height: 1.2;
+      font-weight: 600;
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-product__button {
+      width: 100%;
+      min-height: 42px;
+      margin-top: auto;
+      border: 0;
+      border-radius: {{ section.settings.button_radius }}px;
+      cursor: pointer;
+      background: {{ section.settings.button_background }};
+      color: {{ section.settings.button_text_color }};
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-product__button:hover {
+      opacity: 0.88;
+      transform: translateY(-1px);
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-product__button:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+      transform: none;
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-product__button.is-loading {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-overlay__actions {
+      display: grid;
+      gap: 10px;
+      max-width: 360px;
+      margin: 0 auto;
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-overlay__button {
+      width: 100%;
+      min-height: 52px;
+      border: 0;
+      border-radius: {{ section.settings.button_radius }}px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-overlay__button:hover {
+      opacity: 0.88;
+      transform: translateY(-1px);
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-overlay__button--secondary {
+      background: transparent;
+      color: {{ section.settings.text_color }};
+      border: 1px solid rgba(0, 0, 0, 0.18);
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-overlay__error {
+      display: none;
+      max-width: 520px;
+      margin: 14px auto 0;
+      color: #b00020;
+      font-size: 13px;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    #CartUpsellOverlay-{{ section.id }} .cu-overlay__error.is-active {
+      display: block;
+    }
+
+    body.cu-cart-refreshing {
+      cursor: progress;
+    }
+
+    @media screen and (max-width: 989px) {
+      #CartUpsellOverlay-{{ section.id }} .cu-products {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media screen and (max-width: 749px) {
+      #CartUpsellOverlay-{{ section.id }} {
+        align-items: flex-end;
+        padding: 12px;
+      }
+
+      #CartUpsellOverlay-{{ section.id }} .cu-overlay__modal {
+        width: 100%;
+        padding: 28px 18px 20px;
+        border-radius: {{ section.settings.border_radius }}px {{ section.settings.border_radius }}px 0 0;
+      }
+
+      #CartUpsellOverlay-{{ section.id }} .cu-overlay__heading {
+        font-size: 24px;
+      }
+
+      #CartUpsellOverlay-{{ section.id }} .cu-products {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      #CartUpsellOverlay-{{ section.id }} .cu-product {
+        padding: 10px;
+      }
+
+      #CartUpsellOverlay-{{ section.id }} .cu-product__title,
+      #CartUpsellOverlay-{{ section.id }} .cu-product__price {
+        font-size: 13px;
+      }
+
+      #CartUpsellOverlay-{{ section.id }} .cu-product__button {
+        min-height: 40px;
+        font-size: 10px;
+      }
+    }
+
+    @media screen and (max-width: 420px) {
+      #CartUpsellOverlay-{{ section.id }} .cu-products {
+        grid-template-columns: 1fr;
+      }
+
+      #CartUpsellOverlay-{{ section.id }} .cu-product {
+        display: grid;
+        grid-template-columns: 88px 1fr;
+        gap: 12px;
+        align-items: center;
+      }
+
+      #CartUpsellOverlay-{{ section.id }} .cu-product__image-wrapper {
+        margin-bottom: 0;
+      }
+    }
+  </style>
+
+  <div
+    id="CartUpsellOverlay-{{ section.id }}"
+    class="cu-overlay"
+    aria-hidden="true"
+    data-upsell-enabled="{% if section.settings.enable_upsell %}true{% else %}false{% endif %}"
+  >
+    <div class="cu-overlay__backdrop" data-cu-skip></div>
+
+    <div class="cu-overlay__modal" role="dialog" aria-modal="true">
+      <p class="cu-overlay__eyebrow">{{ section.settings.upsell_eyebrow }}</p>
+      <h2 class="cu-overlay__heading">{{ section.settings.upsell_heading }}</h2>
+      <p class="cu-overlay__text">{{ section.settings.upsell_text }}</p>
+
+      <div class="cu-products" data-cu-products>
+        {%- if upsell_collection != blank -%}
+          {%- paginate upsell_collection.products by 250 -%}
+            {%- for upsell_product in upsell_collection.products -%}
+              {%- liquid
+                assign upsell_variant = upsell_product.selected_or_first_available_variant
+                assign product_already_in_cart = false
+
+                for item in cart.items
+                  if item.product.id == upsell_product.id
+                    assign product_already_in_cart = true
+                  endif
+                endfor
+              -%}
+
+              {%- if upsell_variant != blank and upsell_variant.available and product_already_in_cart == false and upsell_variant.price > comparison_price -%}
+                <div class="cu-product" data-cu-product-card hidden>
+                  <div class="cu-product__image-wrapper">
+                    {%- if upsell_product.featured_image != blank -%}
+                      {{
+                        upsell_product.featured_image
+                        | image_url: width: 400
+                        | image_tag:
+                          class: 'cu-product__image',
+                          loading: 'lazy',
+                          alt: upsell_product.title
+                      }}
+                    {%- else -%}
+                      <div class="cu-product__image-placeholder"></div>
+                    {%- endif -%}
+                  </div>
+
+                  <div class="cu-product__content">
+                    <h3 class="cu-product__title">{{ upsell_product.title }}</h3>
+
+                    <p class="cu-product__price">
+                      {%- if settings.currency_code_enabled -%}
+                        {{ upsell_variant.price | money_with_currency }}
+                      {%- else -%}
+                        {{ upsell_variant.price | money }}
+                      {%- endif -%}
+                    </p>
+
+                    <button
+                      type="button"
+                      class="cu-product__button"
+                      data-cu-add-product
+                      data-variant-id="{{ upsell_variant.id }}"
+                      {% unless upsell_variant.available %}disabled{% endunless %}
+                    >
+                      {%- if upsell_variant.available -%}
+                        {{ section.settings.product_button_label }}
+                      {%- else -%}
+                        Sold out
+                      {%- endif -%}
+                    </button>
+                  </div>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endpaginate -%}
+        {%- endif -%}
+      </div>
+
+      <div class="cu-overlay__actions">
+        <button type="button" class="cu-overlay__button cu-overlay__button--secondary" data-cu-skip>
+          {{ section.settings.skip_label }}
+        </button>
+      </div>
+
+      <div class="cu-overlay__error" data-cu-error></div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const overlay = document.getElementById('CartUpsellOverlay-{{ section.id }}');
+
+      if (!overlay) return;
+
+      const errorBox = overlay.querySelector('[data-cu-error]');
+      const upsellEnabled = overlay.dataset.upsellEnabled === 'true';
+      const maxProductsToShow = 5;
+
+      let flowStarted = false;
+      let isProcessing = false;
+
+      const checkoutSelector = [
+        'button[name="checkout"]',
+        'input[name="checkout"]',
+        '.cart__checkout-button',
+        'a[href="/checkout"]',
+        'a[href$="/checkout"]',
+        'a[href*="/checkout"]',
+        '[formaction="/checkout"]',
+        '[formaction$="/checkout"]',
+        '[formaction*="/checkout"]'
+      ].join(',');
+
+      const getShopifyRoot = () => {
+        if (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) {
+          return window.Shopify.routes.root;
+        }
+
+        return '/';
+      };
+
+      const goToCheckout = () => {
+        window.location.href = getShopifyRoot() + 'checkout';
+      };
+
+      const stopEvent = (event) => {
+        if (!event) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (typeof event.stopImmediatePropagation === 'function') {
+          event.stopImmediatePropagation();
+        }
+      };
+
+      const clearError = () => {
+        if (!errorBox) return;
+
+        errorBox.textContent = '';
+        errorBox.classList.remove('is-active');
+      };
+
+      const showError = (message) => {
+        if (!errorBox) return;
+
+        errorBox.textContent = message || 'Something went wrong. Please try again.';
+        errorBox.classList.add('is-active');
+      };
+
+      const randomizeUpsellProducts = () => {
+        const productGrid = overlay.querySelector('[data-cu-products]');
+
+        if (!productGrid) return 0;
+
+        const cards = Array.from(productGrid.querySelectorAll('[data-cu-product-card]'));
+
+        if (!cards.length) return 0;
+
+        cards.forEach((card) => {
+          card.hidden = true;
+        });
+
+        for (let index = cards.length - 1; index > 0; index -= 1) {
+          const randomIndex = Math.floor(Math.random() * (index + 1));
+          const currentCard = cards[index];
+
+          cards[index] = cards[randomIndex];
+          cards[randomIndex] = currentCard;
+        }
+
+        cards.slice(0, maxProductsToShow).forEach((card) => {
+          card.hidden = false;
+          productGrid.appendChild(card);
+        });
+
+        return Math.min(cards.length, maxProductsToShow);
+      };
+
+      const openOverlay = () => {
+        clearError();
+
+        const shownProducts = randomizeUpsellProducts();
+
+        if (shownProducts === 0) {
+          console.warn('[Cart Upsell] No eligible upsell products found. Product prices must be higher than the highest-priced cart item.');
+          goToCheckout();
+          return;
+        }
+
+        overlay.classList.add('is-active');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.documentElement.style.overflow = 'hidden';
+      };
+
+      const closeOverlay = () => {
+        overlay.classList.remove('is-active');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.documentElement.style.overflow = '';
+      };
+
+      const openDownsellOrCheckout = () => {
+        closeOverlay();
+        flowStarted = false;
+
+        if (
+          window.CartDownsellOverlay &&
+          typeof window.CartDownsellOverlay.open === 'function'
+        ) {
+          const downsellOpened = window.CartDownsellOverlay.open();
+
+          if (downsellOpened) {
+            return;
+          }
+        }
+
+        goToCheckout();
+      };
+
+      const refreshCartSections = async () => {
+        document.body.classList.add('cu-cart-refreshing');
+
+        const response = await fetch(window.location.pathname + '?_=' + Date.now(), {
+          method: 'GET',
+          headers: {
+            Accept: 'text/html'
+          }
+        });
+
+        const html = await response.text();
+        const parser = new DOMParser();
+        const newDocument = parser.parseFromString(html, 'text/html');
+
+        const selectorsToRefresh = [
+          'cart-items',
+          '#main-cart-items',
+          '#MainCartItems',
+          '#main-cart-footer',
+          '.cart__footer-wrapper',
+          '.cart-count-bubble',
+          '#cart-icon-bubble',
+          'cart-icon-bubble',
+          '#CartUpsellOverlay-{{ section.id }} [data-cu-products]',
+          '[id^="CartDownsellOverlay-"] [data-cd-products]'
+        ];
+
+        selectorsToRefresh.forEach((selector) => {
+          const currentElement = document.querySelector(selector);
+          const newElement = newDocument.querySelector(selector);
+
+          if (currentElement && newElement) {
+            currentElement.innerHTML = newElement.innerHTML;
+          }
+        });
+
+        document.body.classList.remove('cu-cart-refreshing');
+
+        document.dispatchEvent(new CustomEvent('cart:refresh'));
+        document.dispatchEvent(new CustomEvent('cart:updated'));
+      };
+
+      const addVariantToCart = async (variantId, button) => {
+        if (!variantId) {
+          throw new Error('Missing product variant ID.');
+        }
+
+        button.classList.add('is-loading');
+        button.disabled = true;
+        button.dataset.originalText = button.textContent.trim();
+        button.textContent = '{{ section.settings.loading_label | escape }}';
+
+        const response = await fetch(getShopifyRoot() + 'cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+          },
+          body: JSON.stringify({
+            items: [
+              {
+                id: Number(variantId),
+                quantity: 1
+              }
+            ]
+          })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.description || result.message || 'Unable to add this product.');
+        }
+
+        return result;
+      };
+
+      const resetProductButton = (button) => {
+        if (!button) return;
+
+        button.classList.remove('is-loading');
+        button.disabled = false;
+
+        if (button.dataset.originalText) {
+          button.textContent = button.dataset.originalText;
+        }
+      };
+
+      const startFlow = (event) => {
+        stopEvent(event);
+
+        if (flowStarted) return;
+
+        flowStarted = true;
+
+        const availableUpsellProducts = randomizeUpsellProducts();
+
+        console.log('[Cart Upsell] Enabled:', upsellEnabled);
+        console.log('[Cart Upsell] Eligible automatic higher-price products:', availableUpsellProducts);
+
+        if (!upsellEnabled) {
+          flowStarted = false;
+          goToCheckout();
+          return;
+        }
+
+        if (availableUpsellProducts === 0) {
+          console.warn('[Cart Upsell] Popup skipped because no automatic higher-price products were found.');
+          flowStarted = false;
+          goToCheckout();
+          return;
+        }
+
+        openOverlay();
+      };
+
+      document.addEventListener(
+        'click',
+        (event) => {
+          const checkoutButton = event.target.closest(checkoutSelector);
+
+          if (!checkoutButton) return;
+          if (checkoutButton.disabled) return;
+
+          startFlow(event);
+        },
+        true
+      );
+
+      document.addEventListener(
+        'submit',
+        (event) => {
+          const form = event.target;
+          const submitter = event.submitter;
+
+          if (!form) return;
+
+          const formAction = form.getAttribute('action') || '';
+          const submitterAction = submitter ? submitter.getAttribute('formaction') || '' : '';
+          const submitterText = submitter ? (submitter.textContent || submitter.value || '').toLowerCase() : '';
+
+          const isCartForm =
+            form.id === 'cart' ||
+            formAction === '{{ routes.cart_url }}' ||
+            formAction === '/cart' ||
+            formAction.indexOf('/cart') !== -1;
+
+          const isCheckoutSubmit =
+            submitter &&
+            (
+              submitter.name === 'checkout' ||
+              submitter.classList.contains('cart__checkout-button') ||
+              submitterAction.indexOf('/checkout') !== -1 ||
+              submitterText.indexOf('checkout') !== -1
+            );
+
+          if (!isCartForm || !isCheckoutSubmit) return;
+
+          startFlow(event);
+        },
+        true
+      );
+
+      overlay.addEventListener('click', async (event) => {
+        const addButton = event.target.closest('[data-cu-add-product]');
+        const skipButton = event.target.closest('[data-cu-skip]');
+
+        if (addButton && overlay.contains(addButton)) {
+          if (isProcessing) return;
+
+          const variantId = addButton.dataset.variantId;
+
+          clearError();
+
+          try {
+            isProcessing = true;
+
+            await addVariantToCart(variantId, addButton);
+
+            closeOverlay();
+
+            await refreshCartSections();
+
+            flowStarted = false;
+            isProcessing = false;
+          } catch (error) {
+            isProcessing = false;
+            resetProductButton(addButton);
+            showError(error.message);
+          }
+
+          return;
+        }
+
+        if (skipButton && overlay.contains(skipButton)) {
+          if (isProcessing) return;
+
+          clearError();
+          openDownsellOrCheckout();
+        }
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (!overlay.classList.contains('is-active')) return;
+
+        if (event.key === 'Escape') {
+          clearError();
+          openDownsellOrCheckout();
+        }
+      });
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Cart upsell",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_upsell",
+      "label": "Enable upsell popup",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "upsell_eyebrow",
+      "label": "Small text",
+      "default": "Special offer"
+    },
+    {
+      "type": "text",
+      "id": "upsell_heading",
+      "label": "Heading",
+      "default": "Complete your order"
+    },
+    {
+      "type": "textarea",
+      "id": "upsell_text",
+      "label": "Description",
+      "default": "Add one of these recommended items before checking out."
+    },
+    {
+      "type": "text",
+      "id": "product_button_label",
+      "label": "Product add button",
+      "default": "Add"
+    },
+    {
+      "type": "text",
+      "id": "loading_label",
+      "label": "Loading button text",
+      "default": "Adding..."
+    },
+    {
+      "type": "text",
+      "id": "skip_label",
+      "label": "Skip button",
+      "default": "Not now"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_dynamic_checkout_buttons",
+      "label": "Hide Shop Pay / PayPal / Google Pay on cart",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "modal_background",
+      "label": "Popup background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Popup text color",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "#bd3365"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Popup button text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Popup border radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Button border radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cart upsell"
+    }
+  ]
+}
+{% endschema %}

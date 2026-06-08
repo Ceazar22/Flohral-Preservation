@@ -1,0 +1,322 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "heading_size": "h0",
+        "show_description": true,
+        "show_image": true,
+        "apply_overlay": true,
+        "image_position": "center center",
+        "image_ratio": "550px",
+        "text_alignment": "left",
+        "mobile_text_alignment": "left",
+        "mobile_image_ratio": "250px",
+        "show_text_below": false,
+        "padding_top": 0,
+        "padding_bottom": 36
+      }
+    },
+    "custom_collection_banner_grid_H6AzQX": {
+      "type": "custom-collection-banner-grid",
+      "blocks": {
+        "tile_MV9nHC": {
+          "type": "tile",
+          "settings": {
+            "collection": "signature-items",
+            "label": "Collection"
+          }
+        },
+        "tile_VUC7Hz": {
+          "type": "tile",
+          "settings": {
+            "collection": "most-popular-resin-keepsakes",
+            "label": "Collection"
+          }
+        },
+        "tile_iD9qeM": {
+          "type": "tile",
+          "settings": {
+            "collection": "new-release-keepsakes",
+            "label": "Collection"
+          }
+        },
+        "tile_XEkc3F": {
+          "type": "tile",
+          "settings": {
+            "collection": "popular-add-ons-floral-preservation",
+            "label": "Collection"
+          }
+        }
+      },
+      "block_order": [
+        "tile_MV9nHC",
+        "tile_VUC7Hz",
+        "tile_iD9qeM",
+        "tile_XEkc3F"
+      ],
+      "name": "Custom Collection",
+      "settings": {
+        "full_width": false,
+        "show_divider": false,
+        "hero_video": "shopify://files/videos/Engraving Final.mp4",
+        "hero_video_url": "",
+        "hero_video_url_mobile": "",
+        "video_label": "Custom Engraving",
+        "show_play_icon": true,
+        "mobile_video_ratio": "9/16",
+        "header_offset": 0,
+        "heading": "<p>Shop Floral<br/>Preservation</p>",
+        "heading_tag": "h2",
+        "heading_size": "h0",
+        "intro_heading_font_size": 46,
+        "intro_text_font_size": 14,
+        "center_heading_mobile": true,
+        "intro_heading_font_size_mobile": 32,
+        "intro_text_font_size_mobile": 14,
+        "accent_color_mobile": "#b23b5a",
+        "intro_padding_top_mobile": 28,
+        "intro_padding_right_mobile": 28,
+        "intro_padding_bottom_mobile": 28,
+        "intro_padding_left_mobile": 28,
+        "text": "<p>Bringing you unique pieces that make your precious memories into timeless keepsakes.</p>",
+        "button_label": "Shop now",
+        "button_link": "",
+        "tile_label_font_size": 12,
+        "hero_label_font_size": 22,
+        "hero_label_bold": true,
+        "intro_bg": "#fff6f8",
+        "intro_padding": 28,
+        "intro_radius": 0,
+        "top_row_bg": "#f7eef0",
+        "top_row_padding": 12,
+        "top_row_radius": 0,
+        "gap": 18,
+        "large_height": 360,
+        "small_height": 240,
+        "small_tile_span": "3",
+        "radius": 0,
+        "accent_color": "#b23b5a",
+        "text_color": "#6b6b6b",
+        "padding_top": 24,
+        "padding_bottom": 40
+      }
+    },
+    "collection_banner_grid_JmJcX9": {
+      "type": "collection-banner-grid",
+      "blocks": {
+        "tile_KK8NRA": {
+          "type": "tile",
+          "settings": {
+            "collection": "",
+            "custom_link": "https://tu6umt-gi.myshopify.com/collections/all?filter.v.price.gte=&filter.v.price.lte=&filter.p.tag=Signature&sort_by=price-descending",
+            "thumb_type": "video",
+            "thumb_image": "shopify://shop_images/Resin_Collection_34559b83-39eb-4e77-a43f-b09c60eec478.webp",
+            "use_collection_image": true,
+            "thumb_video": "shopify://files/videos/Engraving Final.mp4",
+            "thumb_video_url": "",
+            "thumb_video_mobile": "shopify://files/videos/Copy of engraving 2.0.mp4",
+            "thumb_video_url_mobile": "",
+            "mobile_video_ratio": "9/16",
+            "label": "custom engraving",
+            "show_play_icon": true
+          }
+        },
+        "tile_Cy6zVJ": {
+          "type": "tile",
+          "settings": {
+            "collection": "",
+            "custom_link": "https://flohralpreservation.com/collections/all?filter.v.price.gte=&filter.v.price.lte=&filter.p.tag=Signature&sort_by=price-descending",
+            "thumb_type": "image",
+            "thumb_image": "shopify://shop_images/Vanity_tray_flower_preservation.jpg",
+            "use_collection_image": true,
+            "thumb_video_url": "",
+            "thumb_video_url_mobile": "",
+            "mobile_video_ratio": "16/9",
+            "label": "signature keepsakes",
+            "show_play_icon": true
+          }
+        },
+        "tile_mGxRJH": {
+          "type": "tile",
+          "settings": {
+            "collection": "",
+            "custom_link": "https://tu6umt-gi.myshopify.com/collections/all?filter.v.price.gte=&filter.v.price.lte=&filter.p.tag=Most+Popular+Blocks&sort_by=price-descending",
+            "thumb_type": "image",
+            "thumb_image": "shopify://shop_images/Hexagon_flower_preservation.png",
+            "use_collection_image": true,
+            "thumb_video_url": "",
+            "thumb_video_url_mobile": "",
+            "mobile_video_ratio": "16/9",
+            "label": "most popular",
+            "show_play_icon": true
+          }
+        },
+        "tile_xLQTMx": {
+          "type": "tile",
+          "settings": {
+            "collection": "",
+            "custom_link": "https://tu6umt-gi.myshopify.com/collections/all?filter.v.price.gte=&filter.v.price.lte=&filter.p.tag=New+Release&sort_by=price-descending",
+            "thumb_type": "image",
+            "thumb_image": "shopify://shop_images/new_release_big_frame.webp",
+            "use_collection_image": true,
+            "thumb_video_url": "",
+            "thumb_video_url_mobile": "",
+            "mobile_video_ratio": "16/9",
+            "label": "new release items",
+            "show_play_icon": true
+          }
+        },
+        "tile_CXhR4b": {
+          "type": "tile",
+          "settings": {
+            "collection": "",
+            "custom_link": "https://tu6umt-gi.myshopify.com/collections/all?filter.v.price.gte=&filter.v.price.lte=&filter.p.tag=Popular+Add-ons&sort_by=price-descending",
+            "thumb_type": "image",
+            "thumb_image": "shopify://shop_images/7_90733c57-9505-473d-83e0-d7e2078e1579.webp",
+            "use_collection_image": true,
+            "thumb_video_url": "",
+            "thumb_video_url_mobile": "",
+            "mobile_video_ratio": "16/9",
+            "label": "Popular Add-ons",
+            "show_play_icon": true
+          }
+        }
+      },
+      "block_order": [
+        "tile_KK8NRA",
+        "tile_Cy6zVJ",
+        "tile_mGxRJH",
+        "tile_xLQTMx",
+        "tile_CXhR4b"
+      ],
+      "disabled": true,
+      "name": "Collection banner grid",
+      "settings": {
+        "full_width": false,
+        "show_divider": false,
+        "header_offset": 0,
+        "heading": "<p>SHOP FLOHRAL PRESERVATION</p>",
+        "heading_tag": "h2",
+        "heading_size": "h2",
+        "intro_heading_font_size": 46,
+        "center_heading_mobile": true,
+        "intro_heading_font_size_mobile": 32,
+        "intro_text_font_size_mobile": 14,
+        "accent_color_mobile": "#000000",
+        "intro_padding_top_mobile": 28,
+        "intro_padding_right_mobile": 28,
+        "intro_padding_bottom_mobile": 10,
+        "intro_padding_left_mobile": 28,
+        "tile_label_font_size": 20,
+        "hero_label_font_size": 20,
+        "hero_label_bold": true,
+        "text": "<p>Check out our gallery of floral preservation, where your flowers are beautifully preserved so you can relive and hold your memories forever.</p>",
+        "button_label": "Shop now",
+        "button_link": "",
+        "intro_bg": "rgba(0,0,0,0)",
+        "intro_padding": 36,
+        "intro_radius": 0,
+        "top_row_bg": "#f7eef0",
+        "top_row_padding": 0,
+        "top_row_radius": 0,
+        "gap": 18,
+        "large_height": 400,
+        "small_height": 400,
+        "small_tile_span": "3",
+        "radius": 0,
+        "accent_color": "#bb3263",
+        "text_color": "#6b6b6b",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "subs": {
+      "type": "main-collection-subs",
+      "disabled": true,
+      "settings": {
+        "menu": "",
+        "per_row": 5,
+        "columns_mobile": "1",
+        "horizontal_on_mobile": true,
+        "grid_image": "product",
+        "image_ratio": "adapt",
+        "image_position": "center center",
+        "apply_overlay": true,
+        "padding_top": 36,
+        "padding_bottom": 0
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "products_per_row": 4,
+        "rows_per_page": 3,
+        "columns_mobile": "2",
+        "pagination": "paginated",
+        "enable_sticky_facet": true,
+        "enable_sorting": true,
+        "enable_viewing": true,
+        "enable_filtering": true,
+        "filter_type": "vertical",
+        "enable_filtering_color_swatches": false,
+        "filtering_color_swatches_add_label": false,
+        "filtering_max_items": 6,
+        "image_ratio": "portrait",
+        "image_position": "center center",
+        "enable_image_fill": true,
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": false,
+        "show_quick_buy": false,
+        "enable_quick_view": false,
+        "enable_color_swatches": false,
+        "enable_countdown": false,
+        "padding_top": 0,
+        "padding_bottom": 72
+      }
+    },
+    "recently-viewed": {
+      "type": "recently-viewed-products",
+      "settings": {
+        "show_divider": true,
+        "heading": "Recently viewed",
+        "heading_size": "h1",
+        "heading_alignment": "center",
+        "heading_tag": "h2",
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "image_ratio": "portrait",
+        "image_position": "center center",
+        "enable_image_fill": true,
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": true,
+        "show_quick_buy": true,
+        "enable_quick_view": true,
+        "enable_color_swatches": true,
+        "enable_countdown": true,
+        "padding_top": 60,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "custom_collection_banner_grid_H6AzQX",
+    "collection_banner_grid_JmJcX9",
+    "subs",
+    "product-grid",
+    "recently-viewed"
+  ]
+}

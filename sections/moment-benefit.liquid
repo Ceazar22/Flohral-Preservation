@@ -1,0 +1,352 @@
+{%- style -%}
+  #shopify-section-{{ section.id }}{
+    --pt: {{ section.settings.padding_top }}px;
+    --pb: {{ section.settings.padding_bottom }}px;
+
+    --bg: {{ section.settings.bg_color }};
+    --accent: {{ section.settings.accent_color.red }}, {{ section.settings.accent_color.green }}, {{ section.settings.accent_color.blue }};
+    --text: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};
+    --muted: {{ section.settings.muted_text_color.red }}, {{ section.settings.muted_text_color.green }}, {{ section.settings.muted_text_color.blue }};
+
+    --content-max: {{ section.settings.content_max_width }}px;
+
+    --dec-opacity: {{ section.settings.decoration_opacity | divided_by: 100.0 }};
+    --dec-size: {{ section.settings.decoration_size }}px;
+    --dec-top: {{ section.settings.decoration_top }}px;
+
+    --bar-bg: {{ section.settings.bar_bg }};
+    --bar-text: {{ section.settings.bar_text.red }}, {{ section.settings.bar_text.green }}, {{ section.settings.bar_text.blue }};
+    --bar-pad-y: {{ section.settings.bar_padding_y }}px;
+
+    {%- if section.settings.heading_size_mode == 'theme' -%}
+      --heading-size: calc(var(--font-heading-scale) * 3.6rem);
+    {%- else -%}
+      --heading-size: {{ section.settings.heading_size_custom }}px;
+    {%- endif -%}
+  }
+{%- endstyle -%}
+
+<style>
+  #shopify-section-{{ section.id }} .moment-wrap{
+    background: var(--bg);
+  }
+
+  /* Full-bleed helper (no side gaps) */
+  #shopify-section-{{ section.id }} .moment-wrap.is-full{
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+  }
+
+  #shopify-section-{{ section.id }} .moment-inner{
+    position: relative;
+    padding: var(--pt) 20px var(--pb);
+    margin: 0 auto;
+    max-width: var(--content-max);
+    text-align: center;
+  }
+
+  /* Decorations */
+  #shopify-section-{{ section.id }} .moment-dec{
+    position: absolute;
+    top: var(--dec-top);
+    width: var(--dec-size);
+    opacity: var(--dec-opacity);
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+  }
+  #shopify-section-{{ section.id }} .moment-dec--left{ left: 0; transform: translateX(-25%); }
+  #shopify-section-{{ section.id }} .moment-dec--right{ right: 0; transform: translateX(25%); }
+
+  #shopify-section-{{ section.id }} .moment-content{
+    position: relative;
+    z-index: 1;
+  }
+
+  #shopify-section-{{ section.id }} .moment-heading{
+    margin: 0;
+    font-weight: 700;
+    line-height: 1.1;
+    font-size: var(--heading-size);
+    color: rgb(var(--accent));
+  }
+  #shopify-section-{{ section.id }} .moment-heading__em{
+    font-style: italic;
+    font-weight: inherit;
+  }
+
+  #shopify-section-{{ section.id }} .moment-text{
+    margin: 14px auto 0;
+    max-width: 78ch;
+    color: rgb(var(--muted));
+    line-height: 1.7;
+    font-size: {{ section.settings.body_size }}px;
+  }
+  #shopify-section-{{ section.id }} .moment-text p{ margin: 0; }
+  #shopify-section-{{ section.id }} .moment-text p + p{ margin-top: 12px; }
+
+  #shopify-section-{{ section.id }} .moment-tagline{
+    margin: 18px 0 0;
+    color: rgb(var(--muted));
+    font-size: {{ section.settings.tagline_size }}px;
+    line-height: 1.6;
+  }
+  #shopify-section-{{ section.id }} .moment-tagline__em{
+    font-style: italic;
+    color: rgb(var(--muted));
+    text-decoration-line: underline;
+    text-decoration-style: wavy;
+    text-decoration-color: rgb(var(--accent));
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.35em;
+    white-space: nowrap;
+  }
+
+  /* Benefit bar */
+  #shopify-section-{{ section.id }} .moment-bar{
+    background: var(--bar-bg);
+  }
+  #shopify-section-{{ section.id }} .moment-bar__inner{
+    margin: 0 auto;
+    max-width: {% if section.settings.full_width %}100%{% else %}var(--content-max){% endif %};
+    padding: var(--bar-pad-y) 16px;
+  }
+  #shopify-section-{{ section.id }} .moment-bar__grid{
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    align-items: center;
+    text-align: center;
+  }
+  #shopify-section-{{ section.id }} .moment-bar__item{
+    color: rgb(var(--bar-text));
+    font-size: 12px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  @media (max-width: 989px){
+    #shopify-section-{{ section.id }} .moment-heading{
+      font-size: clamp(28px, 6.5vw, var(--heading-size));
+    }
+    #shopify-section-{{ section.id }} .moment-dec{ display: none; }
+    #shopify-section-{{ section.id }} .moment-bar__grid{
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 520px){
+    #shopify-section-{{ section.id }} .moment-bar__grid{
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Wrap your heading/content area with .hold-forever__top */
+#shopify-section-{{ section.id }} .hold-forever__top{
+  position: relative;
+  overflow: hidden;
+}
+
+/* make sure your real content sits above the decor */
+#shopify-section-{{ section.id }} .hold-forever__inner{
+  position: relative;
+  z-index: 1;
+}
+
+/* LEFT + RIGHT decor (no squeezing) */
+#shopify-section-{{ section.id }} .hold-forever__top::before,
+#shopify-section-{{ section.id }} .hold-forever__top::after{
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: clamp(160px, 22vw, 340px);
+  opacity: 0.35;           /* adjust */
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-size: contain; /* ✅ keeps aspect ratio (no stretch) */
+}
+
+#shopify-section-{{ section.id }} .hold-forever__top::before{
+  left: 0;
+  background-image: url({{ section.settings.decor_left | image_url: width: 900 }});
+  background-position: left center;
+}
+
+#shopify-section-{{ section.id }} .hold-forever__top::after{
+  right: 0;
+  background-image: url({{ section.settings.decor_right | image_url: width: 900 }});
+  background-position: right center;
+}
+
+@media (max-width: 749px){
+  #shopify-section-{{ section.id }} .hold-forever__top::before,
+  #shopify-section-{{ section.id }} .hold-forever__top::after{
+    display: none;
+  }
+}
+
+</style>
+<div class="hold-forever__top">
+  <div class="hold-forever__inner">
+<div class="section--padding{% if section.settings.show_divider %} section--divider{% endif %}">
+  <div class="moment-wrap{% if section.settings.full_width %} is-full{% endif %}">
+    <div class="moment-inner">
+      {%- if section.settings.decoration_left != blank -%}
+        {{ section.settings.decoration_left
+          | image_url: width: 600
+          | image_tag: loading: 'lazy', class: 'moment-dec moment-dec--left' }}
+      {%- endif -%}
+
+      {%- if section.settings.decoration_right != blank -%}
+        {{ section.settings.decoration_right
+          | image_url: width: 600
+          | image_tag: loading: 'lazy', class: 'moment-dec moment-dec--right' }}
+      {%- endif -%}
+
+      <div class="moment-content">
+        <{{ section.settings.heading_tag }} class="moment-heading">
+          {{ section.settings.heading_prefix }}
+          {%- if section.settings.heading_emphasis != blank -%}
+            <span class="moment-heading__em">{{ section.settings.heading_emphasis }}</span>
+          {%- endif -%}
+          {{ section.settings.heading_suffix }}
+        </{{ section.settings.heading_tag }}>
+
+        {%- if section.settings.body != blank -%}
+          <div class="moment-text rte">
+            {{ section.settings.body }}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_tagline -%}
+          <p class="moment-tagline">
+            {{ section.settings.tagline_prefix }}
+            {%- if section.settings.tagline_emphasis != blank -%}
+              <span class="moment-tagline__em">{{ section.settings.tagline_emphasis }}</span>
+            {%- endif -%}
+            {{ section.settings.tagline_suffix }}
+          </p>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if section.settings.show_bar and section.blocks.size > 0 -%}
+      <div class="moment-bar">
+        <div class="moment-bar__inner">
+          <div class="moment-bar__grid">
+            {%- for block in section.blocks -%}
+              <div class="moment-bar__item" {{ block.shopify_attributes }}>
+                {{ block.settings.label }}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Moment + benefit bar",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "checkbox", "id": "show_divider", "default": false, "label": "Show divider" },
+    { "type": "checkbox", "id": "full_width", "default": true, "label": "Full width (no side gaps)" },
+    { "type": "range", "id": "content_max_width", "label": "Content max width (px)", "min": 800, "max": 1600, "step": 20, "default": 1200 },
+
+    { "type": "header", "content": "Heading" },
+    { "type": "select", "id": "heading_tag", "label": "Heading tag", "options": [
+      { "value": "h1", "label": "h1" },
+      { "value": "h2", "label": "h2" },
+      { "value": "h3", "label": "h3" },
+      { "value": "div", "label": "div" }
+    ], "default": "h2" },
+    { "type": "text", "id": "heading_prefix", "label": "Heading prefix", "default": "Hold onto the moment — " },
+    { "type": "text", "id": "heading_emphasis", "label": "Heading emphasis (italic)", "default": "forever" },
+    { "type": "text", "id": "heading_suffix", "label": "Heading suffix", "default": "forever" },
+    {
+    "type": "select",
+    "id": "heading_size_mode",
+    "label": "Heading size mode",
+    "options": [
+        { "value": "theme", "label": "Theme (auto)" },
+        { "value": "custom", "label": "Custom (px)" }
+    ],
+    "default": "theme"
+    },
+    { "type": "range", "id": "heading_size_custom", "label": "Custom heading size (px)", "min": 28, "max": 90, "step": 2, "default": 52 },
+    { "type": "header", "content": "Body" },
+    { "type": "richtext", "id": "body", "label": "Body text", "default": "<p>Leo ante commodo cursus magnis dis ridiculus turpis lectus nec, facilisi sociis nunc etiam pulvinar iaculis convallis est vel, natoque integer senectus nibh porta eros volutpat.</p>" },
+    { "type": "range", "id": "body_size", "label": "Body font size (px)", "min": 12, "max": 20, "step": 1, "default": 13 },
+
+    { "type": "header", "content": "Tagline" },
+    { "type": "checkbox", "id": "show_tagline", "label": "Show tagline line", "default": true },
+    { "type": "text", "id": "tagline_prefix", "label": "Tagline prefix", "default": "Because every bouquet deserves " },
+    { "type": "text", "id": "tagline_emphasis", "label": "Tagline emphasis (wavy underline)", "default": "flohr-ever" },
+    { "type": "text", "id": "tagline_suffix", "label": "Tagline suffix", "default": "!" },
+    { "type": "range", "id": "tagline_size", "label": "Tagline font size (px)", "min": 11, "max": 18, "step": 1, "default": 12 },
+
+    { "type": "header", "content": "Decorations (optional)" },
+    { "type": "image_picker", "id": "decoration_left", "label": "Left decoration image" },
+    { "type": "image_picker", "id": "decoration_right", "label": "Right decoration image" },
+    { "type": "range", "id": "decoration_opacity", "label": "Decoration opacity (%)", "min": 0, "max": 100, "step": 5, "default": 35 },
+    { "type": "range", "id": "decoration_size", "label": "Decoration size (px)", "min": 80, "max": 320, "step": 10, "default": 200 },
+    { "type": "range", "id": "decoration_top", "label": "Decoration top offset (px)", "min": -40, "max": 140, "step": 5, "default": 10 },
+
+    { "type": "header", "content": "Benefit bar" },
+    { "type": "checkbox", "id": "show_bar", "label": "Show benefit bar", "default": true },
+    { "type": "color", "id": "bar_bg", "label": "Bar background", "default": "#b23b5a" },
+    { "type": "color", "id": "bar_text", "label": "Bar text", "default": "#ffffff" },
+    { "type": "range", "id": "bar_padding_y", "label": "Bar padding (top/bottom)", "min": 8, "max": 28, "step": 2, "default": 14 },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "accent_color", "label": "Accent (heading + underline)", "default": "#b23b5a" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#111111" },
+    { "type": "color", "id": "muted_text_color", "label": "Muted text", "default": "#6b6b6b" },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 140, "step": 4, "unit": "px", "label": "Padding top", "default": 56 },
+    {
+    "type": "range",
+    "id": "padding_bottom",
+    "min": 0,
+    "max": 120,
+    "step": 4,
+    "unit": "px",
+    "label": "Padding bottom",
+    "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Text", "default": "WOMAN OWNED AND OPERATED" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Moment + benefit bar",
+      "blocks": [
+        { "type": "benefit", "settings": { "label": "WOMAN OWNED AND OPERATED" } },
+        { "type": "benefit", "settings": { "label": "TRUSTED BY TOP FLORISTS IN NEW YORK" } },
+        { "type": "benefit", "settings": { "label": "LIMITED SPOTS EACH MONTH" } },
+        { "type": "benefit", "settings": { "label": "VIP COMMUNICATION & CUSTOM SERVICE" } }
+      ]
+    }
+  ],
+  "disabled_on": { "groups": ["header", "footer", "custom.overlay"] }
+}
+{% endschema %}

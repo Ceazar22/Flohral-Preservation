@@ -1,0 +1,44 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "vip_honeybook_modal": {
+      "type": "vip-honeybook-modal",
+      "settings": {
+        "honeybook_pid": "5fc5136b22d160000d5632d5",
+        "direct_form_link": "",
+        "open_on_load": false,
+        "preview_content": "retainer_paid",
+        "eyebrow": "Floral Preservation",
+        "heading": "Complete Your VIP Reservation",
+        "text": "<p>Please complete the form to provide the details needed for your floral preservation order.</p>",
+        "button_label": "Fill Out Your VIP Form",
+        "second_eyebrow": "Reserve Your Spot",
+        "second_heading": "Secure Your Reservation First",
+        "second_text": "<p>Your reservation is not secured yet. Please complete your retainer payment before filling out the VIP form.</p>",
+        "second_button_label": "Pay Your Retainer",
+        "second_button_url": "https://flohralpreservation.com/products/wedding-bouquet-preservation-reservation-deposit",
+        "modal_eyebrow": "Next Step",
+        "modal_heading": "VIP Reservation Form",
+        "modal_text": "<p>Please complete the form below so we can begin preserving your memories.</p>",
+        "accent_color": "#bf3265",
+        "accent_hover_color": "#a62853",
+        "text_color": "#171717",
+        "background_color": "#ffffff",
+        "modal_background_color": "#ffffff",
+        "border_color": "#e6e1dc",
+        "page_min_height": 70
+      }
+    }
+  },
+  "order": [
+    "vip_honeybook_modal"
+  ]
+}

@@ -1,0 +1,964 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "name": "Page Description",
+      "settings": {
+        "narrow": true,
+        "padding_top": 60,
+        "padding_bottom": 72
+      }
+    },
+    "image_banner_bJP364": {
+      "type": "image-banner",
+      "blocks": {
+        "subheading_k4qeR4": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "<strong>hey bride! learn</strong>",
+            "subheading_size": "h4",
+            "secondary_color": false,
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        },
+        "heading_69gQBk": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>How Flohral Preservation Works</strong>",
+            "heading_size": "h1",
+            "heading_tag": "h2",
+            "enable_highlight": true,
+            "highlight_style": "squiggle"
+          }
+        },
+        "text_yMCwmn": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>see The magic that brings everything together.</strong></p>",
+            "text_size": "typeset",
+            "secondary_color": false,
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_k4qeR4",
+        "heading_69gQBk",
+        "text_yMCwmn"
+      ],
+      "name": "Discover Flohral Hero",
+      "settings": {
+        "image": "shopify://shop_images/Minimalist_flowers.webp",
+        "image_position": "center center",
+        "text_box_position": "center",
+        "text_alignment": "center",
+        "image_ratio": "400px",
+        "show_text_box": false,
+        "full_width": true,
+        "show_divider": false,
+        "image_behavior": "ambient",
+        "mobile_image": "shopify://shop_images/Minimal_flowers.webp",
+        "mobile_text_alignment": "center",
+        "mobile_image_ratio": "300px",
+        "stack_images_on_mobile": false,
+        "show_text_below": false,
+        "colors_button_label": "#1a1b18",
+        "colors_button_background": "#ffffff",
+        "colors_text": "#212326",
+        "colors_overlay": "#000000",
+        "colors_overlay_opacity": 0,
+        "colors_highlight": "#ffb503",
+        "bottom_border_size": 20,
+        "bottom_border_color": "#b23b5a",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "value_prop_strip_VwtDCq": {
+      "type": "value-prop-strip",
+      "blocks": {
+        "text_wFUqDR": {
+          "type": "text",
+          "settings": {
+            "text": "<strong>Ships Nationwide Across the USA</strong>",
+            "link": ""
+          }
+        },
+        "text_3BCqhB": {
+          "type": "text",
+          "settings": {
+            "text": "<strong>Trusted by top florists in the usa</strong>",
+            "link": ""
+          }
+        },
+        "text_XyzA7d": {
+          "type": "text",
+          "settings": {
+            "text": "<strong>One-of-a-Kind Preservation Pieces</strong>",
+            "link": ""
+          }
+        },
+        "text_jbhnrh": {
+          "type": "text",
+          "settings": {
+            "text": "<strong>VIP communication & Custom Service</strong>",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_wFUqDR",
+        "text_3BCqhB",
+        "text_XyzA7d",
+        "text_jbhnrh"
+      ],
+      "name": "Value prop strip",
+      "settings": {
+        "full_width": true,
+        "disable_default_content": false,
+        "bg_color": "#bb3263",
+        "text_color": "#ffffff",
+        "border_size": 0,
+        "border_color": "#bb3263",
+        "padding_y": 10,
+        "padding_x": 16,
+        "gap": 36,
+        "font_size": 11,
+        "letter_spacing": 12,
+        "font_weight": "700",
+        "uppercase": true,
+        "text_opacity": 100,
+        "icon_size": 18,
+        "icon_opacity": 100,
+        "enable_carousel": true,
+        "carousel_speed": 16,
+        "pause_on_hover": true,
+        "mobile_behavior": "scroll"
+      }
+    },
+    "custom_heading_TekdRU": {
+      "type": "custom-heading",
+      "name": "Heading",
+      "settings": {
+        "show_divider": false,
+        "eyebrow": "Crafted With Care at Every Stage",
+        "heading": "<strong>Our 9-Step Flohral Preservation Process</strong>",
+        "subheading": "",
+        "use_highlight": false,
+        "highlight_style": "marker",
+        "heading_tag": "h2",
+        "heading_size_mode": "theme",
+        "heading_size_manual": 54,
+        "bg_color": "#ffffff",
+        "eyebrow_color": "#6b6b6b",
+        "heading_color": "#bb3263",
+        "subheading_color": "#111111",
+        "padding_top": 48,
+        "padding_bottom": 0
+      }
+    },
+    "split_overlap_gPNLEK": {
+      "type": "split-overlap",
+      "name": "Split overlap",
+      "settings": {
+        "reverse_layout": false,
+        "height_mode": "fixed",
+        "mobile_height_mode": "auto",
+        "section_padding_top": 0,
+        "section_padding_bottom": 52,
+        "image": "shopify://shop_images/Resin_flower_preservation.webp",
+        "image_height_desktop": 620,
+        "image_height_mobile": 280,
+        "image_fit_desktop": "cover",
+        "image_fit_mobile": "contain",
+        "eyebrow": "step 1",
+        "heading": "<strong>Secure Your Spot</strong>",
+        "text": "<p>First things first, reserve your date with a $150 non-refundable deposit. Your deposit gets applied toward your final order. We only take a limited number of bouquets each month, so we always recommend booking sooner rather than later!</p>",
+        "heading_tag": "h2",
+        "button_label": "reserve your spot",
+        "button_link": "shopify://products/wedding-bouquet-preservation-reservation-deposit",
+        "height_desktop": 620,
+        "height_mobile": 340,
+        "side_padding": 32,
+        "card_max_width": 640,
+        "card_padding": 44,
+        "card_overlap": 80,
+        "mobile_card_overlap": 0,
+        "card_radius": 0,
+        "shadow_opacity": 14,
+        "section_bg": "#ffffff",
+        "card_bg": "#ffffff",
+        "eyebrow_color": "#6b6b6b",
+        "heading_color": "#111111",
+        "text_color": "#6b6b6b",
+        "button_bg": "#bb3263",
+        "button_text": "#ffffff",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "enable_highlight": false,
+        "highlight_style": "marker"
+      }
+    },
+    "split_overlap_VJpyML": {
+      "type": "split-overlap",
+      "name": "Split overlap",
+      "settings": {
+        "reverse_layout": true,
+        "height_mode": "fixed",
+        "mobile_height_mode": "min",
+        "section_padding_top": 0,
+        "section_padding_bottom": 0,
+        "image": "shopify://shop_images/Wedding_flower_inside_a_box.webp",
+        "mobile_image": "shopify://shop_images/Wedding_flower_inside_a_box.webp",
+        "image_height_desktop": 620,
+        "image_height_mobile": 280,
+        "image_fit_desktop": "cover",
+        "image_fit_mobile": "cover",
+        "eyebrow": "STEP 2",
+        "heading": "<strong>Send Your Flowers</strong>",
+        "text": "<p>Ship your bouquet to us or arrange a drop-off, whatever works best for you. Once your flowers arrive, we’ll send you a confirmation email right away. Shipping is EASY! (Don’t stress it) Click the link below for simple shipping + drop-off instructions.</p>",
+        "heading_tag": "h2",
+        "button_label": "VIEW SHIPPING INSTRUCTION",
+        "button_link": "shopify://pages/shipping-guide-1",
+        "height_desktop": 620,
+        "height_mobile": 340,
+        "side_padding": 32,
+        "card_max_width": 640,
+        "card_padding": 44,
+        "card_overlap": 80,
+        "mobile_card_overlap": 40,
+        "card_radius": 0,
+        "shadow_opacity": 14,
+        "section_bg": "#ffffff",
+        "card_bg": "#ffffff",
+        "eyebrow_color": "#6b6b6b",
+        "heading_color": "#111111",
+        "text_color": "#6b6b6b",
+        "button_bg": "#bb3263",
+        "button_text": "#ffffff",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "enable_highlight": false,
+        "highlight_style": "marker"
+      }
+    },
+    "split_overlap_fMK6p6": {
+      "type": "split-overlap",
+      "name": "Split overlap",
+      "settings": {
+        "reverse_layout": false,
+        "height_mode": "fixed",
+        "mobile_height_mode": "auto",
+        "section_padding_top": 0,
+        "section_padding_bottom": 0,
+        "image": "shopify://shop_images/Sillica_gels_on_flowers.png",
+        "image_height_desktop": 620,
+        "image_height_mobile": 280,
+        "image_fit_desktop": "cover",
+        "image_fit_mobile": "cover",
+        "eyebrow": "STEP 3",
+        "heading": "<strong>Prepping & Preserving</strong>",
+        "text": "<p>As soon as your flowers arrive, we get to work immediately. We gently preserve them using chemicals that absorbs the moisture while keeping their beauty intact. Then your blooms take a little “Sleeping Beauty” nap until it’s time to create your forever piece. We do our best to complete your order with in 6 months.</p>",
+        "heading_tag": "h2",
+        "button_label": "KNOW MORE DETAILS",
+        "button_link": "shopify://products/wedding-bouquet-preservation-reservation-deposit",
+        "height_desktop": 500,
+        "height_mobile": 340,
+        "side_padding": 32,
+        "card_max_width": 640,
+        "card_padding": 44,
+        "card_overlap": 80,
+        "mobile_card_overlap": 40,
+        "card_radius": 0,
+        "shadow_opacity": 14,
+        "section_bg": "#ffffff",
+        "card_bg": "#ffffff",
+        "eyebrow_color": "#6b6b6b",
+        "heading_color": "#111111",
+        "text_color": "#6b6b6b",
+        "button_bg": "#bb3263",
+        "button_text": "#ffffff",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "enable_highlight": false,
+        "highlight_style": "marker"
+      }
+    },
+    "split_overlap_8bBzaT": {
+      "type": "split-overlap",
+      "name": "Split overlap",
+      "settings": {
+        "reverse_layout": true,
+        "height_mode": "auto",
+        "mobile_height_mode": "auto",
+        "section_padding_top": 0,
+        "section_padding_bottom": 0,
+        "image": "shopify://shop_images/Resin_keepsake_collecetion.webp",
+        "image_height_desktop": 620,
+        "image_height_mobile": 280,
+        "image_fit_desktop": "cover",
+        "image_fit_mobile": "cover",
+        "eyebrow": "STEP 4",
+        "heading": "<strong>Finalize your order</strong>",
+        "text": "<p>Once you receive our email confirming your flowers arrived, you’ll get a link to place your order.</p><p>Choose your shape, size, and quantity and don’t forget engraving for that perfect personal touch.</p>",
+        "heading_tag": "h2",
+        "button_label": "shop PRESERVATIONS",
+        "button_link": "shopify://products/wedding-bouquet-preservation-reservation-deposit",
+        "height_desktop": 520,
+        "height_mobile": 340,
+        "side_padding": 32,
+        "card_max_width": 640,
+        "card_padding": 44,
+        "card_overlap": 80,
+        "mobile_card_overlap": 40,
+        "card_radius": 0,
+        "shadow_opacity": 14,
+        "section_bg": "#ffffff",
+        "card_bg": "#ffffff",
+        "eyebrow_color": "#6b6b6b",
+        "heading_color": "#111111",
+        "text_color": "#6b6b6b",
+        "button_bg": "#bb3263",
+        "button_text": "#ffffff",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "enable_highlight": false,
+        "highlight_style": "marker"
+      }
+    },
+    "split_overlap_NRUeYL": {
+      "type": "split-overlap",
+      "name": "Split overlap",
+      "settings": {
+        "reverse_layout": false,
+        "height_mode": "fixed",
+        "mobile_height_mode": "auto",
+        "section_padding_top": 0,
+        "section_padding_bottom": 0,
+        "image": "shopify://shop_images/Payment_options_in_a_laptop.webp",
+        "image_height_desktop": 620,
+        "image_height_mobile": 280,
+        "image_fit_desktop": "cover",
+        "image_fit_mobile": "cover",
+        "eyebrow": "STEP 5",
+        "heading": "<strong>Pay for Your Order</strong>",
+        "text": "<p>All payments are made securely through your order link. You’ll also have the option to pay in installments. Once your order is placed, you’re officially in our production queue, we’ll begin as soon as it’s your turn!</p>",
+        "heading_tag": "h2",
+        "button_label": "reserve your spot",
+        "button_link": "shopify://products/wedding-bouquet-preservation-reservation-deposit",
+        "height_desktop": 620,
+        "height_mobile": 340,
+        "side_padding": 32,
+        "card_max_width": 640,
+        "card_padding": 44,
+        "card_overlap": 80,
+        "mobile_card_overlap": 40,
+        "card_radius": 0,
+        "shadow_opacity": 14,
+        "section_bg": "#ffffff",
+        "card_bg": "#ffffff",
+        "eyebrow_color": "#6b6b6b",
+        "heading_color": "#111111",
+        "text_color": "#6b6b6b",
+        "button_bg": "#bb3263",
+        "button_text": "#ffffff",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "enable_highlight": false,
+        "highlight_style": "marker"
+      }
+    },
+    "split_overlap_MBjXUW": {
+      "type": "split-overlap",
+      "name": "Split overlap",
+      "settings": {
+        "reverse_layout": true,
+        "height_mode": "fixed",
+        "mobile_height_mode": "auto",
+        "section_padding_top": 0,
+        "section_padding_bottom": 0,
+        "image": "shopify://shop_images/Flowers_oorganized_on_a_table.webp",
+        "image_height_desktop": 620,
+        "image_height_mobile": 280,
+        "image_fit_desktop": "cover",
+        "image_fit_mobile": "cover",
+        "eyebrow": "STEP 6",
+        "heading": "<strong>Design Layout</strong>",
+        "text": "<p>This is where the magic starts! We first color-enhance your flowers to restore the original color and to limit translucent spots. The design layout is a huge part of our process you’ll get to see your flowers and how we’re planning to arrange them artistically to fit your bouquet beautifully.</p><p>You’ll approve the final layout first, and then we begin creating!</p>",
+        "heading_tag": "h2",
+        "button_label": "visit our gallery",
+        "button_link": "shopify://pages/gallery",
+        "height_desktop": 620,
+        "height_mobile": 340,
+        "side_padding": 32,
+        "card_max_width": 640,
+        "card_padding": 44,
+        "card_overlap": 80,
+        "mobile_card_overlap": 40,
+        "card_radius": 0,
+        "shadow_opacity": 14,
+        "section_bg": "#ffffff",
+        "card_bg": "#ffffff",
+        "eyebrow_color": "#6b6b6b",
+        "heading_color": "#111111",
+        "text_color": "#6b6b6b",
+        "button_bg": "#bb3263",
+        "button_text": "#ffffff",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "enable_highlight": false,
+        "highlight_style": "marker"
+      }
+    },
+    "split_overlap_YyXqrP": {
+      "type": "split-overlap",
+      "name": "Split overlap",
+      "settings": {
+        "reverse_layout": false,
+        "height_mode": "fixed",
+        "mobile_height_mode": "auto",
+        "section_padding_top": 0,
+        "section_padding_bottom": 0,
+        "image": "shopify://shop_images/Resin_pouring_into_a_flower_preservation_mold.webp",
+        "image_height_desktop": 620,
+        "image_height_mobile": 280,
+        "image_fit_desktop": "cover",
+        "image_fit_mobile": "cover",
+        "eyebrow": "STEP 7",
+        "heading": "<strong>Resin Pouring</strong>",
+        "text": "<p>Next comes the resin pour proces. Your piece is built layer by layer resin. Each layer needs time to fully cure (good things take time.</p><p>We also use a vacuum chamber to minimize bubbles. every layer poured with love.</p>",
+        "heading_tag": "h2",
+        "button_label": "reserve your spot",
+        "button_link": "shopify://products/wedding-bouquet-preservation-reservation-deposit",
+        "height_desktop": 620,
+        "height_mobile": 340,
+        "side_padding": 32,
+        "card_max_width": 640,
+        "card_padding": 44,
+        "card_overlap": 80,
+        "mobile_card_overlap": 40,
+        "card_radius": 0,
+        "shadow_opacity": 14,
+        "section_bg": "#ffffff",
+        "card_bg": "#ffffff",
+        "eyebrow_color": "#6b6b6b",
+        "heading_color": "#111111",
+        "text_color": "#6b6b6b",
+        "button_bg": "#bb3263",
+        "button_text": "#ffffff",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "enable_highlight": false,
+        "highlight_style": "marker"
+      }
+    },
+    "split_overlap_TVMg3p": {
+      "type": "split-overlap",
+      "name": "Split overlap",
+      "settings": {
+        "reverse_layout": true,
+        "height_mode": "fixed",
+        "mobile_height_mode": "auto",
+        "section_padding_top": 0,
+        "section_padding_bottom": 0,
+        "image": "shopify://shop_images/Box_full_of_resin_preservation.webp",
+        "image_height_desktop": 620,
+        "image_height_mobile": 280,
+        "image_fit_desktop": "cover",
+        "image_fit_mobile": "cover",
+        "eyebrow": "STEP 8",
+        "heading": "<strong>Packing & Shipping</strong>",
+        "text": "<p>Once your piece is complete, we pack it up with serious care. You’ll receive an email with your tracking info as soon as it ships. We know how sentimental this is, so we wrap and cushion everything to help ensure it arrives secure, safe, and beautiful.</p>",
+        "heading_tag": "h2",
+        "button_label": "reserve your spot",
+        "button_link": "shopify://products/wedding-bouquet-preservation-reservation-deposit",
+        "height_desktop": 620,
+        "height_mobile": 340,
+        "side_padding": 32,
+        "card_max_width": 640,
+        "card_padding": 44,
+        "card_overlap": 80,
+        "mobile_card_overlap": 40,
+        "card_radius": 0,
+        "shadow_opacity": 14,
+        "section_bg": "#ffffff",
+        "card_bg": "#ffffff",
+        "eyebrow_color": "#6b6b6b",
+        "heading_color": "#111111",
+        "text_color": "#6b6b6b",
+        "button_bg": "#bb3263",
+        "button_text": "#ffffff",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "enable_highlight": false,
+        "highlight_style": "marker"
+      }
+    },
+    "split_overlap_iD833M": {
+      "type": "split-overlap",
+      "name": "Split overlap",
+      "settings": {
+        "reverse_layout": false,
+        "height_mode": "fixed",
+        "mobile_height_mode": "auto",
+        "section_padding_top": 0,
+        "section_padding_bottom": 0,
+        "image": "shopify://shop_images/Multifaceted_mirror.webp",
+        "image_height_desktop": 620,
+        "image_height_mobile": 280,
+        "image_fit_desktop": "cover",
+        "image_fit_mobile": "cover",
+        "eyebrow": "STEP 9",
+        "heading": "<strong>FLOHRever Yours</strong>",
+        "text": "<p>In just a few days, your keepsake will arrive right at your front door. We hope opening the box feels like reliving your wedding day all over again all the love, joy, and memories… now preserved and displayed in your home FLHORever</p>",
+        "heading_tag": "h2",
+        "button_label": "reserve your spot",
+        "button_link": "shopify://products/wedding-bouquet-preservation-reservation-deposit",
+        "height_desktop": 620,
+        "height_mobile": 340,
+        "side_padding": 32,
+        "card_max_width": 640,
+        "card_padding": 44,
+        "card_overlap": 80,
+        "mobile_card_overlap": 40,
+        "card_radius": 0,
+        "shadow_opacity": 14,
+        "section_bg": "#ffffff",
+        "card_bg": "#ffffff",
+        "eyebrow_color": "#6b6b6b",
+        "heading_color": "#111111",
+        "text_color": "#6b6b6b",
+        "button_bg": "#bb3263",
+        "button_text": "#ffffff",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "enable_highlight": false,
+        "highlight_style": "marker"
+      }
+    },
+    "value_prop_strip_cpWGXc": {
+      "type": "value-prop-strip",
+      "blocks": {
+        "text_xnKd77": {
+          "type": "text",
+          "settings": {
+            "text": "WOMAN OWNED AND OPERATED",
+            "link": ""
+          }
+        },
+        "text_NrLpgY": {
+          "type": "text",
+          "settings": {
+            "text": "TRUSTED BY TOP FLORISTS IN NEW YORK",
+            "link": ""
+          }
+        },
+        "text_bzL3Mq": {
+          "type": "text",
+          "settings": {
+            "text": "LIMITED SPOTS EACH MONTH",
+            "link": ""
+          }
+        },
+        "text_Wfqr8r": {
+          "type": "text",
+          "settings": {
+            "text": "VIP COMMUNICATION & CUSTOM SERVICE",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_xnKd77",
+        "text_NrLpgY",
+        "text_bzL3Mq",
+        "text_Wfqr8r"
+      ],
+      "name": "Value prop strip",
+      "settings": {
+        "full_width": true,
+        "disable_default_content": false,
+        "bg_color": "#b23b5a",
+        "text_color": "#ffffff",
+        "border_size": 0,
+        "border_color": "#b23b5a",
+        "padding_y": 10,
+        "padding_x": 16,
+        "gap": 36,
+        "font_size": 11,
+        "letter_spacing": 12,
+        "font_weight": "700",
+        "uppercase": true,
+        "text_opacity": 100,
+        "icon_size": 18,
+        "icon_opacity": 100,
+        "enable_carousel": false,
+        "carousel_speed": 16,
+        "pause_on_hover": true,
+        "mobile_behavior": "scroll"
+      }
+    },
+    "image_accordion_bNwjCz": {
+      "type": "image-accordion",
+      "blocks": {
+        "item_HgqKr6": {
+          "type": "item",
+          "settings": {
+            "title": "Air bubbles",
+            "content": "<p>Small bubbles may appear, especially near charms, brooches, or layered areas.</p>"
+          }
+        },
+        "item_zEqcct": {
+          "type": "item",
+          "settings": {
+            "title": "Natural color changes",
+            "content": "<p>Natural flowers may shift in color as they dry and are preserved.</p>"
+          }
+        },
+        "item_L7pxL9": {
+          "type": "item",
+          "settings": {
+            "title": "Tiny silica beads",
+            "content": "<p>Occasionally tiny beads can remain from the drying process.</p>"
+          }
+        },
+        "item_3bMDfq": {
+          "type": "item",
+          "settings": {
+            "title": "Minor surface variations",
+            "content": "<p>Small surface marks can occur from hand-finishing.</p>"
+          }
+        },
+        "item_EQwrr7": {
+          "type": "item",
+          "settings": {
+            "title": "Delicate flyaway petals",
+            "content": "<p>Some petals may sit slightly differently due to their natural shape.</p>"
+          }
+        },
+        "item_kxamUP": {
+          "type": "item",
+          "settings": {
+            "title": "Fabric and lace changes",
+            "content": "<p>Fabric or lace elements may soften or shift slightly in resin.</p>"
+          }
+        },
+        "item_cXwKyU": {
+          "type": "item",
+          "settings": {
+            "title": "Resin discoloration",
+            "content": "<p>Over time, resin can warm slightly depending on light exposure.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_HgqKr6",
+        "item_zEqcct",
+        "item_L7pxL9",
+        "item_3bMDfq",
+        "item_EQwrr7",
+        "item_kxamUP",
+        "item_cXwKyU"
+      ],
+      "name": "PX Image + Accordion",
+      "settings": {
+        "image": "shopify://shop_images/Multifaced_resin_keepsake.webp",
+        "kicker": "BEFORE YOUR FLOWERS ARE PRESERVED",
+        "heading": "Resin Preservation Expectations",
+        "intro": "<p>Resin preservation captures real flowers in a lasting form. Because your flowers are natural and preserved by hand, subtle variations are part of the process.</p>",
+        "first_open": true,
+        "single_open": true,
+        "badge_text": "?",
+        "badge_dot": true,
+        "badge_size": 72,
+        "max_width": 1200,
+        "gap": 40,
+        "radius": 0,
+        "image_height_desktop": 520,
+        "image_height_mobile": 360,
+        "image_fit": "cover",
+        "bg_color": "#fbf6f6",
+        "card_color": "#ffffff",
+        "heading_color": "#bb3263",
+        "text_color": "#2a2a2a",
+        "muted_color": "#6c6c6c",
+        "divider_color": "#0000002e",
+        "accent_color": "#bb3263",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "custom_lead_capture_banner_UPrTYr": {
+      "type": "custom-lead-capture-banner",
+      "name": "Lead capture banner",
+      "settings": {
+        "bg_image": "shopify://shop_images/Copy_of_Copy_of_blush_pink_roses_romantic_floral_background.webp",
+        "card_max_width": 1200,
+        "card_bg": "#ffffff",
+        "card_radius": 0,
+        "card_padding_y": 34,
+        "card_padding_x": 34,
+        "side_padding": 20,
+        "left_image": "shopify://shop_images/Flower_preservation_checklist_page_1.webp",
+        "right_image": "shopify://shop_images/Flower_preservation_checklist_page_2.webp",
+        "side_image_width": 180,
+        "image_tilt": 3,
+        "text_max_width": 520,
+        "eyebrow": "Before You Ship Your Bouquet",
+        "heading": "<strong>A Step-by-Step Safety Checklist for Wedding Flower Preservation</strong>",
+        "heading_tag": "h2",
+        "heading_size": 30,
+        "button_label": "DOWNLOAD THE GUIDE",
+        "button_link": "https://flohralpreservations.com/flower-preservation-safety-checklist",
+        "button_bg": "#bb3263",
+        "button_text": "#ffffff",
+        "button_radius": 2,
+        "eyebrow_color": "#6b6b6b",
+        "heading_color": "#bb3263",
+        "use_highlight": false,
+        "highlight_style": "marker",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "custom_faq_HowItWorks_9pT3aQ": {
+      "type": "custom-faq",
+      "blocks": {
+        "faq_hw_01": {
+          "type": "faq",
+          "settings": {
+            "question": "What is the first step to secure my preservation order?",
+            "answer": "<p>A <strong>$150 deposit</strong> is required to reserve your spot on our preservation schedule. This secures your order and allows us to prepare for your bouquet. The remaining balance is due before your finished piece ships.</p>"
+          }
+        },
+        "faq_hw_02": {
+          "type": "faq",
+          "settings": {
+            "question": "How long will my preservation take?",
+            "answer": "<p>Turnaround is typically <strong>6–8 months</strong> from the date your deposit is received. This timeline reflects the careful drying, design, and multi-stage resin curing process.</p>"
+          }
+        },
+        "faq_hw_03": {
+          "type": "faq",
+          "settings": {
+            "question": "Does engraving affect turnaround time?",
+            "answer": "<p>Yes. Optional high-precision laser engraving may add up to one additional month to the overall turnaround time. Engraving is available for an additional <strong>$99</strong>, which includes up to two lines of text. Final engraving details must be confirmed before production continues to avoid delays.</p>"
+          }
+        },
+        "faq_hw_04": {
+          "type": "faq",
+          "settings": {
+            "question": "Does finalizing my order affect timing?",
+            "answer": "<p>Yes. Finalizing your order promptly helps keep your piece within the expected timeline once your bouquet arrives. Delays in decisions can extend completion.</p>"
+          }
+        },
+        "faq_hw_05": {
+          "type": "faq",
+          "settings": {
+            "question": "How do I approve my design layout?",
+            "answer": "<p>Once your flowers are ready, Debbie will email a custom layout for your approval. You may approve it as-is or request small adjustments such as flower placement or balance.</p>"
+          }
+        },
+        "faq_hw_06": {
+          "type": "faq",
+          "settings": {
+            "question": "Is there a deadline for layout approval?",
+            "answer": "<p>Yes. We ask that approvals or feedback be provided promptly. Delayed responses can slow production and extend the overall turnaround time.</p>"
+          }
+        },
+        "faq_hw_07": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I revise the layout after it’s sent?",
+            "answer": "<p>Absolutely. Minor adjustments are included. Changes to shape, size, or product type are possible as long as they match or upgrade your original order. Additional fees may apply depending on the request.</p>"
+          }
+        },
+        "faq_hw_08": {
+          "type": "faq",
+          "settings": {
+            "question": "What happens if I request last-minute changes?",
+            "answer": "<p>We’ll always review your request, but once preservation or resin curing has begun, changes may be limited or no longer possible. We will clearly communicate what can and cannot be adjusted at that stage.</p>"
+          }
+        },
+        "faq_hw_09": {
+          "type": "faq",
+          "settings": {
+            "question": "Do add-ons like candles or ring holders receive a layout?",
+            "answer": "<p>No. Smaller add-on items are artistically filled with flowers and do not require a design layout approval.</p>"
+          }
+        },
+        "faq_hw_10": {
+          "type": "faq",
+          "settings": {
+            "question": "What if my flowers are not enough for the piece I selected?",
+            "answer": "<p>If your bouquet does not provide enough usable flowers for the selected piece, we will supplement or replace flowers as needed to complete your design. This may involve an additional charge depending on the type and quantity of flowers required.</p><p>We strongly recommend contacting us as soon as possible if you believe your bouquet may be limited. Please email us or call our studio directly so we can discuss options before production continues.</p>"
+          }
+        },
+        "faq_hw_11": {
+          "type": "faq",
+          "settings": {
+            "question": "When will my finished piece ship?",
+            "answer": "<p>Your piece will ship after full payment is received. You’ll receive a USPS tracking number once it leaves our studio.</p>"
+          }
+        },
+        "faq_hw_12": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I return my order?",
+            "answer": "<p>All orders are non-refundable due to the custom and sentimental nature of preservation. That said, if you’re not completely happy, we’ll work with you to find a reasonable solution.</p>"
+          }
+        },
+        "faq_hw_13": {
+          "type": "faq",
+          "settings": {
+            "question": "Will I receive care instructions?",
+            "answer": "<p>Yes. Every piece includes a care card with instructions to help protect your keepsake long-term.</p>"
+          }
+        },
+        "faq_hw_14": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I add items after placing my order?",
+            "answer": "<p>Yes. Simply call or email us and we’ll let you know what can be added based on your project’s current stage.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_hw_01",
+        "faq_hw_02",
+        "faq_hw_03",
+        "faq_hw_04",
+        "faq_hw_05",
+        "faq_hw_06",
+        "faq_hw_07",
+        "faq_hw_08",
+        "faq_hw_09",
+        "faq_hw_10",
+        "faq_hw_11",
+        "faq_hw_12",
+        "faq_hw_13",
+        "faq_hw_14"
+      ],
+      "name": "Custom FAQ (How it works)",
+      "settings": {
+        "full_width": false,
+        "show_divider": false,
+        "eyebrow": "",
+        "heading": "<strong>Frequently Asked Questions</strong>",
+        "heading_tag": "h2",
+        "heading_size": "h1",
+        "single_open": true,
+        "open_first": false,
+        "max_width": 980,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "bg_color": "#ffffff",
+        "heading_color": "#bb3263",
+        "eyebrow_color": "#6b6b6b",
+        "question_color": "#1a1b18",
+        "answer_color": "#6b6b6b",
+        "divider_color": "#e6e6e6",
+        "icon_color": "#bb3263",
+        "enable_card_bg": false,
+        "card_bg_color": "#f7e9ef",
+        "card_radius": 14,
+        "card_padding_y": 28,
+        "card_padding_x": 34
+      }
+    },
+    "custom_split_section_qgmaKY": {
+      "type": "custom-split-section",
+      "blocks": {
+        "benefit_Qq7TkR": {
+          "type": "benefit",
+          "settings": {
+            "label": "WOMAN OWNED AND OPERATED"
+          }
+        },
+        "benefit_ciyVc9": {
+          "type": "benefit",
+          "settings": {
+            "label": "TRUSTED BY TOP FLORISTS IN NEW YORK"
+          }
+        },
+        "benefit_BBxkU8": {
+          "type": "benefit",
+          "settings": {
+            "label": "LIMITED SPOTS EACH MONTH"
+          }
+        },
+        "benefit_ieBbD8": {
+          "type": "benefit",
+          "settings": {
+            "label": "VIP COMMUNICATION & CUSTOM SERVICE"
+          }
+        }
+      },
+      "block_order": [
+        "benefit_Qq7TkR",
+        "benefit_ciyVc9",
+        "benefit_BBxkU8",
+        "benefit_ieBbD8"
+      ],
+      "name": "Split hero + benefit bar",
+      "settings": {
+        "show_divider": false,
+        "image": "shopify://shop_images/Copy_of_hexagon_and_jewelry_box.png",
+        "reverse_layout": false,
+        "eyebrow": "FROM PETALS TO LIFETIME HEIRLOOMS",
+        "heading": "Preserve the moment your heart said “yes”",
+        "text": "<p>Your wedding day is a once-in-a-lifetime moment. Your flowers witnessed your vows, your tears, and your joy. We turn those blooms into timeless keepsakes, so your love story can live on forever.</p>",
+        "heading_tag": "h2",
+        "heading_size": "h1",
+        "content_bg_color": "#ffffff",
+        "content_overlay_opacity": 30,
+        "button_label": "PRESERVE MY BOUQUET",
+        "button_link": "shopify://products/wedding-bouquet-preservation-reservation-deposit",
+        "use_theme_button": false,
+        "button_bg": "#b23b5a",
+        "button_text": "#ffffff",
+        "show_bar": false,
+        "bar_bg_color": "#b23b5a",
+        "bar_text_color": "#ffffff",
+        "bar_gap": 16,
+        "radius": 0,
+        "min_height_desktop": 520,
+        "min_height_mobile": 360,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "main",
+    "image_banner_bJP364",
+    "value_prop_strip_VwtDCq",
+    "custom_heading_TekdRU",
+    "split_overlap_gPNLEK",
+    "split_overlap_VJpyML",
+    "split_overlap_fMK6p6",
+    "split_overlap_8bBzaT",
+    "split_overlap_NRUeYL",
+    "split_overlap_MBjXUW",
+    "split_overlap_YyXqrP",
+    "split_overlap_TVMg3p",
+    "split_overlap_iD833M",
+    "value_prop_strip_cpWGXc",
+    "image_accordion_bNwjCz",
+    "custom_lead_capture_banner_UPrTYr",
+    "custom_faq_HowItWorks_9pT3aQ",
+    "custom_split_section_qgmaKY"
+  ]
+}

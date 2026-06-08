@@ -1,0 +1,1343 @@
+{% comment %}
+  Section: Collection banner grid (1 hero + small tiles)
+
+  Included updates:
+  - Video tiles open in a modal on click
+  - Separate hero label size + bold
+  - Mobile heading center option
+  - Mobile heading size
+  - Mobile text size
+  - Mobile heading color
+  - Mobile intro padding top/right/bottom/left
+  - Mobile video / mobile video URL
+  - Per-tile mobile video ratio option (9:16 or 16:9)
+  - Mobile modal opens mobile video source
+  - Custom link per tile (overrides collection URL if set)
+  - Mobile layout updated to match reference:
+    hero full width on top + 2-column small tiles below
+{% endcomment %}
+
+{%- style -%}
+  #shopify-section-{{ section.id }}{
+    --pt: {{ section.settings.padding_top }}px;
+    --pb: {{ section.settings.padding_bottom }}px;
+
+    --header-offset: {{ section.settings.header_offset }}px;
+
+    --gap: {{ section.settings.gap }}px;
+
+    --text-color: {{ section.settings.text_color }};
+    --accent-color: {{ section.settings.accent_color }};
+
+    --large-h: {{ section.settings.large_height }}px;
+    --small-h: {{ section.settings.small_height }}px;
+
+    --radius: {{ section.settings.radius }}px;
+
+    /* Intro panel */
+    --intro-bg: {{ section.settings.intro_bg }};
+    --intro-pad: {{ section.settings.intro_padding }}px;
+    --intro-radius: {{ section.settings.intro_radius }}px;
+
+    /* Mobile intro padding */
+    --intro-pad-top-mobile: {{ section.settings.intro_padding_top_mobile }}px;
+    --intro-pad-right-mobile: {{ section.settings.intro_padding_right_mobile }}px;
+    --intro-pad-bottom-mobile: {{ section.settings.intro_padding_bottom_mobile }}px;
+    --intro-pad-left-mobile: {{ section.settings.intro_padding_left_mobile }}px;
+
+    /* Top row background */
+    --top-bg: {{ section.settings.top_row_bg }};
+    --top-pad: {{ section.settings.top_row_padding }}px;
+    --top-radius: {{ section.settings.top_row_radius }}px;
+
+    /* Small tile width */
+    --small-span: {{ section.settings.small_tile_span }};
+
+    /* Desktop typography */
+    --intro-title-size: {{ section.settings.intro_heading_font_size }}px;
+    --intro-text-size: 14px;
+    --tile-label-size: {{ section.settings.tile_label_font_size }}px;
+    --hero-label-size: {{ section.settings.hero_label_font_size }}px;
+
+    /* Mobile typography */
+    --intro-title-size-mobile: {{ section.settings.intro_heading_font_size_mobile }}px;
+    --intro-text-size-mobile: {{ section.settings.intro_text_font_size_mobile }}px;
+    --accent-color-mobile: {{ section.settings.accent_color_mobile }};
+
+    /* Hero label weight */
+    --hero-label-weight: {%- if section.settings.hero_label_bold -%}800{%- else -%}500{%- endif -%};
+  }
+
+  #shopify-section-{{ section.id }} .section--padding{
+    padding-top: calc(var(--pt) + var(--header-offset));
+    padding-bottom: var(--pb);
+  }
+{%- endstyle -%}
+
+<style>
+  #shopify-section-{{ section.id }}{
+    overflow-x: clip;
+  }
+
+  #shopify-section-{{ section.id }} .cbg{
+    width:100%;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-top{
+    background: var(--top-bg);
+    padding: var(--top-pad);
+    border-radius: var(--top-radius);
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-top__grid{
+    display:grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--gap);
+    align-items: stretch;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-bottom{
+    margin-top: var(--gap);
+  }
+
+  #shopify-section-{{ section.id }} .cbg-bottom__grid{
+    display:grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--gap);
+    align-items: stretch;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-intro{
+    grid-column: span 4;
+    min-height: var(--large-h);
+    display:flex;
+    align-items:center;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-intro__inner{
+    width: 100%;
+    background: var(--intro-bg);
+    padding: var(--intro-pad);
+    border-radius: var(--intro-radius);
+  }
+
+  #shopify-section-{{ section.id }} .cbg-intro__title{
+    margin:0 0 10px;
+    color: var(--accent-color);
+    font-weight:600;
+    line-height:1.1;
+    font-size: var(--intro-title-size);
+  }
+
+  #shopify-section-{{ section.id }} .cbg-intro__title p{
+    margin:0;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-intro__text{
+    margin:0 0 18px;
+    color: var(--text-color);
+    line-height:1.55;
+    font-size: var(--intro-text-size);
+    max-width:34ch;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-intro__btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-tile{
+    position:relative;
+    overflow:hidden;
+    border-radius: var(--radius);
+    background:#f4f4f4;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-tile a,
+  #shopify-section-{{ section.id }} .cbg-tile button.cbg-tile__btn{
+    display:block;
+    height:100%;
+    width:100%;
+    color:inherit;
+    text-decoration:none;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-tile__media{
+    position:absolute;
+    inset:0;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-media-mobile{
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-media-desktop{
+    display: block;
+    position: absolute;
+    inset: 0;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-tile__media img,
+  #shopify-section-{{ section.id }} .cbg-tile__media svg{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-tile__media video{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-tile__media iframe{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    border:0;
+    display:block;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-tile::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background: linear-gradient(to top, rgba(0,0,0,.40), rgba(0,0,0,0) 55%);
+    opacity:.95;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-tile__label{
+    position:absolute;
+    left:14px;
+    right:14px;
+    bottom:14px;
+    z-index:2;
+    color:#fff;
+    font-weight:600;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    font-size: var(--tile-label-size);
+    line-height:1.15;
+    text-shadow:0 2px 10px rgba(0,0,0,.35);
+  }
+
+  #shopify-section-{{ section.id }} .cbg-tile.is-hero .cbg-tile__label{
+    font-size: var(--hero-label-size);
+    font-weight: var(--hero-label-weight);
+  }
+
+  #shopify-section-{{ section.id }} .cbg-tile__play{
+    position:absolute;
+    inset:0;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    pointer-events:none;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-tile__play span{
+    width:66px;
+    height:66px;
+    border-radius:999px;
+    background: rgba(0,0,0,.45);
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-tile__play svg{
+    width:22px;
+    height:22px;
+    fill:#fff;
+    margin-left:2px;
+  }
+
+  @media (hover:hover){
+    #shopify-section-{{ section.id }} .cbg-tile__media img,
+    #shopify-section-{{ section.id }} .cbg-tile__media video{
+      transform: scale(1);
+      transition: transform .35s ease;
+    }
+
+    #shopify-section-{{ section.id }} .cbg-tile:hover .cbg-tile__media img,
+    #shopify-section-{{ section.id }} .cbg-tile:hover .cbg-tile__media video{
+      transform: scale(1.04);
+    }
+  }
+
+  #shopify-section-{{ section.id }} .cbg-tile.is-hero{
+    grid-column: span 8;
+    min-height: var(--large-h);
+  }
+
+  #shopify-section-{{ section.id }} .cbg-tile.is-small{
+    grid-column: span var(--small-span);
+    min-height: var(--small-h);
+  }
+
+  @media (max-width: 989px){
+    #shopify-section-{{ section.id }} .cbg-top__grid,
+    #shopify-section-{{ section.id }} .cbg-bottom__grid{
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #shopify-section-{{ section.id }} .cbg-intro{
+      grid-column: 1 / -1;
+      min-height: auto;
+    }
+
+    #shopify-section-{{ section.id }} .cbg-tile.is-hero,
+    #shopify-section-{{ section.id }} .cbg-tile.is-small{
+      grid-column: span 1;
+      min-height: 220px;
+    }
+  }
+
+  @media (max-width: 600px){
+    #shopify-section-{{ section.id }} .cbg-top{
+      padding: 0;
+      background: transparent;
+      border-radius: 0;
+      overflow: visible;
+    }
+
+    #shopify-section-{{ section.id }} .cbg-bottom{
+      margin-top: var(--gap);
+    }
+
+    #shopify-section-{{ section.id }} .cbg-top__grid{
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    #shopify-section-{{ section.id }} .cbg-bottom__grid{
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    #shopify-section-{{ section.id }} .cbg-intro{
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .cbg-tile.is-hero{
+      grid-column: 1 / -1;
+      min-height: auto;
+      aspect-ratio: 1.55 / 1;
+    }
+
+    #shopify-section-{{ section.id }} .cbg-tile.is-small{
+      grid-column: span 1;
+      min-height: auto;
+      aspect-ratio: 1 / 1;
+    }
+
+    #shopify-section-{{ section.id }} .cbg-intro__inner{
+      padding-top: var(--intro-pad-top-mobile);
+      padding-right: var(--intro-pad-right-mobile);
+      padding-bottom: var(--intro-pad-bottom-mobile);
+      padding-left: var(--intro-pad-left-mobile);
+    }
+
+    #shopify-section-{{ section.id }} .cbg-intro__title{
+      font-size: var(--intro-title-size-mobile);
+      color: var(--accent-color-mobile);
+      {% if section.settings.center_heading_mobile %}
+      text-align: center;
+      {% endif %}
+    }
+
+    #shopify-section-{{ section.id }} .cbg-intro__text{
+      font-size: var(--intro-text-size-mobile);
+      {% if section.settings.center_heading_mobile %}
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      {% endif %}
+    }
+
+    #shopify-section-{{ section.id }} .cbg-intro__btn{
+      {% if section.settings.center_heading_mobile %}
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      width: fit-content;
+      {% endif %}
+    }
+
+    #shopify-section-{{ section.id }} .cbg-media-desktop{
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .cbg-media-mobile{
+      display: block;
+      position: absolute;
+      inset: 0;
+    }
+
+    #shopify-section-{{ section.id }} .cbg-tile__label{
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .cbg-tile.is-hero .cbg-tile__label{
+      font-size: 14px;
+    }
+  }
+
+  #shopify-section-{{ section.id }} .cbg-modal{
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-modal.is-open{
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-modal__backdrop{
+    position:absolute;
+    inset:0;
+    background: rgba(0,0,0,.65);
+  }
+
+  #shopify-section-{{ section.id }} .cbg-modal__panel{
+    position:relative;
+    z-index:2;
+    width: min(980px, calc(100% - 32px));
+    margin: 7vh auto;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 20px 70px rgba(0,0,0,.35);
+  }
+
+  #shopify-section-{{ section.id }} .cbg-modal__panel.is-mobile-video{
+    width: min(420px, calc(100% - 24px));
+  }
+
+  #shopify-section-{{ section.id }} .cbg-modal__topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(0,0,0,.08);
+  }
+
+  #shopify-section-{{ section.id }} .cbg-modal__title{
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: .02em;
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-modal__close{
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    border: 0;
+    background: rgba(0,0,0,.06);
+    cursor: pointer;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-modal__close svg{
+    width: 18px;
+    height: 18px;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-modal__body{
+    position: relative;
+    background: #000;
+    aspect-ratio: 16 / 9;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-modal__panel.is-mobile-video .cbg-modal__body{
+    aspect-ratio: var(--active-mobile-ratio, 9 / 16);
+  }
+
+  #shopify-section-{{ section.id }} .cbg-modal__body video,
+  #shopify-section-{{ section.id }} .cbg-modal__body iframe{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    display:block;
+    border:0;
+  }
+
+  #shopify-section-{{ section.id }} .cbg-modal__footer{
+    padding: 12px 14px 16px;
+    border-top: 1px solid rgba(0,0,0,.08);
+    background: #fff;
+    display:flex;
+    justify-content:flex-end;
+    gap: 10px;
+  }
+</style>
+
+<div class="section--padding{% if section.settings.show_divider %} section--divider{% endif %}">
+  <div class="{% if section.settings.full_width %}page-width--full-width{% else %}page-width{% endif %}">
+    <div class="cbg">
+      <div class="cbg-top">
+        <div class="cbg-top__grid">
+          <div class="cbg-intro">
+            <div class="cbg-intro__inner">
+              {%- if section.settings.heading != blank -%}
+                <{{ section.settings.heading_tag }} class="cbg-intro__title {{ section.settings.heading_size }}">
+                  {{ section.settings.heading }}
+                </{{ section.settings.heading_tag }}>
+              {%- endif -%}
+
+              {%- if section.settings.text != blank -%}
+                <div class="cbg-intro__text rte">{{ section.settings.text }}</div>
+              {%- endif -%}
+
+              {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+                <a class="button cbg-intro__btn" href="{{ section.settings.button_link }}">
+                  {{ section.settings.button_label | escape }}
+                </a>
+              {%- endif -%}
+            </div>
+          </div>
+
+          {%- assign hero_rendered = false -%}
+
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign c = block.settings.collection
+              assign url = '#'
+              if block.settings.custom_link != blank
+                assign url = block.settings.custom_link
+              elsif c != blank and c.url != blank
+                assign url = c.url
+              endif
+
+              assign label = block.settings.label
+              if label == blank and c != blank
+                assign label = c.title
+              endif
+
+              assign thumb_type = block.settings.thumb_type
+
+              assign fallback_img = blank
+              if c != blank and c.image != blank
+                assign fallback_img = c.image
+              endif
+
+              assign modal_tpl_id = 'cbg-video-' | append: section.id | append: '-' | append: block.id
+            -%}
+
+            {%- if thumb_type == 'video' -%}
+              <template id="{{ modal_tpl_id }}"
+                data-title="{{ label | escape }}"
+                data-collection-url="{% if url != blank and url != '#' %}{{ url }}{% endif %}"
+                data-mobile-ratio="{{ block.settings.mobile_video_ratio }}">
+
+                <div class="cbg-modal-source cbg-modal-source--desktop">
+                  {%- if block.settings.thumb_video != blank -%}
+                    {{ block.settings.thumb_video | video_tag: controls: true, autoplay: true, muted: false, loop: false, playsinline: true }}
+                  {%- elsif block.settings.thumb_video_url != blank -%}
+                    {%- liquid
+                      assign v = block.settings.thumb_video_url
+                      assign embed_url = ''
+                      if v.type == 'youtube'
+                        assign embed_url = 'https://www.youtube.com/embed/' | append: v.id | append: '?autoplay=1&mute=0&rel=0&playsinline=1'
+                      elsif v.type == 'vimeo'
+                        assign embed_url = 'https://player.vimeo.com/video/' | append: v.id | append: '?autoplay=1&muted=0'
+                      endif
+                    -%}
+                    {%- if embed_url != blank -%}
+                      <iframe
+                        src="{{ embed_url }}"
+                        allow="autoplay; fullscreen; picture-in-picture"
+                        allowfullscreen
+                        title="{{ label | escape }}"
+                      ></iframe>
+                    {%- endif -%}
+                  {%- endif -%}
+                </div>
+
+                <div class="cbg-modal-source cbg-modal-source--mobile">
+                  {%- if block.settings.thumb_video_mobile != blank -%}
+                    {{ block.settings.thumb_video_mobile | video_tag: controls: true, autoplay: true, muted: false, loop: false, playsinline: true }}
+                  {%- elsif block.settings.thumb_video_url_mobile != blank -%}
+                    {%- liquid
+                      assign mv = block.settings.thumb_video_url_mobile
+                      assign mobile_modal_embed_url = ''
+                      if mv.type == 'youtube'
+                        assign mobile_modal_embed_url = 'https://www.youtube.com/embed/' | append: mv.id | append: '?autoplay=1&mute=0&rel=0&playsinline=1'
+                      elsif mv.type == 'vimeo'
+                        assign mobile_modal_embed_url = 'https://player.vimeo.com/video/' | append: mv.id | append: '?autoplay=1&muted=0'
+                      endif
+                    -%}
+                    {%- if mobile_modal_embed_url != blank -%}
+                      <iframe
+                        src="{{ mobile_modal_embed_url }}"
+                        allow="autoplay; fullscreen; picture-in-picture"
+                        allowfullscreen
+                        title="{{ label | escape }}"
+                      ></iframe>
+                    {%- endif -%}
+                  {%- elsif block.settings.thumb_video != blank -%}
+                    {{ block.settings.thumb_video | video_tag: controls: true, autoplay: true, muted: false, loop: false, playsinline: true }}
+                  {%- elsif block.settings.thumb_video_url != blank -%}
+                    {%- liquid
+                      assign v = block.settings.thumb_video_url
+                      assign fallback_embed_url = ''
+                      if v.type == 'youtube'
+                        assign fallback_embed_url = 'https://www.youtube.com/embed/' | append: v.id | append: '?autoplay=1&mute=0&rel=0&playsinline=1'
+                      elsif v.type == 'vimeo'
+                        assign fallback_embed_url = 'https://player.vimeo.com/video/' | append: v.id | append: '?autoplay=1&muted=0'
+                      endif
+                    -%}
+                    {%- if fallback_embed_url != blank -%}
+                      <iframe
+                        src="{{ fallback_embed_url }}"
+                        allow="autoplay; fullscreen; picture-in-picture"
+                        allowfullscreen
+                        title="{{ label | escape }}"
+                      ></iframe>
+                    {%- endif -%}
+                  {%- endif -%}
+                </div>
+              </template>
+            {%- endif -%}
+
+            {%- if hero_rendered == false -%}
+              {%- assign hero_rendered = true -%}
+              <div
+                class="cbg-tile is-hero"
+                style="--tile-mobile-ratio: {{ block.settings.mobile_video_ratio }};"
+                {{ block.shopify_attributes }}
+              >
+                {%- if thumb_type == 'video' -%}
+                  <button
+                    type="button"
+                    class="cbg-tile__btn"
+                    data-cbg-open="{{ modal_tpl_id }}"
+                    aria-label="Play {{ label | escape }}"
+                  >
+                {%- else -%}
+                  <a href="{{ url }}" aria-label="{{ label | escape }}">
+                {%- endif -%}
+
+                  <div class="cbg-tile__media">
+                    <div class="cbg-media-desktop">
+                      {%- if thumb_type == 'video' -%}
+                        {%- if block.settings.thumb_video != blank -%}
+                          {{ block.settings.thumb_video
+                            | video_tag:
+                              autoplay: true,
+                              loop: true,
+                              muted: true,
+                              controls: false,
+                              playsinline: true
+                          }}
+                        {%- elsif block.settings.thumb_video_url != blank -%}
+                          {%- liquid
+                            assign v = block.settings.thumb_video_url
+                            assign embed_url = ''
+                            if v.type == 'youtube'
+                              assign embed_url = 'https://www.youtube.com/embed/' | append: v.id | append: '?autoplay=1&mute=1&loop=1&playlist=' | append: v.id | append: '&controls=0&rel=0&playsinline=1'
+                            elsif v.type == 'vimeo'
+                              assign embed_url = 'https://player.vimeo.com/video/' | append: v.id | append: '?autoplay=1&muted=1&loop=1&background=1'
+                            endif
+                          -%}
+                          {%- if embed_url != blank -%}
+                            <iframe
+                              src="{{ embed_url }}"
+                              loading="lazy"
+                              allow="autoplay; fullscreen; picture-in-picture"
+                              title="{{ label | escape }}"
+                            ></iframe>
+                          {%- else -%}
+                            {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                          {%- endif -%}
+                        {%- else -%}
+                          {%- if block.settings.thumb_image != blank -%}
+                            {{ block.settings.thumb_image | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1600, 2000, 2400' }}
+                          {%- elsif block.settings.use_collection_image and fallback_img != blank -%}
+                            {{ fallback_img | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1600, 2000, 2400' }}
+                          {%- else -%}
+                            {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                          {%- endif -%}
+                        {%- endif -%}
+                      {%- else -%}
+                        {%- if block.settings.thumb_image != blank -%}
+                          {{ block.settings.thumb_image | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1600, 2000, 2400' }}
+                        {%- elsif block.settings.use_collection_image and fallback_img != blank -%}
+                          {{ fallback_img | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1600, 2000, 2400' }}
+                        {%- else -%}
+                          {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                        {%- endif -%}
+                      {%- endif -%}
+                    </div>
+
+                    <div class="cbg-media-mobile">
+                      {%- if thumb_type == 'video' and block.settings.thumb_video_mobile != blank -%}
+                        {{ block.settings.thumb_video_mobile
+                          | video_tag:
+                            autoplay: true,
+                            loop: true,
+                            muted: true,
+                            controls: false,
+                            playsinline: true
+                        }}
+                      {%- elsif thumb_type == 'video' and block.settings.thumb_video_url_mobile != blank -%}
+                        {%- liquid
+                          assign mv = block.settings.thumb_video_url_mobile
+                          assign mobile_embed_url = ''
+                          if mv.type == 'youtube'
+                            assign mobile_embed_url = 'https://www.youtube.com/embed/' | append: mv.id | append: '?autoplay=1&mute=1&loop=1&playlist=' | append: mv.id | append: '&controls=0&rel=0&playsinline=1'
+                          elsif mv.type == 'vimeo'
+                            assign mobile_embed_url = 'https://player.vimeo.com/video/' | append: mv.id | append: '?autoplay=1&muted=1&loop=1&background=1'
+                          endif
+                        -%}
+                        {%- if mobile_embed_url != blank -%}
+                          <iframe
+                            src="{{ mobile_embed_url }}"
+                            loading="lazy"
+                            allow="autoplay; fullscreen; picture-in-picture"
+                            title="{{ label | escape }}"
+                          ></iframe>
+                        {%- endif -%}
+                      {%- else -%}
+                        {%- if thumb_type == 'video' -%}
+                          {%- if block.settings.thumb_video != blank -%}
+                            {{ block.settings.thumb_video
+                              | video_tag:
+                                autoplay: true,
+                                loop: true,
+                                muted: true,
+                                controls: false,
+                                playsinline: true
+                            }}
+                          {%- elsif block.settings.thumb_video_url != blank -%}
+                            {%- liquid
+                              assign v = block.settings.thumb_video_url
+                              assign embed_url = ''
+                              if v.type == 'youtube'
+                                assign embed_url = 'https://www.youtube.com/embed/' | append: v.id | append: '?autoplay=1&mute=1&loop=1&playlist=' | append: v.id | append: '&controls=0&rel=0&playsinline=1'
+                              elsif v.type == 'vimeo'
+                                assign embed_url = 'https://player.vimeo.com/video/' | append: v.id | append: '?autoplay=1&muted=1&loop=1&background=1'
+                              endif
+                            -%}
+                            {%- if embed_url != blank -%}
+                              <iframe
+                                src="{{ embed_url }}"
+                                loading="lazy"
+                                allow="autoplay; fullscreen; picture-in-picture"
+                                title="{{ label | escape }}"
+                              ></iframe>
+                            {%- endif -%}
+                          {%- endif -%}
+                        {%- else -%}
+                          {%- if block.settings.thumb_image != blank -%}
+                            {{ block.settings.thumb_image | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1600, 2000, 2400' }}
+                          {%- elsif block.settings.use_collection_image and fallback_img != blank -%}
+                            {{ fallback_img | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1600, 2000, 2400' }}
+                          {%- else -%}
+                            {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                          {%- endif -%}
+                        {%- endif -%}
+                      {%- endif -%}
+                    </div>
+                  </div>
+
+                  {%- if label != blank -%}
+                    <div class="cbg-tile__label">{{ label }}</div>
+                  {%- endif -%}
+
+                  {%- if thumb_type == 'video' and block.settings.show_play_icon -%}
+                    <div class="cbg-tile__play" aria-hidden="true">
+                      <span>
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                      </span>
+                    </div>
+                  {%- endif -%}
+
+                {%- if thumb_type == 'video' -%}
+                  </button>
+                {%- else -%}
+                  </a>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <div class="cbg-bottom">
+        <div class="cbg-bottom__grid">
+          {%- assign idx = 0 -%}
+          {%- for block in section.blocks -%}
+            {%- assign idx = idx | plus: 1 -%}
+            {%- if idx == 1 -%}{%- continue -%}{%- endif -%}
+
+            {%- liquid
+              assign c = block.settings.collection
+              assign url = '#'
+              if block.settings.custom_link != blank
+                assign url = block.settings.custom_link
+              elsif c != blank and c.url != blank
+                assign url = c.url
+              endif
+
+              assign label = block.settings.label
+              if label == blank and c != blank
+                assign label = c.title
+              endif
+
+              assign thumb_type = block.settings.thumb_type
+
+              assign fallback_img = blank
+              if c != blank and c.image != blank
+                assign fallback_img = c.image
+              endif
+
+              assign modal_tpl_id = 'cbg-video-' | append: section.id | append: '-' | append: block.id
+            -%}
+
+            {%- if thumb_type == 'video' -%}
+              <template id="{{ modal_tpl_id }}"
+                data-title="{{ label | escape }}"
+                data-collection-url="{% if url != blank and url != '#' %}{{ url }}{% endif %}"
+                data-mobile-ratio="{{ block.settings.mobile_video_ratio }}">
+
+                <div class="cbg-modal-source cbg-modal-source--desktop">
+                  {%- if block.settings.thumb_video != blank -%}
+                    {{ block.settings.thumb_video | video_tag: controls: true, autoplay: true, muted: false, loop: false, playsinline: true }}
+                  {%- elsif block.settings.thumb_video_url != blank -%}
+                    {%- liquid
+                      assign v = block.settings.thumb_video_url
+                      assign embed_url = ''
+                      if v.type == 'youtube'
+                        assign embed_url = 'https://www.youtube.com/embed/' | append: v.id | append: '?autoplay=1&mute=0&rel=0&playsinline=1'
+                      elsif v.type == 'vimeo'
+                        assign embed_url = 'https://player.vimeo.com/video/' | append: v.id | append: '?autoplay=1&muted=0'
+                      endif
+                    -%}
+                    {%- if embed_url != blank -%}
+                      <iframe
+                        src="{{ embed_url }}"
+                        allow="autoplay; fullscreen; picture-in-picture"
+                        allowfullscreen
+                        title="{{ label | escape }}"
+                      ></iframe>
+                    {%- endif -%}
+                  {%- endif -%}
+                </div>
+
+                <div class="cbg-modal-source cbg-modal-source--mobile">
+                  {%- if block.settings.thumb_video_mobile != blank -%}
+                    {{ block.settings.thumb_video_mobile | video_tag: controls: true, autoplay: true, muted: false, loop: false, playsinline: true }}
+                  {%- elsif block.settings.thumb_video_url_mobile != blank -%}
+                    {%- liquid
+                      assign mv = block.settings.thumb_video_url_mobile
+                      assign mobile_modal_embed_url = ''
+                      if mv.type == 'youtube'
+                        assign mobile_modal_embed_url = 'https://www.youtube.com/embed/' | append: mv.id | append: '?autoplay=1&mute=0&rel=0&playsinline=1'
+                      elsif mv.type == 'vimeo'
+                        assign mobile_modal_embed_url = 'https://player.vimeo.com/video/' | append: mv.id | append: '?autoplay=1&muted=0'
+                      endif
+                    -%}
+                    {%- if mobile_modal_embed_url != blank -%}
+                      <iframe
+                        src="{{ mobile_modal_embed_url }}"
+                        allow="autoplay; fullscreen; picture-in-picture"
+                        allowfullscreen
+                        title="{{ label | escape }}"
+                      ></iframe>
+                    {%- endif -%}
+                  {%- elsif block.settings.thumb_video != blank -%}
+                    {{ block.settings.thumb_video | video_tag: controls: true, autoplay: true, muted: false, loop: false, playsinline: true }}
+                  {%- elsif block.settings.thumb_video_url != blank -%}
+                    {%- liquid
+                      assign v = block.settings.thumb_video_url
+                      assign fallback_embed_url = ''
+                      if v.type == 'youtube'
+                        assign fallback_embed_url = 'https://www.youtube.com/embed/' | append: v.id | append: '?autoplay=1&mute=0&rel=0&playsinline=1'
+                      elsif v.type == 'vimeo'
+                        assign fallback_embed_url = 'https://player.vimeo.com/video/' | append: v.id | append: '?autoplay=1&muted=0'
+                      endif
+                    -%}
+                    {%- if fallback_embed_url != blank -%}
+                      <iframe
+                        src="{{ fallback_embed_url }}"
+                        allow="autoplay; fullscreen; picture-in-picture"
+                        allowfullscreen
+                        title="{{ label | escape }}"
+                      ></iframe>
+                    {%- endif -%}
+                  {%- endif -%}
+                </div>
+              </template>
+            {%- endif -%}
+
+            <div
+              class="cbg-tile is-small"
+              style="--tile-mobile-ratio: {{ block.settings.mobile_video_ratio }};"
+              {{ block.shopify_attributes }}
+            >
+              {%- if thumb_type == 'video' -%}
+                <button
+                  type="button"
+                  class="cbg-tile__btn"
+                  data-cbg-open="{{ modal_tpl_id }}"
+                  aria-label="Play {{ label | escape }}"
+                >
+              {%- else -%}
+                <a href="{{ url }}" aria-label="{{ label | escape }}">
+              {%- endif -%}
+
+                <div class="cbg-tile__media">
+                  <div class="cbg-media-desktop">
+                    {%- if thumb_type == 'video' -%}
+                      {%- if block.settings.thumb_video != blank -%}
+                        {{ block.settings.thumb_video
+                          | video_tag:
+                            autoplay: true,
+                            loop: true,
+                            muted: true,
+                            controls: false,
+                            playsinline: true
+                        }}
+                      {%- elsif block.settings.thumb_video_url != blank -%}
+                        {%- liquid
+                          assign v = block.settings.thumb_video_url
+                          assign embed_url = ''
+                          if v.type == 'youtube'
+                            assign embed_url = 'https://www.youtube.com/embed/' | append: v.id | append: '?autoplay=1&mute=1&loop=1&playlist=' | append: v.id | append: '&controls=0&rel=0&playsinline=1'
+                          elsif v.type == 'vimeo'
+                            assign embed_url = 'https://player.vimeo.com/video/' | append: v.id | append: '?autoplay=1&muted=1&loop=1&background=1'
+                          endif
+                        -%}
+                        {%- if embed_url != blank -%}
+                          <iframe
+                            src="{{ embed_url }}"
+                            loading="lazy"
+                            allow="autoplay; fullscreen; picture-in-picture"
+                            title="{{ label | escape }}"
+                          ></iframe>
+                        {%- else -%}
+                          {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                        {%- endif -%}
+                      {%- else -%}
+                        {%- if block.settings.thumb_image != blank -%}
+                          {{ block.settings.thumb_image | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1600, 2000, 2400' }}
+                        {%- elsif block.settings.use_collection_image and fallback_img != blank -%}
+                          {{ fallback_img | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1600, 2000, 2400' }}
+                        {%- else -%}
+                          {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                        {%- endif -%}
+                      {%- endif -%}
+                    {%- else -%}
+                      {%- if block.settings.thumb_image != blank -%}
+                        {{ block.settings.thumb_image | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1600, 2000, 2400' }}
+                      {%- elsif block.settings.use_collection_image and fallback_img != blank -%}
+                        {{ fallback_img | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1600, 2000, 2400' }}
+                      {%- else -%}
+                        {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                      {%- endif -%}
+                    {%- endif -%}
+                  </div>
+
+                  <div class="cbg-media-mobile">
+                    {%- if thumb_type == 'video' and block.settings.thumb_video_mobile != blank -%}
+                      {{ block.settings.thumb_video_mobile
+                        | video_tag:
+                          autoplay: true,
+                          loop: true,
+                          muted: true,
+                          controls: false,
+                          playsinline: true
+                      }}
+                    {%- elsif thumb_type == 'video' and block.settings.thumb_video_url_mobile != blank -%}
+                      {%- liquid
+                        assign mv = block.settings.thumb_video_url_mobile
+                        assign mobile_embed_url = ''
+                        if mv.type == 'youtube'
+                          assign mobile_embed_url = 'https://www.youtube.com/embed/' | append: mv.id | append: '?autoplay=1&mute=1&loop=1&playlist=' | append: mv.id | append: '&controls=0&rel=0&playsinline=1'
+                        elsif mv.type == 'vimeo'
+                          assign mobile_embed_url = 'https://player.vimeo.com/video/' | append: mv.id | append: '?autoplay=1&muted=1&loop=1&background=1'
+                        endif
+                      -%}
+                      {%- if mobile_embed_url != blank -%}
+                        <iframe
+                          src="{{ mobile_embed_url }}"
+                          loading="lazy"
+                          allow="autoplay; fullscreen; picture-in-picture"
+                          title="{{ label | escape }}"
+                        ></iframe>
+                      {%- endif -%}
+                    {%- else -%}
+                      {%- if thumb_type == 'video' -%}
+                        {%- if block.settings.thumb_video != blank -%}
+                          {{ block.settings.thumb_video
+                            | video_tag:
+                              autoplay: true,
+                              loop: true,
+                              muted: true,
+                              controls: false,
+                              playsinline: true
+                          }}
+                        {%- elsif block.settings.thumb_video_url != blank -%}
+                          {%- liquid
+                            assign v = block.settings.thumb_video_url
+                            assign embed_url = ''
+                            if v.type == 'youtube'
+                              assign embed_url = 'https://www.youtube.com/embed/' | append: v.id | append: '?autoplay=1&mute=1&loop=1&playlist=' | append: v.id | append: '&controls=0&rel=0&playsinline=1'
+                            elsif v.type == 'vimeo'
+                              assign embed_url = 'https://player.vimeo.com/video/' | append: v.id | append: '?autoplay=1&muted=1&loop=1&background=1'
+                            endif
+                          -%}
+                          {%- if embed_url != blank -%}
+                            <iframe
+                              src="{{ embed_url }}"
+                              loading="lazy"
+                              allow="autoplay; fullscreen; picture-in-picture"
+                              title="{{ label | escape }}"
+                            ></iframe>
+                          {%- endif -%}
+                        {%- endif -%}
+                      {%- else -%}
+                        {%- if block.settings.thumb_image != blank -%}
+                          {{ block.settings.thumb_image | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1600, 2000, 2400' }}
+                        {%- elsif block.settings.use_collection_image and fallback_img != blank -%}
+                          {{ fallback_img | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1600, 2000, 2400' }}
+                        {%- else -%}
+                          {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                        {%- endif -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  </div>
+                </div>
+
+                {%- if label != blank -%}
+                  <div class="cbg-tile__label">{{ label }}</div>
+                {%- endif -%}
+
+                {%- if thumb_type == 'video' and block.settings.show_play_icon -%}
+                  <div class="cbg-tile__play" aria-hidden="true">
+                    <span>
+                      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </span>
+                  </div>
+                {%- endif -%}
+
+              {%- if thumb_type == 'video' -%}
+                </button>
+              {%- else -%}
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="cbg-modal" id="cbg-modal-{{ section.id }}" aria-hidden="true">
+  <div class="cbg-modal__backdrop" data-cbg-close></div>
+  <div class="cbg-modal__panel" role="dialog" aria-modal="true" aria-label="Video modal">
+    <div class="cbg-modal__topbar">
+      <p class="cbg-modal__title" data-cbg-modal-title>Video</p>
+      <button class="cbg-modal__close" type="button" data-cbg-close aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <div class="cbg-modal__body" data-cbg-modal-body></div>
+    <div class="cbg-modal__footer" data-cbg-modal-footer style="display:none;">
+      <a class="button" href="#" data-cbg-modal-link>View collection</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var section = document.getElementById('shopify-section-{{ section.id }}');
+    if(!section) return;
+
+    var modal = section.querySelector('#cbg-modal-{{ section.id }}');
+    var panel = modal.querySelector('.cbg-modal__panel');
+    var body = modal.querySelector('[data-cbg-modal-body]');
+    var titleEl = modal.querySelector('[data-cbg-modal-title]');
+    var footer = modal.querySelector('[data-cbg-modal-footer]');
+    var linkEl = modal.querySelector('[data-cbg-modal-link]');
+    var lastFocus = null;
+
+    function isMobileView() {
+      return window.matchMedia('(max-width: 600px)').matches;
+    }
+
+    function getPreferredSource(tpl) {
+      var mobileSource = tpl.content.querySelector('.cbg-modal-source--mobile');
+      var desktopSource = tpl.content.querySelector('.cbg-modal-source--desktop');
+
+      if (isMobileView()) {
+        if (mobileSource && mobileSource.innerHTML.trim() !== '') {
+          return {
+            html: mobileSource.innerHTML,
+            mobile: true
+          };
+        }
+      }
+
+      if (desktopSource && desktopSource.innerHTML.trim() !== '') {
+        return {
+          html: desktopSource.innerHTML,
+          mobile: false
+        };
+      }
+
+      if (mobileSource && mobileSource.innerHTML.trim() !== '') {
+        return {
+          html: mobileSource.innerHTML,
+          mobile: true
+        };
+      }
+
+      return {
+        html: '',
+        mobile: false
+      };
+    }
+
+    function openModal(tplId){
+      var tpl = section.querySelector('#' + CSS.escape(tplId));
+      if(!tpl) return;
+
+      lastFocus = document.activeElement;
+      body.innerHTML = '';
+
+      var t = tpl.getAttribute('data-title') || 'Video';
+      titleEl.textContent = t;
+
+      var url = tpl.getAttribute('data-collection-url');
+      if(url){
+        footer.style.display = 'flex';
+        linkEl.setAttribute('href', url);
+      } else {
+        footer.style.display = 'none';
+        linkEl.setAttribute('href', '#');
+      }
+
+      var preferred = getPreferredSource(tpl);
+      body.innerHTML = preferred.html;
+
+      if (preferred.mobile) {
+        panel.classList.add('is-mobile-video');
+        panel.style.setProperty('--active-mobile-ratio', tpl.getAttribute('data-mobile-ratio') || '9/16');
+      } else {
+        panel.classList.remove('is-mobile-video');
+        panel.style.removeProperty('--active-mobile-ratio');
+      }
+
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.documentElement.style.overflow = 'hidden';
+
+      var closeBtn = modal.querySelector('[data-cbg-close]');
+      if(closeBtn) closeBtn.focus();
+    }
+
+    function closeModal(){
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.documentElement.style.overflow = '';
+      body.innerHTML = '';
+      panel.classList.remove('is-mobile-video');
+      panel.style.removeProperty('--active-mobile-ratio');
+      if(lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+    }
+
+    section.addEventListener('click', function(e){
+      var btn = e.target.closest('[data-cbg-open]');
+      if(!btn) return;
+      e.preventDefault();
+      openModal(btn.getAttribute('data-cbg-open'));
+    });
+
+    modal.addEventListener('click', function(e){
+      if(e.target.closest('[data-cbg-close]')) closeModal();
+    });
+
+    document.addEventListener('keydown', function(e){
+      if(!modal.classList.contains('is-open')) return;
+      if(e.key === 'Escape') closeModal();
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Collection banner grid",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "checkbox", "id": "full_width", "label": "Full width", "default": true },
+    { "type": "checkbox", "id": "show_divider", "label": "Show divider", "default": false },
+
+    { "type": "header", "content": "Header overlap fix" },
+    { "type": "range", "id": "header_offset", "label": "Header offset (px)", "min": 0, "max": 200, "step": 4, "default": 0 },
+
+    { "type": "header", "content": "Left text panel" },
+    { "type": "richtext", "id": "heading", "label": "Heading", "default": "<p>Shop Floral<br>Preservation</p>" },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "options": [
+        { "value": "h1", "label": "h1" },
+        { "value": "h2", "label": "h2" },
+        { "value": "h3", "label": "h3" },
+        { "value": "div", "label": "div" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size class",
+      "options": [
+        { "value": "h0", "label": "Large" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h2", "label": "Small" }
+      ],
+      "default": "h0"
+    },
+
+    { "type": "range", "id": "intro_heading_font_size", "label": "Intro heading font size (px)", "min": 20, "max": 80, "step": 2, "default": 46 },
+    { "type": "checkbox", "id": "center_heading_mobile", "label": "Center heading/content on mobile", "default": true },
+    { "type": "range", "id": "intro_heading_font_size_mobile", "label": "Intro heading font size mobile (px)", "min": 16, "max": 60, "step": 1, "default": 32 },
+    { "type": "range", "id": "intro_text_font_size_mobile", "label": "Intro text font size mobile (px)", "min": 10, "max": 24, "step": 1, "default": 14 },
+    { "type": "color", "id": "accent_color_mobile", "label": "Heading color mobile", "default": "#b23b5a" },
+
+    { "type": "header", "content": "Mobile intro padding" },
+    { "type": "range", "id": "intro_padding_top_mobile", "label": "Intro padding top mobile (px)", "min": 0, "max": 100, "step": 2, "default": 28 },
+    { "type": "range", "id": "intro_padding_right_mobile", "label": "Intro padding right mobile (px)", "min": 0, "max": 100, "step": 2, "default": 28 },
+    { "type": "range", "id": "intro_padding_bottom_mobile", "label": "Intro padding bottom mobile (px)", "min": 0, "max": 100, "step": 2, "default": 28 },
+    { "type": "range", "id": "intro_padding_left_mobile", "label": "Intro padding left mobile (px)", "min": 0, "max": 100, "step": 2, "default": 28 },
+
+    { "type": "header", "content": "Tile label typography" },
+    { "type": "range", "id": "tile_label_font_size", "label": "Small tiles label font size (px)", "min": 10, "max": 22, "step": 1, "default": 12 },
+    { "type": "range", "id": "hero_label_font_size", "label": "Hero tile label font size (px)", "min": 12, "max": 60, "step": 1, "default": 22 },
+    { "type": "checkbox", "id": "hero_label_bold", "label": "Hero tile label bold", "default": true },
+
+    { "type": "richtext", "id": "text", "label": "Description", "default": "<p>Bringing you unique pieces that make your precious memories into timeless keepsakes.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop now" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+
+    { "type": "header", "content": "Left panel background" },
+    { "type": "color", "id": "intro_bg", "label": "Panel background color", "default": "#fff6f8" },
+    { "type": "range", "id": "intro_padding", "label": "Panel padding (px)", "min": 0, "max": 80, "step": 4, "default": 28 },
+    { "type": "range", "id": "intro_radius", "label": "Panel corner radius (px)", "min": 0, "max": 32, "step": 2, "default": 0 },
+
+    { "type": "header", "content": "Top row background (covers first row)" },
+    { "type": "color", "id": "top_row_bg", "label": "Top row background color", "default": "#f7eef0" },
+    { "type": "range", "id": "top_row_padding", "label": "Top row padding (px)", "min": 0, "max": 60, "step": 4, "default": 12 },
+    { "type": "range", "id": "top_row_radius", "label": "Top row corner radius (px)", "min": 0, "max": 32, "step": 2, "default": 0 },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "gap", "label": "Gap (px)", "min": 0, "max": 40, "step": 2, "default": 18 },
+    { "type": "range", "id": "large_height", "label": "Hero tile height (px)", "min": 200, "max": 640, "step": 10, "default": 360 },
+    { "type": "range", "id": "small_height", "label": "Small tile height (px)", "min": 140, "max": 520, "step": 10, "default": 240 },
+
+    {
+      "type": "select",
+      "id": "small_tile_span",
+      "label": "Small tile width (desktop)",
+      "default": "3",
+      "options": [
+        { "value": "2", "label": "Smaller (6 per row)" },
+        { "value": "3", "label": "Default (4 per row)" },
+        { "value": "4", "label": "Bigger (3 per row)" },
+        { "value": "6", "label": "Largest (2 per row)" }
+      ]
+    },
+
+    { "type": "range", "id": "radius", "label": "Tile corner radius (px)", "min": 0, "max": 32, "step": 2, "default": 0 },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "accent_color", "label": "Heading color", "default": "#b23b5a" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#6b6b6b" },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 140, "step": 4, "unit": "px", "label": "Padding top", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 140, "step": 4, "unit": "px", "label": "Padding bottom", "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Collection tile",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "url", "id": "custom_link", "label": "Custom link (optional)" },
+        {
+          "type": "select",
+          "id": "thumb_type",
+          "label": "Thumbnail type",
+          "default": "image",
+          "options": [
+            { "value": "image", "label": "Image" },
+            { "value": "video", "label": "Video" }
+          ]
+        },
+        { "type": "image_picker", "id": "thumb_image", "label": "Custom thumbnail image (optional)" },
+        { "type": "checkbox", "id": "use_collection_image", "label": "Use collection image if no custom image", "default": true },
+        { "type": "video", "id": "thumb_video", "label": "Shopify hosted video (optional)" },
+        { "type": "video_url", "id": "thumb_video_url", "label": "YouTube/Vimeo video URL (optional)", "accept": ["youtube", "vimeo"] },
+        { "type": "video", "id": "thumb_video_mobile", "label": "Mobile video (Shopify hosted, optional)" },
+        { "type": "video_url", "id": "thumb_video_url_mobile", "label": "Mobile video URL (YouTube/Vimeo, optional)", "accept": ["youtube", "vimeo"] },
+        {
+          "type": "select",
+          "id": "mobile_video_ratio",
+          "label": "Mobile video ratio",
+          "options": [
+            { "value": "9/16", "label": "Portrait (9:16)" },
+            { "value": "16/9", "label": "Landscape (16:9)" }
+          ],
+          "default": "9/16"
+        },
+        { "type": "text", "id": "label", "label": "Label override (optional)", "default": "Collection" },
+        { "type": "checkbox", "id": "show_play_icon", "label": "Show play icon overlay (video)", "default": true }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection banner grid",
+      "blocks": [
+        { "type": "tile" },
+        { "type": "tile" },
+        { "type": "tile" },
+        { "type": "tile" },
+        { "type": "tile" }
+      ]
+    }
+  ]
+}
+{% endschema %}

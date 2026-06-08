@@ -1,0 +1,636 @@
+{%- liquid
+  assign has_menu_1 = false
+  assign has_menu_2 = false
+
+  if section.settings.menu_1 != blank
+    if section.settings.menu_1.links.size > 0
+      assign has_menu_1 = true
+    endif
+  endif
+
+  if section.settings.menu_2 != blank
+    if section.settings.menu_2.links.size > 0
+      assign has_menu_2 = true
+    endif
+  endif
+
+  assign cols_class = 'cf-grid--2'
+  if has_menu_1 or has_menu_2
+    assign cols_class = 'cf-grid--3'
+  endif
+  if has_menu_1 and has_menu_2
+    assign cols_class = 'cf-grid--4'
+  endif
+
+  assign menu_1_heading = section.settings.menu_1_heading | strip
+  assign menu_2_heading = section.settings.menu_2_heading | strip
+
+  assign mobile_menu_1_obj = section.settings.menu_1
+  assign mobile_menu_2_obj = section.settings.menu_2
+
+  if section.settings.use_custom_mobile_menus
+    if section.settings.mobile_menu_1 != blank and section.settings.mobile_menu_1.links.size > 0
+      assign mobile_menu_1_obj = section.settings.mobile_menu_1
+    endif
+
+    if section.settings.mobile_menu_2 != blank and section.settings.mobile_menu_2.links.size > 0
+      assign mobile_menu_2_obj = section.settings.mobile_menu_2
+    endif
+  endif
+
+  assign has_mobile_menu_1 = false
+  assign has_mobile_menu_2 = false
+
+  if mobile_menu_1_obj != blank
+    if mobile_menu_1_obj.links.size > 0
+      assign has_mobile_menu_1 = true
+    endif
+  endif
+
+  if mobile_menu_2_obj != blank
+    if mobile_menu_2_obj.links.size > 0
+      assign has_mobile_menu_2 = true
+    endif
+  endif
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }}{
+    --cf-bg: {{ section.settings.bg_color }};
+    --cf-text: {{ section.settings.text_color }};
+    --cf-muted: {{ section.settings.muted_color }};
+    --cf-accent: {{ section.settings.accent_color }};
+    --cf-line: {{ section.settings.line_color }};
+
+    --cf-pt: {{ section.settings.padding_top }}px;
+    --cf-pb: {{ section.settings.padding_bottom }}px;
+
+    --cf-mt: {{ section.settings.margin_top }}px;
+    --cf-line-offset: {{ section.settings.line_offset }}px;
+
+    --cf-logo-w: {{ section.settings.logo_width }}px;
+    --cf-mobile-logo-w: {{ section.settings.mobile_logo_width }}px;
+
+    --cf-copy-size: {{ section.settings.copyright_font_size }}px;
+    --cf-mobile-menu-gap: {{ section.settings.mobile_menu_gap }}px;
+    --cf-mobile-menu-font-size: {{ section.settings.mobile_menu_font_size }}px;
+    --cf-mobile-desc-size: {{ section.settings.mobile_description_font_size }}px;
+    --cf-mobile-newsletter-text-size: {{ section.settings.mobile_newsletter_text_size }}px;
+  }
+{%- endstyle -%}
+
+<style>
+  #shopify-section-{{ section.id }} .cf{
+    background: var(--cf-bg);
+    color: var(--cf-text);
+    position: relative;
+    padding-top: var(--cf-pt);
+    padding-bottom: var(--cf-pb);
+    margin-top: var(--cf-mt);
+  }
+
+  #shopify-section-{{ section.id }} .cf::before{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    top: var(--cf-line-offset);
+    height: 1px;
+    background: var(--cf-accent);
+    opacity: .6;
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .cf a{
+    color: var(--cf-muted);
+    text-decoration: none;
+  }
+
+  #shopify-section-{{ section.id }} .cf a:hover{
+    color: var(--cf-text);
+  }
+
+  #shopify-section-{{ section.id }} .cf__top{
+    padding-top: 34px;
+    padding-bottom: 22px;
+  }
+
+  #shopify-section-{{ section.id }} .cf__grid{
+    display: grid;
+    gap: clamp(24px, 4vw, 70px);
+    align-items: start;
+  }
+
+  #shopify-section-{{ section.id }} .cf-grid--4{
+    grid-template-columns: 1.7fr 0.9fr 0.9fr 1.7fr;
+  }
+
+  #shopify-section-{{ section.id }} .cf-grid--3{
+    grid-template-columns: 1.7fr 0.9fr 1.7fr;
+  }
+
+  #shopify-section-{{ section.id }} .cf-grid--2{
+    grid-template-columns: 1fr 1fr;
+  }
+
+  #shopify-section-{{ section.id }} .cf__brand-logo{
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  #shopify-section-{{ section.id }} .cf__brand-logo img{
+    width: var(--cf-logo-w);
+    height: auto;
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .cf__brand-name{
+    font-weight: 800;
+    letter-spacing: .02em;
+  }
+
+  #shopify-section-{{ section.id }} .cf__tagline{
+    color: var(--cf-muted);
+    font-size: 12px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    margin: 6px 0 14px;
+  }
+
+  #shopify-section-{{ section.id }} .cf__desc{
+    color: var(--cf-muted);
+    max-width: 38ch;
+    line-height: 1.35;
+  }
+
+  #shopify-section-{{ section.id }} .cf__desc p{
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .cf__menu-title{
+    margin: 0 0 10px;
+    color: var(--cf-text);
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  #shopify-section-{{ section.id }} .cf__menu{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 10px;
+  }
+
+  #shopify-section-{{ section.id }} .cf__nl-text{
+    color: var(--cf-muted);
+    margin: 0 0 14px;
+    line-height: 1.35;
+  }
+
+  #shopify-section-{{ section.id }} .cf__nl-text p{
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .cf__iframe{
+    width: 100%;
+    max-width: 420px;
+  }
+
+  #shopify-section-{{ section.id }} .cf__iframe iframe{
+    width: 100% !important;
+    max-width: 100% !important;
+    border: 0 !important;
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .cf__newsletter{
+    width: 100%;
+    max-width: 420px;
+  }
+
+  #shopify-section-{{ section.id }} .cf__newsletter-form{
+    display: grid;
+    gap: 12px;
+  }
+
+  #shopify-section-{{ section.id }} .cf__field{
+    width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .cf__input{
+    width: 100%;
+    border: 1px solid var(--cf-line);
+    background: #fff;
+    color: var(--cf-text);
+    padding: 12px 14px;
+    border-radius: 0;
+    font: inherit;
+    box-sizing: border-box;
+  }
+
+  #shopify-section-{{ section.id }} .cf__input::placeholder{
+    color: var(--cf-muted);
+  }
+
+  #shopify-section-{{ section.id }} .cf__button{
+    appearance: none;
+    border: 0;
+    border-radius: 3px;
+    padding: 14px 18px;
+    background: var(--cf-accent);
+    color: #fff;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .cf__button:hover{
+    opacity: .92;
+  }
+
+  #shopify-section-{{ section.id }} .cf__form-message{
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+  #shopify-section-{{ section.id }} .cf__form-message--success{
+    background: rgba(0,0,0,.04);
+    color: var(--cf-text);
+  }
+
+  #shopify-section-{{ section.id }} .form__message,
+  #shopify-section-{{ section.id }} .newsletter-form__message,
+  #shopify-section-{{ section.id }} .customer .form__message,
+  #shopify-section-{{ section.id }} .customer .errors{
+    font-size: 14px;
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .cf__ig{
+    margin-top: 14px;
+  }
+
+  #shopify-section-{{ section.id }} .cf__ig-label{
+    color: var(--cf-muted);
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  #shopify-section-{{ section.id }} .cf__ig-link{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--cf-muted);
+  }
+
+  #shopify-section-{{ section.id }} .cf__ig-icon{
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--cf-line);
+    border-radius: 6px;
+  }
+
+  #shopify-section-{{ section.id }} .cf__ig-icon svg{
+    width: 16px;
+    height: 16px;
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .cf__ig-handle{
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  #shopify-section-{{ section.id }} .cf__divider{
+    border-top: 1px solid var(--cf-line);
+    opacity: 1;
+  }
+
+  #shopify-section-{{ section.id }} .cf__bottom{
+    padding: 18px 0 26px;
+  }
+
+  #shopify-section-{{ section.id }} .cf__bottom-inner{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    color: var(--cf-muted);
+    font-size: 14px;
+  }
+
+  #shopify-section-{{ section.id }} .cf__copy{
+    font-size: var(--cf-copy-size);
+  }
+
+  #shopify-section-{{ section.id }} .cf__legal{
+    display: inline-flex;
+    gap: 36px;
+    flex-wrap: wrap;
+  }
+
+  #shopify-section-{{ section.id }} .cf__mobile-menu-wrap{
+    display: none;
+  }
+
+  @media (max-width: 989px){
+    #shopify-section-{{ section.id }} .cf__top{
+      padding-top: 26px;
+    }
+
+    #shopify-section-{{ section.id }} .cf__grid{
+      grid-template-columns: 1fr !important;
+      gap: 26px;
+    }
+
+    #shopify-section-{{ section.id }} .cf__desc{
+      max-width: none;
+    }
+
+    #shopify-section-{{ section.id }} .cf__legal{
+      gap: 18px;
+    }
+  }
+</style>
+
+<footer class="cf">
+  <div class="cf__top">
+    <div class="page-width">
+      <div class="cf__grid {{ cols_class }}">
+
+        <div class="cf__brand">
+          <div class="cf__brand-logo">
+            {%- if section.settings.logo != blank -%}
+              <img
+                src="{{ section.settings.logo | image_url: width: 600 }}"
+                alt="{{ section.settings.logo.alt | escape }}"
+                loading="lazy"
+                width="{{ section.settings.logo.width }}"
+                height="{{ section.settings.logo.height }}"
+              >
+            {%- else -%}
+              <div class="cf__brand-name">{{ shop.name }}</div>
+            {%- endif -%}
+          </div>
+
+          {%- if section.settings.tagline != blank -%}
+            <div class="cf__tagline">{{ section.settings.tagline }}</div>
+          {%- endif -%}
+
+          <div class="cf__desc rte">
+            {{ section.settings.description }}
+          </div>
+        </div>
+
+        {%- if has_menu_1 -%}
+          <nav class="cf__col" aria-label="Footer menu 1">
+            {%- if section.settings.show_menu_headings and menu_1_heading != blank -%}
+              <div class="cf__menu-title">{{ menu_1_heading }}</div>
+            {%- endif -%}
+            <ul class="cf__menu">
+              {%- for link in section.settings.menu_1.links -%}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          </nav>
+        {%- endif -%}
+
+        {%- if has_menu_2 -%}
+          <nav class="cf__col" aria-label="Footer menu 2">
+            {%- if section.settings.show_menu_headings and menu_2_heading != blank -%}
+              <div class="cf__menu-title">{{ menu_2_heading }}</div>
+            {%- endif -%}
+            <ul class="cf__menu">
+              {%- for link in section.settings.menu_2.links -%}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          </nav>
+        {%- endif -%}
+
+        <div class="cf__mobile-menu-wrap">
+          <div class="cf__mobile-menus">
+            {%- if has_mobile_menu_1 -%}
+              <ul class="cf__mobile-menu">
+                {%- for link in mobile_menu_1_obj.links -%}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+
+            {%- if has_mobile_menu_2 -%}
+              <ul class="cf__mobile-menu">
+                {%- for link in mobile_menu_2_obj.links -%}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </div>
+        </div>
+
+        <div class="cf__col">
+          <div class="cf__nl-text rte">{{ section.settings.newsletter_text }}</div>
+
+          {%- if section.settings.newsletter_enable -%}
+            {%- if section.settings.form_source == 'shopify' -%}
+              <div class="cf__newsletter">
+                {% form 'customer', class: 'cf__newsletter-form' %}
+                  <input type="hidden" name="contact[tags]" value="newsletter">
+
+                  {%- if form.posted_successfully? -%}
+                    <div class="cf__form-message cf__form-message--success">
+                      {{ section.settings.success_message }}
+                    </div>
+                  {%- endif -%}
+
+                  {{ form.errors | default_errors }}
+
+                  <div class="cf__field">
+                    <input
+                      id="NewsletterEmail-{{ section.id }}"
+                      type="email"
+                      name="contact[email]"
+                      class="cf__input"
+                      value="{% if form.email %}{{ form.email }}{% endif %}"
+                      aria-required="true"
+                      autocorrect="off"
+                      autocapitalize="off"
+                      autocomplete="email"
+                      {% if form.errors %}
+                        autofocus
+                        aria-invalid="true"
+                        aria-describedby="Newsletter-error-{{ section.id }}"
+                      {% endif %}
+                      placeholder="{{ section.settings.email_placeholder }}"
+                      required
+                    >
+                  </div>
+
+                  <button type="submit" class="cf__button" name="commit">
+                    {{ section.settings.button_label }}
+                  </button>
+                {% endform %}
+              </div>
+
+            {%- elsif section.settings.form_source == 'iframe' and section.settings.newsletter_iframe != blank -%}
+              <div class="cf__iframe rte">
+                {{ section.settings.newsletter_iframe }}
+              </div>
+            {%- endif -%}
+          {%- endif -%}
+
+          {%- if section.settings.show_instagram and section.settings.instagram_handle != blank -%}
+            <div class="cf__ig">
+              <div class="cf__ig-label">{{ section.settings.instagram_label }}</div>
+
+              {%- assign ig_url = section.settings.instagram_url | default: 'https://www.instagram.com/' -%}
+
+              <a
+                class="cf__ig-link"
+                href="{{ ig_url }}"
+                target="_blank"
+                rel="noopener"
+                aria-label="Instagram">
+                <span class="cf__ig-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M7.5 2.8h9A4.7 4.7 0 0 1 21.2 7.5v9a4.7 4.7 0 0 1-4.7 4.7h-9A4.7 4.7 0 0 1 2.8 16.5v-9A4.7 4.7 0 0 1 7.5 2.8Z" stroke="currentColor" stroke-width="1.6"/>
+                    <path d="M12 16.1a4.1 4.1 0 1 0 0-8.2 4.1 4.1 0 0 0 0 8.2Z" stroke="currentColor" stroke-width="1.6"/>
+                    <path d="M17.3 6.7h.01" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+                  </svg>
+                </span>
+                <span class="cf__ig-handle">{{ section.settings.instagram_handle }}</span>
+              </a>
+            </div>
+          {%- endif -%}
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="cf__divider"></div>
+
+  <div class="cf__bottom">
+    <div class="page-width">
+      <div class="cf__bottom-inner">
+        <div class="cf__copy">
+          © {{ shop.name }}. {{ section.settings.copyright_text }}
+        </div>
+
+        <div class="cf__legal">
+          {%- if section.settings.privacy_link != blank -%}
+            <a href="{{ section.settings.privacy_link }}">{{ section.settings.privacy_label }}</a>
+          {%- elsif shop.policies.privacy_policy != blank -%}
+            <a href="{{ shop.policies.privacy_policy.url }}">{{ shop.policies.privacy_policy.title }}</a>
+          {%- endif -%}
+
+          {%- if section.settings.terms_link != blank -%}
+            <a href="{{ section.settings.terms_link }}">{{ section.settings.terms_label }}</a>
+          {%- elsif shop.policies.terms_of_service != blank -%}
+            <a href="{{ shop.policies.terms_of_service.url }}">{{ shop.policies.terms_of_service.title }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Custom footer (simple)",
+  "class": "shopify-section-footer",
+  "enabled_on": { "groups": ["footer"] },
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "margin_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Margin top (space above footer)", "default": 0 },
+    { "type": "range", "id": "line_offset", "min": 0, "max": 80, "step": 2, "unit": "px", "label": "Space above pink line (inside footer)", "default": 0 },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding top", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Padding bottom", "default": 0 },
+
+    { "type": "header", "content": "Brand" },
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "range", "id": "logo_width", "min": 80, "max": 400, "step": 10, "unit": "px", "label": "Logo width", "default": 200 },
+    { "type": "range", "id": "mobile_logo_width", "min": 80, "max": 320, "step": 10, "unit": "px", "label": "Mobile logo width", "default": 220 },
+    { "type": "text", "id": "tagline", "label": "Tagline", "default": "Preserving Memories Always & FLOHRiver" },
+    { "type": "richtext", "id": "description", "label": "Short description", "default": "<p>Flohral Preservation turns your special flowers into forever keepsakes, preserving and sharing the love memories they hold forever.</p>" },
+
+    { "type": "header", "content": "Menus" },
+    { "type": "checkbox", "id": "show_menu_headings", "label": "Show menu headings", "default": false },
+    { "type": "text", "id": "menu_1_heading", "label": "Menu 1 heading", "default": "Menu" },
+    { "type": "link_list", "id": "menu_1", "label": "Menu 1", "default": "footer" },
+    { "type": "text", "id": "menu_2_heading", "label": "Menu 2 heading", "default": "Resources" },
+    { "type": "link_list", "id": "menu_2", "label": "Menu 2", "default": "footer" },
+
+    { "type": "header", "content": "Mobile menus" },
+    { "type": "checkbox", "id": "use_custom_mobile_menus", "label": "Use different menus on mobile", "default": false },
+    { "type": "link_list", "id": "mobile_menu_1", "label": "Mobile menu column 1" },
+    { "type": "link_list", "id": "mobile_menu_2", "label": "Mobile menu column 2" },
+    { "type": "range", "id": "mobile_menu_gap", "min": 8, "max": 60, "step": 2, "unit": "px", "label": "Mobile menu column gap", "default": 24 },
+    { "type": "range", "id": "mobile_menu_font_size", "min": 12, "max": 22, "step": 1, "unit": "px", "label": "Mobile menu font size", "default": 16 },
+    { "type": "range", "id": "mobile_description_font_size", "min": 12, "max": 22, "step": 1, "unit": "px", "label": "Mobile description font size", "default": 14 },
+
+    { "type": "header", "content": "Newsletter" },
+    { "type": "checkbox", "id": "newsletter_enable", "label": "Enable newsletter", "default": true },
+    { "type": "richtext", "id": "newsletter_text", "label": "Newsletter text", "default": "<p>Join now to get exclusive deals, news, and updates on special events.</p>" },
+    { "type": "range", "id": "mobile_newsletter_text_size", "min": 12, "max": 22, "step": 1, "unit": "px", "label": "Mobile newsletter text size", "default": 14 },
+
+    {
+      "type": "select",
+      "id": "form_source",
+      "label": "Newsletter source",
+      "default": "iframe",
+      "options": [
+        { "value": "iframe", "label": "Iframe embed" },
+        { "value": "shopify", "label": "Shopify newsletter form" }
+      ]
+    },
+
+    {
+      "type": "liquid",
+      "id": "newsletter_iframe",
+      "label": "Newsletter iframe code",
+      "default": "{% comment %}Paste your iframe embed code here{% endcomment %}"
+    },
+
+    { "type": "text", "id": "email_placeholder", "label": "Email placeholder", "default": "Enter your email address*" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Join Us" },
+    { "type": "text", "id": "success_message", "label": "Success message", "default": "Thanks for subscribing." },
+
+    { "type": "header", "content": "Instagram" },
+    { "type": "checkbox", "id": "show_instagram", "label": "Show Instagram", "default": true },
+    { "type": "text", "id": "instagram_label", "label": "Instagram label", "default": "Check us out on Instagram" },
+    { "type": "text", "id": "instagram_handle", "label": "Instagram handle (include @)", "default": "@flohral_preservation" },
+    { "type": "url", "id": "instagram_url", "label": "Instagram link" },
+
+    { "type": "header", "content": "Bottom links" },
+    { "type": "text", "id": "copyright_text", "label": "Copyright text", "default": "All Rights Reserved" },
+    { "type": "range", "id": "copyright_font_size", "min": 10, "max": 22, "step": 1, "unit": "px", "label": "Copyright font size", "default": 14 },
+
+    { "type": "text", "id": "privacy_label", "label": "Privacy label", "default": "The Privacy Policy" },
+    { "type": "url", "id": "privacy_link", "label": "Privacy link (optional)" },
+    { "type": "text", "id": "terms_label", "label": "Terms & Conditions" },
+    { "type": "url", "id": "terms_link", "label": "Terms link (optional)" },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#2b2b2b" },
+    { "type": "color", "id": "muted_color", "label": "Muted text", "default": "#6b6b6b" },
+    { "type": "color", "id": "accent_color", "label": "Accent (pink)", "default": "#d64a76" },
+    { "type": "color", "id": "line_color", "label": "Divider line", "default": "#d8d8d8" }
+  ],
+  "presets": [
+    { "name": "Custom footer (simple)" }
+  ]
+}
+{% endschema %}

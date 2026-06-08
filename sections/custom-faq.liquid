@@ -1,0 +1,295 @@
+{%- style -%}
+  #shopify-section-{{ section.id }}{
+    --faq-pt: {{ section.settings.padding_top }}px;
+    --faq-pb: {{ section.settings.padding_bottom }}px;
+
+    /* Section background (outside the “card”) */
+    --faq-bg: {{ section.settings.bg_color }};
+
+    --faq-heading: {{ section.settings.heading_color }};
+    --faq-eyebrow: {{ section.settings.eyebrow_color }};
+    --faq-q: {{ section.settings.question_color }};
+    --faq-a: {{ section.settings.answer_color }};
+    --faq-line: {{ section.settings.divider_color }};
+    --faq-icon: {{ section.settings.icon_color }};
+
+    --faq-max: {{ section.settings.max_width }}px;
+
+    /* NEW: content “card” behind title + questions */
+    --faq-card-bg: {{ section.settings.card_bg_color }};
+    --faq-card-radius: {{ section.settings.card_radius }}px;
+    --faq-card-pad-y: {{ section.settings.card_padding_y }}px;
+    --faq-card-pad-x: {{ section.settings.card_padding_x }}px;
+  }
+{%- endstyle -%}
+
+<style>
+  #shopify-section-{{ section.id }} .faqx{
+    background: var(--faq-bg);
+    padding-top: var(--faq-pt);
+    padding-bottom: var(--faq-pb);
+  }
+
+  #shopify-section-{{ section.id }} .faqx__inner{
+    max-width: var(--faq-max);
+    margin: 0 auto;
+  }
+
+  /* NEW: the background block ONLY around heading + questions */
+  #shopify-section-{{ section.id }} .faqx__card{
+    background: {% if section.settings.enable_card_bg %}var(--faq-card-bg){% else %}transparent{% endif %};
+    border-radius: {% if section.settings.enable_card_bg %}var(--faq-card-radius){% else %}0px{% endif %};
+    padding: {% if section.settings.enable_card_bg %}var(--faq-card-pad-y) var(--faq-card-pad-x){% else %}0px{% endif %};
+  }
+
+  #shopify-section-{{ section.id }} .faqx__head{
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  #shopify-section-{{ section.id }} .faqx__eyebrow{
+    margin: 0 0 10px;
+    color: var(--faq-eyebrow);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    font-size: 11px;
+    line-height: 1.2;
+  }
+
+  #shopify-section-{{ section.id }} .faqx__title{
+    margin: 0;
+    color: var(--faq-heading);
+    line-height: 1.1;
+  }
+
+  #shopify-section-{{ section.id }} .faqx__list{
+    border-top: 1px solid var(--faq-line);
+  }
+
+  #shopify-section-{{ section.id }} details.faqx__item{
+    border-bottom: 1px solid var(--faq-line);
+  }
+
+  #shopify-section-{{ section.id }} .faqx__summary{
+    list-style: none;
+    cursor: pointer;
+    padding: 18px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+  }
+
+  #shopify-section-{{ section.id }} .faqx__summary::-webkit-details-marker{ display:none; }
+
+  #shopify-section-{{ section.id }} .faqx__q{
+    color: var(--faq-q);
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 1.25;
+  }
+
+  /* Plus icon */
+  #shopify-section-{{ section.id }} .faqx__icon{
+    flex: 0 0 auto;
+    width: 22px;
+    height: 22px;
+    position: relative;
+    color: var(--faq-icon);
+    opacity: .9;
+  }
+  #shopify-section-{{ section.id }} .faqx__icon::before,
+  #shopify-section-{{ section.id }} .faqx__icon::after{
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background: currentColor;
+    transform: translate(-50%, -50%);
+    border-radius: 2px;
+  }
+  #shopify-section-{{ section.id }} .faqx__icon::before{ width: 14px; height: 2px; }
+  #shopify-section-{{ section.id }} .faqx__icon::after{ width: 2px; height: 14px; }
+
+  /* Open state -> minus */
+  #shopify-section-{{ section.id }} details[open] .faqx__icon::after{
+    height: 0;
+  }
+
+  #shopify-section-{{ section.id }} .faqx__answer{
+    padding: 0 0 18px;
+    color: var(--faq-a);
+    line-height: 1.55;
+  }
+  #shopify-section-{{ section.id }} .faqx__answer p{ margin: 0 0 10px; }
+  #shopify-section-{{ section.id }} .faqx__answer p:last-child{ margin-bottom: 0; }
+
+  /* Focus */
+  #shopify-section-{{ section.id }} .faqx__summary:focus-visible{
+    outline: 2px solid rgba(0,0,0,.25);
+    outline-offset: 6px;
+    border-radius: 8px;
+  }
+
+  /* Mobile sizing */
+  @media (max-width: 749px){
+    #shopify-section-{{ section.id }} .faqx__q{ font-size: 16px; }
+    #shopify-section-{{ section.id }} .faqx__summary{ padding: 16px 0; }
+
+    /* keep the “card” comfy on mobile */
+    #shopify-section-{{ section.id }} .faqx__card{
+      padding: {% if section.settings.enable_card_bg %}calc(var(--faq-card-pad-y) * 0.85) calc(var(--faq-card-pad-x) * 0.75){% else %}0px{% endif %};
+    }
+  }
+</style>
+
+<div class="faqx{% if section.settings.show_divider %} section--divider{% endif %}">
+  <div class="{% if section.settings.full_width %}page-width--full-width{% else %}page-width{% endif %}">
+    <div
+      id="Faqx-{{ section.id }}"
+      class="faqx__inner"
+      data-single="{{ section.settings.single_open }}"
+    >
+      <!-- NEW: background only wraps heading + list -->
+      <div class="faqx__card">
+        <div class="faqx__head">
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="faqx__eyebrow">{{ section.settings.eyebrow }}</p>
+          {%- endif -%}
+
+          {%- if section.settings.heading != blank -%}
+            <{{ section.settings.heading_tag }} class="faqx__title {{ section.settings.heading_size }}">
+              {{ section.settings.heading }}
+            </{{ section.settings.heading_tag }}>
+          {%- endif -%}
+        </div>
+
+        <div class="faqx__list" role="region" aria-label="FAQ">
+          {%- for block in section.blocks -%}
+            <details
+              class="faqx__item"
+              {{ block.shopify_attributes }}
+              {% if section.settings.open_first and forloop.first %}open{% endif %}
+            >
+              <summary class="faqx__summary">
+                <span class="faqx__q">{{ block.settings.question }}</span>
+                <span class="faqx__icon" aria-hidden="true"></span>
+              </summary>
+
+              <div class="faqx__answer rte">
+                {{ block.settings.answer }}
+              </div>
+            </details>
+          {%- endfor -%}
+        </div>
+      </div>
+      <!-- /faqx__card -->
+    </div>
+  </div>
+</div>
+
+<script>
+  (() => {
+    const root = document.getElementById('Faqx-{{ section.id }}');
+    if (!root) return;
+
+    const single = root.dataset.single === 'true';
+    if (!single) return;
+
+    const items = Array.from(root.querySelectorAll('details.faqx__item'));
+    items.forEach((d) => {
+      d.addEventListener('toggle', () => {
+        if (!d.open) return;
+        items.forEach((other) => {
+          if (other !== d) other.removeAttribute('open');
+        });
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Custom FAQ (accordion)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "checkbox", "id": "full_width", "label": "Full width", "default": false },
+    { "type": "checkbox", "id": "show_divider", "label": "Show divider", "default": false },
+
+    { "type": "header", "content": "Heading" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow (small text)", "default": "Frequently asked" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Frequently asked questions" },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "options": [
+        { "value": "h1", "label": "h1" },
+        { "value": "h2", "label": "h2" },
+        { "value": "h3", "label": "h3" },
+        { "value": "div", "label": "div" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size class",
+      "options": [
+        { "value": "h0", "label": "Large" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h2", "label": "Small" }
+      ],
+      "default": "h0"
+    },
+
+    { "type": "header", "content": "Behavior" },
+    { "type": "checkbox", "id": "single_open", "label": "Only allow one open at a time", "default": true },
+    { "type": "checkbox", "id": "open_first", "label": "Open first item by default", "default": false },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "max_width", "label": "Content max width (px)", "min": 700, "max": 1200, "step": 10, "default": 980 },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 140, "step": 4, "unit": "px", "label": "Padding top", "default": 60 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 140, "step": 4, "unit": "px", "label": "Padding bottom", "default": 60 },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg_color", "label": "Section background (outside card)", "default": "#ffffff" },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#1a1b18" },
+    { "type": "color", "id": "eyebrow_color", "label": "Eyebrow color", "default": "#6b6b6b" },
+    { "type": "color", "id": "question_color", "label": "Question color", "default": "#1a1b18" },
+    { "type": "color", "id": "answer_color", "label": "Answer color", "default": "#6b6b6b" },
+    { "type": "color", "id": "divider_color", "label": "Divider color", "default": "#e6e6e6" },
+    { "type": "color", "id": "icon_color", "label": "Plus icon color", "default": "#d64a76" },
+
+    { "type": "header", "content": "Title + FAQ card background (like your screenshot)" },
+    { "type": "checkbox", "id": "enable_card_bg", "label": "Enable background behind title + questions", "default": true },
+    { "type": "color", "id": "card_bg_color", "label": "Card background color", "default": "#f7e9ef" },
+    { "type": "range", "id": "card_radius", "label": "Card corner radius (px)", "min": 0, "max": 40, "step": 2, "default": 14 },
+    { "type": "range", "id": "card_padding_y", "label": "Card padding Y (px)", "min": 0, "max": 80, "step": 2, "default": 28 },
+    { "type": "range", "id": "card_padding_x", "label": "Card padding X (px)", "min": 0, "max": 100, "step": 2, "default": 34 }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ item",
+      "settings": [
+        { "type": "inline_richtext", "id": "question", "label": "Question", "default": "Your question here" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Your answer goes here.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom FAQ (accordion)",
+      "blocks": [
+        { "type": "faq" },
+        { "type": "faq" },
+        { "type": "faq" }
+      ]
+    }
+  ]
+}
+{% endschema %}

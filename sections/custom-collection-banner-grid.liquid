@@ -1,0 +1,1565 @@
+{% comment %}
+  Section: Collection banner grid - Static section video + AJAX collection tiles
+
+  What changed:
+  - The hero/video area is controlled from the SECTION schema/settings, not from a block.
+  - Bottom cards use the selected collection for the tile image/title and AJAX target.
+  - Bottom cards are buttons, not URL links, so they do not force a full page refresh.
+  - Clicking a bottom card updates the collection/product area through AJAX using the selected collection URL.
+  - Same visual layout/class styling approach as the old section, but with a new class prefix to avoid conflicts.
+{% endcomment %}
+
+{%- liquid
+  assign has_section_video = false
+  if section.settings.hero_video != blank or section.settings.hero_video_url != blank or section.settings.hero_video_mobile != blank or section.settings.hero_video_url_mobile != blank
+    assign has_section_video = true
+  endif
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }}{
+    --pt: {{ section.settings.padding_top }}px;
+    --pb: {{ section.settings.padding_bottom }}px;
+    --header-offset: {{ section.settings.header_offset }}px;
+
+    --gap: {{ section.settings.gap }}px;
+
+    --text-color: {{ section.settings.text_color }};
+    --accent-color: {{ section.settings.accent_color }};
+
+    --large-h: {{ section.settings.large_height }}px;
+    --small-h: {{ section.settings.small_height }}px;
+
+    --radius: {{ section.settings.radius }}px;
+
+    --intro-bg: {{ section.settings.intro_bg }};
+    --intro-pad: {{ section.settings.intro_padding }}px;
+    --intro-radius: {{ section.settings.intro_radius }}px;
+
+    --intro-pad-top-mobile: {{ section.settings.intro_padding_top_mobile }}px;
+    --intro-pad-right-mobile: {{ section.settings.intro_padding_right_mobile }}px;
+    --intro-pad-bottom-mobile: {{ section.settings.intro_padding_bottom_mobile }}px;
+    --intro-pad-left-mobile: {{ section.settings.intro_padding_left_mobile }}px;
+
+    --top-bg: {{ section.settings.top_row_bg }};
+    --top-pad: {{ section.settings.top_row_padding }}px;
+    --top-radius: {{ section.settings.top_row_radius }}px;
+
+    --small-span: {{ section.settings.small_tile_span }};
+
+    --intro-title-size: {{ section.settings.intro_heading_font_size }}px;
+    --intro-text-size: {{ section.settings.intro_text_font_size }}px;
+    --tile-label-size: {{ section.settings.tile_label_font_size }}px;
+    --hero-label-size: {{ section.settings.hero_label_font_size }}px;
+
+    --intro-title-size-mobile: {{ section.settings.intro_heading_font_size_mobile }}px;
+    --intro-text-size-mobile: {{ section.settings.intro_text_font_size_mobile }}px;
+    --accent-color-mobile: {{ section.settings.accent_color_mobile }};
+
+    --hero-label-weight: {%- if section.settings.hero_label_bold -%}800{%- else -%}500{%- endif -%};
+  }
+
+  #shopify-section-{{ section.id }} .section--padding{
+    padding-top: calc(var(--pt) + var(--header-offset));
+    padding-bottom: var(--pb);
+  }
+{%- endstyle -%}
+
+<style>
+  #shopify-section-{{ section.id }}{
+    overflow-x: clip;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic{
+    width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-top{
+    background: var(--top-bg);
+    padding: var(--top-pad);
+    border-radius: var(--top-radius);
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-top__grid{
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--gap);
+    align-items: stretch;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-bottom{
+    margin-top: var(--gap);
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-bottom__grid{
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--gap);
+    align-items: stretch;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-intro{
+    grid-column: span 4;
+    min-height: var(--large-h);
+    display: flex;
+    align-items: center;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-intro__inner{
+    width: 100%;
+    background: var(--intro-bg);
+    padding: var(--intro-pad);
+    border-radius: var(--intro-radius);
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-intro__title{
+    margin: 0 0 10px;
+    color: var(--accent-color);
+    font-weight: 600;
+    line-height: 1.1;
+    font-size: var(--intro-title-size);
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-intro__title p{
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-intro__text{
+    margin: 0 0 18px;
+    color: var(--text-color);
+    line-height: 1.55;
+    font-size: var(--intro-text-size);
+    max-width: 34ch;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-intro__btn{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-tile{
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: #f4f4f4;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-tile__btn,
+  #shopify-section-{{ section.id }} .cbgStatic-hero__btn,
+  #shopify-section-{{ section.id }} .cbgStatic-hero__static{
+    display: block;
+    height: 100%;
+    width: 100%;
+    color: inherit;
+    text-decoration: none;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    text-align: left;
+    font: inherit;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-hero__static{
+    cursor: default;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-tile__media{
+    position: absolute;
+    inset: 0;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-media-mobile{
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-media-desktop{
+    display: block;
+    position: absolute;
+    inset: 0;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-tile__media img,
+  #shopify-section-{{ section.id }} .cbgStatic-tile__media svg,
+  #shopify-section-{{ section.id }} .cbgStatic-tile__media video{
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-tile__media iframe{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-tile::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(to top, rgba(0,0,0,.40), rgba(0,0,0,0) 55%);
+    opacity: .95;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-tile__label{
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+    z-index: 2;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    font-size: var(--tile-label-size);
+    line-height: 1.15;
+    text-shadow: 0 2px 10px rgba(0,0,0,.35);
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-tile.is-hero .cbgStatic-tile__label{
+    font-size: var(--hero-label-size);
+    font-weight: var(--hero-label-weight);
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-tile__play{
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-tile__play span{
+    width: 66px;
+    height: 66px;
+    border-radius: 999px;
+    background: rgba(0,0,0,.45);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-tile__play svg{
+    width: 22px;
+    height: 22px;
+    fill: #fff;
+    margin-left: 2px;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-tile.is-active{
+    outline: 2px solid var(--accent-color);
+    outline-offset: 3px;
+  }
+
+  @media (hover:hover){
+    #shopify-section-{{ section.id }} .cbgStatic-tile__media img,
+    #shopify-section-{{ section.id }} .cbgStatic-tile__media video{
+      transform: scale(1);
+      transition: transform .35s ease;
+    }
+
+    #shopify-section-{{ section.id }} .cbgStatic-tile:hover .cbgStatic-tile__media img,
+    #shopify-section-{{ section.id }} .cbgStatic-tile:hover .cbgStatic-tile__media video{
+      transform: scale(1.04);
+    }
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-tile.is-hero{
+    grid-column: span 8;
+    min-height: var(--large-h);
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-tile.is-small{
+    grid-column: span var(--small-span);
+    min-height: var(--small-h);
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic.is-loading .cbgStatic-bottom__grid{
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic.is-loading .cbgStatic-tile__btn{
+    cursor: wait;
+  }
+
+  @media (max-width: 989px){
+    #shopify-section-{{ section.id }} .cbgStatic-top__grid,
+    #shopify-section-{{ section.id }} .cbgStatic-bottom__grid{
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #shopify-section-{{ section.id }} .cbgStatic-intro{
+      grid-column: 1 / -1;
+      min-height: auto;
+    }
+
+    #shopify-section-{{ section.id }} .cbgStatic-tile.is-hero,
+    #shopify-section-{{ section.id }} .cbgStatic-tile.is-small{
+      grid-column: span 1;
+      min-height: 220px;
+    }
+  }
+
+  @media (max-width: 600px){
+    #shopify-section-{{ section.id }} .cbgStatic-top{
+      padding: 0;
+      background: transparent;
+      border-radius: 0;
+      overflow: visible;
+    }
+
+    #shopify-section-{{ section.id }} .cbgStatic-bottom{
+      margin-top: var(--gap);
+    }
+
+    #shopify-section-{{ section.id }} .cbgStatic-top__grid,
+    #shopify-section-{{ section.id }} .cbgStatic-bottom__grid{
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    #shopify-section-{{ section.id }} .cbgStatic-intro{
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .cbgStatic-tile.is-hero{
+      grid-column: 1 / -1;
+      min-height: auto;
+      aspect-ratio: 1.55 / 1;
+    }
+
+    #shopify-section-{{ section.id }} .cbgStatic-tile.is-small{
+      grid-column: span 1;
+      min-height: auto;
+      aspect-ratio: 1 / 1;
+    }
+
+    #shopify-section-{{ section.id }} .cbgStatic-intro__inner{
+      padding-top: var(--intro-pad-top-mobile);
+      padding-right: var(--intro-pad-right-mobile);
+      padding-bottom: var(--intro-pad-bottom-mobile);
+      padding-left: var(--intro-pad-left-mobile);
+    }
+
+    #shopify-section-{{ section.id }} .cbgStatic-intro__title{
+      font-size: var(--intro-title-size-mobile);
+      color: var(--accent-color-mobile);
+      {% if section.settings.center_heading_mobile %}
+      text-align: center;
+      {% endif %}
+    }
+
+    #shopify-section-{{ section.id }} .cbgStatic-intro__text{
+      font-size: var(--intro-text-size-mobile);
+      {% if section.settings.center_heading_mobile %}
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      {% endif %}
+    }
+
+    #shopify-section-{{ section.id }} .cbgStatic-intro__btn{
+      {% if section.settings.center_heading_mobile %}
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      width: fit-content;
+      {% endif %}
+    }
+
+    #shopify-section-{{ section.id }} .cbgStatic-media-desktop{
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .cbgStatic-media-mobile{
+      display: block;
+      position: absolute;
+      inset: 0;
+    }
+
+    #shopify-section-{{ section.id }} .cbgStatic-tile__label{
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .cbgStatic-tile.is-hero .cbgStatic-tile__label{
+      font-size: 14px;
+    }
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-modal{
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-modal.is-open{
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-modal__backdrop{
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.65);
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-modal__panel{
+    position: relative;
+    z-index: 2;
+    width: min(980px, calc(100% - 32px));
+    margin: 7vh auto;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 20px 70px rgba(0,0,0,.35);
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-modal__panel.is-mobile-video{
+    width: min(420px, calc(100% - 24px));
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-modal__topbar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(0,0,0,.08);
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-modal__title{
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: .02em;
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-modal__close{
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    border: 0;
+    background: rgba(0,0,0,.06);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-modal__close svg{
+    width: 18px;
+    height: 18px;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-modal__body{
+    position: relative;
+    background: #000;
+    aspect-ratio: 16 / 9;
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-modal__panel.is-mobile-video .cbgStatic-modal__body{
+    aspect-ratio: var(--active-mobile-ratio, 9 / 16);
+  }
+
+  #shopify-section-{{ section.id }} .cbgStatic-modal__body video,
+  #shopify-section-{{ section.id }} .cbgStatic-modal__body iframe{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: 0;
+  }
+</style>
+
+<div class="section--padding{% if section.settings.show_divider %} section--divider{% endif %}">
+  <div class="{% if section.settings.full_width %}page-width--full-width{% else %}page-width{% endif %}">
+    <div class="cbgStatic" data-cbgstatic-root>
+      <div class="cbgStatic-top">
+        <div class="cbgStatic-top__grid">
+          <div class="cbgStatic-intro">
+            <div class="cbgStatic-intro__inner">
+              {%- if section.settings.heading != blank -%}
+                <{{ section.settings.heading_tag }} class="cbgStatic-intro__title {{ section.settings.heading_size }}">
+                  {{ section.settings.heading }}
+                </{{ section.settings.heading_tag }}>
+              {%- endif -%}
+
+              {%- if section.settings.text != blank -%}
+                <div class="cbgStatic-intro__text rte">{{ section.settings.text }}</div>
+              {%- endif -%}
+
+              {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+                <a class="button cbgStatic-intro__btn" href="{{ section.settings.button_link }}">
+                  {{ section.settings.button_label | escape }}
+                </a>
+              {%- endif -%}
+            </div>
+          </div>
+
+          <div class="cbgStatic-tile is-hero" {{ section.shopify_attributes }}>
+            {%- if has_section_video -%}
+              <button
+                type="button"
+                class="cbgStatic-hero__btn"
+                data-cbgstatic-open-video
+                aria-label="Play {{ section.settings.video_label | escape }}"
+              >
+            {%- else -%}
+              <div class="cbgStatic-hero__static">
+            {%- endif -%}
+
+              <div class="cbgStatic-tile__media">
+                <div class="cbgStatic-media-desktop">
+                  {%- if section.settings.hero_video != blank -%}
+                    {{ section.settings.hero_video
+                      | video_tag:
+                        autoplay: true,
+                        loop: true,
+                        muted: true,
+                        controls: false,
+                        playsinline: true
+                    }}
+                  {%- elsif section.settings.hero_video_url != blank -%}
+                    {%- liquid
+                      assign desktop_video_url = section.settings.hero_video_url
+                      assign desktop_embed_url = ''
+                      if desktop_video_url.type == 'youtube'
+                        assign desktop_embed_url = 'https://www.youtube.com/embed/' | append: desktop_video_url.id | append: '?autoplay=1&mute=1&loop=1&playlist=' | append: desktop_video_url.id | append: '&controls=0&rel=0&playsinline=1'
+                      elsif desktop_video_url.type == 'vimeo'
+                        assign desktop_embed_url = 'https://player.vimeo.com/video/' | append: desktop_video_url.id | append: '?autoplay=1&muted=1&loop=1&background=1'
+                      endif
+                    -%}
+                    {%- if desktop_embed_url != blank -%}
+                      <iframe
+                        src="{{ desktop_embed_url }}"
+                        loading="lazy"
+                        allow="autoplay; fullscreen; picture-in-picture"
+                        title="{{ section.settings.video_label | escape }}"
+                      ></iframe>
+                    {%- elsif section.settings.hero_image != blank -%}
+                      {{ section.settings.hero_image | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1600, 2000, 2400' }}
+                    {%- else -%}
+                      {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {%- endif -%}
+                  {%- elsif section.settings.hero_image != blank -%}
+                    {{ section.settings.hero_image | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1600, 2000, 2400' }}
+                  {%- else -%}
+                    {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+                </div>
+
+                <div class="cbgStatic-media-mobile">
+                  {%- if section.settings.hero_video_mobile != blank -%}
+                    {{ section.settings.hero_video_mobile
+                      | video_tag:
+                        autoplay: true,
+                        loop: true,
+                        muted: true,
+                        controls: false,
+                        playsinline: true
+                    }}
+                  {%- elsif section.settings.hero_video_url_mobile != blank -%}
+                    {%- liquid
+                      assign mobile_video_url = section.settings.hero_video_url_mobile
+                      assign mobile_embed_url = ''
+                      if mobile_video_url.type == 'youtube'
+                        assign mobile_embed_url = 'https://www.youtube.com/embed/' | append: mobile_video_url.id | append: '?autoplay=1&mute=1&loop=1&playlist=' | append: mobile_video_url.id | append: '&controls=0&rel=0&playsinline=1'
+                      elsif mobile_video_url.type == 'vimeo'
+                        assign mobile_embed_url = 'https://player.vimeo.com/video/' | append: mobile_video_url.id | append: '?autoplay=1&muted=1&loop=1&background=1'
+                      endif
+                    -%}
+                    {%- if mobile_embed_url != blank -%}
+                      <iframe
+                        src="{{ mobile_embed_url }}"
+                        loading="lazy"
+                        allow="autoplay; fullscreen; picture-in-picture"
+                        title="{{ section.settings.video_label | escape }}"
+                      ></iframe>
+                    {%- endif -%}
+                  {%- elsif section.settings.hero_video != blank -%}
+                    {{ section.settings.hero_video
+                      | video_tag:
+                        autoplay: true,
+                        loop: true,
+                        muted: true,
+                        controls: false,
+                        playsinline: true
+                    }}
+                  {%- elsif section.settings.hero_video_url != blank -%}
+                    {%- liquid
+                      assign fallback_video_url = section.settings.hero_video_url
+                      assign fallback_embed_url = ''
+                      if fallback_video_url.type == 'youtube'
+                        assign fallback_embed_url = 'https://www.youtube.com/embed/' | append: fallback_video_url.id | append: '?autoplay=1&mute=1&loop=1&playlist=' | append: fallback_video_url.id | append: '&controls=0&rel=0&playsinline=1'
+                      elsif fallback_video_url.type == 'vimeo'
+                        assign fallback_embed_url = 'https://player.vimeo.com/video/' | append: fallback_video_url.id | append: '?autoplay=1&muted=1&loop=1&background=1'
+                      endif
+                    -%}
+                    {%- if fallback_embed_url != blank -%}
+                      <iframe
+                        src="{{ fallback_embed_url }}"
+                        loading="lazy"
+                        allow="autoplay; fullscreen; picture-in-picture"
+                        title="{{ section.settings.video_label | escape }}"
+                      ></iframe>
+                    {%- endif -%}
+                  {%- elsif section.settings.hero_image_mobile != blank -%}
+                    {{ section.settings.hero_image_mobile | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '500, 750, 1000, 1400' }}
+                  {%- elsif section.settings.hero_image != blank -%}
+                    {{ section.settings.hero_image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '500, 750, 1000, 1400' }}
+                  {%- else -%}
+                    {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+                </div>
+              </div>
+
+              {%- if section.settings.video_label != blank -%}
+                <div class="cbgStatic-tile__label">{{ section.settings.video_label }}</div>
+              {%- endif -%}
+
+              {%- if has_section_video and section.settings.show_play_icon -%}
+                <div class="cbgStatic-tile__play" aria-hidden="true">
+                  <span>
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  </span>
+                </div>
+              {%- endif -%}
+
+            {%- if has_section_video -%}
+              </button>
+            {%- else -%}
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+
+      <div class="cbgStatic-bottom">
+        <div class="cbgStatic-bottom__grid">
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign c = block.settings.collection
+              assign label = block.settings.label
+
+              if c != blank
+                if label == blank or label == 'Collection'
+                  assign label = c.title
+                endif
+              endif
+
+              assign fallback_img = blank
+              if c != blank and c.image != blank
+                assign fallback_img = c.image
+              elsif c != blank and c.featured_image != blank
+                assign fallback_img = c.featured_image
+              elsif c != blank and c.products.first.featured_image != blank
+                assign fallback_img = c.products.first.featured_image
+              endif
+
+              assign ajax_collection_url = blank
+              if c != blank and c.url != blank
+                assign ajax_collection_url = c.url
+              endif
+            -%}
+
+            <div
+              class="cbgStatic-tile is-small"
+              data-cbgstatic-card
+              data-cbgstatic-card-url="{{ ajax_collection_url | escape }}"
+              {{ block.shopify_attributes }}
+            >
+              <button
+                type="button"
+                class="cbgStatic-tile__btn"
+                data-cbgstatic-ajax-url="{{ ajax_collection_url | escape }}"
+                aria-label="Show {{ label | escape }} products"
+                {% if ajax_collection_url == blank %}disabled{% endif %}
+              >
+                <div class="cbgStatic-tile__media">
+                  {%- if block.settings.thumb_image != blank -%}
+                    {{ block.settings.thumb_image | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '400, 600, 900, 1200, 1600' }}
+                  {%- elsif fallback_img != blank -%}
+                    {{ fallback_img | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '400, 600, 900, 1200, 1600' }}
+                  {%- else -%}
+                    {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+                </div>
+
+                {%- if label != blank -%}
+                  <div class="cbgStatic-tile__label">{{ label }}</div>
+                {%- endif -%}
+              </button>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{%- if has_section_video -%}
+  <template id="cbgStatic-video-template-{{ section.id }}" data-mobile-ratio="{{ section.settings.mobile_video_ratio }}">
+    <div class="cbgStatic-modal-source cbgStatic-modal-source--desktop">
+      {%- if section.settings.hero_video != blank -%}
+        {{ section.settings.hero_video | video_tag: controls: true, autoplay: true, muted: false, loop: false, playsinline: true }}
+      {%- elsif section.settings.hero_video_url != blank -%}
+        {%- liquid
+          assign modal_desktop_url = section.settings.hero_video_url
+          assign modal_desktop_embed_url = ''
+          if modal_desktop_url.type == 'youtube'
+            assign modal_desktop_embed_url = 'https://www.youtube.com/embed/' | append: modal_desktop_url.id | append: '?autoplay=1&mute=0&rel=0&playsinline=1'
+          elsif modal_desktop_url.type == 'vimeo'
+            assign modal_desktop_embed_url = 'https://player.vimeo.com/video/' | append: modal_desktop_url.id | append: '?autoplay=1&muted=0'
+          endif
+        -%}
+        {%- if modal_desktop_embed_url != blank -%}
+          <iframe
+            src="{{ modal_desktop_embed_url }}"
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowfullscreen
+            title="{{ section.settings.video_label | escape }}"
+          ></iframe>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+
+    <div class="cbgStatic-modal-source cbgStatic-modal-source--mobile">
+      {%- if section.settings.hero_video_mobile != blank -%}
+        {{ section.settings.hero_video_mobile | video_tag: controls: true, autoplay: true, muted: false, loop: false, playsinline: true }}
+      {%- elsif section.settings.hero_video_url_mobile != blank -%}
+        {%- liquid
+          assign modal_mobile_url = section.settings.hero_video_url_mobile
+          assign modal_mobile_embed_url = ''
+          if modal_mobile_url.type == 'youtube'
+            assign modal_mobile_embed_url = 'https://www.youtube.com/embed/' | append: modal_mobile_url.id | append: '?autoplay=1&mute=0&rel=0&playsinline=1'
+          elsif modal_mobile_url.type == 'vimeo'
+            assign modal_mobile_embed_url = 'https://player.vimeo.com/video/' | append: modal_mobile_url.id | append: '?autoplay=1&muted=0'
+          endif
+        -%}
+        {%- if modal_mobile_embed_url != blank -%}
+          <iframe
+            src="{{ modal_mobile_embed_url }}"
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowfullscreen
+            title="{{ section.settings.video_label | escape }}"
+          ></iframe>
+        {%- endif -%}
+      {%- elsif section.settings.hero_video != blank -%}
+        {{ section.settings.hero_video | video_tag: controls: true, autoplay: true, muted: false, loop: false, playsinline: true }}
+      {%- elsif section.settings.hero_video_url != blank -%}
+        {%- liquid
+          assign modal_fallback_url = section.settings.hero_video_url
+          assign modal_fallback_embed_url = ''
+          if modal_fallback_url.type == 'youtube'
+            assign modal_fallback_embed_url = 'https://www.youtube.com/embed/' | append: modal_fallback_url.id | append: '?autoplay=1&mute=0&rel=0&playsinline=1'
+          elsif modal_fallback_url.type == 'vimeo'
+            assign modal_fallback_embed_url = 'https://player.vimeo.com/video/' | append: modal_fallback_url.id | append: '?autoplay=1&muted=0'
+          endif
+        -%}
+        {%- if modal_fallback_embed_url != blank -%}
+          <iframe
+            src="{{ modal_fallback_embed_url }}"
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowfullscreen
+            title="{{ section.settings.video_label | escape }}"
+          ></iframe>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </template>
+
+  <div class="cbgStatic-modal" id="cbgStatic-modal-{{ section.id }}" aria-hidden="true">
+    <div class="cbgStatic-modal__backdrop" data-cbgstatic-close></div>
+    <div class="cbgStatic-modal__panel" role="dialog" aria-modal="true" aria-label="Video modal">
+      <div class="cbgStatic-modal__topbar">
+        <p class="cbgStatic-modal__title">{{ section.settings.video_label | default: 'Video' }}</p>
+        <button class="cbgStatic-modal__close" type="button" data-cbgstatic-close aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="cbgStatic-modal__body" data-cbgstatic-modal-body></div>
+    </div>
+  </div>
+{%- endif -%}
+
+<script>
+  (function(){
+    var section = document.getElementById('shopify-section-{{ section.id }}');
+    if (!section) return;
+
+    var root = section.querySelector('[data-cbgstatic-root]');
+    if (!root) return;
+
+    var modal = section.querySelector('#cbgStatic-modal-{{ section.id }}');
+    var lastFocus = null;
+
+    function cssEscape(value) {
+      if (window.CSS && CSS.escape) return CSS.escape(value);
+      return String(value).replace(/[^a-zA-Z0-9_-]/g, '\\$&');
+    }
+
+    function isMobileView() {
+      return window.matchMedia('(max-width: 600px)').matches;
+    }
+
+    function getPreferredVideoSource(tpl) {
+      var mobileSource = tpl.content.querySelector('.cbgStatic-modal-source--mobile');
+      var desktopSource = tpl.content.querySelector('.cbgStatic-modal-source--desktop');
+
+      if (isMobileView() && mobileSource && mobileSource.innerHTML.trim() !== '') {
+        return { html: mobileSource.innerHTML, mobile: true };
+      }
+
+      if (desktopSource && desktopSource.innerHTML.trim() !== '') {
+        return { html: desktopSource.innerHTML, mobile: false };
+      }
+
+      if (mobileSource && mobileSource.innerHTML.trim() !== '') {
+        return { html: mobileSource.innerHTML, mobile: true };
+      }
+
+      return { html: '', mobile: false };
+    }
+
+    function openVideoModal() {
+      if (!modal) return;
+
+      var tpl = section.querySelector('#cbgStatic-video-template-{{ section.id }}');
+      var body = modal.querySelector('[data-cbgstatic-modal-body]');
+      var panel = modal.querySelector('.cbgStatic-modal__panel');
+      if (!tpl || !body || !panel) return;
+
+      lastFocus = document.activeElement;
+      body.innerHTML = '';
+
+      var preferred = getPreferredVideoSource(tpl);
+      body.innerHTML = preferred.html;
+
+      if (preferred.mobile) {
+        panel.classList.add('is-mobile-video');
+        panel.style.setProperty('--active-mobile-ratio', tpl.getAttribute('data-mobile-ratio') || '9/16');
+      } else {
+        panel.classList.remove('is-mobile-video');
+        panel.style.removeProperty('--active-mobile-ratio');
+      }
+
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.documentElement.style.overflow = 'hidden';
+
+      var closeBtn = modal.querySelector('[data-cbgstatic-close]');
+      if (closeBtn) closeBtn.focus();
+    }
+
+    function closeVideoModal() {
+      if (!modal) return;
+
+      var body = modal.querySelector('[data-cbgstatic-modal-body]');
+      var panel = modal.querySelector('.cbgStatic-modal__panel');
+
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.documentElement.style.overflow = '';
+
+      if (body) body.innerHTML = '';
+      if (panel) {
+        panel.classList.remove('is-mobile-video');
+        panel.style.removeProperty('--active-mobile-ratio');
+      }
+
+      if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+    }
+
+    function normalizeAjaxUrl(rawUrl) {
+      if (!rawUrl) return null;
+
+      try {
+        var parsed = new URL(rawUrl, window.location.origin);
+
+        return new URL(parsed.pathname + parsed.search + parsed.hash, window.location.origin);
+      } catch (error) {
+        console.warn('[cbgStatic] Invalid collection URL:', rawUrl);
+        return null;
+      }
+    }
+
+    function getUrlCompareKey(url) {
+      if (!url) return '';
+      try {
+        var parsed = url instanceof URL ? url : normalizeAjaxUrl(url);
+        if (!parsed) return '';
+        parsed.searchParams.delete('page');
+        return parsed.pathname + '?' + parsed.searchParams.toString();
+      } catch (error) {
+        return '';
+      }
+    }
+
+    function findProductArea(context) {
+      if (!context) return null;
+
+      var directSelectors = [
+        '#ProductGridContainer',
+        '#product-grid',
+        '[data-product-grid]',
+        'product-grid-component',
+        'collection-product-grid',
+        '.product-grid-container',
+        '.collection-product-grid',
+        '.facets-vertical'
+      ];
+
+      for (var d = 0; d < directSelectors.length; d++) {
+        var directFound = context.querySelector(directSelectors[d]);
+        if (directFound && directFound !== section && !section.contains(directFound)) {
+          return directFound;
+        }
+      }
+
+      var productGrid = context.querySelector('.product-grid, .grid.product-grid');
+      if (productGrid && productGrid !== section && !section.contains(productGrid)) {
+        var gridContainer = productGrid.closest('#ProductGridContainer, .product-grid-container, .collection-product-grid, .facets-vertical');
+        if (gridContainer && gridContainer !== section && !section.contains(gridContainer)) return gridContainer;
+        return productGrid;
+      }
+
+      var fallbackSelectors = [
+        '[id^="shopify-section-"][id*="main-collection-product-grid"]',
+        '[id^="shopify-section-"][id*="collection-product-grid"]',
+        '[id*="main-collection-product-grid"]',
+        '[id*="collection-product-grid"]'
+      ];
+
+      for (var i = 0; i < fallbackSelectors.length; i++) {
+        var found = context.querySelector(fallbackSelectors[i]);
+        if (found && found !== section && !section.contains(found)) return found;
+      }
+
+      return null;
+    }
+
+    function updateActiveCardByUrl(activeUrl) {
+      var activeKey = getUrlCompareKey(activeUrl || window.location.href);
+      var cards = section.querySelectorAll('[data-cbgstatic-card]');
+
+      cards.forEach(function(card){
+        var cardUrl = card.getAttribute('data-cbgstatic-card-url') || '';
+        var cardKey = getUrlCompareKey(cardUrl);
+        card.classList.toggle('is-active', !!cardKey && cardKey === activeKey);
+      });
+    }
+
+    function ajaxLoadProductsFromUrl(rawUrl, shouldPushState) {
+      if (typeof shouldPushState === 'undefined') shouldPushState = true;
+
+      var nextUrl = normalizeAjaxUrl(rawUrl);
+      if (!nextUrl) return;
+
+      var currentProductArea = findProductArea(document);
+
+      if (!currentProductArea) {
+        console.warn('[cbgStatic] Product area not found. Check your collection product grid wrapper selector. No page reload was triggered.');
+        return;
+      }
+
+      root.classList.add('is-loading');
+
+      fetch(nextUrl.toString(), {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      })
+      .then(function(response){
+        if (!response.ok) throw new Error('Request failed: ' + response.status);
+        return response.text();
+      })
+      .then(function(html){
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        var nextProductArea = findProductArea(doc);
+
+        if (!nextProductArea) {
+          throw new Error('New product area not found from fetched page.');
+        }
+
+        currentProductArea.innerHTML = nextProductArea.innerHTML;
+
+        if (shouldPushState) {
+          window.history.pushState({ cbgStaticAjax: true }, '', nextUrl.toString());
+        }
+
+        updateActiveCardByUrl(nextUrl);
+
+        document.dispatchEvent(new CustomEvent('cbgStatic:collectionUpdated', {
+          bubbles: true,
+          detail: {
+            url: nextUrl.toString(),
+            productArea: currentProductArea
+          }
+        }));
+
+        document.dispatchEvent(new Event('shopify:section:load'));
+      })
+      .catch(function(error){
+        console.error('[cbgStatic] AJAX collection update failed:', error);
+      })
+      .finally(function(){
+        root.classList.remove('is-loading');
+      });
+    }
+
+    section.addEventListener('click', function(event){
+      var videoBtn = event.target.closest('[data-cbgstatic-open-video]');
+      if (videoBtn) {
+        event.preventDefault();
+        event.stopPropagation();
+        openVideoModal();
+        return;
+      }
+
+      var filterBtn = event.target.closest('[data-cbgstatic-ajax-url]');
+      if (filterBtn && section.contains(filterBtn)) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+
+        var ajaxUrl = filterBtn.getAttribute('data-cbgstatic-ajax-url') || '';
+        ajaxLoadProductsFromUrl(ajaxUrl, true);
+      }
+    }, true);
+
+    if (modal) {
+      modal.addEventListener('click', function(event){
+        if (event.target.closest('[data-cbgstatic-close]')) closeVideoModal();
+      });
+
+      document.addEventListener('keydown', function(event){
+        if (!modal.classList.contains('is-open')) return;
+        if (event.key === 'Escape') closeVideoModal();
+      });
+    }
+
+    window.addEventListener('popstate', function(){
+      ajaxLoadProductsFromUrl(window.location.href, false);
+      updateActiveCardByUrl(window.location.href);
+    });
+
+    updateActiveCardByUrl(window.location.href);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Custom Collection",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "label": "Show divider",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Hero video / image (section settings)"
+    },
+    {
+      "type": "video",
+      "id": "hero_video",
+      "label": "Desktop video (Shopify hosted)"
+    },
+    {
+      "type": "video_url",
+      "id": "hero_video_url",
+      "label": "Desktop video URL",
+      "accept": [
+        "youtube",
+        "vimeo"
+      ]
+    },
+    {
+      "type": "video",
+      "id": "hero_video_mobile",
+      "label": "Mobile video (Shopify hosted)"
+    },
+    {
+      "type": "video_url",
+      "id": "hero_video_url_mobile",
+      "label": "Mobile video URL",
+      "accept": [
+        "youtube",
+        "vimeo"
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Fallback desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image_mobile",
+      "label": "Fallback mobile image"
+    },
+    {
+      "type": "text",
+      "id": "video_label",
+      "label": "Video label",
+      "default": "Custom Engraving"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_play_icon",
+      "label": "Show play icon overlay",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "mobile_video_ratio",
+      "label": "Mobile modal video ratio",
+      "options": [
+        {
+          "value": "9/16",
+          "label": "Portrait (9:16)"
+        },
+        {
+          "value": "16/9",
+          "label": "Landscape (16:9)"
+        }
+      ],
+      "default": "9/16"
+    },
+    {
+      "type": "header",
+      "content": "Header overlap fix"
+    },
+    {
+      "type": "range",
+      "id": "header_offset",
+      "label": "Header offset (px)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Left text panel"
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "<p>Shop Floral<br>Preservation</p>"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "options": [
+        {
+          "value": "h1",
+          "label": "h1"
+        },
+        {
+          "value": "h2",
+          "label": "h2"
+        },
+        {
+          "value": "h3",
+          "label": "h3"
+        },
+        {
+          "value": "div",
+          "label": "div"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size class",
+      "options": [
+        {
+          "value": "h0",
+          "label": "Large"
+        },
+        {
+          "value": "h1",
+          "label": "Medium"
+        },
+        {
+          "value": "h2",
+          "label": "Small"
+        }
+      ],
+      "default": "h0"
+    },
+    {
+      "type": "range",
+      "id": "intro_heading_font_size",
+      "label": "Intro heading font size (px)",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "default": 46
+    },
+    {
+      "type": "range",
+      "id": "intro_text_font_size",
+      "label": "Intro text font size (px)",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "type": "checkbox",
+      "id": "center_heading_mobile",
+      "label": "Center heading/content on mobile",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "intro_heading_font_size_mobile",
+      "label": "Intro heading font size mobile (px)",
+      "min": 16,
+      "max": 60,
+      "step": 1,
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "intro_text_font_size_mobile",
+      "label": "Intro text font size mobile (px)",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "accent_color_mobile",
+      "label": "Heading color mobile",
+      "default": "#b23b5a"
+    },
+    {
+      "type": "header",
+      "content": "Mobile intro padding"
+    },
+    {
+      "type": "range",
+      "id": "intro_padding_top_mobile",
+      "label": "Intro padding top mobile (px)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "intro_padding_right_mobile",
+      "label": "Intro padding right mobile (px)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "intro_padding_bottom_mobile",
+      "label": "Intro padding bottom mobile (px)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "intro_padding_left_mobile",
+      "label": "Intro padding left mobile (px)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 28
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Description",
+      "default": "<p>Check out our gallery of floral preservation, where your flowers are beautifully preserved so you can relive and hold your memories forever.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Tile label typography"
+    },
+    {
+      "type": "range",
+      "id": "tile_label_font_size",
+      "label": "Small tiles label font size (px)",
+      "min": 10,
+      "max": 22,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "hero_label_font_size",
+      "label": "Hero video label font size (px)",
+      "min": 12,
+      "max": 60,
+      "step": 1,
+      "default": 22
+    },
+    {
+      "type": "checkbox",
+      "id": "hero_label_bold",
+      "label": "Hero video label bold",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Left panel background"
+    },
+    {
+      "type": "color",
+      "id": "intro_bg",
+      "label": "Panel background color",
+      "default": "#fff6f8"
+    },
+    {
+      "type": "range",
+      "id": "intro_padding",
+      "label": "Panel padding (px)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "intro_radius",
+      "label": "Panel corner radius (px)",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Top row background"
+    },
+    {
+      "type": "color",
+      "id": "top_row_bg",
+      "label": "Top row background color",
+      "default": "#f7eef0"
+    },
+    {
+      "type": "range",
+      "id": "top_row_padding",
+      "label": "Top row padding (px)",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "top_row_radius",
+      "label": "Top row corner radius (px)",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap (px)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "large_height",
+      "label": "Hero video height (px)",
+      "min": 200,
+      "max": 640,
+      "step": 10,
+      "default": 360
+    },
+    {
+      "type": "range",
+      "id": "small_height",
+      "label": "Small tile height (px)",
+      "min": 140,
+      "max": 520,
+      "step": 10,
+      "default": 240
+    },
+    {
+      "type": "select",
+      "id": "small_tile_span",
+      "label": "Small tile width (desktop)",
+      "default": "3",
+      "options": [
+        {
+          "value": "2",
+          "label": "Smaller (6 per row)"
+        },
+        {
+          "value": "3",
+          "label": "Default (4 per row)"
+        },
+        {
+          "value": "4",
+          "label": "Bigger (3 per row)"
+        },
+        {
+          "value": "6",
+          "label": "Largest (2 per row)"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Tile corner radius (px)",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Heading color",
+      "default": "#b23b5a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#6b6b6b"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Collection tile",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection",
+          "info": "Used for the tile title, tile image, and AJAX product-grid update."
+        },
+        {
+          "type": "image_picker",
+          "id": "thumb_image",
+          "label": "Custom tile image (optional)",
+          "info": "Leave blank to use the collection image or first product image."
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Tile label override (optional)",
+          "info": "Leave blank to show the selected collection title."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Collection",
+      "blocks": [
+        {
+          "type": "tile"
+        },
+        {
+          "type": "tile"
+        },
+        {
+          "type": "tile"
+        },
+        {
+          "type": "tile"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

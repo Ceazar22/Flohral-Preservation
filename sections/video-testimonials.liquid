@@ -1,0 +1,268 @@
+{% comment %}
+  Section: Image Testimonials - Continuous Marquee Carousel (image only)
+{% endcomment %}
+
+<section id="VideoTestimonials-{{ section.id }}" class="vt-section" data-vt-root>
+  <div class="vt-inner page-width">
+    {% if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.subheading != blank %}
+      <header class="vt-header">
+        {% if section.settings.eyebrow != blank %}
+          <div class="vt-eyebrow">{{ section.settings.eyebrow }}</div>
+        {% endif %}
+
+        {% if section.settings.heading != blank %}
+          <h2 class="vt-title">{{ section.settings.heading }}</h2>
+        {% endif %}
+
+        {% if section.settings.subheading != blank %}
+          <div class="vt-subtitle rte">{{ section.settings.subheading }}</div>
+        {% endif %}
+      </header>
+    {% endif %}
+
+    <div
+      class="vt-marquee"
+      data-vt-marquee
+      style="
+        --vt-gap: {{ section.settings.gap }}px;
+        --vt-radius: {{ section.settings.radius }}px;
+        --vt-speed: {{ section.settings.scroll_speed }}s;
+      "
+      aria-label="Testimonials carousel"
+    >
+      <div class="vt-marquee__track" data-vt-track>
+        {% comment %} Set 1 {% endcomment %}
+        {% for block in section.blocks %}
+          {% liquid assign img = block.settings.image %}
+          <div class="vt-slide" {{ block.shopify_attributes }}>
+            <div class="vt-card" aria-label="Testimonial image">
+              <div class="vt-media">
+                {% if img != blank %}
+                  <img
+                    class="vt-thumb"
+                    src="{{ img | image_url: width: 900 }}"
+                    alt="{{ block.settings.alt | escape }}"
+                    loading="lazy"
+                    width="450"
+                    height="800"
+                  >
+                {% else %}
+                  <div class="vt-thumb vt-thumb--placeholder"></div>
+                {% endif %}
+
+                {% if block.settings.badge_text != blank %}
+                  <span class="vt-badge">{{ block.settings.badge_text }}</span>
+                {% endif %}
+              </div>
+
+              {% if block.settings.caption != blank %}
+                <div class="vt-caption">{{ block.settings.caption }}</div>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+
+        {% comment %} Set 2 (duplicate for seamless loop) {% endcomment %}
+        {% for block in section.blocks %}
+          {% liquid assign img = block.settings.image %}
+          <div class="vt-slide" aria-hidden="true">
+            <div class="vt-card" aria-label="Testimonial image">
+              <div class="vt-media">
+                {% if img != blank %}
+                  <img
+                    class="vt-thumb"
+                    src="{{ img | image_url: width: 900 }}"
+                    alt="{{ block.settings.alt | escape }}"
+                    loading="lazy"
+                    width="450"
+                    height="800"
+                  >
+                {% else %}
+                  <div class="vt-thumb vt-thumb--placeholder"></div>
+                {% endif %}
+
+                {% if block.settings.badge_text != blank %}
+                  <span class="vt-badge">{{ block.settings.badge_text }}</span>
+                {% endif %}
+              </div>
+
+              {% if block.settings.caption != blank %}
+                <div class="vt-caption">{{ block.settings.caption }}</div>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <style>
+    #VideoTestimonials-{{ section.id }}{
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+      background: {{ section.settings.background }};
+    }
+
+    #VideoTestimonials-{{ section.id }} .vt-header{
+      text-align:center;
+      margin-bottom: 24px;
+    }
+    #VideoTestimonials-{{ section.id }} .vt-eyebrow{
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: {{ section.settings.eyebrow_color }};
+      margin-bottom: 6px;
+    }
+    #VideoTestimonials-{{ section.id }} .vt-title{
+      margin: 0 0 6px;
+      font-size: clamp(24px, 3vw, 40px);
+      line-height: 1.15;
+      color: {{ section.settings.heading_color }};
+      font-weight: {% if section.settings.heading_bold %}700{% else %}400{% endif %};
+    }
+    #VideoTestimonials-{{ section.id }} .vt-subtitle{
+      max-width: 720px;
+      margin: 0 auto;
+      color: {{ section.settings.subheading_color }};
+      font-size: 14px;
+    }
+
+    /* Continuous marquee */
+    #VideoTestimonials-{{ section.id }} .vt-marquee{
+      overflow: hidden;
+      position: relative;
+    }
+
+    #VideoTestimonials-{{ section.id }} .vt-marquee__track{
+      display: flex;
+      gap: var(--vt-gap);
+      width: max-content;
+      will-change: transform;
+      animation: vt-marquee-{{ section.id }} var(--vt-speed) linear infinite;
+    }
+
+    /* Pause on hover (desktop) */
+    @media (hover:hover){
+      #VideoTestimonials-{{ section.id }} .vt-marquee:hover .vt-marquee__track{
+        animation-play-state: paused;
+      }
+    }
+
+    /* Each slide width */
+    #VideoTestimonials-{{ section.id }} .vt-slide{
+      flex: 0 0 auto;
+      width: clamp(200px, 18vw, 260px);
+    }
+
+    /* “Phone / Reel” look */
+    #VideoTestimonials-{{ section.id }} .vt-card{
+      border-radius: var(--vt-radius);
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 10px 30px rgba(0,0,0,.10);
+      border: 1px solid rgba(0,0,0,.06);
+      padding: 0;
+    }
+
+    #VideoTestimonials-{{ section.id }} .vt-media{
+      position: relative;
+      aspect-ratio: 9 / 16;
+      background: #f3f3f3;
+    }
+    #VideoTestimonials-{{ section.id }} .vt-thumb{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    #VideoTestimonials-{{ section.id }} .vt-thumb--placeholder{
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(0,0,0,.06), rgba(0,0,0,.02));
+    }
+
+    #VideoTestimonials-{{ section.id }} .vt-badge{
+      position:absolute;
+      left: 12px;
+      top: 12px;
+      background: rgba(0,0,0,.72);
+      color: #fff;
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+
+    #VideoTestimonials-{{ section.id }} .vt-caption{
+      padding: 10px 12px;
+      font-size: 13px;
+      color: #222;
+    }
+
+    /* Keyframes: move exactly half the track (because we duplicated content) */
+    @keyframes vt-marquee-{{ section.id }}{
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      #VideoTestimonials-{{ section.id }} .vt-marquee__track{
+        animation: none;
+        overflow-x: auto;
+      }
+    }
+  </style>
+</section>
+
+{% schema %}
+{
+  "name": "Image testimonials",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "TESTIMONIALS" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Love Notes From Our Flohral Brides" },
+    { "type": "checkbox", "id": "heading_bold", "label": "Bold heading", "default": true },
+    { "type": "richtext", "id": "subheading", "label": "Subheading", "default": "<p>Real recommendations from clients whose blooms we transformed into lasting keepsakes.</p>" },
+
+    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "eyebrow_color", "label": "Eyebrow color", "default": "#6b6b6b" },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#d91b5c" },
+    { "type": "color", "id": "subheading_color", "label": "Subheading color", "default": "#6b6b6b" },
+
+    { "type": "range", "id": "gap", "min": 8, "max": 40, "step": 2, "label": "Gap", "default": 18 },
+    { "type": "range", "id": "radius", "min": 6, "max": 24, "step": 1, "label": "Corner radius", "default": 14 },
+
+    { "type": "range", "id": "scroll_speed", "min": 12, "max": 80, "step": 2, "unit": "s", "label": "Scroll speed (seconds per loop)", "default": 32 },
+
+    { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Padding top", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Padding bottom", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Image item",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "alt", "label": "Image alt text", "default": "Testimonial image" },
+        { "type": "text", "id": "caption", "label": "Caption (optional)" },
+        { "type": "text", "id": "badge_text", "label": "Badge text (optional)" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Image testimonials (marquee)",
+      "blocks": [
+        { "type": "testimonial" },
+        { "type": "testimonial" },
+        { "type": "testimonial" },
+        { "type": "testimonial" },
+        { "type": "testimonial" }
+      ]
+    }
+  ]
+}
+{% endschema %}

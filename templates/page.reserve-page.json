@@ -1,0 +1,352 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "name": "Page Description",
+      "settings": {
+        "narrow": true,
+        "padding_top": 60,
+        "padding_bottom": 72
+      }
+    },
+    "image_banner_bJP364": {
+      "type": "image-banner",
+      "blocks": {
+        "subheading_k4qeR4": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "<strong>RESERVE YOUR SPOT</strong>",
+            "subheading_size": "h5",
+            "secondary_color": false,
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        },
+        "heading_69gQBk": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Reserve Your Preservation Slot</strong>",
+            "heading_size": "h1",
+            "heading_tag": "h2",
+            "enable_highlight": true,
+            "highlight_style": "squiggle"
+          }
+        },
+        "text_yMCwmn": {
+          "type": "text",
+          "settings": {
+            "text": "<p>$500 minimum order | Best within 1–3 days | Add-ons rules summary</p>",
+            "text_size": "typeset",
+            "secondary_color": false,
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_k4qeR4",
+        "heading_69gQBk",
+        "text_yMCwmn"
+      ],
+      "name": "Discover Flohral Hero",
+      "settings": {
+        "image": "shopify://shop_images/herobanner.webp",
+        "image_position": "center center",
+        "text_box_position": "center",
+        "text_alignment": "center",
+        "image_ratio": "400px",
+        "show_text_box": false,
+        "full_width": true,
+        "show_divider": false,
+        "image_behavior": "ambient",
+        "mobile_text_alignment": "center",
+        "mobile_image_ratio": "100vh",
+        "stack_images_on_mobile": false,
+        "show_text_below": false,
+        "colors_button_label": "#1a1b18",
+        "colors_button_background": "#ffffff",
+        "colors_text": "#ffffff",
+        "colors_overlay": "#000000",
+        "colors_overlay_opacity": 20,
+        "colors_highlight": "#ffb503",
+        "bottom_border_size": 20,
+        "bottom_border_color": "#b23b5a",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "custom_liquid_n6LUDP": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "<div class=\"hb-p-5fc5136b22d160000d5632d5-1\"></div><img height=\"1\" width=\"1\" style=\"display:none\" src=\"https://www.honeybook.com/p.png?pid=5fc5136b22d160000d5632d5\">\n<script>\n  (function(h,b,s,n,i,p,e,t) {\n    h._HB_ = h._HB_ || {};h._HB_.pid = i;;;;\n    t=b.createElement(s);t.type=\"text/javascript\";t.async=!0;t.src=n;\n    e=b.getElementsByTagName(s)[0];e.parentNode.insertBefore(t,e);\n})(window,document,\"script\",\"https://widget.honeybook.com/assets_users_production/websiteplacements/placement-controller.min.js\",\"5fc5136b22d160000d5632d5\");\n</script>",
+        "full_width": false,
+        "show_divider": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "steps_video_accordion_ezqQr8": {
+      "type": "steps-video-accordion",
+      "blocks": {
+        "step_K4zrDx": {
+          "type": "step",
+          "settings": {
+            "step_label": "Step 1: Send Your Deposit",
+            "text": "<p>Add your instructions here.</p>"
+          }
+        },
+        "step_dCKz6k": {
+          "type": "step",
+          "settings": {
+            "step_label": "Step 2: Ship Your Bouquet",
+            "text": "<p>Add your instructions here.</p>"
+          }
+        },
+        "step_gG7Jyy": {
+          "type": "step",
+          "settings": {
+            "step_label": "Step 4: Finalize Layout",
+            "text": "<p>Add your instructions here.</p>"
+          }
+        },
+        "step_gqpjWk": {
+          "type": "step",
+          "settings": {
+            "step_label": "Step 5: Relive",
+            "text": "<p>Add your instructions here.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "step_K4zrDx",
+        "step_dCKz6k",
+        "step_gG7Jyy",
+        "step_gqpjWk"
+      ],
+      "name": "Prep steps + video",
+      "settings": {
+        "show_divider": false,
+        "full_width": false,
+        "eyebrow": "WHAT TO DO",
+        "heading": "<strong>What Happens Next?</strong>",
+        "heading_tag": "h2",
+        "heading_size": "h1",
+        "video": "shopify://files/videos/0-3786880729761973864.mp4",
+        "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+        "autoplay_video": true,
+        "mute_video": true,
+        "loop_video": true,
+        "show_controls": false,
+        "open_first": true,
+        "column_gap": 48,
+        "bg_color": "#ffffff",
+        "heading_color": "#b23b5a",
+        "eyebrow_color": "#6b6b6b",
+        "text_color": "#6b6b6b",
+        "rule_color": "#d6d6d6",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "1766900414b8a5f62a": {
+      "type": "apps",
+      "blocks": {
+        "google_reviews_google_carousel_one_hHBkGi": {
+          "type": "shopify://apps/google-reviews/blocks/google-carousel-one/4eeaae1c-902b-481c-bec5-3f32291a58d5",
+          "settings": {
+            "rank": "1",
+            "photo_size": "large",
+            "auto_scroll": true,
+            "auto_scroll_interval": 3,
+            "rating": true,
+            "submit_review_button": true,
+            "business_info": true,
+            "review_photo": true,
+            "review_card_shadow": false,
+            "corner_radius": 20,
+            "star_color": "#f6ab00",
+            "review_card_background": "#f3f6f9",
+            "content_color": "#000000",
+            "name_color": "#000000",
+            "date_color": "#7a7a7a",
+            "more_color": "#1a73e8",
+            "submit_button_background_color": "#0084ff",
+            "submit_button_text": "#ffffff",
+            "business_info_color": "#000000"
+          }
+        }
+      },
+      "block_order": [
+        "google_reviews_google_carousel_one_hHBkGi"
+      ],
+      "settings": {
+        "include_margins": true,
+        "show_divider": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "custom_faq_Km4qiU": {
+      "type": "custom-faq",
+      "blocks": {
+        "faq_nTdtcF": {
+          "type": "faq",
+          "settings": {
+            "question": "<strong>What does reserving my spot mean?</strong>",
+            "answer": "<p>Reserving your spot secures a place on our preservation schedule. Because we accept a limited number of bouquets at a time, spots are first-come, first-served.</p>"
+          }
+        },
+        "faq_387BYL": {
+          "type": "faq",
+          "settings": {
+            "question": "<strong>Is the $150 deposit required to reserve my spot?</strong>",
+            "answer": "<p>Yes. A $150 non-refundable deposit is required to secure your spot and will be deducted from your total order amount. This helps us plan materials, capacity, and scheduling.</p>"
+          }
+        },
+        "faq_hadfMM": {
+          "type": "faq",
+          "settings": {
+            "question": "<strong>When is the remaining balance due?</strong>",
+            "answer": "<p>The remaining balance is due once your design is finalized and before your finished piece ships.</p>"
+          }
+        },
+        "faq_mwLhy9": {
+          "type": "faq",
+          "settings": {
+            "question": "<strong>What happens after I submit the form and deposit?</strong>",
+            "answer": "<p>After submission, you’ll receive confirmation and next-step instructions, including how and when to ship your bouquet. Our team will guide you through the process from start to finish.</p>"
+          }
+        },
+        "faq_j3z89V": {
+          "type": "faq",
+          "settings": {
+            "question": "<strong>Can I make changes after reserving my spot?</strong>",
+            "answer": "<p>Yes. Minor adjustments and add-ons are usually possible depending on your project stage. Larger changes or upgrades may require additional fees.</p>"
+          }
+        },
+        "faq_FEA66a": {
+          "type": "faq",
+          "settings": {
+            "question": "<strong>What if I change my mind after reserving?</strong>",
+            "answer": "<p>Because preservation spots are limited and custom-planned, deposits are non-refundable. If you have concerns, we encourage you to contact us before submitting your reservation.</p>"
+          }
+        },
+        "faq_EK7JpD": {
+          "type": "faq",
+          "settings": {
+            "question": "<strong>Does reserving my spot guarantee a completion date?</strong>",
+            "answer": "<p>Reserving your spot secures your place in our queue. Standard turnaround is <strong>6–8 months</strong> from deposit, with timelines dependent on approvals and project complexity.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_nTdtcF",
+        "faq_387BYL",
+        "faq_hadfMM",
+        "faq_mwLhy9",
+        "faq_j3z89V",
+        "faq_FEA66a",
+        "faq_EK7JpD"
+      ],
+      "name": "Custom FAQ (accordion)",
+      "settings": {
+        "full_width": false,
+        "show_divider": false,
+        "eyebrow": "Frequently asked",
+        "heading": "Frequently Asked Questions",
+        "heading_tag": "h2",
+        "heading_size": "h1",
+        "single_open": true,
+        "open_first": false,
+        "max_width": 980,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "bg_color": "#ffffff",
+        "heading_color": "#d64a76",
+        "eyebrow_color": "#6b6b6b",
+        "question_color": "#1a1b18",
+        "answer_color": "#6b6b6b",
+        "divider_color": "#e6e6e6",
+        "icon_color": "#d64a76"
+      }
+    },
+    "value_prop_strip_qLNHEV": {
+      "type": "value-prop-strip",
+      "blocks": {
+        "text_6jryn9": {
+          "type": "text",
+          "settings": {
+            "text": "WOMAN OWNED AND OPERATED",
+            "link": ""
+          }
+        },
+        "text_jNVLhT": {
+          "type": "text",
+          "settings": {
+            "text": "TRUSTED BY TOP FLORISTS IN NEW YORK",
+            "link": ""
+          }
+        },
+        "text_XYRXqj": {
+          "type": "text",
+          "settings": {
+            "text": "LIMITED SPOTS EACH MONTH",
+            "link": ""
+          }
+        },
+        "text_bQzzBG": {
+          "type": "text",
+          "settings": {
+            "text": "VIP COMMUNICATION & CUSTOM SERVICE",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_6jryn9",
+        "text_jNVLhT",
+        "text_XYRXqj",
+        "text_bQzzBG"
+      ],
+      "name": "Value prop strip",
+      "settings": {
+        "full_width": true,
+        "bg_color": "#b23b5a",
+        "text_color": "#ffffff",
+        "border_size": 0,
+        "border_color": "#b23b5a",
+        "padding_y": 10,
+        "padding_x": 16,
+        "gap": 36,
+        "font_size": 11,
+        "letter_spacing": 12,
+        "font_weight": "700",
+        "uppercase": true,
+        "text_opacity": 100,
+        "icon_size": 18,
+        "icon_opacity": 100,
+        "mobile_behavior": "scroll"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "image_banner_bJP364",
+    "custom_liquid_n6LUDP",
+    "steps_video_accordion_ezqQr8",
+    "1766900414b8a5f62a",
+    "custom_faq_Km4qiU",
+    "value_prop_strip_qLNHEV"
+  ]
+}

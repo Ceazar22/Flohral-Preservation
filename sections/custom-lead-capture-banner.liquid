@@ -1,0 +1,440 @@
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --pt: {{ section.settings.padding_top }}px;
+    --pb: {{ section.settings.padding_bottom }}px;
+
+    --card-bg: {{ section.settings.card_bg }};
+    --card-radius: {{ section.settings.card_radius }}px;
+    --card-pad-y: {{ section.settings.card_padding_y }}px;
+    --card-pad-x: {{ section.settings.card_padding_x }}px;
+    --card-max: {{ section.settings.card_max_width }}px;
+
+    --text-max: {{ section.settings.text_max_width }}px;
+
+    --eyebrow-color: {{ section.settings.eyebrow_color.red }}, {{ section.settings.eyebrow_color.green }}, {{ section.settings.eyebrow_color.blue }};
+    --heading-color: {{ section.settings.heading_color.red }}, {{ section.settings.heading_color.green }}, {{ section.settings.heading_color.blue }};
+
+    --btn-bg: {{ section.settings.button_bg }};
+    --btn-text: {{ section.settings.button_text }};
+    --btn-radius: {{ section.settings.button_radius }}px;
+
+    --img-tilt: {{ section.settings.image_tilt }}deg;
+    --img-w: {{ section.settings.side_image_width }}px;
+  }
+{%- endstyle -%}
+
+<style>
+  #shopify-section-{{ section.id }} .lead-capture {
+    padding-top: var(--pt);
+    padding-bottom: var(--pb);
+  }
+
+  #shopify-section-{{ section.id }} .lead-capture__bg {
+    width: 100%;
+    {% if section.settings.bg_image != blank %}
+      background-image: url({{ section.settings.bg_image | image_url: width: 2400 }});
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    {% else %}
+      background: #f3f3f3;
+    {% endif %}
+  }
+
+  #shopify-section-{{ section.id }} .lead-capture__inner {
+    width: 100%;
+    margin: 0 auto;
+    padding-left: {{ section.settings.side_padding }}px;
+    padding-right: {{ section.settings.side_padding }}px;
+  }
+
+  #shopify-section-{{ section.id }} .lead-capture__card {
+    max-width: var(--card-max);
+    margin: 0 auto;
+    background: var(--card-bg);
+    border-radius: var(--card-radius);
+    padding: var(--card-pad-y) var(--card-pad-x);
+    box-shadow: 0 10px 30px rgba(0,0,0,.08);
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .lead-capture__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, var(--text-max)) minmax(0, 1fr);
+    gap: clamp(14px, 2.5vw, 40px);
+    align-items: center;
+  }
+
+  #shopify-section-{{ section.id }} .lead-capture__side {
+    display: flex;
+    justify-content: center;
+  }
+
+  #shopify-section-{{ section.id }} .lead-capture__media {
+    width: var(--img-w);
+    max-width: 100%;
+    filter: drop-shadow(0 10px 18px rgba(0,0,0,.18));
+    transform-origin: center;
+  }
+
+  #shopify-section-{{ section.id }} .lead-capture__media--left {
+    transform: rotate(calc(var(--img-tilt) * -1));
+  }
+
+  #shopify-section-{{ section.id }} .lead-capture__media--right {
+    transform: rotate(var(--img-tilt));
+  }
+
+  #shopify-section-{{ section.id }} .lead-capture__img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .lead-capture__content {
+    text-align: center;
+    width: 100%;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    justify-self: center;
+  }
+
+  #shopify-section-{{ section.id }} .lead-capture__eyebrow {
+    margin: 0 0 10px;
+    font-size: 11px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: rgb(var(--eyebrow-color));
+    opacity: .9;
+  }
+
+  #shopify-section-{{ section.id }} .lead-capture__heading {
+    margin: 0;
+    color: rgb(var(--heading-color));
+    line-height: 1.1;
+    font-size: {{ section.settings.heading_size }}px;
+  }
+
+  #shopify-section-{{ section.id }} .lead-capture__cta {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+  }
+
+  #shopify-section-{{ section.id }} .lead-capture__btn {
+    display: inline-block;
+    padding: 12px 22px;
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: .16em;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: var(--btn-radius);
+  }
+
+  #shopify-section-{{ section.id }} .lead-capture__btn:hover {
+    filter: brightness(.96);
+  }
+
+  /*
+    Mobile / tablet format.
+    This starts at 989px because your screenshot is exactly 989px.
+  */
+  @media (max-width: 989px) {
+    #shopify-section-{{ section.id }} .lead-capture {
+      padding-top: 28px;
+      padding-bottom: 28px;
+    }
+
+    #shopify-section-{{ section.id }} .lead-capture__bg {
+      background-size: cover;
+      background-position: center;
+    }
+
+    #shopify-section-{{ section.id }} .lead-capture__inner {
+      max-width: 430px;
+      padding-left: 18px;
+      padding-right: 18px;
+    }
+
+    #shopify-section-{{ section.id }} .lead-capture__card {
+      width: 100%;
+      max-width: 100%;
+      padding: 28px 22px 24px;
+      box-shadow: 0 10px 28px rgba(0,0,0,.10);
+    }
+
+    #shopify-section-{{ section.id }} .lead-capture__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "media"
+        "content";
+      gap: 18px;
+      align-items: center;
+    }
+
+    #shopify-section-{{ section.id }} .lead-capture__side {
+      grid-area: media;
+      min-height: 230px;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    #shopify-section-{{ section.id }} .lead-capture__side--left {
+      z-index: 2;
+    }
+
+    #shopify-section-{{ section.id }} .lead-capture__side--right {
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    #shopify-section-{{ section.id }} .lead-capture__side--left .lead-capture__media {
+      width: min(58vw, 190px);
+      max-width: 190px;
+      transform: translateX(-18px) rotate(-4deg);
+    }
+
+    #shopify-section-{{ section.id }} .lead-capture__side--right .lead-capture__media {
+      width: min(50vw, 165px);
+      max-width: 165px;
+      transform: translateX(58px) translateY(4px) rotate(4deg);
+      opacity: .98;
+    }
+
+    #shopify-section-{{ section.id }} .lead-capture__content {
+      grid-area: content;
+      max-width: 320px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .lead-capture__eyebrow {
+      margin-bottom: 10px;
+      font-size: 11px;
+      line-height: 1.25;
+      letter-spacing: .18em;
+    }
+
+    #shopify-section-{{ section.id }} .lead-capture__heading {
+      font-size: clamp(20px, 5.4vw, 26px);
+      line-height: 1.15;
+    }
+
+    #shopify-section-{{ section.id }} .lead-capture__cta {
+      margin-top: 20px;
+    }
+
+    #shopify-section-{{ section.id }} .lead-capture__btn {
+      width: 100%;
+      max-width: 280px;
+      text-align: center;
+      padding: 14px 18px;
+      font-size: 11px;
+      letter-spacing: .14em;
+    }
+  }
+
+  @media (max-width: 640px) {
+    #shopify-section-{{ section.id }} .lead-capture {
+      padding-top: 22px;
+      padding-bottom: 22px;
+    }
+
+    #shopify-section-{{ section.id }} .lead-capture__inner {
+      max-width: 400px;
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    #shopify-section-{{ section.id }} .lead-capture__card {
+      padding: 26px 18px 22px;
+    }
+
+    #shopify-section-{{ section.id }} .lead-capture__side {
+      min-height: 210px;
+    }
+
+    #shopify-section-{{ section.id }} .lead-capture__side--left .lead-capture__media {
+      width: min(58vw, 175px);
+      max-width: 175px;
+      transform: translateX(-16px) rotate(-4deg);
+    }
+
+    #shopify-section-{{ section.id }} .lead-capture__side--right .lead-capture__media {
+      width: min(50vw, 150px);
+      max-width: 150px;
+      transform: translateX(52px) translateY(4px) rotate(4deg);
+    }
+
+    #shopify-section-{{ section.id }} .lead-capture__eyebrow {
+      font-size: 10px;
+      letter-spacing: .16em;
+    }
+
+    #shopify-section-{{ section.id }} .lead-capture__heading {
+      font-size: clamp(20px, 6vw, 24px);
+      line-height: 1.15;
+    }
+  }
+
+  @media (max-width: 390px) {
+    #shopify-section-{{ section.id }} .lead-capture__side {
+      min-height: 190px;
+    }
+
+    #shopify-section-{{ section.id }} .lead-capture__side--left .lead-capture__media {
+      max-width: 158px;
+      transform: translateX(-12px) rotate(-4deg);
+    }
+
+    #shopify-section-{{ section.id }} .lead-capture__side--right .lead-capture__media {
+      max-width: 136px;
+      transform: translateX(46px) translateY(4px) rotate(4deg);
+    }
+  }
+</style>
+
+<section class="lead-capture lead-capture__bg">
+  <div class="lead-capture__inner">
+    <div class="lead-capture__card">
+      <div class="lead-capture__grid">
+
+        <div class="lead-capture__side lead-capture__side--left">
+          <div class="lead-capture__media lead-capture__media--left">
+            {%- if section.settings.left_image != blank -%}
+              {{ section.settings.left_image | image_url: width: 900 | image_tag: class: 'lead-capture__img', loading: 'lazy' }}
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg lead-capture__img' }}
+            {%- endif -%}
+          </div>
+        </div>
+
+        <div class="lead-capture__content">
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="lead-capture__eyebrow">{{ section.settings.eyebrow }}</p>
+          {%- endif -%}
+
+          <{{ section.settings.heading_tag }} class="lead-capture__heading">
+            {%- if section.settings.use_highlight -%}
+              {%- render 'highlight-text',
+                hl_input: section.settings.heading,
+                hl_style: section.settings.highlight_style,
+                hl_enable: true,
+                hl_animateWrap: true -%}
+            {%- else -%}
+              {{ section.settings.heading }}
+            {%- endif -%}
+          </{{ section.settings.heading_tag }}>
+
+          {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+            <div class="lead-capture__cta">
+              <a class="lead-capture__btn" href="{{ section.settings.button_link }}" target="_blank" rel="noopener noreferrer">
+                {{ section.settings.button_label }}
+              </a>
+            </div>
+          {%- endif -%}
+        </div>
+
+        <div class="lead-capture__side lead-capture__side--right">
+          <div class="lead-capture__media lead-capture__media--right">
+            {%- if section.settings.right_image != blank -%}
+              {{ section.settings.right_image | image_url: width: 900 | image_tag: class: 'lead-capture__img', loading: 'lazy' }}
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg lead-capture__img' }}
+            {%- endif -%}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lead capture banner",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "image_picker", "id": "bg_image", "label": "Background image (full width)" },
+
+    { "type": "header", "content": "Card" },
+    { "type": "range", "id": "card_max_width", "label": "Card max width (px)", "min": 700, "max": 1600, "step": 20, "default": 1200 },
+    { "type": "color", "id": "card_bg", "label": "Card background", "default": "#ffffff" },
+    { "type": "range", "id": "card_radius", "label": "Card radius (px)", "min": 0, "max": 30, "step": 2, "default": 0 },
+    { "type": "range", "id": "card_padding_y", "label": "Card padding vertical (px)", "min": 16, "max": 80, "step": 2, "default": 34 },
+    { "type": "range", "id": "card_padding_x", "label": "Card padding horizontal (px)", "min": 16, "max": 80, "step": 2, "default": 34 },
+    { "type": "range", "id": "side_padding", "label": "Section side padding (px)", "min": 0, "max": 60, "step": 4, "default": 20 },
+
+    { "type": "header", "content": "Side images" },
+    { "type": "image_picker", "id": "left_image", "label": "Left image" },
+    { "type": "image_picker", "id": "right_image", "label": "Right image" },
+    { "type": "range", "id": "side_image_width", "label": "Side image width (px)", "min": 120, "max": 360, "step": 10, "default": 180 },
+    { "type": "range", "id": "image_tilt", "label": "Image tilt (deg)", "min": 0, "max": 14, "step": 1, "default": 8 },
+
+    { "type": "header", "content": "Text" },
+    { "type": "range", "id": "text_max_width", "label": "Text/Middle column width (px)", "min": 240, "max": 1600, "step": 20, "default": 520 },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "LEAD CAPTURE" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Hendrerit mi lacinia interdum proin sed laoreet dui, quisque dictumst" },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "options": [
+        { "value": "h1", "label": "h1" },
+        { "value": "h2", "label": "h2" },
+        { "value": "h3", "label": "h3" },
+        { "value": "div", "label": "div" }
+      ],
+      "default": "h2"
+    },
+    { "type": "range", "id": "heading_size", "label": "Heading size (px)", "min": 18, "max": 60, "step": 2, "default": 30 },
+
+    { "type": "header", "content": "Button" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "DOWNLOAD THE GUIDE" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "color", "id": "button_bg", "label": "Button background", "default": "#b23b5a" },
+    { "type": "color", "id": "button_text", "label": "Button text", "default": "#ffffff" },
+    { "type": "range", "id": "button_radius", "label": "Button radius (px)", "min": 0, "max": 20, "step": 2, "default": 2 },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "eyebrow_color", "label": "Eyebrow color", "default": "#6b6b6b" },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#b23b5a" },
+
+    { "type": "header", "content": "Highlight (optional)" },
+    { "type": "checkbox", "id": "use_highlight", "label": "Use highlight-text snippet for heading", "default": false },
+    {
+      "type": "select",
+      "id": "highlight_style",
+      "options": [
+        { "value": "marker", "label": "Marker" },
+        { "value": "circle", "label": "Circle" },
+        { "value": "underline", "label": "Underline" },
+        { "value": "bold-underline", "label": "Bold underline" },
+        { "value": "modern-underline", "label": "Modern underline" },
+        { "value": "sketch-underline", "label": "Sketch underline" },
+        { "value": "squiggle", "label": "Squiggle" },
+        { "value": "heavy-squiggle", "label": "Heavy squiggle" },
+        { "value": "solid-color", "label": "Solid color" }
+      ],
+      "default": "marker",
+      "label": "Highlight style"
+    },
+
+    { "type": "header", "content": "Section spacing" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Padding top", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Padding bottom", "default": 40 }
+  ],
+  "presets": [
+    { "name": "Lead capture banner" }
+  ],
+  "disabled_on": { "groups": ["header", "footer", "custom.overlay"] }
+}
+{% endschema %}

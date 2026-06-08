@@ -1,0 +1,637 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "name": "Page Description",
+      "settings": {
+        "narrow": true,
+        "padding_top": 60,
+        "padding_bottom": 72
+      }
+    },
+    "custom_partnered_vendors_reKXw6": {
+      "type": "custom-partnered-vendors",
+      "blocks": {
+        "vendor_FHqBmN": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/With_All_My_Heart_Inc_d586b77a-c9d7-4d39-97ba-82ff6f4de16f.webp",
+            "link": "https://wamhweddings.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_zxJKN7": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Amber_Earth.webp",
+            "link": "https://www.amberandearth.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_mTkFyG": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Floresta_NYC.webp",
+            "link": "https://florestanyc.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_6ygNAj": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/A_Petal_To_Peddle.webp",
+            "link": "https://www.apetaltopeddle.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_d7CDDQ": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Fleur_Coutur.webp",
+            "link": "https://sarconflowercouture.com",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_xr6hG8": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Maple_Field_Floral.webp",
+            "link": "https://www.maplefieldfloral.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_aRVjjj": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Urban_Blooms_Events.webp",
+            "link": "https://www.urbanbloomsevents.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_4LmfLp": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Wildflowers_Florist.webp",
+            "link": "https://www.wildflowers-florist.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_xzrYDx": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Stunning_Brilliant_Events_a.webp",
+            "link": "https://www.stunningandbrilliantevents.com",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_wyRLwk": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Blooms_for_Rooms.webp",
+            "link": "https://bloomsforrooms.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_VG3tcT": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Terri_s_Flower_Shop.webp",
+            "link": "https://www.terrisflowershop.com",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_PbmkYd": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Liberty_Blooms.webp",
+            "link": "https://libertybloomsflorist.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_CB8gzV": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Fleur_Coutur_2.webp",
+            "link": "https://www.jstarrsflowerbarn.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_bp4WbC": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Flowers_by_Angel.webp",
+            "link": "https://flowersbyangel.com",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_AaPhe7": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Flowers_by_Burton.webp",
+            "link": "https://flowersbyburton.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_Wnd6Vf": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Floriography_Design.webp",
+            "link": "https://www.floriographydesigns.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_bwVtkD": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Flowers_By_Candle-Lite_401ce3a0-a846-40ee-a810-8a68360989a3.webp",
+            "link": "https://flowersbycandlelite.com",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_Ed4K6L": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Posies_by_Patti.webp",
+            "link": "https://posiesbypatti.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_rQRKwm": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Wedded_Events.webp",
+            "link": "https://www.weddedevents.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_aEjVRY": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Flowers_by_Brian_b3f8f1fe-343c-4654-85e1-cf125bc70b25.webp",
+            "link": "https://www.flowersbybrian.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_j8JmAY": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Damselfly_Designs.webp",
+            "link": "https://damselflyfloralsandevents.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_wiMBay": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/TK_Florals.webp",
+            "link": "https://tkfloraldesigns.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_Gd9yV6": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Bella_Flora_CT_LLC.webp",
+            "link": "https://www.bellafloract.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_JF7Gbw": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Chic_a_floral_boutique.webp",
+            "link": "https://www.chicafloralboutique.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_HdjgHK": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Grace_and_Grit_Flowers.webp",
+            "link": "https://www.graceandgritflowers.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_XUFXLP": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Garden_in_the_Pines.webp",
+            "link": "https://gardeninthepines.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_qVFm4m": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Flowers_by_Manny_cbf35847-5dff-4cdb-86c1-fb59f0396327.webp",
+            "link": "https://flowersbymanny.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_jL8NNx": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Flowerful_Events.webp",
+            "link": "https://flowerfulevents.com",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_yGtnkC": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Diva_Blooms_LLC.webp",
+            "link": "https://divablooms.com",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_dJ6PG7": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Blossom_Bee_Floral_Events_Design.webp",
+            "link": "https://www.blossomandbeefloral.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_b76Hm9": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Tom_s_Towers_Flowers.webp",
+            "link": "https://www.tomstowersflowers.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_CUrTTV": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Stroudsmoor_Inn_7cc1bd76-8d16-4375-996f-baab64cba234.webp",
+            "link": "https://www.stroudsmoor.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_VeaQqU": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Cherry_Brandy_Designs.webp",
+            "link": "https://www.cherrybrandydesigns.com",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_bqj6iX": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/MDS_Floral_Design.webp",
+            "link": "https://www.mdsfloraldesigns.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_NkKiAY": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Stein.webp",
+            "link": "https://steinyourflorist.com",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_Kdx8qh": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Coco_Bailey_LLC.webp",
+            "link": "https://cocoandbailey.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_fPYgxG": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/House_of_Bernal.webp",
+            "link": "https://www.houseofbernal.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_7NNK3H": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Fiore_Designs.webp",
+            "link": "https://www.fioredesignsny.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_6whwpB": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Intuition_Events_and_Floral_Design.webp",
+            "link": "https://www.intuitionevents.net",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_GA7fWQ": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Breezy_Hill_Blooms_LLC.webp",
+            "link": "https://breezyhillblooms.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_jthwJc": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Rubrumsflorist.webp",
+            "link": "https://rubrumsflorist.com",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_AJbb6e": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Lucille_s_Florist.webp",
+            "link": "https://www.lucillesfloristfish.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_FQjpEz": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Stemtations.webp",
+            "link": "https://www.stemtationsflorist.co/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_wgqWnY": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Broderick_s_Flowers_Gifts.webp",
+            "link": "https://brodericks.net",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_UeWzXW": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Arcadia_Floral_co.webp",
+            "link": "https://arcadiafloral.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_Fpdk8d": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Sasha_Allison_designs.webp",
+            "link": "https://www.sallisondesigns.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_zQ6fmy": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/JStarrBlackBarn.webp",
+            "link": "https://www.jstarrsflowerbarn.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_EEzDyy": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Pearl_River_Florist.webp",
+            "link": "https://www.prflorist.net/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_tiKVLy": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/The_Avenue_J_Florist_5c4e07da-eaa1-4b01-bbb0-9a785b41b1a7.webp",
+            "link": "https://avenuejfloral.carrd.co/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_BarnAF": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Bloomeryflowerstudio.webp",
+            "link": "https://bloomeryflowerstudio.com",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_wUkXje": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Love_in_Flower.webp",
+            "link": "https://loveinflower.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_MaxKdz": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Glitzed_Events.webp",
+            "link": "https://www.glitzedevents.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_FG8j6K": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Confetti_llc.webp",
+            "link": "https://www.confetti-events.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_RxgXwE": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Olivia_Floral_designs.webp",
+            "link": "https://www.oliviafloraldesigns.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_WQCaYL": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Legacy_events.webp",
+            "link": "https://www.instagram.com/legacy_eventsnj/?hl=en",
+            "name": "Vendor",
+            "alt": ""
+          }
+        },
+        "vendor_dDJBD4": {
+          "type": "vendor",
+          "settings": {
+            "logo": "shopify://shop_images/Premier_Events.webp",
+            "link": "https://premierevents.com/",
+            "name": "Vendor",
+            "alt": ""
+          }
+        }
+      },
+      "block_order": [
+        "vendor_FHqBmN",
+        "vendor_zxJKN7",
+        "vendor_mTkFyG",
+        "vendor_6ygNAj",
+        "vendor_d7CDDQ",
+        "vendor_xr6hG8",
+        "vendor_aRVjjj",
+        "vendor_4LmfLp",
+        "vendor_xzrYDx",
+        "vendor_wyRLwk",
+        "vendor_VG3tcT",
+        "vendor_PbmkYd",
+        "vendor_CB8gzV",
+        "vendor_bp4WbC",
+        "vendor_AaPhe7",
+        "vendor_Wnd6Vf",
+        "vendor_bwVtkD",
+        "vendor_Ed4K6L",
+        "vendor_rQRKwm",
+        "vendor_aEjVRY",
+        "vendor_j8JmAY",
+        "vendor_wiMBay",
+        "vendor_Gd9yV6",
+        "vendor_JF7Gbw",
+        "vendor_HdjgHK",
+        "vendor_XUFXLP",
+        "vendor_qVFm4m",
+        "vendor_jL8NNx",
+        "vendor_yGtnkC",
+        "vendor_dJ6PG7",
+        "vendor_b76Hm9",
+        "vendor_CUrTTV",
+        "vendor_VeaQqU",
+        "vendor_bqj6iX",
+        "vendor_NkKiAY",
+        "vendor_Kdx8qh",
+        "vendor_fPYgxG",
+        "vendor_7NNK3H",
+        "vendor_6whwpB",
+        "vendor_GA7fWQ",
+        "vendor_jthwJc",
+        "vendor_AJbb6e",
+        "vendor_FQjpEz",
+        "vendor_wgqWnY",
+        "vendor_UeWzXW",
+        "vendor_Fpdk8d",
+        "vendor_zQ6fmy",
+        "vendor_EEzDyy",
+        "vendor_tiKVLy",
+        "vendor_BarnAF",
+        "vendor_wUkXje",
+        "vendor_MaxKdz",
+        "vendor_FG8j6K",
+        "vendor_RxgXwE",
+        "vendor_WQCaYL",
+        "vendor_dDJBD4"
+      ],
+      "name": "Partnered vendors",
+      "settings": {
+        "eyebrow": "TRUSTED FLORISTS",
+        "heading": "OUR PARTNERED VENDORS",
+        "bg_color": "#ffffff",
+        "title_color": "#bb3263",
+        "eyebrow_color": "#111111",
+        "grayscale": false,
+        "logo_max_height": 100,
+        "gap": 18,
+        "columns_desktop": 4,
+        "columns_tablet": 4,
+        "columns_mobile": 2,
+        "full_width": false,
+        "max_width": 1200,
+        "padding_top": 40,
+        "padding_bottom": 48
+      }
+    },
+    "custom_have_more_question_rBARFH": {
+      "type": "custom-have-more-question",
+      "name": "CTA overlay banner",
+      "settings": {
+        "full_width": true,
+        "bg_image": "shopify://shop_images/Copy_of_Blush_pink_background.webp",
+        "min_height": 300,
+        "side_padding": 20,
+        "title": "Become Our Referral Partner",
+        "title_tag": "h2",
+        "text": "<p>Join our referral partner program and start earning while giving your brides a meaningful way to preserve their bouquets.</p>",
+        "overlay_color": "#bb3263",
+        "overlay_opacity": 0,
+        "button_label": "sign up today",
+        "button_link": "https://flohralpreservations.com/partner",
+        "button_bg": "#bb3263",
+        "button_text": "#ffffff",
+        "button_radius": 2,
+        "title_color": "#212326",
+        "text_color": "#212326",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "main",
+    "custom_partnered_vendors_reKXw6",
+    "custom_have_more_question_rBARFH"
+  ]
+}

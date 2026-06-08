@@ -1,0 +1,590 @@
+{%- style -%}
+  #shopify-section-{{ section.id }}{
+    --pt: {{ section.settings.padding_top }}px;
+    --pb: {{ section.settings.padding_bottom }}px;
+    --bg: {{ section.settings.bg_color }};
+    --heading: {{ section.settings.heading_color.red }}, {{ section.settings.heading_color.green }}, {{ section.settings.heading_color.blue }};
+    --eyebrow: {{ section.settings.eyebrow_color.red }}, {{ section.settings.eyebrow_color.green }}, {{ section.settings.eyebrow_color.blue }};
+    --text: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};
+    --rule: {{ section.settings.rule_color.red }}, {{ section.settings.rule_color.green }}, {{ section.settings.rule_color.blue }};
+    --gap: {{ section.settings.column_gap }}px;
+
+    /* Step label styling */
+    --step-size: {{ section.settings.step_font_size }}px;
+    --step-color: {{ section.settings.step_label_color.red }}, {{ section.settings.step_label_color.green }}, {{ section.settings.step_label_color.blue }};
+  }
+
+  #shopify-section-{{ section.id }} .section--padding{
+    padding-top: var(--pt);
+    padding-bottom: var(--pb);
+    background: var(--bg);
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign poster = section.settings.cover_image | default: section.settings.video.preview_image
+
+  assign ratio = 56.25
+  assign media_aspect_ratio = '16 / 9'
+
+  if poster != blank
+    assign ratio = 1 | divided_by: poster.aspect_ratio | times: 100
+    assign media_aspect_ratio = poster.aspect_ratio
+  endif
+
+  assign controls_val = 0
+  if section.settings.show_controls
+    assign controls_val = 1
+  endif
+
+  assign loop_val = 0
+  if section.settings.loop_video
+    assign loop_val = 1
+  endif
+
+  assign mute_val = 0
+  if section.settings.mute_video
+    assign mute_val = 1
+  endif
+
+  assign autoplay_val = 0
+  if section.settings.autoplay_video
+    assign autoplay_val = 1
+  endif
+-%}
+
+<style>
+  #shopify-section-{{ section.id }} .prep{
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .prep__eyebrow{
+    margin: 0 0 12px;
+    font-size: 11px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: rgb(var(--eyebrow));
+    opacity: .9;
+  }
+
+  #shopify-section-{{ section.id }} .prep__heading{
+    margin: 0;
+    color: rgb(var(--heading));
+    font-weight: 700;
+    line-height: 1.05;
+  }
+
+  /* 50/50 layout */
+  #shopify-section-{{ section.id }} .prep__grid{
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--gap);
+    align-items: start;
+    text-align: left;
+  }
+
+  /* Accordion */
+  #shopify-section-{{ section.id }} .prep-acc{
+    border-top: 1px solid rgba(var(--rule), .25);
+  }
+
+  #shopify-section-{{ section.id }} .prep-acc details{
+    border-bottom: 1px solid rgba(var(--rule), .25);
+  }
+
+  #shopify-section-{{ section.id }} .prep-acc summary{
+    list-style: none;
+    cursor: pointer;
+    padding: 18px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    color: rgb(var(--text));
+  }
+
+  #shopify-section-{{ section.id }} .prep-acc summary::-webkit-details-marker{
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .prep-acc__label{
+    font-size: var(--step-size);
+    color: rgb(var(--step-color));
+    letter-spacing: .02em;
+  }
+
+  #shopify-section-{{ section.id }} .prep-acc__caret{
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid rgba(var(--rule), .65);
+    border-bottom: 2px solid rgba(var(--rule), .65);
+    transform: rotate(45deg);
+    transition: transform .2s ease;
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+
+  #shopify-section-{{ section.id }} details[open] .prep-acc__caret{
+    transform: rotate(-135deg);
+  }
+
+  #shopify-section-{{ section.id }} .prep-acc__content{
+    padding: 0 0 18px;
+    color: rgb(var(--text));
+    opacity: .9;
+    line-height: 1.7;
+  }
+
+  #shopify-section-{{ section.id }} .prep-acc__content p{
+    margin: 0;
+  }
+
+  /* Right media wrapper - fixed ratio, no resizing from accordion */
+  #shopify-section-{{ section.id }} .prep__media{
+    width: 100%;
+    height: auto !important;
+    align-self: start;
+  }
+
+  #shopify-section-{{ section.id }} .prep__media .media{
+    position: relative;
+    width: 100%;
+    height: auto !important;
+    aspect-ratio: var(--media-aspect-ratio, 16 / 9);
+    padding-bottom: 0 !important;
+    background: #f3f3f3;
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .prep__media .media > *{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .prep__media video,
+  #shopify-section-{{ section.id }} .prep__media iframe,
+  #shopify-section-{{ section.id }} .prep__media img,
+  #shopify-section-{{ section.id }} .prep__media svg{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    border: 0;
+  }
+
+  /* Desktop: keep the right media stable */
+  @media (min-width: 990px){
+    #shopify-section-{{ section.id }} .prep__media{
+      height: auto !important;
+    }
+
+    #shopify-section-{{ section.id }} .prep__media .media{
+      height: auto !important;
+      min-height: 0 !important;
+      padding-bottom: 0 !important;
+    }
+  }
+
+  /* Mobile: stack and keep ratio */
+  @media (max-width: 989px){
+    #shopify-section-{{ section.id }} .prep__grid{
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    #shopify-section-{{ section.id }} .prep__media{
+      height: auto !important;
+    }
+
+    #shopify-section-{{ section.id }} .prep__media .media{
+      height: auto !important;
+      aspect-ratio: var(--media-aspect-ratio, 16 / 9);
+      padding-bottom: 0 !important;
+    }
+  }
+</style>
+
+<div class="section--padding{% if section.settings.show_divider %} section--divider{% endif %}">
+  <div class="prep {% unless section.settings.full_width %}page-width{% endunless %}">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="prep__eyebrow">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+
+    <{{ section.settings.heading_tag }} class="prep__heading {{ section.settings.heading_size }}">
+      {{ section.settings.heading }}
+    </{{ section.settings.heading_tag }}>
+
+    <div class="prep__grid">
+      <!-- LEFT: accordion -->
+      <div class="prep-acc" data-prep-acc>
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign raw_label = block.settings.step_label | strip
+            if raw_label == blank or raw_label == 'auto'
+              assign step_label = 'Step ' | append: forloop.index
+            else
+              assign step_label = raw_label
+            endif
+          -%}
+
+          <details
+            {{ block.shopify_attributes }}
+            {% if section.settings.open_first and forloop.first %}open{% endif %}
+          >
+            <summary>
+              <span class="prep-acc__label">{{ step_label }}</span>
+              <span class="prep-acc__caret" aria-hidden="true"></span>
+            </summary>
+
+            {%- if block.settings.text != blank -%}
+              <div class="prep-acc__content rte">
+                {{ block.settings.text }}
+              </div>
+            {%- endif -%}
+          </details>
+        {%- endfor -%}
+      </div>
+
+      <!-- RIGHT: stable video / image -->
+      <div class="prep__media" data-prep-media>
+        <div
+          class="media"
+          style="
+            --ratio-percent: {{ ratio }}%;
+            --media-aspect-ratio: {{ media_aspect_ratio }};
+          "
+        >
+          {%- if section.settings.video != blank -%}
+            {{ section.settings.video
+              | video_tag:
+                autoplay: section.settings.autoplay_video,
+                loop: section.settings.loop_video,
+                controls: section.settings.show_controls,
+                muted: section.settings.mute_video,
+                playsinline: true
+            }}
+          {%- elsif section.settings.video_url != blank -%}
+            {%- if section.settings.video_url.type == 'youtube' -%}
+              <iframe
+                src="https://www.youtube.com/embed/{{ section.settings.video_url.id }}?autoplay={{ autoplay_val }}&mute={{ mute_val }}&controls={{ controls_val }}&loop={{ loop_val }}&playsinline=1&rel=0"
+                allow="autoplay; encrypted-media"
+                allowfullscreen
+                title="Video"
+              ></iframe>
+            {%- else -%}
+              <iframe
+                src="https://player.vimeo.com/video/{{ section.settings.video_url.id }}?autoplay={{ autoplay_val }}&muted={{ mute_val }}&loop={{ loop_val }}&controls={{ controls_val }}"
+                allow="autoplay; encrypted-media"
+                allowfullscreen
+                title="Video"
+              ></iframe>
+            {%- endif -%}
+          {%- else -%}
+            {%- if poster != blank -%}
+              {{ poster | image_url: width: 2000 | image_tag: loading: 'lazy', widths: '750, 1100, 1500, 2000' }}
+            {%- else -%}
+              {{ 'hero-apparel-3' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (() => {
+    const section = document.getElementById('shopify-section-{{ section.id }}');
+    if (!section) return;
+
+    const acc = section.querySelector('[data-prep-acc]');
+    if (!acc) return;
+
+    const items = Array.from(acc.querySelectorAll('details'));
+
+    // Auto-close other accordion items only.
+    // Removed media height syncing so the right image/video stays the same size.
+    items.forEach((d) => {
+      d.addEventListener('toggle', () => {
+        if (!d.open) return;
+
+        items.forEach((other) => {
+          if (other !== d) other.removeAttribute('open');
+        });
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Prep steps + video",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "default": false,
+      "label": "Show divider"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": false,
+      "label": "Full width"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "BLOOM PREP BEFORE SHIPPING"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "How to Safely Prepare Your Flowers Before Shipping"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "options": [
+        {
+          "value": "h1",
+          "label": "h1"
+        },
+        {
+          "value": "h2",
+          "label": "h2"
+        },
+        {
+          "value": "h3",
+          "label": "h3"
+        },
+        {
+          "value": "div",
+          "label": "div"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "h0",
+          "label": "Large"
+        },
+        {
+          "value": "h1",
+          "label": "Medium"
+        },
+        {
+          "value": "h2",
+          "label": "Small"
+        }
+      ],
+      "default": "h0"
+    },
+    {
+      "type": "header",
+      "content": "Video"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Shopify video"
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "accept": [
+        "youtube",
+        "vimeo"
+      ],
+      "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+      "label": "YouTube/Vimeo URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image",
+      "label": "Cover image"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay_video",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "mute_video",
+      "label": "Mute",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "loop_video",
+      "label": "Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_controls",
+      "label": "Show controls",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Accordion"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_first",
+      "label": "Open first step",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "step_font_size",
+      "label": "Step label font size (px)",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "step_label_color",
+      "label": "Step label color",
+      "default": "#111111"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Column gap (px)",
+      "min": 16,
+      "max": 120,
+      "step": 4,
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#b23b5a"
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Eyebrow color",
+      "default": "#6b6b6b"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#6b6b6b"
+    },
+    {
+      "type": "color",
+      "id": "rule_color",
+      "label": "Lines/caret color",
+      "default": "#d6d6d6"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        {
+          "type": "text",
+          "id": "step_label",
+          "label": "Step label (use 'auto')",
+          "default": "auto"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Step text",
+          "default": "<p>Add your instructions here.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Prep steps + video",
+      "blocks": [
+        {
+          "type": "step"
+        },
+        {
+          "type": "step"
+        },
+        {
+          "type": "step"
+        },
+        {
+          "type": "step"
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer",
+      "custom.overlay"
+    ]
+  }
+}
+{% endschema %}

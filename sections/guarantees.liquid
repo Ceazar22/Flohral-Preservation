@@ -1,0 +1,567 @@
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+
+    /* Heading + eyebrow colors */
+    --guarantees-heading-color: {{ section.settings.heading_color }};
+    --guarantees-eyebrow-color: {{ section.settings.eyebrow_color }};
+
+    /* Icon base sizes */
+    --g-icon-small: {{ section.settings.icon_size_small }}px;
+    --g-icon-medium: {{ section.settings.icon_size_medium }}px;
+    --g-icon-large: {{ section.settings.icon_size_large }}px;
+
+    /* Global icon scale multiplier (%) */
+    --g-icon-scale: {{ section.settings.icon_scale | divided_by: 100.0 }};
+
+    /* New width controls */
+    --g-content-max-width: {{ section.settings.content_max_width }}px;
+    --g-icon-area-width: {{ section.settings.icon_area_width }}px;
+    --g-text-max-width: {{ section.settings.text_max_width }}px;
+
+    {%- if section.settings.use_custom_colors -%}
+      --color-icon: {{ section.settings.colors_icon.red }}, {{ section.settings.colors_icon.green }}, {{ section.settings.colors_icon.blue }};
+      --gradient-background: {% if section.settings.gradient_background != blank %}{{ section.settings.gradient_background }}{% else %}{{ section.settings.colors_background }}{% endif %};
+      --color-background: {{ section.settings.colors_background.red }}, {{ section.settings.colors_background.green }}, {{ section.settings.colors_background.blue }};
+      --color-foreground: {{ section.settings.colors_text.red }}, {{ section.settings.colors_text.green }}, {{ section.settings.colors_text.blue }};
+      --color-heading: var(--color-foreground);
+      --color-highlight: {{ section.settings.colors_highlight.red }}, {{ section.settings.colors_highlight.green }}, {{ section.settings.colors_highlight.blue }};
+    {%- endif -%}
+
+    {%- if section.settings.margin_bottom != blank -%}
+      margin-bottom: {{ section.settings.margin_bottom }};
+    {%- endif -%}
+  }
+{%- endstyle -%}
+
+{{ 'section-guarantees.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="{{ 'component-slider.css' | asset_url }}" media="print" onload="this.media='all'">
+
+{%- liquid
+  assign custom_class = ''
+  if section.settings.use_custom_colors
+    if section.settings.colors_background != settings.colors_background
+      assign custom_class = custom_class | append: ' guarantees--colored'
+    endif
+
+    if section.settings.colors_icon != section.settings.colors_background
+      assign custom_class = custom_class | append: ' guarantees-icon--colored'
+    endif
+  endif
+
+  if section.settings.horizontal_content
+    assign custom_class = custom_class | append: ' guarantees--horizontal'
+  endif
+-%}
+
+<style>
+  /* Apply padding vars */
+  #shopify-section-{{ section.id }} .guarantees.section--padding{
+    padding-top: var(--section-padding-top);
+    padding-bottom: var(--section-padding-bottom);
+  }
+
+  /* Keep the SECTION background full width */
+  #shopify-section-{{ section.id }}{
+    width: 100%;
+  }
+
+  /* Constrain ONLY the content (guarantee blocks + heading) */
+  #shopify-section-{{ section.id }} .guarantees__inner{
+    max-width: var(--g-content-max-width);
+    margin: 0 auto;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  @media (max-width: 749px){
+    #shopify-section-{{ section.id }} .guarantees__inner{
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+
+  /* Eyebrow styling */
+  #shopify-section-{{ section.id }} .guarantees__eyebrow{
+    margin: 0 0 10px;
+    color: var(--guarantees-eyebrow-color);
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    font-size: 11px;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  /* Heading color override */
+  #shopify-section-{{ section.id }} .guarantees .title,
+  #shopify-section-{{ section.id }} .guarantees__title{
+    color: var(--guarantees-heading-color);
+  }
+
+  /* REMOVE WHITE CIRCLE behind icons */
+  #shopify-section-{{ section.id }} .guarantee__icon{
+    background: transparent !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+  #shopify-section-{{ section.id }} .guarantee__icon::before,
+  #shopify-section-{{ section.id }} .guarantee__icon::after{
+    content: none !important;
+  }
+
+  /* ICON SIZE: height controls size, width auto (keeps aspect ratio) */
+  #shopify-section-{{ section.id }} .guarantee-icon--small .guarantee__icon{
+    height: calc(var(--g-icon-small) * var(--g-icon-scale));
+  }
+  #shopify-section-{{ section.id }} .guarantee-icon--medium .guarantee__icon{
+    height: calc(var(--g-icon-medium) * var(--g-icon-scale));
+  }
+  #shopify-section-{{ section.id }} .guarantee-icon--large .guarantee__icon{
+    height: calc(var(--g-icon-large) * var(--g-icon-scale));
+  }
+
+  /* NEW: control icon area width */
+  #shopify-section-{{ section.id }} .guarantee__icon{
+    width: var(--g-icon-area-width) !important;
+    min-width: var(--g-icon-area-width) !important;
+    max-width: var(--g-icon-area-width) !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    flex-shrink: 0;
+  }
+
+  /* Let the icon follow height, and keep natural width */
+  #shopify-section-{{ section.id }} .guarantee__icon img,
+  #shopify-section-{{ section.id }} .guarantee__icon svg{
+    height: 100% !important;
+    width: auto !important;
+    max-width: 100%;
+    display: block;
+  }
+
+  /* Extra: if theme SVGs have hard width/height attributes, force override */
+  #shopify-section-{{ section.id }} .guarantee__icon svg[width],
+  #shopify-section-{{ section.id }} .guarantee__icon svg[height]{
+    width: auto !important;
+    height: 100% !important;
+  }
+
+  /* NEW: control text width */
+  #shopify-section-{{ section.id }} .guarantee__item > div:last-child{
+    width: 100%;
+    max-width: var(--g-text-max-width);
+  }
+
+  /* Make horizontal items wider and cleaner */
+  #shopify-section-{{ section.id }} .guarantee__item{
+    width: 100%;
+  }
+
+  /* Force 2 columns on mobile (wraps into 2 rows when 4 items) */
+  @media (max-width: 749px){
+    #shopify-section-{{ section.id }} #Guarantees-{{ section.id }}{
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 18px !important;
+      overflow: visible !important;
+    }
+
+    /* Neutralize slider sizing so items can wrap */
+    #shopify-section-{{ section.id }} #Guarantees-{{ section.id }}.slider{
+      scroll-snap-type: none !important;
+    }
+    #shopify-section-{{ section.id }} #Guarantees-{{ section.id }} .slider__slide{
+      width: auto !important;
+      flex: initial !important;
+      scroll-snap-align: none !important;
+    }
+
+    #shopify-section-{{ section.id }} .guarantee__item > div:last-child{
+      max-width: 100%;
+    }
+  }
+
+  /* Mobile typography tweaks */
+  @media (max-width: 749px){
+    #shopify-section-{{ section.id }} .guarantees__eyebrow{
+      font-size: 10px !important;
+      margin-bottom: 8px !important;
+    }
+
+    #shopify-section-{{ section.id }} .guarantees .title,
+    #shopify-section-{{ section.id }} .guarantees__title{
+      font-size: 22px !important;
+      line-height: 1.15 !important;
+    }
+
+    #shopify-section-{{ section.id }} .guarantee__item .h2{ font-size: 16px !important; }
+    #shopify-section-{{ section.id }} .guarantee__item .h3{ font-size: 15px !important; }
+    #shopify-section-{{ section.id }} .guarantee__item .h4{ font-size: 14px !important; }
+
+    #shopify-section-{{ section.id }} .guarantee__item .rte,
+    #shopify-section-{{ section.id }} .guarantee__item .typeset{
+      font-size: 13px !important;
+      line-height: 1.35 !important;
+    }
+  }
+</style>
+
+{%- if section.settings.show_divider -%}<div class="section--divider">{%- endif -%}
+
+  <div class="guarantees__outer{% if section.settings.full_width %} guarantees__outer--full{% endif %}">
+    <div class="guarantees section--padding{{ custom_class }}">
+      <div class="guarantees__inner">
+
+        {%- if section.settings.layout == 'default' -%}
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="guarantees__eyebrow">{{ section.settings.eyebrow }}</p>
+          {%- endif -%}
+
+          {%- if section.settings.heading != blank -%}
+            <div class="title-wrapper {{ section.settings.column_alignment }}">
+              <{{ section.settings.heading_tag }} class="title {{ section.settings.heading_size }}">
+                {%- render 'highlight-text',
+                  hl_input: section.settings.heading,
+                  hl_style: section.settings.highlight_style,
+                  hl_enable: section.settings.enable_highlight,
+                  hl_animateWrap: true -%}
+              </{{ section.settings.heading_tag }}>
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+
+        <div class="grid grid--2-col-mobile">
+          {%- if section.settings.layout == 'sidebar' and section.settings.heading != blank -%}
+            <div class="grid__item grid__item--one-quarter">
+              {%- if section.settings.eyebrow != blank -%}
+                <p class="guarantees__eyebrow" style="text-align: {{ section.settings.column_alignment }};">
+                  {{ section.settings.eyebrow }}
+                </p>
+              {%- endif -%}
+
+              <{{ section.settings.heading_tag }} class="guarantees__title {{ section.settings.heading_size }}">
+                {%- render 'highlight-text',
+                  hl_input: section.settings.heading,
+                  hl_style: section.settings.highlight_style,
+                  hl_enable: section.settings.enable_highlight,
+                  hl_animateWrap: true -%}
+              </{{ section.settings.heading_tag }}>
+            </div>
+          {%- endif -%}
+
+          {%- if section.blocks.size > 0 -%}
+            <slider-component class="slider-mobile-gutter grid__item{% if section.settings.heading == blank or section.settings.layout == 'default' %} grid__item--full-width{% else %} grid__item--three-quarter{% endif %}">
+              <ul
+                id="Guarantees-{{ section.id }}"
+                class="grid grid--2-col{% if section.settings.columns_mobile == '1' %} grid--1-col-mobile{% endif %}{% if section.settings.heading == blank or section.settings.layout == 'default' %}{% if section.blocks.size == 4 %} grid--2-col-tablet{% else %} grid--3-col-tablet{% endif %} grid--rigid grid--{{ section.settings.columns_desktop }}-col-desktop{% else %} grid--2-col-tablet{% endif %}{% if section.settings.swipe_on_mobile %} slider slider--tablet{% endif %}"
+                role="list"
+              >
+                {%- for block in section.blocks -%}
+                  {%- liquid
+                    assign icon_w = section.settings.icon_size_medium
+                    if block.settings.icon_size == 'small'
+                      assign icon_w = section.settings.icon_size_small
+                    elsif block.settings.icon_size == 'large'
+                      assign icon_w = section.settings.icon_size_large
+                    endif
+
+                    assign icon_w_scaled = icon_w | times: section.settings.icon_scale | divided_by: 100 | round
+                    if icon_w_scaled < 1
+                      assign icon_w_scaled = 1
+                    endif
+                    assign icon_w_2x = icon_w_scaled | times: 2
+                  -%}
+
+                  <li
+                    id="Slide-{{ section.id }}-{{ forloop.index }}"
+                    class="grid__item{% if section.settings.swipe_on_mobile %} slider__slide{% endif %}"
+                    {{ block.shopify_attributes }}
+                  >
+                    <use-animate data-animate="zoom-fade" class="guarantee__item {{ section.settings.column_alignment }} guarantee-icon--{{ block.settings.icon_size }}">
+                      {%- if block.settings.custom_icon != blank -%}
+                        <span class="image-animate guarantee__icon">
+                          {{ block.settings.custom_icon }}
+                        </span>
+
+                      {%- elsif block.settings.image != blank -%}
+                        <span class="image-animate guarantee__icon">
+                          <img
+                            srcset="{{ block.settings.image | image_url: width: icon_w_scaled }} 1x, {{ block.settings.image | image_url: width: icon_w_2x }} 2x"
+                            src="{{ block.settings.image | image_url: width: icon_w_2x }}"
+                            alt="{{ block.settings.image.alt | escape }}"
+                            loading="lazy"
+                          >
+                        </span>
+
+                      {%- elsif block.settings.icon != 'none' -%}
+                        <span class="image-animate guarantee__icon">
+                          {% render 'icon-guarantee', icon: block.settings.icon %}
+                        </span>
+                      {%- endif -%}
+
+                      <div>
+                        <p class="{{ block.settings.title_size }}">
+                          {%- render 'highlight-text',
+                            hl_input: block.settings.title,
+                            hl_style: block.settings.highlight_style,
+                            hl_enable: block.settings.enable_highlight,
+                            hl_animateWrap: true -%}
+                        </p>
+                        <div class="rte typeset">
+                          {%- render 'highlight-text',
+                            hl_input: block.settings.text,
+                            hl_style: block.settings.highlight_style,
+                            hl_enable: block.settings.enable_highlight,
+                            hl_animateWrap: true -%}
+                        </div>
+                      </div>
+                    </use-animate>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </slider-component>
+          {%- endif -%}
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+{%- if section.settings.show_divider -%}</div>{%- endif -%}
+
+{% schema %}
+{
+  "name": "Guarantees (edited)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "sidebar", "label": "Sidebar" }
+      ],
+      "default": "default",
+      "label": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "column_alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left",
+      "label": "Content alignment"
+    },
+    {
+      "type": "checkbox",
+      "id": "horizontal_content",
+      "default": false,
+      "label": "Horizontal content"
+    },
+    { "type": "checkbox", "id": "full_width", "default": false, "label": "Full width" },
+    { "type": "checkbox", "id": "show_divider", "default": false, "label": "Show divider" },
+
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "label": "Columns (desktop)"
+    },
+
+    { "type": "header", "content": "Heading" },
+    {
+      "type": "inline_richtext",
+      "id": "eyebrow",
+      "default": "WE LOVE YOUR BLOOMS",
+      "label": "Eyebrow (subheading)"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "The Flohral Promise",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        { "value": "h2", "label": "Small" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h0", "label": "Large" }
+      ],
+      "default": "h1",
+      "label": "Heading size"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "options": [
+        { "value": "h1", "label": "h1" },
+        { "value": "h2", "label": "h2" },
+        { "value": "h3", "label": "h3" },
+        { "value": "div", "label": "div" }
+      ],
+      "default": "h2",
+      "label": "Heading tag"
+    },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#d64a76" },
+    { "type": "color", "id": "eyebrow_color", "label": "Eyebrow color", "default": "#6b6b6b" },
+
+    { "type": "header", "content": "Width controls" },
+    { "type": "range", "id": "content_max_width", "label": "Content max width", "min": 900, "max": 1600, "step": 20, "default": 1200 },
+    { "type": "range", "id": "icon_area_width", "label": "Icon area width", "min": 24, "max": 140, "step": 2, "default": 40 },
+    { "type": "range", "id": "text_max_width", "label": "Text max width", "min": 120, "max": 600, "step": 10, "default": 260 },
+
+    { "type": "header", "content": "Icon sizes" },
+    { "type": "range", "id": "icon_size_small", "label": "Small icon (px)", "min": 18, "max": 60, "step": 1, "default": 28 },
+    { "type": "range", "id": "icon_size_medium", "label": "Medium icon (px)", "min": 22, "max": 80, "step": 1, "default": 40 },
+    { "type": "range", "id": "icon_size_large", "label": "Large icon (px)", "min": 28, "max": 120, "step": 1, "default": 64 },
+
+    { "type": "range", "id": "icon_scale", "label": "Icon scale (%)", "min": 60, "max": 200, "step": 5, "default": 100 },
+
+    { "type": "header", "content": "Mobile" },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "options": [
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" }
+      ],
+      "default": "1",
+      "label": "Columns (mobile)"
+    },
+    { "type": "checkbox", "id": "swipe_on_mobile", "default": true, "label": "Swipe on mobile" },
+
+    { "type": "header", "content": "Colors (optional override)" },
+    { "type": "checkbox", "id": "use_custom_colors", "default": false, "label": "Use custom colors" },
+    { "type": "color", "id": "colors_icon", "label": "Icon color", "default": "#ffffff" },
+    { "type": "color", "id": "colors_text", "label": "Text color", "default": "#1a1b18" },
+    { "type": "color", "id": "colors_background", "label": "Background color", "default": "#ffffff" },
+    { "type": "color_background", "id": "gradient_background", "label": "Background gradient" },
+    { "type": "color", "id": "colors_highlight", "label": "Highlight color", "default": "#ffb503" },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding top", "default": 36 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding bottom", "default": 36 },
+    {
+      "type": "text",
+      "id": "margin_bottom",
+      "label": "Bottom margin (optional)",
+      "default": "0",
+      "info": "Example: 40px, 3rem. Leave blank for none."
+    },
+
+    { "type": "header", "content": "Highlight" },
+    { "type": "checkbox", "id": "enable_highlight", "label": "Enable highlight", "default": false },
+    {
+      "type": "select",
+      "id": "highlight_style",
+      "options": [
+        { "value": "marker", "label": "Marker" },
+        { "value": "circle", "label": "Circle" },
+        { "value": "underline", "label": "Underline" },
+        { "value": "bold-underline", "label": "Bold underline" },
+        { "value": "modern-underline", "label": "Modern underline" },
+        { "value": "sketch-underline", "label": "Sketch underline" },
+        { "value": "squiggle", "label": "Squiggle" },
+        { "value": "heavy-squiggle", "label": "Heavy squiggle" },
+        { "value": "solid-color", "label": "Solid color" }
+      ],
+      "default": "marker",
+      "label": "Highlight style"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "guarantee",
+      "name": "Guarantee",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "chat_bubble", "label": "Chat" },
+            { "value": "check_mark", "label": "Check" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "truck", "label": "Truck" }
+          ],
+          "label": "Icon",
+          "default": "truck"
+        },
+        {
+          "type": "select",
+          "id": "icon_size",
+          "options": [
+            { "value": "small", "label": "Small" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "large", "label": "Large" }
+          ],
+          "default": "medium",
+          "label": "Icon size"
+        },
+        { "type": "image_picker", "id": "image", "label": "Custom image icon (optional)" },
+        { "type": "html", "id": "custom_icon", "label": "Custom SVG/HTML icon (optional)" },
+
+        { "type": "inline_richtext", "id": "title", "default": "Guarantee heading", "label": "Title" },
+        {
+          "type": "select",
+          "id": "title_size",
+          "options": [
+            { "value": "h4", "label": "Small" },
+            { "value": "h3", "label": "Medium" },
+            { "value": "h2", "label": "Large" }
+          ],
+          "default": "h3",
+          "label": "Title size"
+        },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Welcome to our store.</p>" },
+
+        { "type": "header", "content": "Highlight (per block)" },
+        { "type": "checkbox", "id": "enable_highlight", "label": "Enable highlight", "default": false },
+        {
+          "type": "select",
+          "id": "highlight_style",
+          "options": [
+            { "value": "marker", "label": "Marker" },
+            { "value": "circle", "label": "Circle" },
+            { "value": "underline", "label": "Underline" },
+            { "value": "bold-underline", "label": "Bold underline" },
+            { "value": "modern-underline", "label": "Modern underline" },
+            { "value": "sketch-underline", "label": "Sketch underline" },
+            { "value": "squiggle", "label": "Squiggle" },
+            { "value": "heavy-squiggle", "label": "Heavy squiggle" },
+            { "value": "solid-color", "label": "Solid color" }
+          ],
+          "default": "marker",
+          "label": "Highlight style"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Guarantees (edited)",
+      "blocks": [
+        { "type": "guarantee" },
+        { "type": "guarantee" },
+        { "type": "guarantee" },
+        { "type": "guarantee" }
+      ]
+    }
+  ],
+  "disabled_on": { "groups": ["header", "footer", "custom.overlay"] }
+}
+{% endschema %}

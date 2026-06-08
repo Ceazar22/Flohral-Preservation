@@ -1,0 +1,996 @@
+{% comment %}
+  Renders product buy-buttons.
+  Accepts:
+  - product: {Object} product object.
+  - block: {Object} passing the block information.
+  - product_form_id: {String} product form id.
+  - section_id: {String} id of section to which this snippet belongs.
+  - show_pickup_availability:: {Boolean} for the pickup availability. If true the pickup availability is rendered, false - not rendered (optional).
+  Usage:
+  {% render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, show_pickup_availability: true %}
+{% endcomment %}
+
+<div {{ block.shopify_attributes }}>
+{%- if product != blank -%}
+  {%- liquid
+    assign gift_card_recipient_feature_active = false
+    if block.settings.show_gift_card_recipient and product.gift_card?
+      assign gift_card_recipient_feature_active = true
+    endif
+
+    assign show_dynamic_checkout = false
+  -%}
+
+  {%- assign reservation_handle = 'reserve-your-spot-for-150' -%}
+
+  {%- assign is_reservation_product = false -%}
+  {%- if product.handle == reservation_handle -%}
+    {%- assign is_reservation_product = true -%}
+  {%- endif -%}
+
+  {%- assign no_reservation_required = false -%}
+  {%- if product.tags contains 'no_reservation_required' -%}
+    {%- assign no_reservation_required = true -%}
+  {%- endif -%}
+
+  {%- assign requires_reservation = true -%}
+  {%- if is_reservation_product or no_reservation_required -%}
+    {%- assign requires_reservation = false -%}
+  {%- endif -%}
+
+  {%- assign has_retainer_paid = false -%}
+  {%- if customer -%}
+    {%- if customer.tags contains 'Retainer Paid' -%}
+      {%- assign has_retainer_paid = true -%}
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- assign show_purchase_button = false -%}
+  {%- assign show_reserve_button = false -%}
+
+  {%- if requires_reservation == false -%}
+    {%- assign show_purchase_button = true -%}
+  {%- elsif has_retainer_paid -%}
+    {%- assign show_purchase_button = true -%}
+  {%- else -%}
+    {%- assign show_reserve_button = true -%}
+  {%- endif -%}
+
+  <product-form
+    class="product-form"
+    data-hide-errors="{{ gift_card_recipient_feature_active }}"
+    data-section-id="{{ section.id }}"
+  >
+    <div class="product-form__error-message-wrapper" role="alert" hidden>
+      {%- render 'icon', icon: 'error-red' -%}
+      <span class="product-form__error-message"></span>
+    </div>
+
+    {%- form 'product',
+      product,
+      id: product_form_id,
+      class: 'form',
+      novalidate: 'novalidate',
+      data-type: 'add-to-cart-form'
+    -%}
+      {%- liquid
+        assign check_against_inventory = true
+        if product.selected_or_first_available_variant.inventory_management != 'shopify' or product.selected_or_first_available_variant.inventory_policy == 'continue'
+          assign check_against_inventory = false
+        endif
+        if product.selected_or_first_available_variant.quantity_rule.min > product.selected_or_first_available_variant.inventory_quantity and check_against_inventory
+          assign quantity_rule_soldout = true
+        endif
+      -%}
+
+      {% # theme-check-disable %}
+      {%- assign cart_qty = cart | item_count_for_variant: product.selected_or_first_available_variant.id -%}
+      {% # theme-check-enable %}
+
+      {%- assign reservation_already_in_cart = false -%}
+      {%- if is_reservation_product and cart_qty > 0 -%}
+        {%- assign reservation_already_in_cart = true -%}
+      {%- endif -%}
+
+      <input
+        type="hidden"
+        name="id"
+        value="{{ product.selected_or_first_available_variant.id }}"
+        {% if product.selected_or_first_available_variant.available == false
+          or quantity_rule_soldout
+          or product.selected_or_first_available_variant == null
+        %}
+          disabled="disabled"
+        {% endif %}
+        class="product-variant-id"
+      >
+
+      {%- if is_reservation_product -%}
+        <input type="hidden" name="quantity" value="1">
+      {%- endif -%}
+
+      {%- if gift_card_recipient_feature_active -%}
+        {%- render 'gift-card-recipient-form', product: product, form: form, section: section -%}
+      {%- endif -%}
+
+      <div class="product-form__buttons{% if product.quantity_price_breaks_configured? %} with--price-break{% endif %}">
+        {%- if block.settings.show_quantity_selector and is_reservation_product == false -%}
+          <div id="Quantity-Form-{{ section.id }}" class="product-form__quantity">
+            <label for="Quantity-{{ section_id }}" class="visually-hidden">
+              {{ 'products.product.quantity.label' | t }}
+              <span class="quantity__rules-cart{% if cart_qty == 0 %} hidden{% endif %}">
+                {%- render 'loading-spinner' -%}
+                <span>(
+                  {{- 'products.product.quantity.in_cart_html' | t: quantity: cart_qty -}}
+                )</span>
+              </span>
+            </label>
+
+            <div class="price-per-item__container">
+              <quantity-input class="quantity" data-url="{{ product.url }}" data-block="{{ block.id }}" data-section="{{ section_id }}">
+                <button class="quantity__button" name="minus" type="button">
+                  <span class="visually-hidden">
+                    {{- 'products.product.quantity.decrease' | t: product: product.title | escape -}}
+                  </span>
+                  {% render 'icon', icon: 'minus' %}
+                </button>
+
+                <input
+                  class="quantity__input quantity__input-primary"
+                  type="number"
+                  name="quantity"
+                  id="Quantity-{{ section_id }}"
+                  data-cart-quantity="{{ cart_qty }}"
+                  data-min="{{ product.selected_or_first_available_variant.quantity_rule.min }}"
+                  min="{{ product.selected_or_first_available_variant.quantity_rule.min }}"
+                  {% if product.selected_or_first_available_variant.quantity_rule.max != null %}
+                    data-max="{{ product.selected_or_first_available_variant.quantity_rule.max }}"
+                    max="{{ product.selected_or_first_available_variant.quantity_rule.max }}"
+                  {% endif %}
+                  step="{{ product.selected_or_first_available_variant.quantity_rule.increment }}"
+                  value="{{ product.selected_or_first_available_variant.quantity_rule.min }}"
+                  form="{{ product_form_id }}"
+                >
+
+                <button class="quantity__button" name="plus" type="button">
+                  <span class="visually-hidden">
+                    {{- 'products.product.quantity.increase' | t: product: product.title | escape -}}
+                  </span>
+                  {% render 'icon', icon: 'plus' %}
+                </button>
+              </quantity-input>
+
+              {%- liquid
+                assign volume_pricing_array = product.selected_or_first_available_variant.quantity_price_breaks | sort: 'quantity' | reverse
+                assign current_qty_for_volume_pricing = cart_qty | plus: product.selected_or_first_available_variant.quantity_rule.min
+                if cart_qty > 0
+                  assign current_qty_for_volume_pricing = cart_qty | plus: product.selected_or_first_available_variant.quantity_rule.increment
+                endif
+              -%}
+
+              {%- if product.quantity_price_breaks_configured? -%}
+                <price-per-item
+                  id="Price-Per-Item-{{ section.id }}"
+                  data-section-id="{{ section.id }}"
+                  data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                >
+                  {%- if product.selected_or_first_available_variant.quantity_price_breaks.size > 0 -%}
+                    {%- assign variant_price_compare = product.selected_or_first_available_variant.compare_at_price -%}
+
+                    <div class="price-per-item">
+                      {%- if variant_price_compare -%}
+                        <dl class="price-per-item--current">
+                          <dt class="visually-hidden">
+                            {{ 'products.product.price.regular_price' | t }}
+                          </dt>
+                          <dd>
+                            <s class="variant-item__old-price">
+                              {{ variant_price_compare | money_with_currency }}
+                            </s>
+                          </dd>
+                        </dl>
+                      {%- endif -%}
+
+                      {%- if current_qty_for_volume_pricing < volume_pricing_array.last.minimum_quantity -%}
+                        {%- assign variant_price = product.selected_or_first_available_variant.price | money_with_currency -%}
+                        <span class="price-per-item--current">
+                          {{- 'products.product.volume_pricing.price_at_each' | t: price: variant_price -}}
+                        </span>
+                      {%- else -%}
+                        {%- for price_break in volume_pricing_array -%}
+                          {%- if current_qty_for_volume_pricing >= price_break.minimum_quantity -%}
+                            {%- assign price_break_price = price_break.price | money_with_currency -%}
+                            <span class="price-per-item--current">
+                              {{- 'products.product.volume_pricing.price_at_each' | t: price: price_break_price -}}
+                            </span>
+                            {%- break -%}
+                          {%- endif -%}
+                        {%- endfor -%}
+                      {%- endif -%}
+                    </div>
+                  {%- else -%}
+                    {%- assign variant_price = product.selected_or_first_available_variant.price | money_with_currency -%}
+                    {%- assign variant_price_compare = product.selected_or_first_available_variant.compare_at_price -%}
+
+                    <div class="price-per-item">
+                      {%- if variant_price_compare -%}
+                        <dl class="price-per-item--current">
+                          <dt class="visually-hidden">
+                            {{ 'products.product.price.regular_price' | t }}
+                          </dt>
+                          <dd>
+                            <s class="variant-item__old-price">
+                              {{ variant_price_compare | money_with_currency }}
+                            </s>
+                          </dd>
+                          <dt class="visually-hidden">
+                            {{ 'products.product.price.sale_price' | t }}
+                          </dt>
+                          <dd>
+                            <span class="price-per-item--current">
+                              {{- 'products.product.volume_pricing.price_at_each' | t: price: variant_price -}}
+                            </span>
+                          </dd>
+                        </dl>
+                      {%- else -%}
+                        <span class="price-per-item--current">
+                          {{- 'products.product.volume_pricing.price_at_each' | t: price: variant_price -}}
+                        </span>
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+                </price-per-item>
+              {%- endif -%}
+            </div>
+
+            <div class="quantity__rules caption" id="Quantity-Rules-{{ section.id }}">
+              {%- if product.selected_or_first_available_variant.quantity_rule.increment > 1 -%}
+                <span class="divider">
+                  {{- 'products.product.quantity.multiples_of' | t: quantity: product.selected_or_first_available_variant.quantity_rule.increment -}}
+                </span>
+              {%- endif -%}
+
+              {%- if product.selected_or_first_available_variant.quantity_rule.min > 1 -%}
+                <span class="divider">
+                  {{- 'products.product.quantity.minimum_of' | t: quantity: product.selected_or_first_available_variant.quantity_rule.min -}}
+                </span>
+              {%- endif -%}
+
+              {%- if product.selected_or_first_available_variant.quantity_rule.max != null -%}
+                <span class="divider">
+                  {{- 'products.product.quantity.maximum_of' | t: quantity: product.selected_or_first_available_variant.quantity_rule.max -}}
+                </span>
+              {%- endif -%}
+            </div>
+
+            {%- if product.quantity_price_breaks_configured? -%}
+              <volume-pricing class="parent-display" id="Volume-{{ section.id }}">
+                {%- if product.selected_or_first_available_variant.quantity_price_breaks.size > 0 -%}
+                  <span class="caption-large">{{ 'products.product.volume_pricing.title' | t }}</span>
+
+                  <ul class="list-unstyled">
+                    <li>
+                      <span>{{ product.selected_or_first_available_variant.quantity_rule.min }}+</span>
+                      {%- assign price = product.selected_or_first_available_variant.price | money_with_currency -%}
+                      <span data-text="{{ 'products.product.volume_pricing.price_at_each' | t: price: price }}">
+                        {{- 'sections.quick_order_list.each' | t: money: price -}}
+                      </span>
+                    </li>
+
+                    {%- for price_break in product.selected_or_first_available_variant.quantity_price_breaks -%}
+                      {%- assign price_break_price = price_break.price | money_with_currency -%}
+                      <li class="{%- if forloop.index >= 3 -%}show-more-item hidden{%- endif -%}">
+                        <span>
+                          {{- price_break.minimum_quantity -}}
+                          <span aria-hidden="true">+</span>
+                        </span>
+                        <span data-text="{{ 'products.product.volume_pricing.price_at_each' | t: price: price_break_price }}">
+                          {{- 'sections.quick_order_list.each' | t: money: price_break_price -}}
+                        </span>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+
+                  {%- if product.selected_or_first_available_variant.quantity_price_breaks.size >= 3 -%}
+                    <vp-show-more-button>
+                      <button
+                        class="button-show-more link underlined-link"
+                        id="Show-More-{{ section.id }}"
+                        type="button"
+                      >
+                        <span class="label-show-more label-text">
+                          <span aria-hidden="true">+ </span>{{ 'products.facets.show_more' | t }}
+                        </span>
+                      </button>
+                    </vp-show-more-button>
+                  {%- endif -%}
+                {%- endif -%}
+              </volume-pricing>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- unless is_reservation_product -%}
+          <div
+            id="reserve-spot-wrapper-{{ section_id }}"
+            style="width:100%;{% unless show_reserve_button %}display:none;{% endunless %}"
+          >
+            <button
+              type="button"
+              id="open-reserve-modal-{{ section_id }}"
+              class="button button--full-width button--secondary"
+              style="margin-bottom:10px; display:flex; justify-content:center; align-items:center; text-align:center;"
+            >
+              Reserve Your Spot
+            </button>
+            <p
+              class="reserve-spot-note"
+              style="margin: 0 0 12px; font-size: 14px; line-height: 1.45; text-align: center; color: rgba(0,0,0,0.72);"
+            >
+              Once we receive your flowers you’ll finalize your order.
+            </p>
+          </div>
+
+          <div
+            id="purchase-wrapper-{{ section_id }}"
+            style="width:100%;{% unless show_purchase_button %}display:none;{% endunless %}"
+          >
+            <div
+              id="EngravingDetails-{{ section_id }}"
+              class="preservation-details-fields engraving-details-fields"
+              data-engraving-details
+              style="width:100%; margin: 0 0 18px; display:none;"
+            >
+              <div style="margin-bottom: 12px;">
+                <label
+                  for="BrideName-{{ section_id }}"
+                  style="display:block; margin-bottom:6px; font-size:14px; font-weight:600;"
+                >
+                  Bride's name
+                </label>
+                <input
+                  id="BrideName-{{ section_id }}"
+                  class="field__input"
+                  type="text"
+                  name="properties[Bride's name]"
+                  form="{{ product_form_id }}"
+                  placeholder="Enter bride's name"
+                  style="width:100%;"
+                  data-engraving-field
+                  data-engraving-required
+                  disabled
+                >
+              </div>
+
+              <div style="margin-bottom: 12px;">
+                <label
+                  for="GroomName-{{ section_id }}"
+                  style="display:block; margin-bottom:6px; font-size:14px; font-weight:600;"
+                >
+                  Groom's name
+                </label>
+                <input
+                  id="GroomName-{{ section_id }}"
+                  class="field__input"
+                  type="text"
+                  name="properties[Groom's name]"
+                  form="{{ product_form_id }}"
+                  placeholder="Enter groom's name"
+                  style="width:100%;"
+                  data-engraving-field
+                  data-engraving-required
+                  disabled
+                >
+              </div>
+
+              <div style="margin-bottom: 12px;">
+                <label
+                  for="WeddingDate-{{ section_id }}"
+                  style="display:block; margin-bottom:6px; font-size:14px; font-weight:600;"
+                >
+                  Wedding date
+                </label>
+                <input
+                  id="WeddingDate-{{ section_id }}"
+                  class="field__input"
+                  type="date"
+                  name="properties[Wedding date]"
+                  form="{{ product_form_id }}"
+                  style="width:100%;"
+                  data-engraving-field
+                  data-engraving-required
+                  disabled
+                >
+              </div>
+
+              <div style="margin-bottom: 12px;">
+                <label style="display:block; margin-bottom:8px; font-size:14px; font-weight:600;">
+                  Engraving color
+                </label>
+
+                <div class="engraving-color-options">
+                  <input
+                    class="visually-hidden engraving-color-input"
+                    type="radio"
+                    id="EngravingColorBlack-{{ section_id }}"
+                    name="properties[Engraving color]"
+                    value="Black"
+                    form="{{ product_form_id }}"
+                    data-engraving-field
+                    data-engraving-required
+                    disabled
+                  >
+                  <label
+                    for="EngravingColorBlack-{{ section_id }}"
+                    class="engraving-color-label"
+                  >
+                    Black
+                  </label>
+
+                  <input
+                    class="visually-hidden engraving-color-input"
+                    type="radio"
+                    id="EngravingColorGold-{{ section_id }}"
+                    name="properties[Engraving color]"
+                    value="Gold"
+                    form="{{ product_form_id }}"
+                    data-engraving-field
+                    data-engraving-required
+                    disabled
+                  >
+                  <label
+                    for="EngravingColorGold-{{ section_id }}"
+                    class="engraving-color-label"
+                  >
+                    Gold
+                  </label>
+
+                  <input
+                    class="visually-hidden engraving-color-input"
+                    type="radio"
+                    id="EngravingColorSilver-{{ section_id }}"
+                    name="properties[Engraving color]"
+                    value="Silver"
+                    form="{{ product_form_id }}"
+                    data-engraving-field
+                    data-engraving-required
+                    disabled
+                  >
+                  <label
+                    for="EngravingColorSilver-{{ section_id }}"
+                    class="engraving-color-label"
+                  >
+                    Silver
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <button
+              id="ProductSubmitButton-{{ section_id }}"
+              type="submit"
+              name="add"
+              class="product-form__submit button{% if show_dynamic_checkout %} button--secondary{% endif %} button--full-width"
+              {%- if product.selected_or_first_available_variant.available == false
+                or quantity_rule_soldout
+                or product.selected_or_first_available_variant == null
+              -%}
+                disabled="disabled"
+              {%- endif -%}
+              {%- if product.template_suffix == 'pre-order' %} data-pre-order="true"{% endif -%}
+            >
+              <span>
+                {%- if product.selected_or_first_available_variant == null -%}
+                  {{ 'products.product.unavailable' | t }}
+                {%- elsif product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
+                  {{ 'products.product.sold_out' | t }}
+                {%- else -%}
+                  {%- if product.template_suffix != 'pre-order' -%}
+                    Preserve Now
+                  {%- else -%}
+                    {{ 'products.product.pre_order' | t }}
+                  {%- endif -%}
+                {%- endif -%}
+              </span>
+            </button>
+          </div>
+
+          <div
+            id="reserve-modal-{{ section_id }}"
+            class="reserve-modal"
+            aria-hidden="true"
+            style="display:none;"
+          >
+            <div class="reserve-modal__overlay" data-close-reserve-modal></div>
+
+            <div
+              class="reserve-modal__dialog"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="reserve-modal-title-{{ section_id }}"
+            >
+              <button
+                type="button"
+                class="reserve-modal__close"
+                id="close-reserve-modal-{{ section_id }}"
+                aria-label="Close modal"
+              >
+                &times;
+              </button>
+
+              <div class="reserve-modal__header">
+                <h2 id="reserve-modal-title-{{ section_id }}" class="reserve-modal__title">
+                  Reserve Your Spot
+                </h2>
+              </div>
+
+              <div class="reserve-modal__content">
+                <iframe src="https://the.flohralpreservation.com/widget/survey/QK2zqgPXzawumGpnhrE7" style="border:none;width:100%;" scrolling="no" id="QK2zqgPXzawumGpnhrE7" title="survey"></iframe>
+                <script src="https://the.flohralpreservation.com/js/form_embed.js"></script>
+              </div>
+            </div>
+          </div>
+
+          <style>
+            .engraving-details-fields {
+              padding: 16px;
+              border: 1px solid rgba(0, 0, 0, 0.12);
+              border-radius: 8px;
+              background: rgba(0, 0, 0, 0.02);
+            }
+
+            .engraving-color-options {
+              display: flex;
+              gap: 8px;
+              flex-wrap: wrap;
+            }
+
+            .engraving-color-label {
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              min-height: 42px;
+              padding: 10px 16px;
+              border: 1px solid rgba(0, 0, 0, 0.2);
+              border-radius: 6px;
+              cursor: pointer;
+              font-size: 14px;
+              line-height: 1;
+              background: #fff;
+              transition: border-color 0.15s ease, box-shadow 0.15s ease, font-weight 0.15s ease;
+            }
+
+            .engraving-color-input:checked + .engraving-color-label {
+              border: 2px solid currentColor;
+              font-weight: 700;
+              box-shadow: 0 0 0 1px currentColor;
+            }
+
+            .reserve-modal {
+              position: fixed;
+              inset: 0;
+              z-index: 9999;
+            }
+
+            .reserve-modal__overlay {
+              position: absolute;
+              inset: 0;
+              background: rgba(0, 0, 0, 0.12);
+            }
+
+            .reserve-modal__dialog {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              width: min(560px, calc(100vw - 32px));
+              height: min(720px, calc(100vh - 40px));
+              transform: translate(-50%, -50%);
+              background: #fff;
+              border-radius: 10px;
+              overflow: hidden;
+              z-index: 2;
+              box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+              display: flex;
+              flex-direction: column;
+            }
+
+            .reserve-modal__close {
+              position: fixed;
+              top: 12px;
+              right: 18px;
+              z-index: 10000;
+              width: 32px;
+              height: 32px;
+              border: 0;
+              background: transparent;
+              color: #000;
+              font-size: 32px;
+              line-height: 1;
+              cursor: pointer;
+              padding: 0;
+            }
+
+            .reserve-modal__header {
+              padding: 18px 24px 12px;
+              border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+              flex: 0 0 auto;
+            }
+
+            .reserve-modal__title {
+              margin: 0;
+              font-size: 22px;
+              line-height: 1.2;
+            }
+
+            .reserve-modal__content {
+              width: 100%;
+              flex: 1 1 auto;
+              min-height: 0;
+              display: flex;
+              align-items: stretch;
+              justify-content: center;
+              overflow: auto;
+              -webkit-overflow-scrolling: touch;
+            }
+
+            .reserve-modal__content iframe {
+              display: block;
+              width: 100%;
+              height: 100%;
+              min-height: 620px;
+              border: 0;
+            }
+
+            body.reserve-modal-open {
+              overflow: hidden;
+            }
+
+            @media screen and (max-width: 749px) {
+              .reserve-modal__dialog {
+                width: calc(100vw - 24px);
+                height: min(85vh, 720px);
+                max-height: calc(100vh - 24px);
+                border-radius: 10px;
+                top: 50%;
+                transform: translate(-50%, -50%);
+              }
+
+              .reserve-modal__close {
+                top: 10px;
+                right: 14px;
+                font-size: 28px;
+              }
+
+              .reserve-modal__header {
+                padding: 16px 18px 10px;
+              }
+
+              .reserve-modal__title {
+                font-size: 18px;
+              }
+
+              .reserve-modal__content iframe {
+                min-height: 700px;
+              }
+            }
+          </style>
+
+          <script>
+            (function () {
+              var details = document.getElementById('EngravingDetails-{{ section_id }}');
+              var productSection = document.getElementById('shopify-section-{{ section.id }}') || document;
+              var productForm = document.getElementById('{{ product_form_id }}');
+
+              if (!details) return;
+
+              var engravingFields = details.querySelectorAll('[data-engraving-field]');
+              var requiredFields = details.querySelectorAll('[data-engraving-required]');
+
+              function normalize(value) {
+                return String(value || '').toLowerCase().replace(/\s+/g, ' ').trim();
+              }
+
+              function getLabelText(control) {
+                var labelText = '';
+
+                if (control.id) {
+                  var label = productSection.querySelector('label[for="' + CSS.escape(control.id) + '"]');
+                  if (label) {
+                    labelText += ' ' + label.textContent;
+                  }
+                }
+
+                var closestLabel = control.closest ? control.closest('label') : null;
+                if (closestLabel) {
+                  labelText += ' ' + closestLabel.textContent;
+                }
+
+                if (control.getAttribute) {
+                  labelText += ' ' + (control.getAttribute('aria-label') || '');
+                  labelText += ' ' + (control.getAttribute('data-option-name') || '');
+                  labelText += ' ' + (control.getAttribute('data-name') || '');
+                }
+
+                return normalize(labelText);
+              }
+
+              function getControlText(control) {
+                var text = '';
+
+                if (!control) return '';
+
+                text += ' ' + (control.name || '');
+                text += ' ' + (control.id || '');
+                text += ' ' + (control.value || '');
+                text += ' ' + getLabelText(control);
+
+                if (control.tagName === 'SELECT') {
+                  var selectedOption = control.options[control.selectedIndex];
+                  if (selectedOption) {
+                    text += ' ' + selectedOption.text;
+                    text += ' ' + selectedOption.value;
+                  }
+                }
+
+                return normalize(text);
+              }
+
+              function isNegativeEngravingValue(value) {
+                value = normalize(value);
+
+                return (
+                  value.indexOf('no engraving') !== -1 ||
+                  value.indexOf('no-engraving') !== -1 ||
+                  value.indexOf('without engraving') !== -1 ||
+                  value.indexOf('no engraved') !== -1 ||
+                  value.indexOf('not engraved') !== -1 ||
+                  value === 'no' ||
+                  value === 'none' ||
+                  value === 'n/a'
+                );
+              }
+
+              function isPositiveEngravingValue(value) {
+                value = normalize(value);
+
+                if (!value || isNegativeEngravingValue(value)) {
+                  return false;
+                }
+
+                return (
+                  value.indexOf('engraving') !== -1 ||
+                  value.indexOf('engraved') !== -1 ||
+                  value.indexOf('with engraving') !== -1 ||
+                  value.indexOf('add engraving') !== -1 ||
+                  value.indexOf('yes') !== -1 ||
+                  value.indexOf('with') !== -1 ||
+                  value.indexOf('add') !== -1
+                );
+              }
+
+              function getSelectedEngravingValue() {
+                var controls = productSection.querySelectorAll('input, select, textarea, button');
+                var selectedValue = '';
+
+                Array.prototype.forEach.call(controls, function (control) {
+                  if (selectedValue) return;
+                  if (!control) return;
+                  if (details.contains(control)) return;
+                  if (control.disabled) return;
+
+                  var controlText = getControlText(control);
+                  var isEngravingRelated = controlText.indexOf('engraving') !== -1 || controlText.indexOf('engraved') !== -1;
+
+                  if (!isEngravingRelated) return;
+
+                  if (control.tagName === 'SELECT') {
+                    selectedValue = controlText;
+                    return;
+                  }
+
+                  if (control.type === 'radio' || control.type === 'checkbox') {
+                    if (control.checked) {
+                      selectedValue = controlText;
+                    }
+                    return;
+                  }
+
+                  if (control.tagName === 'BUTTON') {
+                    var isPressed = control.getAttribute('aria-pressed') === 'true';
+                    var isCurrent = control.getAttribute('aria-current') === 'true';
+                    var isSelectedClass = control.classList.contains('selected') ||
+                      control.classList.contains('active') ||
+                      control.classList.contains('is-selected');
+
+                    if (isPressed || isCurrent || isSelectedClass) {
+                      selectedValue = controlText;
+                    }
+
+                    return;
+                  }
+
+                  if (control.value) {
+                    selectedValue = controlText;
+                  }
+                });
+
+                return normalize(selectedValue);
+              }
+
+              function hasEngravingSelected() {
+                var selectedValue = getSelectedEngravingValue();
+
+                if (!selectedValue) return false;
+                if (isNegativeEngravingValue(selectedValue)) return false;
+
+                return isPositiveEngravingValue(selectedValue);
+              }
+
+              function clearField(field) {
+                if (!field) return;
+
+                if (field.type === 'radio' || field.type === 'checkbox') {
+                  field.checked = false;
+                } else {
+                  field.value = '';
+                }
+              }
+
+              function updateEngravingFields() {
+                var engravingSelected = hasEngravingSelected();
+
+                details.style.display = engravingSelected ? 'block' : 'none';
+
+                Array.prototype.forEach.call(engravingFields, function (field) {
+                  field.disabled = !engravingSelected;
+
+                  if (!engravingSelected) {
+                    clearField(field);
+                  }
+                });
+
+                Array.prototype.forEach.call(requiredFields, function (field) {
+                  if (engravingSelected) {
+                    field.setAttribute('required', 'required');
+                  } else {
+                    field.removeAttribute('required');
+                  }
+                });
+              }
+
+              document.addEventListener('change', function () {
+                window.setTimeout(updateEngravingFields, 50);
+              });
+
+              document.addEventListener('click', function () {
+                window.setTimeout(updateEngravingFields, 80);
+              });
+
+              if (productForm) {
+                productForm.addEventListener('submit', function () {
+                  updateEngravingFields();
+                });
+              }
+
+              window.setTimeout(updateEngravingFields, 100);
+              window.setTimeout(updateEngravingFields, 500);
+            })();
+
+            (function () {
+              var openBtn = document.getElementById('open-reserve-modal-{{ section_id }}');
+              var modal = document.getElementById('reserve-modal-{{ section_id }}');
+              var closeBtn = document.getElementById('close-reserve-modal-{{ section_id }}');
+              var closeTargets = modal ? modal.querySelectorAll('[data-close-reserve-modal]') : [];
+              var reservationUrl = '/products/{{ reservation_handle }}';
+
+              if (!openBtn || !modal) return;
+
+              function openModal() {
+                modal.style.display = 'block';
+                modal.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('reserve-modal-open');
+              }
+
+              function closeModalAndRedirect() {
+                modal.style.display = 'none';
+                modal.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('reserve-modal-open');
+                window.location.href = reservationUrl;
+              }
+
+              openBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                openModal();
+              });
+
+              if (closeBtn) {
+                closeBtn.addEventListener('click', function () {
+                  closeModalAndRedirect();
+                });
+              }
+
+              closeTargets.forEach(function (el) {
+                el.addEventListener('click', function () {
+                  closeModalAndRedirect();
+                });
+              });
+
+              document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape' && modal.style.display === 'block') {
+                  closeModalAndRedirect();
+                }
+              });
+            })();
+          </script>
+        {%- else -%}
+          <button
+            id="ProductSubmitButton-{{ section_id }}"
+            type="submit"
+            name="add"
+            class="product-form__submit button{% if show_dynamic_checkout %} button--secondary{% endif %} button--full-width"
+            {%- if product.selected_or_first_available_variant.available == false
+              or quantity_rule_soldout
+              or product.selected_or_first_available_variant == null
+              or reservation_already_in_cart
+            -%}
+              disabled="disabled"
+            {%- endif -%}
+            {%- if product.template_suffix == 'pre-order' %} data-pre-order="true"{% endif -%}
+          >
+            <span>
+              {%- if product.selected_or_first_available_variant == null -%}
+                {{ 'products.product.unavailable' | t }}
+              {%- elsif reservation_already_in_cart -%}
+                Already Added
+              {%- elsif product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
+                {{ 'products.product.sold_out' | t }}
+              {%- else -%}
+                {%- if product.template_suffix != 'pre-order' -%}
+                  {{ 'products.product.add_to_cart' | t }}
+                {%- else -%}
+                  {{ 'products.product.pre_order' | t }}
+                {%- endif -%}
+              {%- endif -%}
+            </span>
+          </button>
+        {%- endunless -%}
+      </div>
+    {%- endform -%}
+  </product-form>
+{%- else -%}
+  <div class="product-form">
+    <div class="product-form__buttons form">
+      <button
+        type="submit"
+        name="add"
+        class="product-form__submit button button--full-width button--primary"
+        disabled
+      >
+        {{ 'products.product.sold_out' | t }}
+      </button>
+    </div>
+  </div>
+{%- endif -%}
+
+{%- if show_pickup_availability -%}
+  {{ 'component-pickup-availability.css' | asset_url | stylesheet_tag }}
+  {%- assign pick_up_availabilities = product.selected_or_first_available_variant.store_availabilities | where: 'pick_up_enabled', true -%}
+  <pickup-availability class="product__pickup-availabilities no-js-hidden"
+    {% if product.selected_or_first_available_variant.available and pick_up_availabilities.size > 0 %} available{% endif %}
+    data-root-url="{{ routes.root_url }}"
+    data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+    data-has-only-default-variant="{{ product.has_only_default_variant }}"
+  >
+    <template>
+      <pickup-availability-preview class="pickup-availability-preview">
+        {% render 'icon', icon: 'unavailable' %}
+        <div class="pickup-availability-info">
+          <p class="caption-large">{{ 'products.product.pickup_availability.unavailable' | t }}</p>
+          <button class="pickup-availability-button link link--underline">{{ 'products.product.pickup_availability.refresh' | t }}</button>
+        </div>
+      </pickup-availability-preview>
+    </template>
+  </pickup-availability>
+  <script src="{{ 'pickup-availability.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+</div>

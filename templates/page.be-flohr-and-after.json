@@ -1,0 +1,276 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "name": "Page Description",
+      "settings": {
+        "narrow": true,
+        "padding_top": 60,
+        "padding_bottom": 72
+      }
+    },
+    "reveal_banner_3BcYKz": {
+      "type": "reveal-banner",
+      "blocks": {
+        "heading_AMBzyH": {
+          "type": "heading",
+          "settings": {
+            "heading": "Reveal banner",
+            "heading_size": "h1",
+            "heading_tag": "h2",
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        },
+        "subheading_GRbB6g": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Add a tagline",
+            "subheading_size": "h5",
+            "secondary_color": false,
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        },
+        "buttons_b8Wp7t": {
+          "type": "buttons",
+          "settings": {
+            "button_label": "Button label",
+            "button_link": "",
+            "video_button": "Video button label",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_description": "Describe the video"
+          }
+        },
+        "slide_CJNxzb": {
+          "type": "slide",
+          "settings": {
+            "heading": "Reveal banner",
+            "heading_size": "h1",
+            "heading_tag": "h2",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "text_size": "typeset2",
+            "secondary_color": false,
+            "button_label": "Button label",
+            "button_link": "",
+            "button_size": "medium",
+            "button_style_secondary": false,
+            "colors_button_label": "#ffffff",
+            "colors_button_background": "#1a1b18",
+            "colors_text": "#212326",
+            "colors_background": "#f3f3f3",
+            "gradient_background": "",
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        }
+      },
+      "block_order": [
+        "heading_AMBzyH",
+        "subheading_GRbB6g",
+        "buttons_b8Wp7t",
+        "slide_CJNxzb"
+      ],
+      "name": "t:sections.reveal-banner.presets.name",
+      "settings": {
+        "image_position": "center center",
+        "text_box_position": "middle",
+        "text_alignment": "left",
+        "image_ratio": "650px",
+        "full_width": true,
+        "show_divider": false,
+        "mobile_text_alignment": "center",
+        "mobile_image_ratio": "auto",
+        "show_text_below": false,
+        "colors_text": "#ffffff",
+        "colors_overlay": "#000000",
+        "colors_overlay_opacity": 20,
+        "colors_highlight": "#ffb503",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "gallery_KHxiMk": {
+      "type": "gallery",
+      "blocks": {
+        "image_KH8KEG": {
+          "type": "image",
+          "settings": {
+            "image_position": "center center",
+            "subheading": "Subheading",
+            "subheading_size": "h5",
+            "heading": "Tell your story",
+            "heading_size": "h3",
+            "link": "",
+            "text_box_position": "bottom-left",
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        },
+        "image_aK6KVM": {
+          "type": "image",
+          "settings": {
+            "image_position": "center center",
+            "subheading": "Subheading",
+            "subheading_size": "h5",
+            "heading": "Tell your story",
+            "heading_size": "h3",
+            "link": "",
+            "text_box_position": "bottom-left",
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        },
+        "image_HcFDHf": {
+          "type": "image",
+          "settings": {
+            "image_position": "center center",
+            "subheading": "Subheading",
+            "subheading_size": "h5",
+            "heading": "Tell your story",
+            "heading_size": "h3",
+            "link": "",
+            "text_box_position": "bottom-left",
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        },
+        "image_BzXFVz": {
+          "type": "image",
+          "settings": {
+            "image_position": "center center",
+            "subheading": "Subheading",
+            "subheading_size": "h5",
+            "heading": "Tell your story",
+            "heading_size": "h3",
+            "link": "",
+            "text_box_position": "bottom-left",
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        }
+      },
+      "block_order": [
+        "image_KH8KEG",
+        "image_aK6KVM",
+        "image_HcFDHf",
+        "image_BzXFVz"
+      ],
+      "name": "t:sections.gallery.presets.name",
+      "settings": {
+        "per_row": 4,
+        "spacing_images": 2,
+        "image_height": 280,
+        "apply_overlay": true,
+        "full_width": false,
+        "show_divider": false,
+        "heading": "",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "heading_tag": "h2",
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "mobile_image_height": 160,
+        "colors_highlight": "#ffb503",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "enable_highlight": false,
+        "highlight_style": "marker"
+      }
+    },
+    "testimonials_Xmrxfn": {
+      "type": "testimonials",
+      "blocks": {
+        "testimonial_xfieae": {
+          "type": "testimonial",
+          "settings": {
+            "icon": "5",
+            "text": "<p>Add customer reviews and testimonials to showcase your store's happy customers.</p>",
+            "author": "Author",
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        },
+        "testimonial_NM7brm": {
+          "type": "testimonial",
+          "settings": {
+            "icon": "5",
+            "text": "<p>Add customer reviews and testimonials to showcase your store's happy customers.</p>",
+            "author": "Author",
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        },
+        "testimonial_VPQak6": {
+          "type": "testimonial",
+          "settings": {
+            "icon": "5",
+            "text": "<p>Add customer reviews and testimonials to showcase your store's happy customers.</p>",
+            "author": "Author",
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        },
+        "testimonial_xfiXKy": {
+          "type": "testimonial",
+          "settings": {
+            "icon": "5",
+            "text": "<p>Add customer reviews and testimonials to showcase your store's happy customers.</p>",
+            "author": "Author",
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        },
+        "testimonial_iWUzwP": {
+          "type": "testimonial",
+          "settings": {
+            "icon": "5",
+            "text": "<p>Add customer reviews and testimonials to showcase your store's happy customers.</p>",
+            "author": "Author",
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_xfieae",
+        "testimonial_NM7brm",
+        "testimonial_VPQak6",
+        "testimonial_xfiXKy",
+        "testimonial_iWUzwP"
+      ],
+      "name": "t:sections.testimonials.presets.name",
+      "settings": {
+        "autorotate": false,
+        "autorotate_speed": 5,
+        "hide_images": false,
+        "show_divider": false,
+        "heading": "Testimonials",
+        "heading_size": "h1",
+        "heading_alignment": "center",
+        "heading_tag": "h2",
+        "colors_highlight": "#ffb503",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "enable_highlight": false,
+        "highlight_style": "marker"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "reveal_banner_3BcYKz",
+    "gallery_KHxiMk",
+    "testimonials_Xmrxfn"
+  ]
+}

@@ -1,0 +1,434 @@
+{%- style -%}
+  #shopify-section-{{ section.id }}{
+    --pt: {{ section.settings.padding_top }}px;
+    --pb: {{ section.settings.padding_bottom }}px;
+
+    --h-desktop: {{ section.settings.height_desktop }}px;
+    --h-mobile: {{ section.settings.height_mobile }}px;
+
+    --overlay: {{ section.settings.overlay_color.red }}, {{ section.settings.overlay_color.green }}, {{ section.settings.overlay_color.blue }};
+    --overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+
+    --text: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};
+    --line: {{ section.settings.line_color.red }}, {{ section.settings.line_color.green }}, {{ section.settings.line_color.blue }};
+
+    --dot-pos: {{ section.settings.dot_position }}%;
+
+    --stat-size: {{ section.settings.stat_font_size }}px;
+    --label-size: {{ section.settings.label_font_size }}px;
+  }
+
+  #shopify-section-{{ section.id }} .section--padding{
+    padding-top: var(--pt);
+    padding-bottom: var(--pb);
+  }
+{%- endstyle -%}
+
+<style>
+  #shopify-section-{{ section.id }} .video-stats {
+    width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .video-stats__wrap {
+    position: relative;
+    height: var(--h-desktop);
+    overflow: hidden;
+    background: #000;
+  }
+
+  #shopify-section-{{ section.id }} .video-stats__wrap.is-page {
+    max-width: var(--page-width, {{ settings.page_width | default: 1200 }}px);
+    margin: 0 auto;
+    border-radius: {{ section.settings.radius }}px;
+  }
+
+  #shopify-section-{{ section.id }} .video-stats__media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .video-stats__media video,
+  #shopify-section-{{ section.id }} .video-stats__media iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #shopify-section-{{ section.id }} .video-stats__poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .video-stats__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(var(--overlay), var(--overlay-opacity));
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .video-stats__content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    padding: clamp(18px, 3vw, 40px);
+    color: rgb(var(--text));
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .video-stats__grid {
+    width: 100%;
+    max-width: {{ section.settings.content_max_width }}px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(18px, 4vw, 64px);
+    align-items: start;
+  }
+
+  #shopify-section-{{ section.id }} .video-stats__stat {
+    display: grid;
+    gap: 6px;
+  }
+
+  #shopify-section-{{ section.id }} .video-stats__value {
+    font-size: var(--stat-size);
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+
+  #shopify-section-{{ section.id }} .video-stats__label {
+    font-size: var(--label-size);
+    line-height: 1.2;
+    opacity: 0.95;
+  }
+
+  #shopify-section-{{ section.id }} .video-stats__scrub {
+    margin-top: 24px;
+    width: 100%;
+    max-width: {{ section.settings.content_max_width }}px;
+    position: relative;
+    height: 22px;
+  }
+
+  #shopify-section-{{ section.id }} .video-stats__scrub::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 10px;
+    height: 2px;
+    background: rgba(var(--line), 0.75);
+  }
+
+  #shopify-section-{{ section.id }} .video-stats__dot {
+    position: absolute;
+    top: 10px;
+    left: var(--dot-pos);
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    background: rgb(var(--line));
+    box-shadow: 0 0 0 4px rgba(0,0,0,0.12);
+  }
+
+  @media (max-width: 989px){
+    #shopify-section-{{ section.id }} .video-stats__wrap {
+      height: auto;
+      min-height: 0;
+    }
+
+    #shopify-section-{{ section.id }} .video-stats__content {
+      height: auto;
+      min-height: 0;
+      padding: 28px 16px;
+    }
+
+    #shopify-section-{{ section.id }} .video-stats__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    #shopify-section-{{ section.id }} .video-stats__value {
+      font-size: clamp(24px, 7vw, 42px);
+    }
+
+    #shopify-section-{{ section.id }} .video-stats__label {
+      font-size: clamp(10px, 2.8vw, 14px);
+      line-height: 1.15;
+    }
+
+    #shopify-section-{{ section.id }} .video-stats__scrub {
+      margin-top: 18px;
+    }
+  }
+</style>
+
+<div class="section--padding{% if section.settings.show_divider %} section--divider{% endif %}">
+  <div class="video-stats">
+    <div class="video-stats__wrap{% if section.settings.width == 'page' %} is-page{% endif %}">
+      <div class="video-stats__media" aria-hidden="true">
+        {%- if section.settings.video != blank -%}
+          {{ section.settings.video | video_tag:
+            autoplay: true,
+            loop: true,
+            muted: true,
+            controls: false,
+            playsinline: true,
+            preload: 'metadata'
+          }}
+        {%- elsif section.settings.mp4_url != blank -%}
+          <video autoplay muted loop playsinline preload="metadata">
+            <source src="{{ section.settings.mp4_url }}" type="video/mp4">
+          </video>
+        {%- elsif section.settings.poster != blank -%}
+          {{ section.settings.poster | image_url: width: 2400 | image_tag: loading: 'lazy', class: 'video-stats__poster' }}
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg video-stats__poster' }}
+        {%- endif -%}
+      </div>
+
+      <div class="video-stats__overlay"></div>
+
+      <div class="video-stats__content">
+        <div class="video-stats__grid">
+          {%- if section.blocks.size > 0 -%}
+            {%- for block in section.blocks -%}
+              <div class="video-stats__stat" {{ block.shopify_attributes }}>
+                {%- assign v = block.settings.value | strip -%}
+                <div class="video-stats__value" data-count="{{ v | escape }}">{{ v }}</div>
+                <div class="video-stats__label">{{ block.settings.label }}</div>
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            <div class="video-stats__stat">
+              <div class="video-stats__value" data-count="12k">12k</div>
+              <div class="video-stats__label">Happy brides served in Rockland County</div>
+            </div>
+            <div class="video-stats__stat">
+              <div class="video-stats__value" data-count="98%">98%</div>
+              <div class="video-stats__label">Customer satisfaction, reflecting our dedication</div>
+            </div>
+            <div class="video-stats__stat">
+              <div class="video-stats__value" data-count="24k">24k</div>
+              <div class="video-stats__label">Total floral preservations crafted with love</div>
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.show_scrub -%}
+          <div class="video-stats__scrub" aria-hidden="true">
+            <span class="video-stats__dot"></span>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const root = document.getElementById('shopify-section-{{ section.id }}');
+  if (!root) return;
+
+  const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const els = Array.from(root.querySelectorAll('[data-count]'));
+  if (!els.length) return;
+
+  const DURATION = 1200;
+
+  const parseTarget = (raw) => {
+    const original = (raw || '').toString().trim();
+    if (!original) return null;
+
+    const prefixMatch = original.match(/^[^\d\-\.]+/);
+    const prefix = prefixMatch ? prefixMatch[0] : '';
+
+    const suffixMatch = original.match(/[^\d\.]+$/);
+    const suffix = suffixMatch ? suffixMatch[0] : '';
+
+    let numericStr = original.replace(/,/g, '');
+    numericStr = numericStr.replace(/^[^\d\-\.]+/, '').replace(/[^\d\.]+$/, '');
+
+    let multiplier = 1;
+    const lastChar = original.slice(-1).toLowerCase();
+    if (lastChar === 'k') multiplier = 1000;
+    if (lastChar === 'm') multiplier = 1000000;
+    if (lastChar === 'b') multiplier = 1000000000;
+
+    const num = parseFloat(numericStr);
+    if (!isFinite(num)) return null;
+
+    const hasDecimal = (numericStr.indexOf('.') !== -1);
+
+    return {
+      original,
+      prefix,
+      suffix,
+      multiplier,
+      target: num * multiplier,
+      decimals: hasDecimal ? (numericStr.split('.')[1] || '').length : 0
+    };
+  };
+
+  const formatValue = (value, meta) => {
+    const lastChar = meta.original.slice(-1).toLowerCase();
+    const usesShort = (lastChar === 'k' || lastChar === 'm' || lastChar === 'b');
+
+    let displayNum = value;
+    let suffix = meta.suffix;
+
+    if (usesShort) {
+      if (lastChar === 'k') displayNum = value / 1000;
+      if (lastChar === 'm') displayNum = value / 1000000;
+      if (lastChar === 'b') displayNum = value / 1000000000;
+      if (!suffix.toLowerCase().includes(lastChar)) suffix = lastChar + suffix.replace(/^[kmb]/i, '');
+    }
+
+    const fixed = meta.decimals > 0 ? displayNum.toFixed(meta.decimals) : Math.round(displayNum).toString();
+
+    const withCommas = (!usesShort && meta.decimals === 0)
+      ? fixed.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+      : fixed;
+
+    return `${meta.prefix}${withCommas}${suffix}`;
+  };
+
+  const animateEl = (el) => {
+    if (el.dataset.counted === 'true') return;
+
+    const raw = el.getAttribute('data-count') || el.textContent;
+    const meta = parseTarget(raw);
+    if (!meta) return;
+
+    el.dataset.counted = 'true';
+
+    if (prefersReduced) {
+      el.textContent = meta.original;
+      return;
+    }
+
+    const start = 0;
+    const end = meta.target;
+    const t0 = performance.now();
+
+    const tick = (now) => {
+      const p = Math.min(1, (now - t0) / DURATION);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const current = start + (end - start) * eased;
+
+      el.textContent = formatValue(current, meta);
+
+      if (p < 1) requestAnimationFrame(tick);
+      else el.textContent = meta.original;
+    };
+
+    el.textContent = formatValue(0, meta);
+    requestAnimationFrame(tick);
+  };
+
+  const startAll = () => els.forEach(animateEl);
+
+  if (!('IntersectionObserver' in window)) {
+    startAll();
+    return;
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        startAll();
+        io.disconnect();
+      }
+    });
+  }, { threshold: 0.35 });
+
+  io.observe(root);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Video stats banner",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "checkbox", "id": "show_divider", "default": false, "label": "Show divider" },
+
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "options": [
+        { "value": "full", "label": "Full width" },
+        { "value": "page", "label": "Page width" }
+      ],
+      "default": "full"
+    },
+    { "type": "range", "id": "radius", "label": "Corner radius (page width only)", "min": 0, "max": 30, "step": 2, "default": 0 },
+
+    { "type": "header", "content": "Background media" },
+    { "type": "video", "id": "video", "label": "Shopify hosted video" },
+    { "type": "url", "id": "mp4_url", "label": "MP4 URL (optional fallback)" },
+    { "type": "image_picker", "id": "poster", "label": "Poster image (fallback)" },
+
+    { "type": "header", "content": "Overlay" },
+    { "type": "color", "id": "overlay_color", "label": "Overlay color", "default": "#000000" },
+    { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity (%)", "min": 0, "max": 80, "step": 5, "default": 25 },
+
+    { "type": "header", "content": "Text" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#ffffff" },
+    { "type": "range", "id": "content_max_width", "label": "Content max width (px)", "min": 600, "max": 1400, "step": 20, "default": 1100 },
+
+    { "type": "range", "id": "stat_font_size", "label": "Stat font size (px)", "min": 20, "max": 90, "step": 1, "default": 56 },
+    { "type": "range", "id": "label_font_size", "label": "Label font size (px)", "min": 10, "max": 28, "step": 1, "default": 12 },
+
+    { "type": "header", "content": "Decorative line" },
+    { "type": "checkbox", "id": "show_scrub", "label": "Show line + dot", "default": true },
+    { "type": "color", "id": "line_color", "label": "Line + dot color", "default": "#ffffff" },
+    { "type": "range", "id": "dot_position", "label": "Dot position (%)", "min": 0, "max": 100, "step": 1, "default": 80 },
+
+    { "type": "header", "content": "Height" },
+    { "type": "range", "id": "height_desktop", "label": "Height desktop (px)", "min": 180, "max": 700, "step": 10, "default": 260 },
+    { "type": "range", "id": "height_mobile", "label": "Height mobile (px)", "min": 180, "max": 700, "step": 10, "default": 320 },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Padding top", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Padding bottom", "default": 0 }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        { "type": "text", "id": "value", "label": "Value", "default": "12k" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Happy brides served in Rockland County" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video stats banner",
+      "blocks": [
+        { "type": "stat", "settings": { "value": "12k", "label": "Happy brides served in Rockland County" } },
+        { "type": "stat", "settings": { "value": "98%", "label": "Customer satisfaction, reflecting our dedication" } },
+        { "type": "stat", "settings": { "value": "24k", "label": "Total floral preservations crafted with love" } }
+      ]
+    }
+  ],
+  "disabled_on": { "groups": ["header", "footer", "custom.overlay"] }
+}
+{% endschema %}

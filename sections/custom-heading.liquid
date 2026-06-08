@@ -1,0 +1,263 @@
+{%- style -%}
+  #shopify-section-{{ section.id }}{
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+
+    --eyebrow-color: {{ section.settings.eyebrow_color.red }}, {{ section.settings.eyebrow_color.green }}, {{ section.settings.eyebrow_color.blue }};
+    --heading-color: {{ section.settings.heading_color.red }}, {{ section.settings.heading_color.green }}, {{ section.settings.heading_color.blue }};
+    --subheading-color: {{ section.settings.subheading_color.red }}, {{ section.settings.subheading_color.green }}, {{ section.settings.subheading_color.blue }};
+    --bg-color: {{ section.settings.bg_color }};
+
+    --heading-size-manual: {{ section.settings.heading_size_manual }}px;
+  }
+
+  #shopify-section-{{ section.id }} .section--padding{
+    padding-top: var(--section-padding-top);
+    padding-bottom: var(--section-padding-bottom);
+    background: var(--bg-color);
+  }
+{%- endstyle -%}
+
+<style>
+  #shopify-section-{{ section.id }} .eyebrow-heading {
+    text-align: center;
+  }
+
+  /* Some themes make title-wrapper flex; force stack */
+  #shopify-section-{{ section.id }} .title-wrapper {
+    display: block !important;
+    width: 100%;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .eyebrow-heading__eyebrow {
+    margin: 0 0 12px;
+    font-size: 12px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: rgb(var(--eyebrow-color));
+    opacity: .9;
+  }
+
+  /* Default: match theme heading size scale */
+#shopify-section-{{ section.id }} .eyebrow-heading__title {
+  margin: 0;
+  color: rgb(var(--heading-color));
+  line-height: 1.1;
+
+  /* Mobile -> Desktop responsive */
+  font-size: clamp(
+    calc(var(--font-heading-scale) * 2.8rem),
+    4vw,
+    calc(var(--font-heading-scale) * 4rem)
+  );
+}
+
+  /* Manual override (responsive clamp) */
+  #shopify-section-{{ section.id }}[data-heading-size-mode="manual"] .eyebrow-heading__title {
+    font-size: clamp(28px, 4vw, var(--heading-size-manual));
+  }
+
+  #shopify-section-{{ section.id }} .eyebrow-heading__subheading {
+    margin: 16px auto 0;
+    max-width: 70ch;
+    font-size: clamp(16px, 2vw, 22px);
+    line-height: 1.4;
+    color: rgb(var(--subheading-color));
+  }
+
+  #shopify-section-{{ section.id }} .eyebrow-heading__subheading p {
+    margin: 0;
+  }
+</style>
+
+<div
+  class="section--padding{% if section.settings.show_divider %} section--divider{% endif %}"
+  data-heading-size-mode="{{ section.settings.heading_size_mode }}"
+>
+  <div class="eyebrow-heading page-width">
+    <div class="title-wrapper center">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow-heading__eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+
+      <{{ section.settings.heading_tag }} class="eyebrow-heading__title">
+        {%- if section.settings.use_highlight -%}
+          {%- render 'highlight-text',
+            hl_input: section.settings.heading,
+            hl_style: section.settings.highlight_style,
+            hl_enable: true,
+            hl_animateWrap: true -%}
+        {%- else -%}
+          {{ section.settings.heading }}
+        {%- endif -%}
+      </{{ section.settings.heading_tag }}>
+
+      {%- if section.settings.subheading != blank -%}
+        <div class="eyebrow-heading__subheading rte">
+          {{ section.settings.subheading }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Heading",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "default": false,
+      "label": "Show divider"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "OUR MOST LOVED KEEPSAKES"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Only at FLOHRal Preservations"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Timeless Keepsakes You Won’t Find Anywhere Else</p>"
+    },
+
+    {
+      "type": "header",
+      "content": "Highlight (optional)"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_highlight",
+      "label": "Use highlight-text snippet for heading",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "highlight_style",
+      "options": [
+        { "value": "marker", "label": "Marker" },
+        { "value": "circle", "label": "Circle" },
+        { "value": "underline", "label": "Underline" },
+        { "value": "bold-underline", "label": "Bold underline" },
+        { "value": "modern-underline", "label": "Modern underline" },
+        { "value": "sketch-underline", "label": "Sketch underline" },
+        { "value": "squiggle", "label": "Squiggle" },
+        { "value": "heavy-squiggle", "label": "Heavy squiggle" },
+        { "value": "solid-color", "label": "Solid color" }
+      ],
+      "default": "marker",
+      "label": "Highlight style"
+    },
+
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "options": [
+        { "value": "h1", "label": "h1" },
+        { "value": "h2", "label": "h2" },
+        { "value": "h3", "label": "h3" },
+        { "value": "div", "label": "div" }
+      ],
+      "default": "h2",
+      "label": "Heading tag"
+    },
+    {
+      "type": "select",
+      "id": "heading_size_mode",
+      "label": "Heading size mode",
+      "options": [
+        { "value": "theme", "label": "Match theme (font-heading-scale)" },
+        { "value": "manual", "label": "Manual size" }
+      ],
+      "default": "theme"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_manual",
+      "label": "Manual heading size (px)",
+      "min": 24,
+      "max": 96,
+      "step": 2,
+      "default": 54
+    },
+
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Eyebrow color",
+      "default": "#6b6b6b"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#b23b5a"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color",
+      "default": "#111111"
+    },
+
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "Heading"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+  }
+}
+{% endschema %}

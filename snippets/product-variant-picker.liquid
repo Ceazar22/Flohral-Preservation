@@ -1,0 +1,371 @@
+{% comment %}
+  Renders product variant-picker
+
+  Accepts:
+  - product: {Object} product object.
+  - block: {Object} passing the block information.
+  - product_form_id: {String} Id of the product form to which the variant picker is associated.
+  Usage:
+  {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
+{% endcomment %}
+
+{%- unless product.has_only_default_variant -%}
+  <variant-selects
+    data-primary
+    id="variant-selects-{{ section.id }}"
+    data-section="{{ section.id }}"
+    {{ block.shopify_attributes }}
+  >
+    {%- for option in product.options_with_values -%}
+      {%- liquid
+        assign picker_type = block.settings.picker_type
+        assign option_name_handle = option.name | handleize
+        assign is_engraving_option = false
+
+        if option_name_handle contains 'engraving'
+          assign is_engraving_option = true
+        endif
+        
+        if block.settings.swatch_type != 'none'
+          assign native_swatch_eligible = false
+          assign custom_swatch_eligible = false
+
+          if block.settings.swatch_source == 'native'
+            assign native_swatch_count = option.values | map: 'swatch' | compact | size
+
+            if native_swatch_count > 0
+              assign native_swatch_eligible = true
+            endif
+          else
+            assign custom_swatch_trigger = 'products.product.color_swatch_trigger' | t | downcase
+            assign downcased_option = option.name | downcase
+
+            if custom_swatch_trigger contains downcased_option
+              assign custom_swatch_eligible = true
+            endif
+          endif
+
+          if native_swatch_eligible == true or custom_swatch_eligible == true
+            if block.settings.picker_type == 'dropdown'
+              assign picker_type = 'swatch_dropdown'
+            else
+              assign picker_type = 'swatch'
+            endif
+          endif
+        endif
+
+        assign is_size = false
+
+        if block.settings.size_chart != blank
+          assign size_trigger = 'products.product.size_chart_trigger' | t | downcase
+          assign downcased_option = option.name | downcase
+
+          if size_trigger contains downcased_option
+            assign is_size = true
+          endif
+        endif
+      -%}
+
+      {%- capture sizechart_cta -%}
+        {%- if is_size -%}
+          <div class="form__popup" id="size-{{ section.id }}">
+            <modal-opener class="no-js-hidden" data-modal="#PopupModal-{{ block.id }}" {{ block.shopify_attributes }}>
+              <button id="ProductPopup-{{ block.id }}" class="link link-with-icon" type="button" aria-haspopup="dialog">
+                {% render 'icon', icon: 'ruler' %}
+                <span class="label">{{ 'products.product.size_chart' | t | default: block.settings.size_chart.title }}</span>
+              </button>
+            </modal-opener>
+
+            <a href="{{ block.settings.size_chart.url }}" class="link link-with-icon no-js">
+              {% render 'icon', icon: 'ruler' %}
+              <span class="label">{{ 'products.product.size_chart' | t | default: block.settings.size_chart.title }}</span>
+            </a>
+          </div>
+        {%- endif -%}
+      {%- endcapture -%}
+
+      {%- if picker_type == 'swatch' -%}
+        <fieldset
+          class="js product-form__input product-form__input--swatch"
+          data-option-name="{{ option_name_handle }}"
+          data-is-engraving-option="{% if is_engraving_option %}true{% else %}false{% endif %}"
+        >
+          {%- if block.settings.show_variant_labels -%}
+            <legend class="form__label">
+              {{ option.name }}:
+              <span data-selected-value>
+                {{- option.selected_value -}}
+              </span>
+            </legend>
+          {%- endif -%}
+
+          {% render 'product-variant-options',
+            product: product,
+            option: option,
+            block: block,
+            picker_type: picker_type
+          %}
+
+          {{- sizechart_cta -}}
+        </fieldset>
+
+      {%- elsif picker_type == 'button' -%}
+        <fieldset
+          class="js product-form__input product-form__input--pill"
+          data-option-name="{{ option_name_handle }}"
+          data-is-engraving-option="{% if is_engraving_option %}true{% else %}false{% endif %}"
+        >
+          {%- if block.settings.show_variant_labels -%}
+            <legend class="form__label">{{ option.name }}</legend>
+          {%- endif -%}
+
+          {% render 'product-variant-options',
+            product: product,
+            option: option,
+            block: block,
+            picker_type: picker_type
+          %}
+
+          {{- sizechart_cta -}}
+        </fieldset>
+
+      {%- else -%}
+        <div
+          class="product-form__input product-form__input--dropdown"
+          data-option-name="{{ option_name_handle }}"
+          data-is-engraving-option="{% if is_engraving_option %}true{% else %}false{% endif %}"
+        >
+          {%- if block.settings.show_variant_labels -%}
+            <label class="form__label" for="Option-{{ section.id }}-{{ forloop.index0 }}">
+              {{ option.name }}
+            </label>
+          {%- endif -%}
+
+          <div class="select">
+            {%- if picker_type == 'swatch_dropdown' -%}
+              <span
+                data-selected-value
+                class="dropdown-swatch"
+              >
+                {% if block.settings.swatch_source == 'native' %}
+                  {% render 'swatch', swatch: option.selected_value.swatch, shape: block.settings.swatch_type %}
+                {% else %}
+                  {% render 'swatch-custom', product: product, option: option, source: block.settings.swatch_source, shape: block.settings.swatch_type %}
+                {% endif %}
+              </span>
+            {%- endif -%}
+
+            <select
+              id="Option-{{ section.id }}-{{ forloop.index0 }}"
+              class="select__select"
+              name="options[{{ option.name | escape }}]"
+              form="{{ product_form_id }}"
+            >
+              {% render 'product-variant-options',
+                product: product,
+                option: option,
+                block: block,
+                picker_type: picker_type
+              %}
+            </select>
+
+            <span class="svg-wrapper">
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </span>
+          </div>
+
+          {{- sizechart_cta -}}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+
+    <script type="application/json" data-selected-variant>
+      {{ product.selected_or_first_available_variant | json }}
+    </script>
+  </variant-selects>
+
+  {%- unless customer -%}
+    <style>
+      #variant-selects-{{ section.id }} [data-is-engraving-option="true"] {
+        display: none !important;
+      }
+    </style>
+  {%- endunless -%}
+
+  <script>
+    (function () {
+      var isLoggedIn = {% if customer %}true{% else %}false{% endif %};
+
+      // Logged-in customers can see Engraving / No Engraving.
+      if (isLoggedIn) return;
+
+      var isApplying = false;
+      var hideTimer = null;
+
+      function getVariantSelects() {
+        return document.getElementById('variant-selects-{{ section.id }}');
+      }
+
+      function normalizeValue(value) {
+        return (value || '').toString().trim().toLowerCase();
+      }
+
+      function isPreferredSafeValue(value) {
+        var normalized = normalizeValue(value);
+
+        return (
+          normalized === 'no' ||
+          normalized === 'none' ||
+          normalized === 'without' ||
+          normalized === 'standard' ||
+          normalized === 'default' ||
+          normalized === 'blank' ||
+          normalized === 'plain' ||
+          normalized.indexOf('no engraving') > -1 ||
+          normalized.indexOf('without engraving') > -1 ||
+          normalized.indexOf('no custom engraving') > -1 ||
+          normalized.indexOf('standard') > -1 ||
+          normalized.indexOf('blank') > -1 ||
+          normalized.indexOf('plain') > -1
+        );
+      }
+
+      function pickSafeRadio(radios) {
+        if (!radios.length) return null;
+
+        for (var i = 0; i < radios.length; i++) {
+          if (!radios[i].disabled && isPreferredSafeValue(radios[i].value)) {
+            return radios[i];
+          }
+        }
+
+        for (var j = 0; j < radios.length; j++) {
+          if (!radios[j].disabled) {
+            return radios[j];
+          }
+        }
+
+        return radios[0];
+      }
+
+      function pickSafeOption(options) {
+        if (!options.length) return null;
+
+        for (var i = 0; i < options.length; i++) {
+          if (!options[i].disabled && isPreferredSafeValue(options[i].value || options[i].textContent)) {
+            return options[i];
+          }
+        }
+
+        for (var j = 0; j < options.length; j++) {
+          if (!options[j].disabled) {
+            return options[j];
+          }
+        }
+
+        return options[0];
+      }
+
+      function setSafeValue(wrapper) {
+        var select = wrapper.querySelector('select');
+
+        if (select) {
+          var targetOption = pickSafeOption(Array.prototype.slice.call(select.options));
+
+          if (targetOption && select.value !== targetOption.value) {
+            select.value = targetOption.value;
+            select.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+
+          return;
+        }
+
+        var radios = Array.prototype.slice.call(wrapper.querySelectorAll('input[type="radio"]'));
+
+        if (radios.length) {
+          var targetRadio = pickSafeRadio(radios);
+
+          if (targetRadio && !targetRadio.checked) {
+            targetRadio.checked = true;
+            targetRadio.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        }
+      }
+
+      function hideEngravingOptions() {
+        if (isApplying) return;
+
+        var variantSelects = getVariantSelects();
+        if (!variantSelects) return;
+
+        isApplying = true;
+
+        var engravingWrappers = variantSelects.querySelectorAll('[data-is-engraving-option="true"]');
+
+        engravingWrappers.forEach(function (wrapper) {
+          setSafeValue(wrapper);
+
+          wrapper.style.setProperty('display', 'none', 'important');
+          wrapper.setAttribute('hidden', 'hidden');
+          wrapper.setAttribute('aria-hidden', 'true');
+        });
+
+        isApplying = false;
+      }
+
+      function scheduleHideEngravingOptions() {
+        clearTimeout(hideTimer);
+
+        hideTimer = setTimeout(function () {
+          hideEngravingOptions();
+        }, 50);
+      }
+
+      function scheduleMultipleHides() {
+        scheduleHideEngravingOptions();
+        setTimeout(hideEngravingOptions, 150);
+        setTimeout(hideEngravingOptions, 350);
+        setTimeout(hideEngravingOptions, 700);
+      }
+
+      // Hide on first page load.
+      hideEngravingOptions();
+
+      // Hide again after full page load.
+      window.addEventListener('load', function () {
+        scheduleMultipleHides();
+      });
+
+      // Hide again after customer clicks or changes any variant option, like Color.
+      document.addEventListener('change', function (event) {
+        var variantSelects = getVariantSelects();
+
+        if (variantSelects && variantSelects.contains(event.target)) {
+          scheduleMultipleHides();
+        }
+      }, true);
+
+      document.addEventListener('click', function (event) {
+        var variantSelects = getVariantSelects();
+
+        if (variantSelects && variantSelects.contains(event.target)) {
+          scheduleMultipleHides();
+        }
+      }, true);
+
+      // Hide again if the theme re-renders variant options after color selection.
+      var observerTarget = document.getElementById('MainProduct-{{ section.id }}') || document.body;
+
+      if (observerTarget && window.MutationObserver) {
+        var observer = new MutationObserver(function () {
+          scheduleHideEngravingOptions();
+        });
+
+        observer.observe(observerTarget, {
+          childList: true,
+          subtree: true
+        });
+      }
+    })();
+  </script>
+{%- endunless -%}

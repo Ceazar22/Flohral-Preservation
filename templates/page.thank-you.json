@@ -1,0 +1,62 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "name": "Page Description",
+      "settings": {
+        "narrow": true,
+        "padding_top": 60,
+        "padding_bottom": 72
+      }
+    },
+    "thank_you_page_VU8qbD": {
+      "type": "thank-you-page",
+      "name": "Thank you page",
+      "settings": {
+        "eyebrow": "WE APPRECIATE YOUR SUPPORT",
+        "heading": "<strong>THANK YOU</strong>",
+        "heading_tag": "h1",
+        "heading_size": "h1",
+        "message": "<p>Thank you for your purchase. We’ve received your order and will begin processing it shortly.</p>",
+        "show_divider": true,
+        "image": "shopify://shop_images/Debbie_holding_a_resin_keepsake.webp",
+        "image_max_width": 520,
+        "note": "<p>You’ll receive an email confirmation soon. If you have any questions, feel free to contact us.</p>",
+        "button_label": "Continue Shopping",
+        "button_link": "",
+        "secondary_button_label": "Contact Us",
+        "secondary_button_link": "",
+        "text_alignment": "center",
+        "content_max_width": 760,
+        "card_radius": 20,
+        "image_radius": 14,
+        "bg_color": "#faf7f8",
+        "card_bg_color": "#ffffff",
+        "heading_color": "#BB3263",
+        "text_color": "#2b2b2b",
+        "muted_color": "#6b6b6b",
+        "button_bg": "#BB3263",
+        "button_text": "#ffffff",
+        "button_secondary_bg": "#ffffff",
+        "button_secondary_text": "#BB3263",
+        "button_secondary_border": "#BB3263",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    }
+  },
+  "order": [
+    "main",
+    "thank_you_page_VU8qbD"
+  ]
+}

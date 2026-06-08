@@ -1,0 +1,386 @@
+{% comment %}
+  Transformations Carousel (single image per slide)
+{% endcomment %}
+
+<section id="tx-{{ section.id }}" class="tx-wrap">
+  <div class="tx-inner page-width">
+    {% if section.settings.eyebrow != blank %}
+      <p class="tx-eyebrow">{{ section.settings.eyebrow }}</p>
+    {% endif %}
+
+    {% if section.settings.title != blank %}
+      {% if section.settings.heading_tag == 'h1' %}
+        <h1 class="tx-title">{{ section.settings.title }}</h1>
+      {% else %}
+        <h2 class="tx-title">{{ section.settings.title }}</h2>
+      {% endif %}
+    {% endif %}
+
+    <div class="tx-carousel" data-autoplay="{{ section.settings.autoplay }}" data-speed="{{ section.settings.speed }}">
+      <div class="tx-viewport" aria-label="Transformations carousel">
+        <div class="tx-track">
+          {% for block in section.blocks %}
+            {% if block.type == 'slide' %}
+              <div class="tx-slide" {{ block.shopify_attributes }}>
+                {% if block.settings.image != blank %}
+                  {%- assign img = block.settings.image -%}
+                  {%- assign alt_text = block.settings.alt_text | default: section.settings.title | escape -%}
+
+                  {%- assign src_320  = img | image_url: width: 320 -%}
+                  {%- assign src_480  = img | image_url: width: 480 -%}
+                  {%- assign src_640  = img | image_url: width: 640 -%}
+                  {%- assign src_800  = img | image_url: width: 800 -%}
+                  {%- assign src_1000 = img | image_url: width: 1000 -%}
+                  {%- assign src_1200 = img | image_url: width: 1200 -%}
+                  {%- assign src_1600 = img | image_url: width: 1600 -%}
+                  {%- assign src_2000 = img | image_url: width: 2000 -%}
+
+                  <div class="tx-media">
+                    <img
+                      class="tx-img"
+                      loading="lazy"
+                      alt="{{ alt_text }}"
+                      width="{{ img.width }}"
+                      height="{{ img.height }}"
+                      src="{{ src_800 }}"
+                      srcset="{{ src_320 }} 320w, {{ src_480 }} 480w, {{ src_640 }} 640w, {{ src_800 }} 800w, {{ src_1000 }} 1000w, {{ src_1200 }} 1200w, {{ src_1600 }} 1600w, {{ src_2000 }} 2000w"
+                      sizes="(max-width: 749px) 80vw, (max-width: 989px) 45vw, 360px"
+                    >
+                  </div>
+                {% else %}
+                  <div class="tx-media tx-media--placeholder">
+                    <span>Add an image</span>
+                  </div>
+                {% endif %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  #tx-{{ section.id }} {
+    --tx-gap: {{ section.settings.gap }}px;
+    --tx-card-radius: {{ section.settings.radius }}px;
+
+    --tx-slide-w: {{ section.settings.slide_width }}px;
+    --tx-slide-w-mobile: {{ section.settings.slide_width_mobile }}px;
+
+    --tx-eyebrow-size: {{ section.settings.eyebrow_size }}px;
+    --tx-title-size: {{ section.settings.heading_size }}px;
+
+    --tx-eyebrow-color: {{ section.settings.eyebrow_color }};
+    --tx-heading-color: {{ section.settings.heading_color }};
+
+    --tx-media-h: {{ section.settings.media_height }}px;
+    --tx-media-h-mobile: {{ section.settings.media_height_mobile }}px;
+
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  #tx-{{ section.id }} .tx-eyebrow{
+    margin: 0 0 6px;
+    text-align: center;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    font-size: var(--tx-eyebrow-size);
+    color: var(--tx-eyebrow-color);
+    opacity: .9;
+  }
+
+  #tx-{{ section.id }} .tx-title{
+    margin: 0 0 18px;
+    text-align: center;
+    font-size: var(--tx-title-size);
+    line-height: 1.15;
+    color: var(--tx-heading-color);
+    font-weight: 700;
+  }
+
+  #tx-{{ section.id }} .tx-carousel{ position: relative; }
+
+  #tx-{{ section.id }} .tx-viewport{
+    overflow: hidden;
+    width: 100%;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: pan-y;
+  }
+  #tx-{{ section.id }} .tx-viewport.is-dragging{ cursor: grabbing; }
+
+  #tx-{{ section.id }} .tx-track{
+    display: flex;
+    align-items: stretch;
+    gap: var(--tx-gap);
+    will-change: transform;
+  }
+
+  #tx-{{ section.id }} .tx-slide{
+    flex: 0 0 var(--tx-slide-w);
+    max-width: var(--tx-slide-w);
+  }
+
+  #tx-{{ section.id }} .tx-media{
+    border-radius: var(--tx-card-radius);
+    overflow: hidden;
+    background: rgba(0,0,0,.04);
+  }
+
+  /* Default (cropped) */
+  #tx-{{ section.id }} .tx-media{
+    aspect-ratio: {{ section.settings.aspect_ratio_desktop }};
+  }
+  #tx-{{ section.id }} .tx-img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Show whole image (no crop) */
+  #tx-{{ section.id }}.tx-show-whole .tx-media{
+    aspect-ratio: auto;
+    height: var(--tx-media-h);
+  }
+  #tx-{{ section.id }}.tx-show-whole .tx-img{
+    height: 100%;
+    object-fit: contain;
+    background: rgba(0,0,0,.03);
+  }
+
+  #tx-{{ section.id }} .tx-media--placeholder{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color: rgba(0,0,0,.55);
+    font-size: 13px;
+    aspect-ratio: {{ section.settings.aspect_ratio_desktop }};
+  }
+
+  @media (max-width: 749px){
+    #tx-{{ section.id }} .tx-slide{
+      flex-basis: var(--tx-slide-w-mobile);
+      max-width: var(--tx-slide-w-mobile);
+    }
+
+    #tx-{{ section.id }} .tx-media{
+      aspect-ratio: {{ section.settings.aspect_ratio_mobile }};
+    }
+
+    #tx-{{ section.id }}.tx-show-whole .tx-media{
+      aspect-ratio: auto;
+      height: var(--tx-media-h-mobile);
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    const root = document.getElementById('tx-{{ section.id }}');
+    if (!root) return;
+
+    const showWhole = {{ section.settings.show_whole_image | json }};
+    if (showWhole) root.classList.add('tx-show-whole');
+
+    const viewport = root.querySelector('.tx-viewport');
+    const track = root.querySelector('.tx-track');
+    const carousel = root.querySelector('.tx-carousel');
+    if (!viewport || !track) return;
+
+    const autoplay = carousel && carousel.dataset.autoplay === 'true';
+    const speed = Math.max(0.2, Math.min(10, parseFloat((carousel && carousel.dataset.speed) || '1')));
+
+    const originalSlides = Array.from(track.children);
+    if (originalSlides.length === 0) return;
+
+    function buildClones() {
+      track.querySelectorAll('[data-tx-clone="true"]').forEach(n => n.remove());
+
+      const first = originalSlides[0];
+      if (!first) return;
+
+      const slideWidth = first.getBoundingClientRect().width;
+      const gap = parseFloat(getComputedStyle(track).gap || '0') || 0;
+      const viewportWidth = viewport.getBoundingClientRect().width;
+      const needCount = Math.ceil((viewportWidth * 2) / (slideWidth + gap));
+
+      for (let i = 0; i < needCount; i++) {
+        const node = originalSlides[i % originalSlides.length].cloneNode(true);
+        node.setAttribute('data-tx-clone', 'true');
+        track.appendChild(node);
+      }
+    }
+
+    buildClones();
+
+    let resizeTO;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTO);
+      resizeTO = setTimeout(buildClones, 150);
+    });
+
+    let isDown = false;
+    let startX = 0;
+    let startTransformX = 0;
+    let x = 0;
+
+    function setX(val) {
+      x = val;
+      track.style.transform = `translate3d(${x}px, 0, 0)`;
+    }
+    setX(0);
+
+    function pointerDown(e) {
+      isDown = true;
+      viewport.classList.add('is-dragging');
+      const pointX = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
+      startX = pointX;
+      startTransformX = x;
+    }
+
+    function pointerMove(e) {
+      if (!isDown) return;
+      const pointX = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
+      const dx = pointX - startX;
+      setX(startTransformX + dx);
+    }
+
+    function pointerUp() {
+      isDown = false;
+      viewport.classList.remove('is-dragging');
+    }
+
+    viewport.addEventListener('mousedown', pointerDown);
+    window.addEventListener('mousemove', pointerMove);
+    window.addEventListener('mouseup', pointerUp);
+
+    viewport.addEventListener('touchstart', pointerDown, { passive: true });
+    viewport.addEventListener('touchmove', pointerMove, { passive: true });
+    viewport.addEventListener('touchend', pointerUp);
+
+    let isHover = false;
+    viewport.addEventListener('mouseenter', () => isHover = true);
+    viewport.addEventListener('mouseleave', () => isHover = false);
+
+    function getOriginalSetWidth() {
+      const gap = parseFloat(getComputedStyle(track).gap || '0') || 0;
+      let w = 0;
+      originalSlides.forEach((el, idx) => {
+        w += el.getBoundingClientRect().width;
+        if (idx < originalSlides.length - 1) w += gap;
+      });
+      return w;
+    }
+
+    function tick() {
+      requestAnimationFrame(tick);
+
+      if (autoplay && !isHover && !isDown) setX(x - speed);
+
+      const originalW = getOriginalSetWidth();
+      if (originalW > 0) {
+        if (x <= -originalW) setX(x + originalW);
+        if (x > 0) setX(x - originalW);
+      }
+    }
+
+    tick();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Transformations carousel",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "OUR TRANSFORMATIONS" },
+    { "type": "text", "id": "title", "label": "Heading", "default": "BeFlohr & After" },
+
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "default": "h2",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" }
+      ]
+    },
+
+    { "type": "range", "id": "heading_size", "label": "Heading size (px)", "min": 16, "max": 72, "step": 1, "default": 28 },
+    { "type": "range", "id": "eyebrow_size", "label": "Eyebrow size (px)", "min": 9, "max": 20, "step": 1, "default": 11 },
+
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#C2185B" },
+    { "type": "color", "id": "eyebrow_color", "label": "Eyebrow color", "default": "#2B2B2B" },
+
+    { "type": "checkbox", "id": "autoplay", "label": "Autoplay", "default": true },
+    { "type": "range", "id": "speed", "label": "Autoplay speed", "min": 0.2, "max": 10, "step": 0.2, "default": 1.2 },
+
+    { "type": "range", "id": "slide_width", "label": "Slide width (desktop)", "min": 220, "max": 560, "step": 10, "default": 300 },
+    { "type": "range", "id": "slide_width_mobile", "label": "Slide width (mobile)", "min": 160, "max": 460, "step": 10, "default": 240 },
+
+    { "type": "range", "id": "gap", "label": "Gap between slides", "min": 6, "max": 40, "step": 2, "default": 14 },
+    { "type": "range", "id": "radius", "label": "Corner radius", "min": 0, "max": 24, "step": 2, "default": 12 },
+
+    {
+      "type": "select",
+      "id": "aspect_ratio_desktop",
+      "label": "Image aspect ratio (desktop, when cropped)",
+      "default": "4 / 3",
+      "options": [
+        { "value": "1 / 1", "label": "Square (1:1)" },
+        { "value": "4 / 3", "label": "4:3" },
+        { "value": "3 / 4", "label": "3:4 (taller)" },
+        { "value": "16 / 9", "label": "16:9 (wide)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio_mobile",
+      "label": "Image aspect ratio (mobile, when cropped)",
+      "default": "4 / 3",
+      "options": [
+        { "value": "1 / 1", "label": "Square (1:1)" },
+        { "value": "4 / 3", "label": "4:3" },
+        { "value": "3 / 4", "label": "3:4 (taller)" },
+        { "value": "16 / 9", "label": "16:9 (wide)" }
+      ]
+    },
+
+    { "type": "checkbox", "id": "show_whole_image", "label": "Show whole image (no crop)", "default": false },
+    { "type": "range", "id": "media_height", "label": "Media height (desktop) when showing whole image", "min": 180, "max": 700, "step": 10, "default": 360 },
+    { "type": "range", "id": "media_height_mobile", "label": "Media height (mobile) when showing whole image", "min": 140, "max": 520, "step": 10, "default": 260 },
+
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 100, "step": 4, "default": 36 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 120, "step": 4, "default": 36 }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide (single image)",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "alt_text", "label": "Alt text", "default": "Transformation" }
+      ]
+    }
+  ],
+  "max_blocks": 24,
+  "presets": [
+    {
+      "name": "Transformations carousel",
+      "blocks": [
+        { "type": "slide" },
+        { "type": "slide" },
+        { "type": "slide" },
+        { "type": "slide" },
+        { "type": "slide" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,357 @@
+{% comment %}
+  Section: PX – Founder Intro (Image + Bio)
+  File: sections/px-founder-intro.liquid
+{% endcomment %}
+
+{%- liquid
+  assign img = section.settings.image
+  assign sig_img = section.settings.signature_image
+-%}
+
+{%- style -%}
+#shopify-section-{{ section.id }}{
+  --pt: {{ section.settings.padding_top }}px;
+  --pb: {{ section.settings.padding_bottom }}px;
+
+  --max: {{ section.settings.max_width }}px;
+  --gap: {{ section.settings.gap }}px;
+
+  --bg: {{ section.settings.bg_color }};
+  --card: {{ section.settings.card_bg }};
+
+  /* Accent */
+  --accent-solid: {{ section.settings.accent_color }};
+  --accent-alpha: {{ section.settings.accent_opacity | divided_by: 100.0 }};
+
+  /* Accent geometry (reference-style block behind image) */
+  --accent-w: {{ section.settings.accent_panel_width }}%;
+  --accent-x: {{ section.settings.accent_offset_x }}px;
+  --accent-y: {{ section.settings.accent_offset_y }}px;
+
+  --accent-bar-w: {{ section.settings.accent_bar_width }}%;
+  --accent-bar-h: {{ section.settings.accent_bar_height }}px;
+  --accent-bar-gap: {{ section.settings.accent_bar_gap }}px;
+  --accent-bar-enabled: {% if section.settings.enable_bottom_accent %}1{% else %}0{% endif %};
+
+  --radius: {{ section.settings.radius }}px;
+  --img-radius: {{ section.settings.image_radius }}px;
+
+  --title: {{ section.settings.title_color }};
+  --kicker: {{ section.settings.kicker_color }};
+  --text: {{ section.settings.text_color }};
+
+  --img_h_desktop: {{ section.settings.image_height_desktop }}px;
+  --img_h_mobile: {{ section.settings.image_height_mobile }}px;
+  --img_fit: {{ section.settings.image_fit }};
+
+  --shadow: {{ section.settings.shadow }};
+  --border: {{ section.settings.border }};
+}
+
+#shopify-section-{{ section.id }} .px-founder{
+  background: var(--bg);
+  padding-top: var(--pt);
+  padding-bottom: var(--pb);
+}
+
+#shopify-section-{{ section.id }} .px-founder__inner{
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+#shopify-section-{{ section.id }} .px-founder__grid{
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: var(--gap);
+  align-items: start;
+}
+
+/* Reference-style: floating accent behind the image */
+#shopify-section-{{ section.id }} .px-founder__mediaWrap{
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+}
+
+/* Big accent block behind */
+#shopify-section-{{ section.id }} .px-founder__mediaWrap::before{
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--accent-w);
+  height: 100%;
+  transform: translate(var(--accent-x), var(--accent-y));
+  background: var(--accent-solid);
+  opacity: var(--accent-alpha);
+  border-radius: max(0px, calc(var(--radius) - 2px));
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Thin bottom bar (reference look) */
+#shopify-section-{{ section.id }} .px-founder__mediaWrap::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(100% + var(--accent-bar-gap));
+  width: var(--accent-bar-w);
+  height: var(--accent-bar-h);
+  transform: translateX(var(--accent-x));
+  background: var(--accent-solid);
+  opacity: calc(var(--accent-alpha) * var(--accent-bar-enabled));
+  border-radius: max(0px, calc(var(--radius) - 2px));
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Image card sits above accent */
+#shopify-section-{{ section.id }} .px-founder__mediaCard{
+  position: relative;
+  z-index: 1;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 0;                  /* reference: no thick padding */
+  box-shadow: var(--shadow);
+  border: var(--border);
+  overflow: hidden;            /* so image corners match card */
+}
+
+/* Image */
+#shopify-section-{{ section.id }} .px-founder__img{
+  border-radius: 0;            /* card controls rounding */
+  overflow: hidden;
+  height: var(--img_h_desktop);
+  background: rgba(0,0,0,.03);
+}
+
+#shopify-section-{{ section.id }} .px-founder__img img{
+  width: 100%;
+  height: 100%;
+  object-fit: var(--img_fit);
+  display: block;
+}
+
+/* Right content */
+#shopify-section-{{ section.id }} .px-founder__content{
+  text-align: {{ section.settings.text_align }};
+  padding-top: 6px; /* slight lift like reference */
+}
+
+#shopify-section-{{ section.id }} .px-founder__kicker{
+  margin: 0 0 10px;
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--kicker);
+  opacity: .9;
+}
+
+#shopify-section-{{ section.id }} .px-founder__title{
+  margin: 0 0 6px;
+  font-size: clamp(26px, 3.2vw, 38px);
+  line-height: 1.05;
+  color: var(--title);
+  font-weight: 700;
+}
+
+#shopify-section-{{ section.id }} .px-founder__subtitle{
+  margin: 0 0 14px;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text);
+  opacity: .85;
+}
+
+#shopify-section-{{ section.id }} .px-founder__rte{
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+#shopify-section-{{ section.id }} .px-founder__rte p{ margin: 0 0 12px; }
+
+#shopify-section-{{ section.id }} .px-founder__sig{
+  margin-top: 18px;
+  color: var(--text);
+  opacity: .95;
+}
+
+#shopify-section-{{ section.id }} .px-founder__sigText{
+  font-family: ui-serif, "Times New Roman", Times, serif;
+  font-style: italic;
+  font-size: 20px;
+  line-height: 1.1;
+}
+
+#shopify-section-{{ section.id }} .px-founder__sigImg{
+  max-width: 200px;
+  height: auto;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@media (max-width: 900px){
+  #shopify-section-{{ section.id }} .px-founder__grid{
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  #shopify-section-{{ section.id }} .px-founder__img{
+    height: var(--img_h_mobile);
+  }
+
+  #shopify-section-{{ section.id }} .px-founder__content{
+    text-align: left;
+  }
+}
+{%- endstyle -%}
+
+<section class="px-founder">
+  <div class="px-founder__inner">
+    <div class="px-founder__grid">
+
+      <!-- LEFT: IMAGE -->
+      <div class="px-founder__mediaWrap">
+        <div class="px-founder__mediaCard">
+          <div class="px-founder__img" aria-label="{{ section.settings.image_alt | escape }}">
+            {%- if img != blank -%}
+              {{ img | image_url: width: 1800 | image_tag:
+                widths: '420, 640, 840, 1100, 1400, 1600, 1800',
+                sizes: '(min-width: 900px) 52vw, 92vw',
+                loading: 'lazy',
+                alt: section.settings.image_alt
+              }}
+            {%- else -%}
+              <div style="height:100%;display:grid;place-items:center;padding:18px;text-align:center;opacity:.7;">
+                Add an image in the section settings
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: TEXT -->
+      <div class="px-founder__content">
+        {%- if section.settings.kicker != blank -%}
+          <p class="px-founder__kicker">{{ section.settings.kicker }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.title != blank -%}
+          <h2 class="px-founder__title">{{ section.settings.title }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.subtitle != blank -%}
+          <div class="px-founder__subtitle">{{ section.settings.subtitle }}</div>
+        {%- endif -%}
+
+        {%- if section.settings.body != blank -%}
+          <div class="px-founder__rte rte">
+            {{ section.settings.body }}
+          </div>
+        {%- endif -%}
+
+        {%- if sig_img != blank or section.settings.signature_text != blank -%}
+          <div class="px-founder__sig">
+            {%- if sig_img != blank -%}
+              {{ sig_img | image_url: width: 600 | image_tag:
+                widths: '240, 360, 480, 600',
+                sizes: '200px',
+                loading: 'lazy',
+                class: 'px-founder__sigImg',
+                alt: 'Signature'
+              }}
+            {%- else -%}
+              <div class="px-founder__sigText">{{ section.settings.signature_text }}</div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PX – Founder Intro",
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "max_width", "min": 900, "max": 1600, "step": 10, "unit": "px", "label": "Max width", "default": 1200 },
+    { "type": "range", "id": "gap", "min": 10, "max": 80, "step": 2, "unit": "px", "label": "Gap", "default": 44 },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text align (desktop)",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+
+    { "type": "header", "content": "Image" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "image_alt", "label": "Image alt text", "default": "Founder photo" },
+    { "type": "range", "id": "image_height_desktop", "min": 280, "max": 900, "step": 10, "unit": "px", "label": "Image height (desktop)", "default": 520 },
+    { "type": "range", "id": "image_height_mobile", "min": 220, "max": 700, "step": 10, "unit": "px", "label": "Image height (mobile)", "default": 380 },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image fit",
+      "default": "cover",
+      "options": [
+        { "value": "cover", "label": "Cover" },
+        { "value": "contain", "label": "Contain" }
+      ]
+    },
+    { "type": "range", "id": "radius", "min": 0, "max": 40, "step": 1, "unit": "px", "label": "Card radius", "default": 6 },
+    { "type": "range", "id": "image_radius", "min": 0, "max": 40, "step": 1, "unit": "px", "label": "Image radius", "default": 0 },
+
+    { "type": "header", "content": "Text" },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "HEY BRIDE!" },
+    { "type": "text", "id": "title", "label": "Title", "default": "I'm Debbie Flohr" },
+    { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Owner & Artist of Floral Preservation" },
+    { "type": "richtext", "id": "body", "label": "Body", "default": "<p>Write your story here…</p>" },
+
+    { "type": "header", "content": "Signature" },
+    { "type": "image_picker", "id": "signature_image", "label": "Signature image (optional)" },
+    { "type": "text", "id": "signature_text", "label": "Signature text (used if no image)", "default": "by Debbie Flohr" },
+
+    { "type": "header", "content": "Accent background (behind image)" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#f6d7df" },
+    { "type": "range", "id": "accent_opacity", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Accent opacity", "default": 60 },
+
+    { "type": "range", "id": "accent_panel_width", "min": 80, "max": 140, "step": 2, "unit": "%", "label": "Accent panel width (%)", "default": 110 },
+
+    { "type": "range", "id": "accent_offset_x", "min": -120, "max": 120, "step": 3, "unit": "px", "label": "Accent offset X (left/right)", "default": -30 },
+    { "type": "range", "id": "accent_offset_y", "min": -120, "max": 120, "step": 3, "unit": "px", "label": "Accent offset Y (up/down)", "default": 24 },
+
+    { "type": "checkbox", "id": "enable_bottom_accent", "label": "Enable bottom accent strip", "default": true },
+    { "type": "range", "id": "accent_bar_width", "min": 30, "max": 120, "step": 2, "unit": "%", "label": "Bottom strip width (%)", "default": 70 },
+    { "type": "range", "id": "accent_bar_height", "min": 6, "max": 40, "step": 1, "unit": "px", "label": "Bottom strip height (px)", "default": 10 },
+    { "type": "range", "id": "accent_bar_gap", "min": 6, "max": 30, "step": 1, "unit": "px", "label": "Bottom strip gap (px)", "default": 10 },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg_color", "label": "Section background", "default": "#ffffff" },
+    { "type": "color", "id": "card_bg", "label": "Image card background", "default": "#ffffff" },
+    { "type": "color", "id": "kicker_color", "label": "Kicker color", "default": "#777777" },
+    { "type": "color", "id": "title_color", "label": "Title color", "default": "#111111" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#333333" },
+
+    { "type": "header", "content": "Card styling" },
+    { "type": "text", "id": "shadow", "label": "Box shadow CSS", "default": "none" },
+    { "type": "text", "id": "border", "label": "Border CSS", "default": "1px solid rgba(0,0,0,.08)" },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Padding top", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Padding bottom", "default": 40 }
+  ],
+  "presets": [
+    { "name": "PX – Founder Intro" }
+  ]
+}
+{% endschema %}

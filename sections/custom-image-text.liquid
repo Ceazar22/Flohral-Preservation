@@ -1,0 +1,911 @@
+{%- liquid
+  assign content_alpha = section.settings.card_content_opacity | times: 0.01
+
+  assign bg_class = 'icards--none'
+  if section.settings.background_mode == 'full'
+    assign bg_class = 'icards--full'
+  elsif section.settings.background_mode == 'half'
+    assign bg_class = 'icards--half'
+    if section.settings.half_position == 'top'
+      assign bg_class = bg_class | append: ' icards--half-top'
+    else
+      assign bg_class = bg_class | append: ' icards--half-bottom'
+    endif
+  endif
+
+  assign mobile_cards_768 = section.settings.cards_mobile_768 | default: '3'
+
+  if mobile_cards_768 == '4'
+    assign mobile_card_divisor = '4.35'
+  else
+    assign mobile_card_divisor = '3.35'
+  endif
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }}{
+    --ic-pt: {{ section.settings.padding_top }}px;
+    --ic-pb: {{ section.settings.padding_bottom }}px;
+
+    --ic-maxw: {{ section.settings.max_width }}px;
+
+    --ic-bg: {{ section.settings.bg_color }};
+    --ic-half-bg: {% if section.settings.half_background != blank %}{{ section.settings.half_background }}{% else %}transparent{% endif %};
+    --ic-half-height: {{ section.settings.half_height }}%;
+
+    --ic-eyebrow-color: {{ section.settings.eyebrow_color }};
+    --ic-heading-color: {{ section.settings.heading_color }};
+    --ic-text-color: {{ section.settings.text_color }};
+
+    --ic-card-radius: {{ section.settings.card_radius }}px;
+    --ic-card-border: {{ section.settings.card_border_color }};
+    --ic-card-shadow: {% if section.settings.card_shadow %}0 16px 30px rgba(0,0,0,.14){% else %}none{% endif %};
+
+    --ic-overlay-bg: {{ section.settings.card_content_bg | color_modify: 'alpha', content_alpha }};
+    --ic-overlay-border: {{ section.settings.card_content_border }};
+
+    --ic-aspect: {{ section.settings.image_aspect_ratio }};
+    --ic-gap: clamp(16px, 2vw, 28px);
+
+    /* 768px and below: 3 or 4 cards with next card peeking */
+    --ic-mobile-card-width: calc((100% - (var(--ic-gap) * {{ mobile_cards_768 }})) / {{ mobile_card_divisor }});
+
+    /* 450px and below: 1 card with next card peeking */
+    --ic-mobile-one-card-width: calc(100% - 56px);
+  }
+{%- endstyle -%}
+
+<style>
+  #shopify-section-{{ section.id }} .icards{
+    position: relative;
+    padding: var(--ic-pt) 0 var(--ic-pb);
+    background: transparent;
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .icards--full{
+    background: var(--ic-bg);
+  }
+
+  #shopify-section-{{ section.id }} .icards--half{
+    background: var(--ic-bg);
+  }
+
+  #shopify-section-{{ section.id }} .icards--half::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: var(--ic-half-height);
+    background: var(--ic-half-bg);
+    z-index: 0;
+  }
+
+  #shopify-section-{{ section.id }} .icards--half-bottom::after{
+    bottom: 0;
+  }
+
+  #shopify-section-{{ section.id }} .icards--half-top::after{
+    top: 0;
+  }
+
+  #shopify-section-{{ section.id }} .icards__inner{
+    position: relative;
+    z-index: 1;
+    max-width: var(--ic-maxw);
+    margin: 0 auto;
+  }
+
+  #shopify-section-{{ section.id }} .icards__header{
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  #shopify-section-{{ section.id }} .icards__eyebrow{
+    margin: 0 0 10px;
+    color: var(--ic-eyebrow-color);
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    font-size: 11px;
+    line-height: 1.2;
+  }
+
+  #shopify-section-{{ section.id }} .icards__heading{
+    margin: 0;
+    color: var(--ic-heading-color);
+  }
+
+  #shopify-section-{{ section.id }} .icards__carousel-wrap{
+    position: relative;
+    width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .icards__grid{
+    display: grid;
+    gap: var(--ic-gap);
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0, 1fr));
+    align-items: start;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (max-width: 989px){
+    #shopify-section-{{ section.id }} .icards__grid{
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, minmax(0, 1fr));
+    }
+  }
+
+  #shopify-section-{{ section.id }} .icards__item{
+    min-width: 0;
+  }
+
+  #shopify-section-{{ section.id }} .icards__card{
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: var(--ic-card-radius);
+    border: 1px solid var(--ic-card-border);
+    box-shadow: var(--ic-card-shadow);
+    background: #fff;
+    text-decoration: none;
+    color: inherit;
+    width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .icards__media{
+    width: 100%;
+    aspect-ratio: var(--ic-aspect);
+    background: #f2f2f2;
+    position: relative;
+  }
+
+  #shopify-section-{{ section.id }} .icards__media img,
+  #shopify-section-{{ section.id }} .icards__media svg{
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: var(--ic-fit, cover);
+    object-position: var(--ic-pos, center center);
+  }
+
+  #shopify-section-{{ section.id }} .icards__media svg{
+    background: #f2f2f2;
+  }
+
+  /* Overlay content box */
+  #shopify-section-{{ section.id }} .icards__overlay{
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+    background: var(--ic-overlay-bg);
+    border: 1px solid var(--ic-overlay-border);
+    padding: 14px 14px 12px;
+  }
+
+  #shopify-section-{{ section.id }} .icards__title{
+    margin: 0 0 6px;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  #shopify-section-{{ section.id }} .icards__text{
+    color: var(--ic-text-color);
+    line-height: 1.35;
+    font-size: 14px;
+  }
+
+  #shopify-section-{{ section.id }} .icards__text p{
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .icards__slider-buttons{
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .icards__slider-button{
+    border: 0;
+    cursor: pointer;
+  }
+
+  /* 768px and below: carousel with peeking next item */
+  @media (max-width: 768px){
+    #shopify-section-{{ section.id }} .icards__carousel-wrap{
+      overflow: hidden;
+      max-width: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .icards__grid{
+      display: flex !important;
+      grid-template-columns: none !important;
+      flex-wrap: nowrap !important;
+      gap: var(--ic-gap) !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      scroll-snap-type: x mandatory;
+      scroll-padding-left: 0 !important;
+      scroll-padding-right: 0 !important;
+      -webkit-overflow-scrolling: touch;
+      padding: 0 !important;
+      margin: 0 !important;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    #shopify-section-{{ section.id }} .icards__grid::-webkit-scrollbar{
+      display: none;
+      height: 0;
+    }
+
+    #shopify-section-{{ section.id }} .icards__item{
+      flex: 0 0 var(--ic-mobile-card-width) !important;
+      width: var(--ic-mobile-card-width) !important;
+      min-width: var(--ic-mobile-card-width) !important;
+      max-width: var(--ic-mobile-card-width) !important;
+      scroll-snap-align: start;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    #shopify-section-{{ section.id }} .icards__overlay{
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      padding: 12px;
+    }
+
+    #shopify-section-{{ section.id }} .icards__title{
+      font-size: 14px;
+      line-height: 1.15;
+    }
+
+    #shopify-section-{{ section.id }} .icards__text{
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
+    /* Mobile arrows - placed at the end/right side */
+    #shopify-section-{{ section.id }} .icards__slider-buttons{
+      position: static !important;
+      inset: auto !important;
+      z-index: 5;
+      transform: none !important;
+      display: flex !important;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      pointer-events: auto;
+      padding: 14px 0 0;
+      margin: 0;
+    }
+
+    #shopify-section-{{ section.id }} .icards__slider-button{
+      pointer-events: auto;
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      min-height: 36px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.95);
+      border: 1px solid rgba(0,0,0,.12);
+      box-shadow: 0 4px 14px rgba(0,0,0,.12);
+      color: #111;
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      padding: 0;
+    }
+
+    #shopify-section-{{ section.id }} .icards__slider-button[disabled]{
+      opacity: .35;
+      cursor: not-allowed;
+    }
+
+    #shopify-section-{{ section.id }} .icards__slider-button svg{
+      width: 15px;
+      height: 15px;
+      display: block;
+    }
+  }
+
+  /* 450px and below: only 1 card visible + next slide peeking */
+  @media (max-width: 450px){
+    #shopify-section-{{ section.id }} .icards__item{
+      flex: 0 0 var(--ic-mobile-one-card-width) !important;
+      width: var(--ic-mobile-one-card-width) !important;
+      min-width: var(--ic-mobile-one-card-width) !important;
+      max-width: var(--ic-mobile-one-card-width) !important;
+    }
+
+    #shopify-section-{{ section.id }} .icards__title{
+      font-size: 16px;
+    }
+
+    #shopify-section-{{ section.id }} .icards__text{
+      font-size: 13px;
+    }
+  }
+</style>
+
+<section class="icards {{ bg_class }}">
+  <div class="page-width{% if section.settings.full_width %} page-width--full-width{% endif %}">
+    <div class="icards__inner">
+
+      {%- if section.settings.eyebrow != blank or section.settings.heading != blank -%}
+        <header class="icards__header">
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="icards__eyebrow">{{ section.settings.eyebrow }}</p>
+          {%- endif -%}
+
+          {%- if section.settings.heading != blank -%}
+            <{{ section.settings.heading_tag }} class="icards__heading {{ section.settings.heading_size }}">
+              {{ section.settings.heading }}
+            </{{ section.settings.heading_tag }}>
+          {%- endif -%}
+        </header>
+      {%- endif -%}
+
+      <div class="icards__carousel-wrap">
+        <div class="icards__grid" role="list" id="ImageCardsSlider-{{ section.id }}">
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign fit_value = block.settings.image_fit
+              assign pos_value = block.settings.image_position
+            -%}
+
+            <div class="icards__item" role="listitem">
+              {%- if block.settings.link != blank -%}
+                <a
+                  class="icards__card"
+                  href="{{ block.settings.link }}"
+                  style="--ic-fit: {{ fit_value }}; --ic-pos: {{ pos_value }};"
+                  {{ block.shopify_attributes }}
+                >
+              {%- else -%}
+                <div
+                  class="icards__card"
+                  style="--ic-fit: {{ fit_value }}; --ic-pos: {{ pos_value }};"
+                  {{ block.shopify_attributes }}
+                >
+              {%- endif -%}
+
+                <div class="icards__media">
+                  {%- if block.settings.image != blank -%}
+                    <img
+                      src="{{ block.settings.image | image_url: width: 1200 }}"
+                      alt="{{ block.settings.image.alt | escape }}"
+                      loading="lazy"
+                      width="{{ block.settings.image.width }}"
+                      height="{{ block.settings.image.height }}"
+                    >
+                  {%- else -%}
+                    {{ 'image' | placeholder_svg_tag }}
+                  {%- endif -%}
+
+                  <div class="icards__overlay">
+                    {%- if block.settings.title != blank -%}
+                      <p class="icards__title">{{ block.settings.title }}</p>
+                    {%- endif -%}
+
+                    {%- if block.settings.text != blank -%}
+                      <div class="icards__text rte">{{ block.settings.text }}</div>
+                    {%- endif -%}
+                  </div>
+                </div>
+
+              {%- if block.settings.link != blank -%}
+                </a>
+              {%- else -%}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  (() => {
+    const section = document.getElementById('shopify-section-{{ section.id }}');
+    if (!section) return;
+
+    const slider = section.querySelector('#ImageCardsSlider-{{ section.id }}');
+    const prev = section.querySelector('.icards__slider-button--prev');
+    const next = section.querySelector('.icards__slider-button--next');
+
+    if (!slider || !prev || !next) return;
+
+    const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
+
+    const getScrollAmount = () => {
+      const firstItem = slider.querySelector('.icards__item');
+      if (!firstItem) return slider.clientWidth * 0.8;
+
+      const styles = window.getComputedStyle(slider);
+      const gap = parseFloat(styles.columnGap || styles.gap || 0) || 0;
+
+      return firstItem.getBoundingClientRect().width + gap;
+    };
+
+    const updateButtons = () => {
+      if (!isMobile()) {
+        prev.disabled = true;
+        next.disabled = true;
+        return;
+      }
+
+      const maxScroll = slider.scrollWidth - slider.clientWidth - 2;
+
+      prev.disabled = slider.scrollLeft <= 2;
+      next.disabled = slider.scrollLeft >= maxScroll;
+    };
+
+    prev.addEventListener('click', (event) => {
+      if (!isMobile()) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      slider.scrollBy({
+        left: -getScrollAmount(),
+        behavior: 'smooth'
+      });
+
+      window.setTimeout(updateButtons, 350);
+    }, true);
+
+    next.addEventListener('click', (event) => {
+      if (!isMobile()) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      slider.scrollBy({
+        left: getScrollAmount(),
+        behavior: 'smooth'
+      });
+
+      window.setTimeout(updateButtons, 350);
+    }, true);
+
+    slider.addEventListener('scroll', updateButtons, { passive: true });
+    window.addEventListener('resize', updateButtons, { passive: true });
+
+    updateButtons();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Custom image cards",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": false
+    },
+
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "ABOUT"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Preserving Flowers."
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "default": "h1",
+      "options": [
+        {
+          "value": "h2",
+          "label": "Small"
+        },
+        {
+          "value": "h1",
+          "label": "Medium"
+        },
+        {
+          "value": "h0",
+          "label": "Large"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "default": "h2",
+      "options": [
+        {
+          "value": "h1",
+          "label": "h1"
+        },
+        {
+          "value": "h2",
+          "label": "h2"
+        },
+        {
+          "value": "h3",
+          "label": "h3"
+        },
+        {
+          "value": "div",
+          "label": "div"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#b23b5a"
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Eyebrow color",
+      "default": "#6b6b6b"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Card text color",
+      "default": "#6b6b6b"
+    },
+
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 720,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "label": "Max width",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "Columns (desktop)",
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns (mobile fallback)",
+      "default": "1",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "cards_mobile_768",
+      "label": "Cards visible at 768px and below",
+      "default": "3",
+      "options": [
+        {
+          "value": "3",
+          "label": "3 cards + peek"
+        },
+        {
+          "value": "4",
+          "label": "4 cards + peek"
+        }
+      ]
+    },
+
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "select",
+      "id": "image_aspect_ratio",
+      "label": "Image aspect ratio",
+      "default": "4 / 3",
+      "options": [
+        {
+          "value": "1 / 1",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "4 / 3",
+          "label": "Standard (4:3)"
+        },
+        {
+          "value": "3 / 4",
+          "label": "Portrait (3:4)"
+        },
+        {
+          "value": "16 / 9",
+          "label": "Wide (16:9)"
+        },
+        {
+          "value": "auto",
+          "label": "Auto"
+        }
+      ]
+    },
+
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "select",
+      "id": "background_mode",
+      "label": "Background mode",
+      "default": "half",
+      "options": [
+        {
+          "value": "none",
+          "label": "None (transparent)"
+        },
+        {
+          "value": "full",
+          "label": "Full background"
+        },
+        {
+          "value": "half",
+          "label": "Half background (top/bottom)"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Base background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color_background",
+      "id": "half_background",
+      "label": "Half background (color/gradient)",
+      "default": "linear-gradient(180deg, rgba(214,74,118,0) 0%, rgba(214,74,118,0.28) 100%)"
+    },
+    {
+      "type": "select",
+      "id": "half_position",
+      "label": "Half background position",
+      "default": "bottom",
+      "options": [
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        },
+        {
+          "value": "top",
+          "label": "Top"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "half_height",
+      "min": 20,
+      "max": 80,
+      "step": 1,
+      "unit": "%",
+      "label": "Half background height",
+      "default": 40
+    },
+
+    {
+      "type": "header",
+      "content": "Card style"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Card radius",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card border color",
+      "default": "#e6e6e6"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_shadow",
+      "label": "Enable card shadow",
+      "default": true
+    },
+
+    {
+      "type": "color",
+      "id": "card_content_bg",
+      "label": "Content box background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "card_content_opacity",
+      "min": 40,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Content box opacity",
+      "default": 92
+    },
+    {
+      "type": "color",
+      "id": "card_content_border",
+      "label": "Content box border color",
+      "default": "#e6e6e6"
+    },
+
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "image_fit",
+          "label": "Image fit",
+          "default": "cover",
+          "options": [
+            {
+              "value": "cover",
+              "label": "Cover (crop)"
+            },
+            {
+              "value": "contain",
+              "label": "Contain (no crop)"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "image_position",
+          "label": "Image position",
+          "default": "center center",
+          "options": [
+            {
+              "value": "center center",
+              "label": "Center"
+            },
+            {
+              "value": "top center",
+              "label": "Top"
+            },
+            {
+              "value": "bottom center",
+              "label": "Bottom"
+            },
+            {
+              "value": "left center",
+              "label": "Left"
+            },
+            {
+              "value": "right center",
+              "label": "Right"
+            },
+            {
+              "value": "20% 50%",
+              "label": "Slight left"
+            },
+            {
+              "value": "80% 50%",
+              "label": "Slight right"
+            },
+            {
+              "value": "50% 20%",
+              "label": "Slight up"
+            },
+            {
+              "value": "50% 80%",
+              "label": "Slight down"
+            }
+          ]
+        },
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "label": "Title",
+          "default": "Lorem Ipsum"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom image cards",
+      "blocks": [
+        {
+          "type": "card"
+        },
+        {
+          "type": "card"
+        },
+        {
+          "type": "card"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

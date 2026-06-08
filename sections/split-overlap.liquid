@@ -1,0 +1,544 @@
+{%- style -%}
+  #shopify-section-{{ section.id }}{
+    --pt: {{ section.settings.padding_top }}px;
+    --pb: {{ section.settings.padding_bottom }}px;
+
+    --h-desktop: {{ section.settings.height_desktop }}px;
+    --h-mobile: {{ section.settings.height_mobile }}px;
+
+    --img-h-desktop: {{ section.settings.image_height_desktop }}px;
+    --img-h-mobile: {{ section.settings.image_height_mobile }}px;
+
+    --section-bg: {{ section.settings.section_bg }};
+    --card-bg: {{ section.settings.card_bg }};
+    --card-radius: {{ section.settings.card_radius }}px;
+    --card-pad: {{ section.settings.card_padding }}px;
+    --card-max: {{ section.settings.card_max_width }}px;
+    --overlap: {{ section.settings.card_overlap }}px;
+    --mobile-card-overlap: {{ section.settings.mobile_card_overlap }}px;
+
+    --eyebrow: {{ section.settings.eyebrow_color.red }}, {{ section.settings.eyebrow_color.green }}, {{ section.settings.eyebrow_color.blue }};
+    --heading: {{ section.settings.heading_color.red }}, {{ section.settings.heading_color.green }}, {{ section.settings.heading_color.blue }};
+    --text: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};
+
+    --btn-bg: {{ section.settings.button_bg.red }}, {{ section.settings.button_bg.green }}, {{ section.settings.button_bg.blue }};
+    --btn-text: {{ section.settings.button_text.red }}, {{ section.settings.button_text.green }}, {{ section.settings.button_text.blue }};
+
+    --side-pad: {{ section.settings.side_padding }}px;
+    --shadow-opacity: {{ section.settings.shadow_opacity | divided_by: 100.0 }};
+
+    --section-pt: {{ section.settings.section_padding_top }}px;
+    --section-pb: {{ section.settings.section_padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<style>
+  #shopify-section-{{ section.id }} .split-stage__full{
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    background: var(--section-bg);
+  }
+
+  #shopify-section-{{ section.id }} .split-stage{
+    display: flex;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .split-stage.height-min{
+    min-height: var(--h-desktop);
+  }
+
+  #shopify-section-{{ section.id }} .split-stage.height-fixed{
+    height: var(--h-desktop);
+  }
+
+  #shopify-section-{{ section.id }} .split-stage.height-auto{
+    min-height: unset;
+    height: auto;
+  }
+
+  #shopify-section-{{ section.id }} .split-stage__side{
+    flex: 1 1 50%;
+    position: relative;
+  }
+
+  #shopify-section-{{ section.id }} .split-stage.height-min .split-stage__side{
+    min-height: var(--h-desktop);
+  }
+
+  #shopify-section-{{ section.id }} .split-stage.height-fixed .split-stage__side{
+    height: var(--h-desktop);
+  }
+
+  #shopify-section-{{ section.id }} .split-stage.height-auto .split-stage__side{
+    min-height: unset;
+    height: auto;
+  }
+
+  #shopify-section-{{ section.id }} .split-stage.is-reversed{
+    flex-direction: row-reverse;
+  }
+
+  #shopify-section-{{ section.id }} .split-stage__media{
+    width: 100%;
+    height: var(--img-h-desktop);
+    position: relative;
+    overflow: hidden;
+    background: var(--section-bg);
+  }
+
+  #shopify-section-{{ section.id }} .split-stage__img{
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: {{ section.settings.image_fit_desktop }};
+    object-position: center center;
+  }
+
+  #shopify-section-{{ section.id }} .split-stage__img--desktop{
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .split-stage__img--mobile{
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .split-stage__content-side{
+    display: flex;
+    align-items: center;
+    padding: var(--pt) var(--side-pad) var(--pb) var(--side-pad);
+  }
+
+  #shopify-section-{{ section.id }} .split-stage:not(.is-reversed) .split-stage__content-side{
+    justify-content: flex-end;
+  }
+
+  #shopify-section-{{ section.id }} .split-stage.is-reversed .split-stage__content-side{
+    justify-content: flex-start;
+  }
+
+  #shopify-section-{{ section.id }} .split-stage__card{
+    width: 100%;
+    max-width: var(--card-max);
+    background: var(--card-bg);
+    border-radius: var(--card-radius);
+    padding: var(--card-pad);
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 24px 60px rgba(0,0,0,var(--shadow-opacity));
+  }
+
+  #shopify-section-{{ section.id }} .split-stage:not(.is-reversed) .split-stage__card{
+    margin-right: calc(var(--overlap) * -1);
+  }
+
+  #shopify-section-{{ section.id }} .split-stage.is-reversed .split-stage__card{
+    margin-left: calc(var(--overlap) * -1);
+  }
+
+  #shopify-section-{{ section.id }} .split-stage__eyebrow{
+    margin: 0 0 10px;
+    font-size: 12px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: rgb(var(--eyebrow));
+    opacity: .9;
+  }
+
+  #shopify-section-{{ section.id }} .split-stage__heading{
+    margin: 0 0 12px;
+    color: rgb(var(--heading));
+    line-height: 1.05;
+    font-size: clamp(28px, 3.2vw, 48px);
+    max-width: 22ch;
+  }
+
+  #shopify-section-{{ section.id }} .split-stage__text{
+    color: rgb(var(--text));
+    opacity: .92;
+    line-height: 1.7;
+  }
+
+  #shopify-section-{{ section.id }} .split-stage__text p{
+    margin: 0 0 14px;
+  }
+
+  #shopify-section-{{ section.id }} .split-stage__text p:last-child{
+    margin-bottom: 0;
+  }
+
+  #shopify-section-{{ section.id }} .split-stage__btn-wrap{
+    margin-top: 22px;
+  }
+
+  #shopify-section-{{ section.id }} .split-stage__btn{
+    display: inline-block;
+    padding: 14px 26px;
+    border-radius: 2px;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: .16em;
+    font-size: 12px;
+    font-weight: 800;
+    background: rgb(var(--btn-bg));
+    color: rgb(var(--btn-text));
+  }
+
+  #shopify-section-{{ section.id }} .split-stage__btn:hover{
+    filter: brightness(.96);
+  }
+
+  @media (max-width: 989px){
+    #shopify-section-{{ section.id }} .split-stage{
+      flex-direction: column-reverse;
+    }
+
+    #shopify-section-{{ section.id }} .split-stage.is-reversed{
+      flex-direction: column-reverse;
+    }
+
+    #shopify-section-{{ section.id }} .split-stage.mobile-height-min{
+      min-height: var(--h-mobile);
+      height: auto;
+    }
+
+    #shopify-section-{{ section.id }} .split-stage.mobile-height-fixed{
+      height: var(--h-mobile);
+      min-height: unset;
+    }
+
+    #shopify-section-{{ section.id }} .split-stage.mobile-height-auto{
+      height: auto;
+      min-height: unset;
+    }
+
+    #shopify-section-{{ section.id }} .split-stage__side{
+      min-height: auto;
+      height: auto;
+    }
+
+    #shopify-section-{{ section.id }} .split-stage.mobile-height-min .split-stage__side{
+      min-height: unset;
+      height: auto;
+    }
+
+    #shopify-section-{{ section.id }} .split-stage.mobile-height-fixed .split-stage__side{
+      min-height: unset;
+      height: auto;
+    }
+
+    #shopify-section-{{ section.id }} .split-stage.mobile-height-auto .split-stage__side{
+      min-height: unset;
+      height: auto;
+    }
+
+    #shopify-section-{{ section.id }} .split-stage__media{
+      height: calc(var(--img-h-mobile) + var(--mobile-card-overlap));
+      min-height: calc(var(--img-h-mobile) + var(--mobile-card-overlap));
+      overflow: hidden;
+      background: var(--section-bg);
+    }
+
+    #shopify-section-{{ section.id }} .split-stage__img{
+      width: 100%;
+      height: 100%;
+      max-height: none;
+      object-position: center center;
+      display: block;
+    }
+
+    #shopify-section-{{ section.id }} .split-stage__img--desktop{
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .split-stage__img--mobile{
+      display: block;
+      object-fit: {{ section.settings.image_fit_mobile }};
+    }
+
+    #shopify-section-{{ section.id }} .split-stage__content-side{
+      justify-content: center !important;
+      align-items: flex-start;
+      padding: 0 var(--side-pad) 28px;
+      margin-top: calc(var(--mobile-card-overlap) * -1);
+      position: relative;
+      z-index: 2;
+    }
+
+    #shopify-section-{{ section.id }} .split-stage__card{
+      margin: 0 !important;
+      max-width: 720px;
+    }
+
+    #shopify-section-{{ section.id }} .split-stage__full{
+      padding-top: var(--section-pt);
+      padding-bottom: var(--section-pb);
+    }
+  }
+</style>
+
+<div class="split-stage__full">
+  <div class="split-stage height-{{ section.settings.height_mode }} mobile-height-{{ section.settings.mobile_height_mode }}{% if section.settings.reverse_layout %} is-reversed{% endif %}">
+    <div class="split-stage__side split-stage__content-side">
+      <div class="split-stage__card">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="split-stage__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+
+        <{{ section.settings.heading_tag }} class="split-stage__heading">
+          {%- if section.settings.enable_highlight -%}
+            {%- render 'highlight-text',
+              hl_input: section.settings.heading,
+              hl_style: section.settings.highlight_style,
+              hl_enable: true,
+              hl_animateWrap: true -%}
+          {%- else -%}
+            {{ section.settings.heading }}
+          {%- endif -%}
+        </{{ section.settings.heading_tag }}>
+
+        {%- if section.settings.text != blank -%}
+          <div class="split-stage__text rte">
+            {{ section.settings.text }}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+          <div class="split-stage__btn-wrap">
+            <a class="split-stage__btn" href="{{ section.settings.button_link }}">
+              {{ section.settings.button_label }}
+            </a>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="split-stage__side">
+      <div class="split-stage__media">
+        {%- assign fallback_mobile_image = section.settings.mobile_image | default: section.settings.image -%}
+
+        {%- if section.settings.image != blank -%}
+          {{ section.settings.image
+            | image_url: width: 2400
+            | image_tag:
+              loading: 'lazy',
+              class: 'split-stage__img split-stage__img--desktop',
+              widths: '600, 750, 1100, 1500, 2000, 2400',
+              sizes: '100vw'
+          }}
+        {%- elsif fallback_mobile_image != blank -%}
+          {{ fallback_mobile_image
+            | image_url: width: 1600
+            | image_tag:
+              loading: 'lazy',
+              class: 'split-stage__img split-stage__img--desktop',
+              widths: '600, 900, 1200, 1600',
+              sizes: '100vw'
+          }}
+        {%- endif -%}
+
+        {%- if fallback_mobile_image != blank -%}
+          {{ fallback_mobile_image
+            | image_url: width: 1600
+            | image_tag:
+              loading: 'lazy',
+              class: 'split-stage__img split-stage__img--mobile',
+              widths: '600, 900, 1200, 1600',
+              sizes: '100vw'
+          }}
+        {%- elsif section.settings.image != blank -%}
+          {{ section.settings.image
+            | image_url: width: 1600
+            | image_tag:
+              loading: 'lazy',
+              class: 'split-stage__img split-stage__img--mobile',
+              widths: '600, 900, 1200, 1600',
+              sizes: '100vw'
+          }}
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg split-stage__img' }}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Split overlap",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "checkbox", "id": "reverse_layout", "label": "Reverse layout (image left, card right)", "default": false },
+
+    {
+      "type": "select",
+      "id": "height_mode",
+      "label": "Section height mode (desktop)",
+      "default": "min",
+      "options": [
+        { "value": "auto", "label": "Auto (content height)" },
+        { "value": "min", "label": "Min height" },
+        { "value": "fixed", "label": "Fixed height" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "mobile_height_mode",
+      "label": "Section height mode (mobile)",
+      "default": "auto",
+      "options": [
+        { "value": "auto", "label": "Auto (content height)" },
+        { "value": "min", "label": "Min height" },
+        { "value": "fixed", "label": "Fixed height" }
+      ]
+    },
+
+    {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section padding top (px)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section padding bottom (px)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "default": 0
+    },
+
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "image_picker", "id": "mobile_image", "label": "Mobile image" },
+
+    {
+      "type": "header",
+      "content": "Image height"
+    },
+    {
+      "type": "range",
+      "id": "image_height_desktop",
+      "label": "Image height desktop (px)",
+      "min": 200,
+      "max": 1200,
+      "step": 20,
+      "default": 620
+    },
+    {
+      "type": "range",
+      "id": "image_height_mobile",
+      "label": "Image height mobile (px)",
+      "min": 160,
+      "max": 1200,
+      "step": 20,
+      "default": 620
+    },
+    {
+      "type": "select",
+      "id": "image_fit_desktop",
+      "label": "Image fit desktop",
+      "default": "cover",
+      "options": [
+        { "value": "cover", "label": "Cover" },
+        { "value": "contain", "label": "Contain" },
+        { "value": "fill", "label": "Fill" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_fit_mobile",
+      "label": "Image fit mobile",
+      "default": "cover",
+      "options": [
+        { "value": "cover", "label": "Cover" },
+        { "value": "contain", "label": "Contain" },
+        { "value": "fill", "label": "Fill" }
+      ]
+    },
+
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "STEP 5: CHERISH FOREVER" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Relive the Moment" },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Once preserved, your flowers are transformed into a handcrafted keepsake designed to last. Be it a wedding bouquet, anniversary arrangement, or memorial piece, your preserved flowers will remind you of love and connection. Each resin design is crafted with precision and passion.</p>"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "options": [
+        { "value": "h1", "label": "h1" },
+        { "value": "h2", "label": "h2" },
+        { "value": "h3", "label": "h3" },
+        { "value": "div", "label": "div" }
+      ],
+      "default": "h2"
+    },
+
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "VIEW OUR GALLERY" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "height_desktop", "label": "Height desktop (px)", "min": 420, "max": 860, "step": 20, "default": 620 },
+    { "type": "range", "id": "height_mobile", "label": "Height mobile (px)", "min": 260, "max": 900, "step": 20, "default": 340 },
+    { "type": "range", "id": "side_padding", "label": "Side padding (px)", "min": 0, "max": 80, "step": 4, "default": 32 },
+
+    { "type": "range", "id": "card_max_width", "label": "Card max width (px)", "min": 420, "max": 820, "step": 20, "default": 640 },
+    { "type": "range", "id": "card_padding", "label": "Card padding (px)", "min": 18, "max": 72, "step": 2, "default": 44 },
+    { "type": "range", "id": "card_overlap", "label": "Card overlap into image (px)", "min": 0, "max": 220, "step": 10, "default": 80 },
+    { "type": "range", "id": "mobile_card_overlap", "label": "Mobile card overlap into image (px)", "min": 0, "max": 220, "step": 10, "default": 40 },
+    { "type": "range", "id": "card_radius", "label": "Card corner radius (px)", "min": 0, "max": 24, "step": 2, "default": 0 },
+    { "type": "range", "id": "shadow_opacity", "label": "Card shadow opacity (%)", "min": 0, "max": 40, "step": 2, "default": 14 },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "section_bg", "label": "Section background", "default": "#f3f3f3" },
+    { "type": "color", "id": "card_bg", "label": "Card background", "default": "#ffffff" },
+    { "type": "color", "id": "eyebrow_color", "label": "Eyebrow color", "default": "#6b6b6b" },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#111111" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#6b6b6b" },
+    { "type": "color", "id": "button_bg", "label": "Button background", "default": "#b23b5a" },
+    { "type": "color", "id": "button_text", "label": "Button text", "default": "#ffffff" },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Padding top", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Padding bottom", "default": 0 },
+
+    { "type": "header", "content": "Heading highlight (optional)" },
+    { "type": "checkbox", "id": "enable_highlight", "label": "Enable highlight", "default": false },
+    {
+      "type": "select",
+      "id": "highlight_style",
+      "label": "Highlight style",
+      "default": "marker",
+      "options": [
+        { "value": "marker", "label": "Marker" },
+        { "value": "circle", "label": "Circle" },
+        { "value": "underline", "label": "Underline" },
+        { "value": "bold-underline", "label": "Bold underline" },
+        { "value": "modern-underline", "label": "Modern underline" },
+        { "value": "sketch-underline", "label": "Sketch underline" },
+        { "value": "squiggle", "label": "Squiggle" },
+        { "value": "heavy-squiggle", "label": "Heavy squiggle" },
+        { "value": "solid-color", "label": "Solid color" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Split overlap" }
+  ],
+  "disabled_on": { "groups": ["header", "footer", "custom.overlay"] }
+}
+{% endschema %}

@@ -1,0 +1,236 @@
+{%- liquid
+  assign bg = section.settings.bg_image
+-%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
+
+{%- style -%}
+  #shopify-section-{{ section.id }}{
+    --pt: {{ section.settings.padding_top }}px;
+    --pb: {{ section.settings.padding_bottom }}px;
+
+    --height-desktop: {{ section.settings.height_desktop }}px;
+    --height-mobile: {{ section.settings.height_mobile }}px;
+
+    --overlay: {{ section.settings.overlay_color | color_modify: 'alpha', section.settings.overlay_opacity | divided_by: 100.0 }};
+
+    --quote-color: {{ section.settings.quote_color }};
+    --author-color: {{ section.settings.author_color }};
+
+    --quote-size: {{ section.settings.quote_size }}px;
+    --author-size: {{ section.settings.author_size }}px;
+
+    --max-width: {{ section.settings.text_max_width }}ch;
+    --text-shadow: {% if section.settings.enable_shadow %}0 2px 10px rgba(0,0,0,.35){% else %}none{% endif %};
+    --radius: {{ section.settings.radius }}px;
+
+    --image-position: {{ section.settings.image_position }};
+    --image-zoom: {{ section.settings.image_zoom | divided_by: 100.0 }};
+  }
+
+  #shopify-section-{{ section.id }} .section--padding{
+    padding-top: var(--pt);
+    padding-bottom: var(--pb);
+  }
+{%- endstyle -%}
+
+<style>
+  #shopify-section-{{ section.id }} .quote-strip{
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: #000;
+    min-height: var(--height-desktop);
+    isolation: isolate;
+  }
+
+  #shopify-section-{{ section.id }} .quote-strip__media{
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  #shopify-section-{{ section.id }} .quote-strip__media img{
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: var(--image-position);
+    transform: scale(var(--image-zoom));
+  }
+
+  #shopify-section-{{ section.id }} .quote-strip::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: var(--overlay);
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .quote-strip__content{
+    position: relative;
+    z-index: 2;
+    min-height: var(--height-desktop);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 20px;
+    text-align: {{ section.settings.text_align }};
+  }
+
+  #shopify-section-{{ section.id }} .quote-strip__inner{
+    max-width: var(--max-width);
+  }
+
+  #shopify-section-{{ section.id }} .quote-strip__quote{
+    margin: 0;
+    color: var(--quote-color);
+    font-size: var(--quote-size);
+    font-style: italic;
+    font-weight: 700;
+    line-height: 1.2;
+    text-shadow: var(--text-shadow);
+  }
+
+  #shopify-section-{{ section.id }} .quote-strip__author{
+    margin: 8px 0 0;
+    color: var(--author-color);
+    font-size: 35px !important;
+    font-weight: 400;
+    font-family: 'Allura', 'Brush Script MT', cursive;
+    line-height: 1.1;
+    text-shadow: var(--text-shadow);
+  }
+
+  /* 768px and up: keep quote in one line */
+  @media (min-width: 768px){
+    #shopify-section-{{ section.id }} .quote-strip__inner{
+      width: 100%;
+      max-width: none;
+    }
+
+    #shopify-section-{{ section.id }} .quote-strip__quote{
+      white-space: nowrap;
+      overflow-wrap: normal;
+      word-break: normal;
+    }
+  }
+
+  /* Below 767px: allow quote to wrap normally */
+  @media (max-width: 767px){
+    #shopify-section-{{ section.id }} .quote-strip__quote{
+      white-space: normal;
+    }
+  }
+
+  @media (max-width: 989px){
+    #shopify-section-{{ section.id }} .quote-strip{
+      min-height: var(--height-mobile);
+    }
+
+    #shopify-section-{{ section.id }} .quote-strip__content{
+      min-height: var(--height-mobile);
+    }
+  }
+</style>
+
+<div class="section--padding{% if section.settings.show_divider %} section--divider{% endif %}">
+  <div class="{% if section.settings.full_width %}page-width--full-width{% else %}page-width{% endif %}">
+    <div class="quote-strip">
+      <div class="quote-strip__media">
+        {%- if bg != blank -%}
+          {{ bg | image_url: width: 3000 | image_tag: loading: 'lazy', widths: '750, 1100, 1500, 2000, 3000' }}
+        {%- else -%}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+
+      <div class="quote-strip__content">
+        <div class="quote-strip__inner">
+          {%- if section.settings.quote != blank -%}
+            <p class="quote-strip__quote">{{ section.settings.quote }}</p>
+          {%- endif -%}
+
+          {%- if section.settings.author != blank -%}
+            <div class="quote-strip__author">{{ section.settings.author }}</div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Quote image strip",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "checkbox", "id": "full_width", "label": "Full width", "default": true },
+    { "type": "checkbox", "id": "show_divider", "label": "Show divider", "default": false },
+
+    { "type": "header", "content": "Background" },
+    { "type": "image_picker", "id": "bg_image", "label": "Background image" },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "default": "center center",
+      "options": [
+        { "value": "top left", "label": "Top left" },
+        { "value": "top center", "label": "Top center" },
+        { "value": "top right", "label": "Top right" },
+        { "value": "center left", "label": "Center left" },
+        { "value": "center center", "label": "Center center" },
+        { "value": "center right", "label": "Center right" },
+        { "value": "bottom left", "label": "Bottom left" },
+        { "value": "bottom center", "label": "Bottom center" },
+        { "value": "bottom right", "label": "Bottom right" }
+      ]
+    },
+    { "type": "range", "id": "image_zoom", "label": "Image zoom (%)", "min": 100, "max": 130, "step": 1, "default": 100 },
+
+    { "type": "header", "content": "Overlay" },
+    { "type": "color", "id": "overlay_color", "label": "Overlay color", "default": "#000000" },
+    { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity (%)", "min": 0, "max": 90, "step": 5, "default": 10 },
+
+    { "type": "header", "content": "Text" },
+    { "type": "textarea", "id": "quote", "label": "Quote", "default": "“Your Love. Your Story. Forever Captured.”" },
+    { "type": "text", "id": "author", "label": "Author", "default": "—Debbie Flohr" },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    { "type": "color", "id": "quote_color", "label": "Quote color", "default": "#ffffff" },
+    { "type": "color", "id": "author_color", "label": "Author color", "default": "#ffffff" },
+    { "type": "checkbox", "id": "enable_shadow", "label": "Enable text shadow", "default": true },
+
+    { "type": "range", "id": "quote_size", "label": "Quote font size (px)", "min": 14, "max": 56, "step": 1, "default": 28 },
+    { "type": "range", "id": "author_size", "label": "Author font size (px)", "min": 10, "max": 30, "step": 1, "default": 16 },
+    { "type": "range", "id": "text_max_width", "label": "Text max width (ch)", "min": 30, "max": 90, "step": 1, "default": 60 },
+
+    { "type": "header", "content": "Size" },
+    { "type": "range", "id": "height_desktop", "label": "Height desktop (px)", "min": 120, "max": 500, "step": 10, "default": 180 },
+    { "type": "range", "id": "height_mobile", "label": "Height mobile (px)", "min": 100, "max": 380, "step": 10, "default": 140 },
+    { "type": "range", "id": "radius", "label": "Corner radius (px)", "min": 0, "max": 30, "step": 2, "default": 0 },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Padding top", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Padding bottom", "default": 0 }
+  ],
+  "presets": [
+    { "name": "Quote image strip" }
+  ]
+}
+{% endschema %}

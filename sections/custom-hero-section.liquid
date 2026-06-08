@@ -1,0 +1,653 @@
+{% comment %}
+  Section: Split Hero (NO Feature Bar)
+  File: sections/hero-split-preserve.liquid
+{% endcomment %}
+
+<section
+  class="px-hero"
+  style="
+    --px-bg: {{ section.settings.bg_color }};
+    --px-accent: {{ section.settings.accent_color }};
+    --px-accent-2: {{ section.settings.accent2_color }};
+    --px-text: {{ section.settings.text_color }};
+    --px-subtext: {{ section.settings.subtext_color }};
+    --px-hero-h-desktop: {{ section.settings.hero_height_desktop }}px;
+    --px-hero-media-h-mobile: {{ section.settings.hero_media_height_mobile }}px;
+  "
+>
+  <div class="px-hero__wrap {% if section.settings.full_width %}px-hero__wrap--full{% endif %}">
+    <div class="px-hero__grid">
+      <!-- LEFT -->
+      <div class="px-hero__left">
+        <div class="px-hero__content">
+          {% if section.settings.heading != blank %}
+            <h2 class="px-hero__heading">
+              {{ section.settings.heading | newline_to_br }}
+              {% if section.settings.highlight_text != blank %}
+                <span class="px-hero__highlight">{{ section.settings.highlight_text }}</span>
+              {% endif %}
+              {% if section.settings.heading_suffix != blank %}
+                {{ section.settings.heading_suffix }}
+              {% endif %}
+            </h2>
+          {% endif %}
+
+          {% if section.settings.kicker != blank %}
+            <p class="px-hero__kicker">{{ section.settings.kicker }}</p>
+          {% endif %}
+
+          {% if section.settings.byline != blank %}
+            <p class="px-hero__byline">{{ section.settings.byline }}</p>
+          {% endif %}
+
+          <div class="px-hero__buttons px-hero__buttons--desktop">
+            {% if section.settings.btn1_label != blank and section.settings.btn1_link != blank %}
+              <a class="px-btn px-btn--primary px-btn--reserve" href="{{ section.settings.btn1_link }}">
+                {{ section.settings.btn1_label }}
+              </a>
+            {% endif %}
+
+            {% if section.settings.btn2_label != blank and section.settings.btn2_link != blank %}
+              <a class="px-btn px-btn--secondary px-btn--shop" href="{{ section.settings.btn2_link }}">
+                {{ section.settings.btn2_label }}
+              </a>
+            {% endif %}
+
+            {% if section.settings.btn3_label != blank %}
+              <a
+                class="px-btn px-btn--retainer-gallery{% if section.settings.btn3_link == blank %} px-btn--disabled{% endif %}"
+                {% if section.settings.btn3_link != blank %}
+                  href="{{ section.settings.btn3_link }}"
+                {% else %}
+                  role="link"
+                  aria-disabled="true"
+                {% endif %}
+              >
+                {{ section.settings.btn3_label }}
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="px-hero__right">
+        {% if section.settings.image != blank %}
+          <div class="px-hero__media">
+            <img
+              src="{{ section.settings.image | image_url: width: 2000 }}"
+              alt="{{ section.settings.image.alt | escape }}"
+              loading="lazy"
+              width="{{ section.settings.image.width }}"
+              height="{{ section.settings.image.height }}"
+            >
+          </div>
+        {% else %}
+          <div class="px-hero__media px-hero__media--placeholder">
+            {{ 'lifestyle-1' | placeholder_svg_tag }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="px-hero__mobile-layout">
+      <div class="px-hero__mobile-inner">
+        <div class="px-hero__mobile-text">
+          {% if section.settings.heading != blank %}
+            <h2 class="px-hero__heading px-hero__heading--mobile">
+              {{ section.settings.heading | newline_to_br }}
+              {% if section.settings.highlight_text != blank %}
+                <span class="px-hero__highlight">{{ section.settings.highlight_text }}</span>
+              {% endif %}
+              {% if section.settings.heading_suffix != blank %}
+                {{ section.settings.heading_suffix }}
+              {% endif %}
+            </h2>
+          {% endif %}
+
+          {% if section.settings.kicker != blank %}
+            <p class="px-hero__kicker px-hero__kicker--mobile">{{ section.settings.kicker }}</p>
+          {% endif %}
+
+          {% if section.settings.byline != blank %}
+            <p class="px-hero__byline px-hero__byline--mobile">{{ section.settings.byline }}</p>
+          {% endif %}
+        </div>
+
+        <div class="px-hero__mobile-image-wrap">
+          {% if section.settings.image != blank %}
+            <div class="px-hero__mobile-image">
+              <img
+                src="{{ section.settings.image | image_url: width: 1600 }}"
+                alt="{{ section.settings.image.alt | escape }}"
+                loading="lazy"
+                width="{{ section.settings.image.width }}"
+                height="{{ section.settings.image.height }}"
+              >
+            </div>
+          {% else %}
+            <div class="px-hero__mobile-image px-hero__media--placeholder">
+              {{ 'lifestyle-1' | placeholder_svg_tag }}
+            </div>
+          {% endif %}
+
+          <div class="px-hero__buttons px-hero__buttons--mobile">
+            {% if section.settings.btn1_label != blank and section.settings.btn1_link != blank %}
+              <a class="px-btn px-btn--primary px-btn--reserve" href="{{ section.settings.btn1_link }}">
+                {{ section.settings.btn1_label }}
+              </a>
+            {% endif %}
+
+            {% if section.settings.btn2_label != blank and section.settings.btn2_link != blank %}
+              <a class="px-btn px-btn--secondary px-btn--shop" href="{{ section.settings.btn2_link }}">
+                {{ section.settings.btn2_label }}
+              </a>
+            {% endif %}
+
+            {% if section.settings.btn3_label != blank %}
+              <a
+                class="px-btn px-btn--retainer-gallery{% if section.settings.btn3_link == blank %} px-btn--disabled{% endif %}"
+                {% if section.settings.btn3_link != blank %}
+                  href="{{ section.settings.btn3_link }}"
+                {% else %}
+                  role="link"
+                  aria-disabled="true"
+                {% endif %}
+              >
+                {{ section.settings.btn3_label }}
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .px-hero {
+      background: var(--px-bg);
+      color: var(--px-text);
+      overflow: hidden;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .px-hero__wrap {
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .px-hero__wrap--full {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .px-hero__grid {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      width: 100%;
+      max-width: 100%;
+      {% if section.settings.hero_height_mode == 'fixed' %}
+        height: var(--px-hero-h-desktop);
+      {% else %}
+        min-height: var(--px-hero-h-desktop);
+      {% endif %}
+    }
+
+    .px-hero__left {
+      display: flex;
+      align-items: center;
+      padding: clamp(28px, 4vw, 60px);
+      background: var(--px-bg);
+    }
+
+    .px-hero__content {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      text-align: {{ section.settings.text_align }};
+    }
+
+    .px-hero__heading {
+      margin: 0 0 14px;
+      font-size: clamp(34px, 3.2vw, 52px);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .px-hero__highlight {
+      color: var(--px-accent);
+      font-style: italic;
+      font-weight: 800;
+      white-space: nowrap;
+      text-transform: none;
+    }
+
+    .px-hero__kicker {
+      margin: 0 0 18px;
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--px-subtext);
+      font-weight: 600;
+    }
+
+    .px-hero__byline {
+      margin: 0 0 22px;
+      font-size: 18px;
+      color: var(--px-subtext);
+      font-family: {{ section.settings.byline_font_family }};
+    }
+
+    .px-hero__buttons {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: {% if section.settings.text_align == 'center' %}center{% elsif section.settings.text_align == 'right' %}flex-end{% else %}flex-start{% endif %};
+    }
+
+    .px-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 190px;
+      padding: 14px 18px;
+      border-radius: 0;
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-weight: 700;
+      transition: transform .12s ease, opacity .12s ease;
+      text-align: center;
+      line-height: 1.2;
+      position: relative;
+      z-index: 2;
+    }
+
+    .px-btn:hover {
+      transform: translateY(-1px);
+      opacity: .95;
+    }
+
+    .px-btn--primary {
+      background: var(--px-accent);
+      color: #fff;
+    }
+
+    .px-btn--secondary {
+      background: var(--px-accent-2);
+      color: #111;
+    }
+
+    .px-btn--retainer-gallery {
+      display: none;
+      background: var(--px-accent);
+      color: #fff;
+    }
+
+    .px-btn--disabled {
+      cursor: not-allowed;
+      opacity: .55;
+      pointer-events: none;
+    }
+
+    .px-btn--disabled:hover {
+      transform: none;
+      opacity: .55;
+    }
+
+    /*
+      DEFAULT STATE:
+      No tag / not paid / not logged in
+      Shows:
+      - RESERVE YOUR SPOT
+      - SHOP NOW
+      Hides:
+      - RETAINER GALLERY
+    */
+
+    /*
+      PAID STATE:
+      This section does NOT check customer.tags anymore.
+      It only listens to the body class.
+      Shows:
+      - SHOP NOW
+      - RETAINER GALLERY
+      Hides:
+      - RESERVE YOUR SPOT
+    */
+    body.customer-retainer-paid section.px-hero .px-btn--reserve {
+      display: none !important;
+    }
+
+    body.customer-retainer-paid section.px-hero .px-btn--retainer-gallery {
+      display: inline-flex !important;
+    }
+
+    body.customer-retainer-paid section.px-hero .px-btn--shop {
+      display: inline-flex !important;
+    }
+
+    /*
+      NON-PAID STATE:
+      Even if this class exists, keep the normal default buttons.
+    */
+    body.customer-no-retainer-paid section.px-hero .px-btn--reserve,
+    body.customer-not-logged-in section.px-hero .px-btn--reserve {
+      display: inline-flex !important;
+    }
+
+    body.customer-no-retainer-paid section.px-hero .px-btn--retainer-gallery,
+    body.customer-not-logged-in section.px-hero .px-btn--retainer-gallery {
+      display: none !important;
+    }
+
+    .px-hero__right {
+      position: relative;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .px-hero__media {
+      width: 100%;
+      height: 100%;
+    }
+
+    .px-hero__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .px-hero__media--placeholder {
+      display: grid;
+      place-items: center;
+      background: #f7f7f7;
+    }
+
+    .px-hero__mobile-layout {
+      display: none;
+    }
+
+    .px-hero__buttons--mobile {
+      display: none;
+    }
+
+    @media (max-width: 900px) {
+      .px-hero__grid {
+        display: none;
+      }
+
+      .px-hero__mobile-layout {
+        display: block;
+        background: var(--px-bg);
+      }
+
+      .px-hero__mobile-inner {
+        position: relative;
+      }
+
+      .px-hero__mobile-text {
+        text-align: center;
+        padding: 20px 18px 0;
+      }
+
+      .px-hero__heading--mobile {
+        font-size: 25px;
+        line-height: 1.05;
+        letter-spacing: -0.01em;
+        margin: 0 0 12px;
+      }
+
+      .px-hero__kicker--mobile {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.35;
+        letter-spacing: .04em;
+      }
+
+      .px-hero__byline--mobile {
+        margin: 12px 0 0;
+        font-size: 16px;
+      }
+
+      .px-hero__mobile-image-wrap {
+        position: relative;
+        margin-top: 14px;
+      }
+
+      .px-hero__mobile-image {
+        height: fit-content;
+        min-height: var(--px-hero-media-h-mobile);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .px-hero__mobile-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center bottom;
+        display: block;
+        background: #f5f2ee;
+      }
+
+      .px-hero__buttons--mobile {
+        display: flex;
+        position: absolute;
+        left: 50%;
+        bottom: 22px;
+        transform: translateX(-50%);
+        width: calc(100% - 36px);
+        max-width: 340px;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: nowrap;
+        z-index: 3;
+      }
+
+      .px-hero__buttons--mobile .px-btn {
+        min-width: 0;
+        flex: 1 1 0;
+        padding: 13px 10px;
+        font-size: 11px;
+        letter-spacing: .08em;
+      }
+    }
+  </style>
+</section>
+
+{% schema %}
+{
+  "name": "Split Hero",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#f7f2ee"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "subtext_color",
+      "label": "Subtext color",
+      "default": "#4a4a4a"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker (small text)",
+      "default": "DON'T LET YOUR WEDDING BECOME A MEMORY."
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading (before highlight)",
+      "default": "PRESERVE YOUR\nWEDDING BOUQUET.\nALWAYS &"
+    },
+    {
+      "type": "text",
+      "id": "highlight_text",
+      "label": "Highlighted word",
+      "default": "FLOHR"
+    },
+    {
+      "type": "text",
+      "id": "heading_suffix",
+      "label": "Heading (after highlight)",
+      "default": "EVER"
+    },
+    {
+      "type": "text",
+      "id": "byline",
+      "label": "Byline",
+      "default": "-"
+    },
+    {
+      "type": "text",
+      "id": "byline_font_family",
+      "label": "Byline font-family (CSS)",
+      "default": "cursive"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Right image"
+    },
+    {
+      "type": "select",
+      "id": "hero_height_mode",
+      "label": "Hero height behavior (desktop)",
+      "default": "min",
+      "options": [
+        {
+          "value": "min",
+          "label": "Min height (grows if text is taller)"
+        },
+        {
+          "value": "fixed",
+          "label": "Fixed height"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "hero_height_desktop",
+      "label": "Hero height (desktop px)",
+      "min": 420,
+      "max": 820,
+      "step": 10,
+      "default": 560
+    },
+    {
+      "type": "range",
+      "id": "hero_media_height_mobile",
+      "label": "Hero image height (mobile px)",
+      "min": 220,
+      "max": 700,
+      "step": 10,
+      "default": 360
+    },
+    {
+      "type": "header",
+      "content": "Button 1"
+    },
+    {
+      "type": "text",
+      "id": "btn1_label",
+      "label": "Button 1 label",
+      "default": "RESERVE YOUR SPOT"
+    },
+    {
+      "type": "url",
+      "id": "btn1_link",
+      "label": "Button 1 link"
+    },
+    {
+      "type": "header",
+      "content": "Button 2"
+    },
+    {
+      "type": "text",
+      "id": "btn2_label",
+      "label": "Button 2 label",
+      "default": "SHOP NOW"
+    },
+    {
+      "type": "url",
+      "id": "btn2_link",
+      "label": "Button 2 link"
+    },
+    {
+      "type": "header",
+      "content": "Button 3 - Retainer Gallery | Paid Customers Only"
+    },
+    {
+      "type": "text",
+      "id": "btn3_label",
+      "label": "Button 3 label",
+      "default": "RETAINER GALLERY"
+    },
+    {
+      "type": "url",
+      "id": "btn3_link",
+      "label": "Button 3 link"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Primary button / highlight color",
+      "default": "#b23a62"
+    },
+    {
+      "type": "color",
+      "id": "accent2_color",
+      "label": "Secondary button color",
+      "default": "#f3b2c7"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Split Hero"
+    }
+  ]
+}
+{% endschema %}

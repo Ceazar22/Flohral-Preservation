@@ -1,0 +1,802 @@
+{% liquid
+  assign modal_id = 'VipHoneybookModal-' | append: section.id
+  assign honeybook_pid = section.settings.honeybook_pid | strip
+%}
+
+<section
+  class="vip-honeybook-page"
+  id="VipHoneybookPage-{{ section.id }}"
+  data-vip-section
+  data-honeybook-pid="{{ honeybook_pid | escape }}"
+  data-direct-form-link="{{ section.settings.direct_form_link | escape }}"
+  data-open-on-load="{{ section.settings.open_on_load }}"
+>
+  <!-- CUSTOMER HAS PAID RETAINER -->
+  <div class="vip-honeybook-page__container vip-honeybook-page__container--retainer-paid">
+    {% if section.settings.eyebrow != blank %}
+      <p class="vip-honeybook-page__eyebrow">
+        {{ section.settings.eyebrow | escape }}
+      </p>
+    {% endif %}
+
+    {% if section.settings.heading != blank %}
+      <h1 class="vip-honeybook-page__heading">
+        {{ section.settings.heading | escape }}
+      </h1>
+    {% endif %}
+
+    {% if section.settings.text != blank %}
+      <div class="vip-honeybook-page__text rte">
+        {{ section.settings.text }}
+      </div>
+    {% endif %}
+
+    {% if section.settings.button_label != blank %}
+      <button
+        type="button"
+        class="vip-honeybook-page__button"
+        data-vip-modal-open
+        aria-haspopup="dialog"
+        aria-controls="{{ modal_id }}"
+      >
+        {{ section.settings.button_label | escape }}
+      </button>
+    {% endif %}
+  </div>
+
+  <!-- HoneyBook VIP Modal -->
+  <div
+    class="vip-honeybook-modal"
+    id="{{ modal_id }}"
+    data-vip-modal
+    aria-hidden="true"
+  >
+    <div class="vip-honeybook-modal__overlay" data-vip-modal-close></div>
+
+    <div
+      class="vip-honeybook-modal__dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="{{ modal_id }}-heading"
+      tabindex="-1"
+    >
+      <div class="vip-honeybook-modal__header">
+        {% if section.settings.modal_eyebrow != blank %}
+          <p class="vip-honeybook-modal__eyebrow">
+            {{ section.settings.modal_eyebrow | escape }}
+          </p>
+        {% endif %}
+
+        {% if section.settings.modal_heading != blank %}
+          <h2
+            class="vip-honeybook-modal__heading"
+            id="{{ modal_id }}-heading"
+          >
+            {{ section.settings.modal_heading | escape }}
+          </h2>
+        {% endif %}
+
+        {% if section.settings.modal_text != blank %}
+          <div class="vip-honeybook-modal__text rte">
+            {{ section.settings.modal_text }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="vip-honeybook-modal__form" data-vip-form-container>
+        <p class="vip-honeybook-modal__loading" data-vip-loading>
+          Loading your form...
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUSTOMER HAS NOT PAID RETAINER -->
+  <div class="vip-honeybook-page__container vip-honeybook-page__container--no-retainer-paid">
+    {% if section.settings.second_eyebrow != blank %}
+      <p class="vip-honeybook-page__eyebrow">
+        {{ section.settings.second_eyebrow | escape }}
+      </p>
+    {% endif %}
+
+    {% if section.settings.second_heading != blank %}
+      <h1 class="vip-honeybook-page__heading">
+        {{ section.settings.second_heading | escape }}
+      </h1>
+    {% endif %}
+
+    {% if section.settings.second_text != blank %}
+      <div class="vip-honeybook-page__text rte">
+        {{ section.settings.second_text }}
+      </div>
+    {% endif %}
+
+    {% if section.settings.second_button_label != blank %}
+      <a
+        class="vip-honeybook-page__button vip-honeybook-page__button--link"
+        {% if section.settings.second_button_url != blank %}
+          href="{{ section.settings.second_button_url }}"
+        {% else %}
+          role="link"
+          aria-disabled="true"
+        {% endif %}
+      >
+        {{ section.settings.second_button_label | escape }}
+      </a>
+    {% endif %}
+  </div>
+</section>
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    --vip-accent: {{ section.settings.accent_color }};
+    --vip-accent-hover: {{ section.settings.accent_hover_color }};
+    --vip-text: {{ section.settings.text_color }};
+    --vip-background: {{ section.settings.background_color }};
+    --vip-modal-background: {{ section.settings.modal_background_color }};
+    --vip-border: {{ section.settings.border_color }};
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-page {
+    min-height: {{ section.settings.page_min_height }}vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 40px;
+    background-color: var(--vip-background);
+    color: var(--vip-text);
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-page__container {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  /*
+    DEFAULT STATE:
+    Show no-retainer content by default.
+    No Liquid customer tag logic.
+  */
+  #shopify-section-{{ section.id }} .vip-honeybook-page__container--retainer-paid {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-page__container--no-retainer-paid {
+    display: block;
+  }
+
+  /*
+    PAID STATE:
+    Show paid content only when body has customer-retainer-paid.
+  */
+  body.customer-retainer-paid #shopify-section-{{ section.id }} .vip-honeybook-page__container--retainer-paid {
+    display: block;
+  }
+
+  body.customer-retainer-paid #shopify-section-{{ section.id }} .vip-honeybook-page__container--no-retainer-paid {
+    display: none;
+  }
+
+  /*
+    NON-PAID STATE:
+    Safety fallback.
+  */
+  body.customer-no-retainer-paid #shopify-section-{{ section.id }} .vip-honeybook-page__container--retainer-paid,
+  body.customer-not-logged-in #shopify-section-{{ section.id }} .vip-honeybook-page__container--retainer-paid {
+    display: none;
+  }
+
+  body.customer-no-retainer-paid #shopify-section-{{ section.id }} .vip-honeybook-page__container--no-retainer-paid,
+  body.customer-not-logged-in #shopify-section-{{ section.id }} .vip-honeybook-page__container--no-retainer-paid {
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-page__eyebrow {
+    margin: 0 0 16px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--vip-accent);
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-page__heading {
+    margin: 0 0 18px;
+    font-family: inherit;
+    font-size: clamp(38px, 5vw, 58px);
+    font-weight: 500;
+    line-height: 1.1;
+    color: var(--vip-text);
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-page__text {
+    max-width: 580px;
+    margin: 0 auto 34px;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--vip-text);
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-page__text p {
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-page__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 54px;
+    padding: 16px 34px;
+    border: 1px solid var(--vip-accent);
+    border-radius: 6px;
+    background-color: var(--vip-accent);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color 0.25s ease,
+      border-color 0.25s ease,
+      color 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-page__button:hover {
+    background-color: var(--vip-accent-hover);
+    border-color: var(--vip-accent-hover);
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-page__button[aria-disabled="true"] {
+    opacity: 0.55;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-modal.is-open {
+    display: flex;
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-modal__overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(19, 19, 19, 0.58);
+    backdrop-filter: blur(3px);
+    cursor: pointer;
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-modal__dialog {
+    position: relative;
+    z-index: 1;
+    width: min(820px, 100%);
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    padding: 48px 40px 40px;
+    border: 1px solid var(--vip-border);
+    border-radius: 12px;
+    background-color: var(--vip-modal-background);
+    color: var(--vip-text);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.18);
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-modal__close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--vip-text);
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-modal__close:hover {
+    background-color: rgba(0, 0, 0, 0.06);
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-modal__header {
+    max-width: 600px;
+    margin: 0 auto 28px;
+    padding: 0 35px;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-modal__eyebrow {
+    margin: 0 0 12px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--vip-accent);
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-modal__heading {
+    margin: 0 0 14px;
+    font-family: inherit;
+    font-size: clamp(30px, 4vw, 42px);
+    font-weight: 500;
+    line-height: 1.15;
+    color: var(--vip-text);
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-modal__text {
+    margin: 0;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--vip-text);
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-modal__text p {
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-modal__form {
+    width: 100%;
+    min-height: 240px;
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-modal__loading {
+    margin: 0;
+    padding: 46px 20px;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
+    color: var(--vip-text);
+    opacity: 0.7;
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-modal__error {
+    padding: 36px 20px;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-modal__error p {
+    margin: 0 0 18px;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--vip-text);
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-modal__fallback-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px;
+    padding: 14px 28px;
+    border: 1px solid var(--vip-accent);
+    border-radius: 6px;
+    background-color: var(--vip-accent);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    transition:
+      background-color 0.25s ease,
+      border-color 0.25s ease;
+  }
+
+  #shopify-section-{{ section.id }} .vip-honeybook-modal__fallback-link:hover {
+    background-color: var(--vip-accent-hover);
+    border-color: var(--vip-accent-hover);
+    color: #ffffff;
+  }
+
+  body.vip-honeybook-modal-open {
+    overflow: hidden;
+  }
+
+  @media screen and (max-width: 768px) {
+    #shopify-section-{{ section.id }} .vip-honeybook-page {
+      min-height: auto;
+      padding: 60px 15px;
+    }
+
+    #shopify-section-{{ section.id }} .vip-honeybook-page__heading {
+      font-size: 36px;
+    }
+
+    #shopify-section-{{ section.id }} .vip-honeybook-page__text {
+      font-size: 15px;
+    }
+
+    #shopify-section-{{ section.id }} .vip-honeybook-page__button {
+      width: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .vip-honeybook-modal {
+      align-items: flex-end;
+      padding: 10px;
+    }
+
+    #shopify-section-{{ section.id }} .vip-honeybook-modal__dialog {
+      width: 100%;
+      max-height: calc(100vh - 20px);
+      padding: 48px 15px 24px;
+      border-radius: 16px 16px 8px 8px;
+    }
+
+    #shopify-section-{{ section.id }} .vip-honeybook-modal__header {
+      margin-bottom: 22px;
+      padding: 0 28px;
+    }
+
+    #shopify-section-{{ section.id }} .vip-honeybook-modal__heading {
+      font-size: 29px;
+    }
+
+    #shopify-section-{{ section.id }} .vip-honeybook-modal__text {
+      font-size: 14px;
+    }
+  }
+{% endstyle %}
+
+<script>
+  (function () {
+    function initialiseVipHoneybookModal() {
+      var section = document.getElementById('VipHoneybookPage-{{ section.id }}');
+
+      if (!section || section.dataset.initialised === 'true') {
+        return;
+      }
+
+      section.dataset.initialised = 'true';
+
+      var modal = section.querySelector('[data-vip-modal]');
+      var dialog = section.querySelector('.vip-honeybook-modal__dialog');
+      var openButtons = section.querySelectorAll('[data-vip-modal-open]');
+      var closeButtons = section.querySelectorAll('[data-vip-modal-close]');
+      var formContainer = section.querySelector('[data-vip-form-container]');
+      var honeybookPid = section.dataset.honeybookPid;
+      var directFormLink = section.dataset.directFormLink;
+      var openOnLoad = section.dataset.openOnLoad === 'true';
+
+      if (!modal || !dialog) {
+        return;
+      }
+
+      var formLoaded = false;
+      var lastFocusedElement = null;
+
+      var urlParameters = new URLSearchParams(window.location.search);
+      var shouldOpenFromUrl = urlParameters.get('open') === 'vip';
+
+      function hasPaidBodyClass() {
+        return document.body.classList.contains('customer-retainer-paid');
+      }
+
+      function showFormError() {
+        if (!formContainer) {
+          return;
+        }
+
+        formContainer.innerHTML = '';
+
+        var errorWrapper = document.createElement('div');
+        errorWrapper.className = 'vip-honeybook-modal__error';
+
+        var errorText = document.createElement('p');
+        errorText.textContent = 'The form could not load. Please refresh the page and try again.';
+
+        errorWrapper.appendChild(errorText);
+
+        if (directFormLink) {
+          var fallbackLink = document.createElement('a');
+          fallbackLink.className = 'vip-honeybook-modal__fallback-link';
+          fallbackLink.href = directFormLink;
+          fallbackLink.target = '_blank';
+          fallbackLink.rel = 'noopener';
+          fallbackLink.textContent = 'Open VIP Form';
+
+          errorWrapper.appendChild(fallbackLink);
+        }
+
+        formContainer.appendChild(errorWrapper);
+      }
+
+      function loadHoneybookForm() {
+        if (formLoaded || !formContainer) {
+          return;
+        }
+
+        if (!honeybookPid) {
+          showFormError();
+          return;
+        }
+
+        formLoaded = true;
+        formContainer.innerHTML = '';
+
+        var mountPoint = document.createElement('div');
+        mountPoint.className = 'hb-p-' + honeybookPid + '-1';
+
+        var trackingPixel = document.createElement('img');
+        trackingPixel.height = 1;
+        trackingPixel.width = 1;
+        trackingPixel.alt = '';
+        trackingPixel.style.display = 'none';
+        trackingPixel.src = 'https://www.honeybook.com/p.png?pid=' + encodeURIComponent(honeybookPid);
+
+        formContainer.appendChild(mountPoint);
+        formContainer.appendChild(trackingPixel);
+
+        window.HB = window.HB || {};
+        window._HB_ = window._HB_ || {};
+        window._HB_.pid = honeybookPid;
+
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.async = true;
+        script.src = 'https://widget.honeybook.com/assets_users_production/websiteplacements/placement-controller.min.js';
+
+        script.onerror = function () {
+          showFormError();
+        };
+
+        document.body.appendChild(script);
+      }
+
+      function openModal() {
+        if (!hasPaidBodyClass()) {
+          return;
+        }
+
+        lastFocusedElement = document.activeElement;
+
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('vip-honeybook-modal-open');
+
+        window.requestAnimationFrame(function () {
+          loadHoneybookForm();
+          dialog.focus();
+        });
+      }
+
+      function closeModal() {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('vip-honeybook-modal-open');
+
+        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+          lastFocusedElement.focus();
+        }
+      }
+
+      openButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+          openModal();
+        });
+      });
+
+      closeButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+          closeModal();
+        });
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && modal.classList.contains('is-open')) {
+          closeModal();
+        }
+      });
+
+      if (hasPaidBodyClass() && (shouldOpenFromUrl || openOnLoad)) {
+        openModal();
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initialiseVipHoneybookModal);
+    } else {
+      initialiseVipHoneybookModal();
+    }
+
+    document.addEventListener('shopify:section:load', initialiseVipHoneybookModal);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "VIP HoneyBook modal",
+  "settings": [
+    {
+      "type": "header",
+      "content": "HoneyBook form"
+    },
+    {
+      "type": "text",
+      "id": "honeybook_pid",
+      "label": "HoneyBook form PID",
+      "default": "5fc5136b22d160000d5632d5",
+      "info": "This is taken from the HoneyBook embed code."
+    },
+    {
+      "type": "url",
+      "id": "direct_form_link",
+      "label": "Direct HoneyBook form link",
+      "info": "Optional fallback link if the embedded form cannot load."
+    },
+    {
+      "type": "checkbox",
+      "id": "open_on_load",
+      "label": "Open modal automatically on page load",
+      "default": false,
+      "info": "The modal opens automatically only when the body has customer-retainer-paid."
+    },
+    {
+      "type": "header",
+      "content": "Retainer paid content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Floral Preservation"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Complete Your VIP Reservation"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Please complete the form to provide the details needed for your floral preservation order.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Fill Out Your VIP Form"
+    },
+    {
+      "type": "header",
+      "content": "No retainer paid content"
+    },
+    {
+      "type": "text",
+      "id": "second_eyebrow",
+      "label": "Eyebrow",
+      "default": "Reserve Your Spot"
+    },
+    {
+      "type": "text",
+      "id": "second_heading",
+      "label": "Heading",
+      "default": "Secure Your Reservation First"
+    },
+    {
+      "type": "richtext",
+      "id": "second_text",
+      "label": "Text",
+      "default": "<p>Your reservation is not secured yet. Please complete your retainer payment before filling out the VIP form.</p>"
+    },
+    {
+      "type": "text",
+      "id": "second_button_label",
+      "label": "Button label",
+      "default": "Pay Your Retainer"
+    },
+    {
+      "type": "url",
+      "id": "second_button_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "header",
+      "content": "VIP modal content"
+    },
+    {
+      "type": "text",
+      "id": "modal_eyebrow",
+      "label": "Modal eyebrow",
+      "default": "Next Step"
+    },
+    {
+      "type": "text",
+      "id": "modal_heading",
+      "label": "Modal heading",
+      "default": "VIP Reservation Form"
+    },
+    {
+      "type": "richtext",
+      "id": "modal_text",
+      "label": "Modal text",
+      "default": "<p>Please complete the form below so we can begin preserving your memories.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Button and accent color",
+      "default": "#bf3265"
+    },
+    {
+      "type": "color",
+      "id": "accent_hover_color",
+      "label": "Button hover color",
+      "default": "#a62853"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#171717"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Page background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "modal_background_color",
+      "label": "Modal background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Modal border color",
+      "default": "#e6e1dc"
+    },
+    {
+      "type": "range",
+      "id": "page_min_height",
+      "label": "Page minimum height",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "default": 70
+    }
+  ],
+  "presets": [
+    {
+      "name": "VIP HoneyBook modal"
+    }
+  ]
+}
+{% endschema %}

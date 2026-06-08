@@ -1,0 +1,1487 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "custom_hero_section_aLwdmd": {
+      "type": "custom-hero-section",
+      "name": "Split Hero",
+      "settings": {
+        "full_width": true,
+        "bg_color": "#fffbf9",
+        "text_color": "#111111",
+        "subtext_color": "#4a4a4a",
+        "kicker": "DON'T LET YOUR WEDDING DAY FADE AWAY.",
+        "heading": "Preserve Your\nWedding Bouquet.\nAlways &",
+        "highlight_text": "FLOHREVER",
+        "heading_suffix": "",
+        "byline": "by Debbie Flohr",
+        "byline_font_family": "cursive",
+        "text_align": "center",
+        "image": "shopify://shop_images/Hydrangea_flowers_preserved_in_resin.webp",
+        "hero_height_mode": "fixed",
+        "hero_height_desktop": 600,
+        "hero_media_height_mobile": 220,
+        "btn1_label": "RESERVE YOUR SPOT",
+        "btn1_link": "shopify://products/wedding-bouquet-preservation-reservation-deposit",
+        "btn2_label": "SHOP NOW",
+        "btn2_link": "shopify://collections/all",
+        "btn3_label": "GALLERY",
+        "btn3_link": "shopify://pages/gallery",
+        "accent_color": "#bb3263",
+        "accent2_color": "#f9b8d4"
+      }
+    },
+    "value_prop_strip_DLezfU": {
+      "type": "value-prop-strip",
+      "blocks": {
+        "text_4tkG8B": {
+          "type": "text",
+          "settings": {
+            "text": "<strong>Ships Nationwide Across the US</strong>",
+            "link": ""
+          }
+        },
+        "text_y8HcAr": {
+          "type": "text",
+          "settings": {
+            "text": "<strong>Trusted by top florists in the usa</strong>",
+            "link": ""
+          }
+        },
+        "text_HwTnmd": {
+          "type": "text",
+          "settings": {
+            "text": "<strong>VIP Communication & White-Glove Support</strong>",
+            "link": ""
+          }
+        },
+        "text_43rpnh": {
+          "type": "text",
+          "settings": {
+            "text": "<strong>Handcrafted, One-of-a-Kind Preservation Pieces</strong>",
+            "link": ""
+          }
+        },
+        "text_BkjQrL": {
+          "type": "text",
+          "settings": {
+            "text": "<strong>Museum-Grade Resin for Long-Term Clarity</strong>",
+            "link": ""
+          }
+        },
+        "text_Wyebr6": {
+          "type": "text",
+          "settings": {
+            "text": "<strong>Custom Designs Tailored to Your Story</strong>",
+            "link": ""
+          }
+        },
+        "text_CKt7AJ": {
+          "type": "text",
+          "settings": {
+            "text": "<strong>Lifetime Beauty</strong>",
+            "link": ""
+          }
+        },
+        "text_7x8LXA": {
+          "type": "text",
+          "settings": {
+            "text": "<strong>UV-Resistant Protection That Slows Yellowing Over Time</strong>",
+            "link": ""
+          }
+        },
+        "text_QiYeW8": {
+          "type": "text",
+          "settings": {
+            "text": "<strong>Individually Poured and Hand-Finished</strong>",
+            "link": ""
+          }
+        },
+        "text_pc4eKP": {
+          "type": "text",
+          "settings": {
+            "text": "<strong>Precision Layering to Protect Delicate Petals</strong>",
+            "link": ""
+          }
+        },
+        "text_bbQhbH": {
+          "type": "text",
+          "settings": {
+            "text": "<strong>Slow-Cure Process for Fewer Bubbles</strong>",
+            "link": ""
+          }
+        },
+        "text_ULyX3U": {
+          "type": "text",
+          "settings": {
+            "text": "<strong>Crafted to Last a Lifetime, Not a Season</strong>",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_4tkG8B",
+        "text_y8HcAr",
+        "text_HwTnmd",
+        "text_43rpnh",
+        "text_BkjQrL",
+        "text_Wyebr6",
+        "text_CKt7AJ",
+        "text_7x8LXA",
+        "text_QiYeW8",
+        "text_pc4eKP",
+        "text_bbQhbH",
+        "text_ULyX3U"
+      ],
+      "disabled": true,
+      "name": "Value prop strip",
+      "settings": {
+        "full_width": true,
+        "disable_default_content": false,
+        "bg_color": "#bb3263",
+        "text_color": "#ffffff",
+        "border_size": 0,
+        "border_color": "#bb3263",
+        "padding_y": 10,
+        "padding_x": 16,
+        "gap": 36,
+        "font_size": 11,
+        "letter_spacing": 12,
+        "font_weight": "700",
+        "uppercase": true,
+        "text_opacity": 100,
+        "icon_size": 18,
+        "icon_opacity": 100,
+        "enable_carousel": true,
+        "carousel_speed": 16,
+        "pause_on_hover": true,
+        "mobile_behavior": "scroll"
+      }
+    },
+    "value_prop_strip_XnPLgL": {
+      "type": "value-prop-strip",
+      "blocks": {
+        "text_79iF6R": {
+          "type": "text",
+          "settings": {
+            "text": "WOMAN OWNED AND OPERATED",
+            "link": ""
+          }
+        },
+        "text_je3Hr8": {
+          "type": "text",
+          "settings": {
+            "text": "TRUSTED BY TOP FLORISTS AROUND THE US",
+            "link": ""
+          }
+        },
+        "text_fCeFEf": {
+          "type": "text",
+          "settings": {
+            "text": "MUSEUM-GRADE RESIN FOR LONG-TERM CLARITY",
+            "link": ""
+          }
+        },
+        "text_kqqY7Y": {
+          "type": "text",
+          "settings": {
+            "text": "VIP COMMUNICATION & WHITE-GLOVE SUPPORT",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_79iF6R",
+        "text_je3Hr8",
+        "text_fCeFEf",
+        "text_kqqY7Y"
+      ],
+      "name": "Value prop strip",
+      "settings": {
+        "full_width": true,
+        "disable_default_content": false,
+        "bg_color": "#bb3263",
+        "text_color": "#ffffff",
+        "border_size": 0,
+        "border_color": "#bb3263",
+        "padding_y": 10,
+        "padding_x": 16,
+        "gap": 70,
+        "font_size": 11,
+        "letter_spacing": 12,
+        "font_weight": "700",
+        "uppercase": true,
+        "text_opacity": 100,
+        "icon_size": 18,
+        "icon_opacity": 100,
+        "enable_carousel": false,
+        "carousel_speed": 16,
+        "pause_on_hover": true,
+        "mobile_behavior": "scroll"
+      }
+    },
+    "custom_heading_66R8aJ": {
+      "type": "custom-heading",
+      "name": "Heading",
+      "settings": {
+        "show_divider": false,
+        "eyebrow": "",
+        "heading": "<strong>Our Proud Partnerships</strong>",
+        "subheading": "",
+        "use_highlight": false,
+        "highlight_style": "squiggle",
+        "heading_tag": "h2",
+        "heading_size_mode": "theme",
+        "heading_size_manual": 54,
+        "bg_color": "#ffffff",
+        "eyebrow_color": "#6b6b6b",
+        "heading_color": "#bb3263",
+        "subheading_color": "#111111",
+        "padding_top": 20,
+        "padding_bottom": 0
+      }
+    },
+    "1657186368671b5306": {
+      "type": "scrolling-promotion",
+      "blocks": {
+        "6ea42339-eed6-4ca4-92ce-e5574685b25c": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Eventective_Logo.webp",
+            "height": 52,
+            "link": "https://www.eventective.com"
+          }
+        },
+        "1657186368977c9b66-0": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Wedding_Chicks_Logo_32bc34e3-8dd3-409a-a9bf-30d2a60c4697.webp",
+            "height": 96,
+            "link": "https://www.weddingchicks.com"
+          }
+        },
+        "1657186368977c9b66-1": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Green_Wedding_Shoes_Logo_df20981d-34ce-46cf-8fd1-2b9ab421c085.webp",
+            "height": 72,
+            "link": "https://greenweddingshoes.com"
+          }
+        },
+        "1657186368977c9b66-2": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Party_Slate_Logo_38b751a8-5749-43eb-a5ec-b0f2f0e330e7.webp",
+            "height": 44,
+            "link": "https://www.partyslate.com"
+          }
+        },
+        "image_CLRhiP": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Style_Me_Pretty_Logo_64412656-197f-4e74-9c3b-f8a532e04c63.webp",
+            "height": 64,
+            "link": "https://www.stylemepretty.com"
+          }
+        },
+        "image_Jwkr3g": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Brides_of_Long_Island_Logo_43608e10-8399-4a95-a82f-f73865b81d09.webp",
+            "height": 72,
+            "link": "https://www.bridesoflongisland.com"
+          }
+        },
+        "image_yM3MAG": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Zola_Logo_8305ed01-d683-49a8-85eb-4cb54385776a.webp",
+            "height": 40,
+            "link": "https://www.zola.com"
+          }
+        },
+        "image_M7WrKL": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Carats_and_Cake_Logo_731121a4-c9a3-4595-9eaa-b1454112bffe.webp",
+            "height": 52,
+            "link": "https://caratsandcake.com"
+          }
+        },
+        "image_MiRPH9": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/The_Knot_Logo_b3c8006a-71a4-46b8-9c71-9f9511111a99.webp",
+            "height": 52,
+            "link": "https://www.theknot.com"
+          }
+        }
+      },
+      "block_order": [
+        "6ea42339-eed6-4ca4-92ce-e5574685b25c",
+        "1657186368977c9b66-0",
+        "1657186368977c9b66-1",
+        "1657186368977c9b66-2",
+        "image_CLRhiP",
+        "image_Jwkr3g",
+        "image_yM3MAG",
+        "image_M7WrKL",
+        "image_MiRPH9"
+      ],
+      "settings": {
+        "direction": "left",
+        "speed": 1.2,
+        "show_divider": false,
+        "use_custom_colors": false,
+        "colors_icon": "#ffffff",
+        "colors_text": "#1a1b18",
+        "colors_background": "#ffffff",
+        "gradient_background": "",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "1653279596fd537671": {
+      "type": "rich-text",
+      "blocks": {
+        "1653279596ec3e1de4-0": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Truly </strong><em><strong>preserve</strong></em><strong> the love you hold</strong>",
+            "heading_size": "h1",
+            "heading_tag": "h2",
+            "enable_highlight": true,
+            "highlight_style": "solid-color"
+          }
+        },
+        "8c895852-4e22-460f-86cf-fdeb2c5d8b72": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Our vision is to give your most sentimental flowers the attention they deserve. We don’t just preserve bouquets—we help you capture the story, the emotion, and the love that blooms within them.</p><p>Because every bouquet deserves <em>flohr-ever!</em> </p>",
+            "text_size": "typeset2",
+            "secondary_color": false,
+            "enable_highlight": true,
+            "highlight_style": "squiggle"
+          }
+        }
+      },
+      "block_order": [
+        "1653279596ec3e1de4-0",
+        "8c895852-4e22-460f-86cf-fdeb2c5d8b72"
+      ],
+      "disabled": true,
+      "settings": {
+        "text_alignment": "center",
+        "mobile_text_alignment": "left",
+        "horizontal_content": false,
+        "narrow": true,
+        "show_divider": false,
+        "use_custom_colors": true,
+        "colors_button_label": "#ffffff",
+        "colors_button_background": "#1a1b18",
+        "colors_text": "#212326",
+        "colors_background": "#ffffff",
+        "colors_highlight": "#bb3263",
+        "gradient_background": "",
+        "padding_top": 60,
+        "padding_bottom": 36
+      }
+    },
+    "reveal-banner": {
+      "type": "reveal-banner",
+      "blocks": {
+        "3eae6484-af53-4929-a56e-cb043e9694ee": {
+          "type": "subheading",
+          "disabled": true,
+          "settings": {
+            "subheading": "<strong>Why Brides Trust Our Expert Wedding Bouquet Preservation.</strong>",
+            "subheading_size": "h5",
+            "secondary_color": false,
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        },
+        "39db6534-b151-4d3c-9dc5-b7cea371879d": {
+          "type": "heading",
+          "disabled": true,
+          "settings": {
+            "heading": "<strong>Meet Debbie Flohr</strong>",
+            "heading_size": "h1",
+            "heading_tag": "h2",
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        },
+        "subheading_3JHRnm": {
+          "type": "subheading",
+          "disabled": true,
+          "settings": {
+            "subheading": "<strong>FOUNDER & CEO OF FLOHRAL PRESERVATION</strong>",
+            "subheading_size": "h5",
+            "secondary_color": false,
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        },
+        "8015158f-c97f-490e-81d3-3426183423d4": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "<p>Hi, I’m Debbie Flohr, and Flohral Preservation is more than my company, it’s my passion and calling. </p><p></p><p>Destiny brought me into this beautiful, creative field. My last name - “Flohr” - means “an array of flowers.” So I guess you could say that I was born for this business! After 17 years in the industry, I’ve pioneered new products and techniques that exemplify Flohral Preservation’s core purpose - to leave you with a lifelong work of art that honors those special moments in your life.</p><p></p><p>When I’m not working, I’m a proud single mother to my 4 boys. I’m blessed and truly OBSESSED with what I do!</p>",
+            "text_size": "typeset2",
+            "secondary_color": false,
+            "enable_highlight": false,
+            "highlight_style": "circle"
+          }
+        },
+        "buttons": {
+          "type": "buttons",
+          "disabled": true,
+          "settings": {
+            "button_label": "Learn About Preservation",
+            "button_link": "shopify://pages/about-us",
+            "video_button": "",
+            "video_url": "",
+            "video_description": "Describe the video"
+          }
+        },
+        "slide": {
+          "type": "slide",
+          "settings": {
+            "slide_subheading": "FEEL IT. HOLD IT. RELIVE YOUR WEDDING DAY.",
+            "slide_subheading_size": "h5",
+            "heading": "<strong>Why choose RESIN  to preserve your wedding bouquet?</strong>",
+            "show_slide_video": false,
+            "slide_video": "shopify://files/videos/4.mp4",
+            "slide_video_url": "",
+            "slide_video_description": "Slide video",
+            "heading_size": "h1",
+            "heading_tag": "h2",
+            "text": "<ul><li>Preserved in full 3D shape & form</li><li>Never pressed. Never reconstructed.</li><li>True-to-life texture & detail</li><li>Captures your bouquet exactly as it was</li><li>Functional, usable home décor</li><li>A modern, timeless aesthetic</li><li>A piece you can hold—not just hang</li><li>An heirloom you can pass down<br/></li></ul><p><em>To have and to hold, Always  & FLOHREVER.</em></p>",
+            "text_size": "typeset2",
+            "secondary_color": false,
+            "button_label": "Reserve Your spot",
+            "button_link": "shopify://products/wedding-bouquet-preservation-reservation-deposit",
+            "button_size": "medium",
+            "button_style_secondary": false,
+            "colors_heading": "#bb3263",
+            "colors_button_label": "#ffffff",
+            "colors_button_background": "#bb3263",
+            "colors_text": "#373531",
+            "colors_background": "#fcede8",
+            "gradient_background": "",
+            "corner_width": 180,
+            "corner_opacity": 35,
+            "corner_hide_mobile": true,
+            "enable_highlight": false,
+            "highlight_style": "modern-underline"
+          }
+        }
+      },
+      "block_order": [
+        "3eae6484-af53-4929-a56e-cb043e9694ee",
+        "39db6534-b151-4d3c-9dc5-b7cea371879d",
+        "subheading_3JHRnm",
+        "8015158f-c97f-490e-81d3-3426183423d4",
+        "buttons",
+        "slide"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/WhatsApp_Image_2026-03-24_at_6.09.20_AM.jpg",
+        "image_position": "top center",
+        "text_box_position": "middle",
+        "text_alignment": "left",
+        "image_ratio": "650px",
+        "full_width": true,
+        "show_divider": false,
+        "mobile_text_alignment": "left",
+        "mobile_image_ratio": "adapt",
+        "show_text_below": false,
+        "colors_text": "#ffffff",
+        "colors_heading": "#d84f7c",
+        "colors_overlay": "#000000",
+        "colors_overlay_opacity": 20,
+        "colors_highlight": "#b03a43",
+        "list_style": "default",
+        "list_bullet_color": "#111111",
+        "padding_top": 28,
+        "padding_bottom": 0
+      }
+    },
+    "custom_featured_collection_LREPij": {
+      "type": "custom-featured-collection",
+      "name": "Custom featured collection",
+      "settings": {
+        "collection": "signature-items",
+        "heading_eyebrow": "Crafted to Last a Lifetime",
+        "heading": "<strong> Signature Floral Preservation</strong>",
+        "heading_size": "h1",
+        "heading_tag": "h2",
+        "products_to_show": 5,
+        "columns_desktop": 5,
+        "columns_mobile": "2",
+        "show_tag": true,
+        "tag_source": "product_type",
+        "show_heart": false,
+        "enable_slider_desktop": true,
+        "swipe_on_mobile": true,
+        "cards_mobile_768": "3",
+        "show_view_all": true,
+        "view_more_label": "SHOP NOW",
+        "view_all_url": "https://tu6umt-gi.myshopify.com/collections/all?filter.v.price.gte=&filter.v.price.lte=&filter.p.tag=Signature&sort_by=price-descending",
+        "button_bg": "#bb3263",
+        "button_text": "#ffffff",
+        "button_bg_hover": "#bb3263",
+        "button_text_hover": "#ffffff",
+        "button_radius": 0,
+        "button_padding_y": 14,
+        "button_padding_x": 44,
+        "button_spacing_top": 60,
+        "card_ratio": "1 / 1",
+        "image_fit": "cover",
+        "card_radius": 0,
+        "grid_gap": 32,
+        "show_tile_background": false,
+        "card_bg": "#f3f3f3",
+        "card_image_padding": 16,
+        "eyebrow_color": "#afafb0",
+        "heading_color": "#bb3263",
+        "tag_color": "#9a9a9a",
+        "title_color": "#111111",
+        "show_divider": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "guarantees_xDqgEW": {
+      "type": "guarantees",
+      "blocks": {
+        "guarantee_KDLMwq": {
+          "type": "guarantee",
+          "settings": {
+            "icon": "leaf",
+            "icon_size": "large",
+            "image": "shopify://shop_images/vip_customer_service_line_art_icon..webp",
+            "custom_icon": "",
+            "title": "<strong>20+ Years of Expertise</strong>",
+            "title_size": "h4",
+            "text": "<p>A leader & pioneer in the industry giving VIP customer service.</p>",
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        },
+        "guarantee_zjqrm9": {
+          "type": "guarantee",
+          "settings": {
+            "icon": "leaf",
+            "icon_size": "large",
+            "image": "shopify://shop_images/flower_resin_color_enhancement_process_line_art_icon_png.webp",
+            "custom_icon": "",
+            "title": "<strong>Color Enhancing</strong>",
+            "title_size": "h4",
+            "text": "<p>We carefully enhance each flower to restore its natural, original color.</p>",
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        },
+        "guarantee_3FNVbB": {
+          "type": "guarantee",
+          "settings": {
+            "icon": "recycle",
+            "icon_size": "large",
+            "image": "shopify://shop_images/resin_bottle_icon_flower_preservation_line_art_png.webp",
+            "custom_icon": "",
+            "title": "<strong>High-Grade UV Resin</strong>",
+            "title_size": "h4",
+            "text": "<p>Resistant resin that holds up against exposure & yellowing over time.</p>",
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        },
+        "guarantee_cJagcE": {
+          "type": "guarantee",
+          "settings": {
+            "icon": "shield",
+            "icon_size": "large",
+            "image": "shopify://shop_images/laser_engraving_resin_floral_keepsake_line_art_icon_c1f832d7-ec1c-4bea-9f2f-142894ca2517.webp",
+            "custom_icon": "",
+            "title": "<strong>Custom Engraving</strong>",
+            "title_size": "h4",
+            "text": "<p>Personalized Laser Engraving to make your piece uniquely yours.</p>",
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        }
+      },
+      "block_order": [
+        "guarantee_KDLMwq",
+        "guarantee_zjqrm9",
+        "guarantee_3FNVbB",
+        "guarantee_cJagcE"
+      ],
+      "name": "Why Brides Trust Flohral Preservation",
+      "settings": {
+        "layout": "default",
+        "column_alignment": "center",
+        "horizontal_content": false,
+        "full_width": true,
+        "show_divider": false,
+        "columns_desktop": 4,
+        "eyebrow": "<strong>Experience Professional Wedding Flower Preservation</strong>",
+        "heading": "<strong>What Sets Us Apart</strong>",
+        "heading_size": "h1",
+        "heading_tag": "h2",
+        "heading_color": "#bb3263",
+        "eyebrow_color": "#6b6b6b",
+        "content_max_width": 1600,
+        "icon_area_width": 120,
+        "text_max_width": 600,
+        "icon_size_small": 60,
+        "icon_size_medium": 80,
+        "icon_size_large": 120,
+        "icon_scale": 120,
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "use_custom_colors": true,
+        "colors_icon": "#ffffff",
+        "colors_text": "#000000",
+        "colors_background": "#fff8fb",
+        "gradient_background": "",
+        "colors_highlight": "#ffb503",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "margin_bottom": "0",
+        "enable_highlight": false,
+        "highlight_style": "marker"
+      }
+    },
+    "custom_featured_collection_jbqJ9R": {
+      "type": "custom-featured-collection",
+      "name": "Custom featured collection",
+      "settings": {
+        "collection": "most-popular-resin-keepsakes",
+        "heading_eyebrow": "Our Most-Requested Designs",
+        "heading": "<strong>Most Popular Floral Resin Keepsakes</strong>",
+        "heading_size": "h1",
+        "heading_tag": "h2",
+        "products_to_show": 5,
+        "columns_desktop": 5,
+        "columns_mobile": "2",
+        "show_tag": true,
+        "tag_source": "product_type",
+        "show_heart": false,
+        "enable_slider_desktop": true,
+        "swipe_on_mobile": true,
+        "cards_mobile_768": "3",
+        "show_view_all": true,
+        "view_more_label": "VIEW MORE",
+        "view_all_url": "https://tu6umt-gi.myshopify.com/collections/all?filter.v.price.gte=&filter.v.price.lte=&filter.p.tag=Most+Popular+Blocks&sort_by=price-descending",
+        "button_bg": "#bb3263",
+        "button_text": "#ffffff",
+        "button_bg_hover": "#bb3263",
+        "button_text_hover": "#ffffff",
+        "button_radius": 0,
+        "button_padding_y": 14,
+        "button_padding_x": 44,
+        "button_spacing_top": 60,
+        "card_ratio": "1 / 1",
+        "image_fit": "cover",
+        "card_radius": 0,
+        "grid_gap": 32,
+        "show_tile_background": false,
+        "card_bg": "#f3f3f3",
+        "card_image_padding": 16,
+        "eyebrow_color": "#afafb0",
+        "heading_color": "#bb3263",
+        "tag_color": "#9a9a9a",
+        "title_color": "#111111",
+        "show_divider": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "value_prop_strip_iqydyA": {
+      "type": "value-prop-strip",
+      "blocks": {
+        "text_jAj3eC": {
+          "type": "text",
+          "settings": {
+            "text": "VIP COMMUNICATION & WHITE-GLOVE SUPPORT",
+            "link": ""
+          }
+        },
+        "text_yVqp3N": {
+          "type": "text",
+          "settings": {
+            "text": "Trusted by top florists in the usa",
+            "link": ""
+          }
+        },
+        "text_h38fYN": {
+          "type": "text",
+          "settings": {
+            "text": "One-of-a-Kind Preservation Pieces",
+            "link": ""
+          }
+        },
+        "text_zgq3H9": {
+          "type": "text",
+          "settings": {
+            "text": "Trusted by top florists in the usa",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_jAj3eC",
+        "text_yVqp3N",
+        "text_h38fYN",
+        "text_zgq3H9"
+      ],
+      "name": "Value prop strip",
+      "settings": {
+        "full_width": true,
+        "disable_default_content": false,
+        "bg_color": "#bb3263",
+        "text_color": "#ffffff",
+        "border_size": 0,
+        "border_color": "#bb3263",
+        "padding_y": 10,
+        "padding_x": 16,
+        "gap": 40,
+        "font_size": 11,
+        "letter_spacing": 12,
+        "font_weight": "700",
+        "uppercase": true,
+        "text_opacity": 100,
+        "icon_size": 18,
+        "icon_opacity": 100,
+        "enable_carousel": true,
+        "carousel_speed": 16,
+        "pause_on_hover": true,
+        "mobile_behavior": "scroll"
+      }
+    },
+    "custom_feauted_multiple_collections_3UaHfD": {
+      "type": "custom-feauted-multiple-collections",
+      "blocks": {
+        "collection_t9WXMH": {
+          "type": "collection",
+          "settings": {
+            "collection": "engraving",
+            "custom_tag": "Engraving"
+          }
+        },
+        "collection_qbKUmY": {
+          "type": "collection",
+          "settings": {
+            "collection": "most-popular-resin-keepsakes",
+            "custom_tag": "COLLECTION"
+          }
+        },
+        "collection_68LK8z": {
+          "type": "collection",
+          "settings": {
+            "collection": "new-release-keepsakes",
+            "custom_tag": "COLLECTION"
+          }
+        },
+        "collection_aUkGVn": {
+          "type": "collection",
+          "settings": {
+            "collection": "popular-add-ons-floral-preservation",
+            "custom_tag": "COLLECTION"
+          }
+        },
+        "collection_pxdVkq": {
+          "type": "collection",
+          "settings": {
+            "collection": "signature-items",
+            "custom_tag": "COLLECTION"
+          }
+        }
+      },
+      "block_order": [
+        "collection_t9WXMH",
+        "collection_qbKUmY",
+        "collection_68LK8z",
+        "collection_aUkGVn",
+        "collection_pxdVkq"
+      ],
+      "name": "Custom collections",
+      "settings": {
+        "eyebrow": "SHOP OUR COLLECTIONS",
+        "heading": "<strong>Our Flohral Collections</strong>",
+        "heading_size": "h1",
+        "heading_tag": "h2",
+        "collections_to_show": 8,
+        "columns_desktop": 5,
+        "columns_mobile": "2",
+        "show_tag": true,
+        "tag_source": "collection_type",
+        "show_heart": false,
+        "enable_slider_desktop": true,
+        "swipe_on_mobile": true,
+        "show_view_all": true,
+        "view_more_label": "SHOP NOW",
+        "view_all_url": "shopify://collections/all",
+        "button_bg": "#bb3263",
+        "button_text": "#ffffff",
+        "button_bg_hover": "#bb3263",
+        "button_text_hover": "#ffffff",
+        "button_radius": 0,
+        "button_padding_y": 14,
+        "button_padding_x": 38,
+        "button_spacing_top": 50,
+        "card_ratio": "1 / 1",
+        "image_fit": "cover",
+        "card_radius": 0,
+        "grid_gap": 32,
+        "show_tile_background": false,
+        "card_bg": "#f3f3f3",
+        "card_image_padding": 0,
+        "eyebrow_color": "#6b6b6b",
+        "heading_color": "#bb3263",
+        "tag_color": "#9a9a9a",
+        "title_color": "#111111",
+        "show_divider": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "quote_image_strip_9f6azV": {
+      "type": "quote-image-strip",
+      "name": "Quote image strip",
+      "settings": {
+        "full_width": true,
+        "show_divider": false,
+        "bg_image": "shopify://shop_images/blush_pink_roses_romantic_floral_background.webp",
+        "image_position": "center center",
+        "image_zoom": 100,
+        "overlay_color": "#ffffff",
+        "overlay_opacity": 90,
+        "quote": "\"Your Love Story\nForever Captured.\"",
+        "author": "—Debbie Flohr",
+        "text_align": "center",
+        "quote_color": "#212326",
+        "author_color": "#212326",
+        "enable_shadow": false,
+        "quote_size": 34,
+        "author_size": 30,
+        "text_max_width": 90,
+        "height_desktop": 180,
+        "height_mobile": 140,
+        "radius": 0,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "custom_process_cfb9Y6": {
+      "type": "custom-process",
+      "blocks": {
+        "step_HtyP6r": {
+          "type": "step",
+          "settings": {
+            "step_number": "",
+            "icon": "shopify://shop_images/4.webp",
+            "title": "Save Your Spot for Bouquet Preservation",
+            "text": "<p>Secure your date with a deposit to reserve your place in our calendar for your <strong>wedding bouquet preservation</strong>. We only accept a limited number of bouquets each month to ensure each arrangement receives the attention and care it deserves. You’ll finalize your custom keepsake pieces and add-ons only after we receive your flowers.</p>"
+          }
+        },
+        "step_zdXppP": {
+          "type": "step",
+          "settings": {
+            "step_number": "",
+            "icon": "shopify://shop_images/6.webp",
+            "title": "Send Your Bouquet with Care",
+            "text": "<p>After your big day, you simply send your flowers using our step-by-step guide. Once it arrives, we begin the <strong>flower preservation process</strong>, carefully handling every petal with intention, because we know your bouquet holds more than just flowers, it holds memories.</p>"
+          }
+        },
+        "step_rQ8F9g": {
+          "type": "step",
+          "settings": {
+            "step_number": "",
+            "icon": "shopify://shop_images/Resin_hexagon.webp",
+            "title": "Create Your Custom Keepsake",
+            "text": "<p>This is where everything comes together. You’ll be part of the design process as we transform your bouquet into a <strong>custom preserved wedding flower keepsake</strong>. We’ll share design layout options and refine the details with you, creating a piece that feels personal and timeless. Once complete, your <strong>wedding flower preservation piece</strong> arrives ready to display – so you can relive your special day beautifully, for years to come. </p>"
+          }
+        }
+      },
+      "block_order": [
+        "step_HtyP6r",
+        "step_zdXppP",
+        "step_rQ8F9g"
+      ],
+      "name": "How it works (Process)",
+      "settings": {
+        "show_divider": false,
+        "eyebrow": "HOW IT WORKS",
+        "heading": "<strong>The Flohr-Ever Process</strong>",
+        "subheading": "",
+        "heading_size": "h1",
+        "heading_alignment": "center",
+        "heading_tag": "h2",
+        "show_connector": true,
+        "circle_size": 150,
+        "show_step_prefix": true,
+        "step_prefix": "Step",
+        "button_label": "HOW IT WORKS",
+        "button_link": "shopify://pages/how-it-works",
+        "bg_color": "#ffffff",
+        "connector_gap": 14,
+        "colors_highlight": "#ffb503",
+        "accent_color": "#bb3263",
+        "connector_color": "#d6d6d6",
+        "padding_top": 48,
+        "padding_bottom": 48,
+        "enable_highlight": false,
+        "highlight_style": "marker"
+      }
+    },
+    "custom_heading_a4HEHV": {
+      "type": "custom-heading",
+      "name": "Heading",
+      "settings": {
+        "show_divider": false,
+        "eyebrow": "Why Brides Are Falling in Love with FLOHRal Preservation",
+        "heading": "<strong>Message’s From Our Happy Brides</strong>",
+        "subheading": "<p>Trusted for over 2 Decades by 12,500 Brides Nationwide</p>",
+        "use_highlight": false,
+        "highlight_style": "marker",
+        "heading_tag": "h2",
+        "heading_size_mode": "theme",
+        "heading_size_manual": 54,
+        "bg_color": "#ffffff",
+        "eyebrow_color": "#212326",
+        "heading_color": "#bb3263",
+        "subheading_color": "#111111",
+        "padding_top": 32,
+        "padding_bottom": 0
+      }
+    },
+    "custom_liquid_eebixX": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "<script type='text/javascript' src='https://the.flohralpreservation.com/reputation/assets/review-widget.js'></script><iframe class='lc_reviews_widget' src='https://the.flohralpreservation.com/reputation/widgets/review_widget/iTbTQB2eC2H5NGagjWtZ' frameborder='0' scrolling='no' style='min-width: 100%; width: 100%;'></iframe>",
+        "full_width": false,
+        "show_divider": false,
+        "padding_top": 0,
+        "padding_bottom": 36
+      }
+    },
+    "373a156c-25da-4d93-aad2-e35ef2842efc": {
+      "type": "option-table",
+      "blocks": {
+        "template--17071551086833__373a156c-25da-4d93-aad2-e35ef2842efc-product-3": {
+          "type": "product",
+          "settings": {
+            "product": "calming-serum"
+          }
+        },
+        "template--17071551086833__373a156c-25da-4d93-aad2-e35ef2842efc-product-2": {
+          "type": "product",
+          "settings": {
+            "product": "balancing-toner"
+          }
+        },
+        "template--17071551086833__373a156c-25da-4d93-aad2-e35ef2842efc-product-1": {
+          "type": "product",
+          "settings": {
+            "product": "anti-aging-body-cream"
+          }
+        },
+        "3497f5b8-88c0-40a6-a4b4-8de50c6b43c9": {
+          "type": "product",
+          "settings": {
+            "product": "cleanser"
+          }
+        }
+      },
+      "block_order": [
+        "template--17071551086833__373a156c-25da-4d93-aad2-e35ef2842efc-product-3",
+        "template--17071551086833__373a156c-25da-4d93-aad2-e35ef2842efc-product-2",
+        "template--17071551086833__373a156c-25da-4d93-aad2-e35ef2842efc-product-1",
+        "3497f5b8-88c0-40a6-a4b4-8de50c6b43c9"
+      ],
+      "disabled": true,
+      "settings": {
+        "criteria_option": "custom.ingredients",
+        "heading": "Beauty <em>Essentials</em>: What’s Inside?",
+        "heading_size": "h1",
+        "heading_tag": "h2",
+        "button_label": "",
+        "button_link": "",
+        "button_size": "medium",
+        "button_style_secondary": false,
+        "text_alignment": "center",
+        "mobile_text_alignment": "center",
+        "show_divider": false,
+        "use_custom_colors": true,
+        "colors_button_label": "#ffffff",
+        "colors_button_background": "#1a1b18",
+        "colors_text": "#212326",
+        "colors_background": "#f1f1f1",
+        "colors_highlight": "#ffb503",
+        "colors_border": "#ffffff",
+        "gradient_background": "",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "enable_highlight": true,
+        "highlight_style": "squiggle"
+      }
+    },
+    "guarantees": {
+      "type": "guarantees",
+      "blocks": {
+        "guarantee-0": {
+          "type": "guarantee",
+          "settings": {
+            "icon": "leaf",
+            "icon_size": "large",
+            "image": "shopify://shop_images/19.png",
+            "custom_icon": "",
+            "title": "<strong>Exclusive First Access</strong>",
+            "title_size": "h4",
+            "text": "<p>Get first dibs on new designs and models from our vendors<br/><br/></p>",
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        },
+        "guarantee_j4rxA7": {
+          "type": "guarantee",
+          "settings": {
+            "icon": "leaf",
+            "icon_size": "large",
+            "image": "shopify://shop_images/16.png",
+            "custom_icon": "",
+            "title": "<strong>20+ Years of Expertise</strong>",
+            "title_size": "h4",
+            "text": "<p>We’re pioneers in the flower preservation industry</p>",
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        },
+        "guarantee-2": {
+          "type": "guarantee",
+          "settings": {
+            "icon": "recycle",
+            "icon_size": "large",
+            "image": "shopify://shop_images/17.png",
+            "custom_icon": "",
+            "title": "<strong>Personalized VIP Care</strong>",
+            "title_size": "h4",
+            "text": "<p>Every client receives hands-on, custom guidance from deposit to delivery<br/></p>",
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        },
+        "53159e9f-829b-48c8-90cc-e4356efbc4d7": {
+          "type": "guarantee",
+          "settings": {
+            "icon": "shield",
+            "icon_size": "large",
+            "image": "shopify://shop_images/18.png",
+            "custom_icon": "",
+            "title": "<strong>Trusted by Brides & Families</strong>",
+            "title_size": "h4",
+            "text": "<p>Earned the trust of thousands who wanted their memories preserved forever.</p>",
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        }
+      },
+      "block_order": [
+        "guarantee-0",
+        "guarantee_j4rxA7",
+        "guarantee-2",
+        "53159e9f-829b-48c8-90cc-e4356efbc4d7"
+      ],
+      "disabled": true,
+      "name": "Why Brides Trust Flohral Preservation",
+      "settings": {
+        "layout": "default",
+        "column_alignment": "center",
+        "horizontal_content": false,
+        "full_width": false,
+        "show_divider": false,
+        "columns_desktop": 4,
+        "eyebrow": "WE LOVE YOUR BLOOMS",
+        "heading": "Why Brides Trust Flohral Preservation",
+        "heading_size": "h1",
+        "heading_tag": "h2",
+        "heading_color": "#d64a76",
+        "eyebrow_color": "#6b6b6b",
+        "content_max_width": 1200,
+        "icon_area_width": 40,
+        "text_max_width": 260,
+        "icon_size_small": 28,
+        "icon_size_medium": 40,
+        "icon_size_large": 64,
+        "icon_scale": 100,
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "use_custom_colors": false,
+        "colors_icon": "#ffffff",
+        "colors_text": "#1a1b18",
+        "colors_background": "#ffffff",
+        "gradient_background": "",
+        "colors_highlight": "#ffb503",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "margin_bottom": "0",
+        "enable_highlight": false,
+        "highlight_style": "marker"
+      }
+    },
+    "custom_lead_capture_banner_UPrTYr1": {
+      "type": "custom-lead-capture-banner",
+      "name": "Lead capture banner",
+      "settings": {
+        "bg_image": "shopify://shop_images/Copy_of_Copy_of_blush_pink_roses_romantic_floral_background.webp",
+        "card_max_width": 1200,
+        "card_bg": "#ffffff",
+        "card_radius": 0,
+        "card_padding_y": 34,
+        "card_padding_x": 34,
+        "side_padding": 20,
+        "left_image": "shopify://shop_images/Wedding_Guide_1.webp",
+        "right_image": "shopify://shop_images/Wedding_Guide_2.webp",
+        "side_image_width": 180,
+        "image_tilt": 8,
+        "text_max_width": 520,
+        "eyebrow": "Planning Your Wedding? Read This First",
+        "heading": "<strong>8 Details Every Bride Wishes She Knew Before Her Wedding Day. </strong>Here's How To Avoid The Biggest Mistakes Brides Don’t Talk About",
+        "heading_tag": "h2",
+        "heading_size": 30,
+        "button_label": "DOWNLOAD THE GUIDE",
+        "button_link": "https://flohralpreservations.com/8-things-every-brides-wishes",
+        "button_bg": "#bb3263",
+        "button_text": "#ffffff",
+        "button_radius": 2,
+        "eyebrow_color": "#6b6b6b",
+        "heading_color": "#bb3263",
+        "use_highlight": false,
+        "highlight_style": "marker",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "custom_faq_KKcLmV": {
+      "type": "custom-faq",
+      "blocks": {
+        "faq_w3AFqC": {
+          "type": "faq",
+          "settings": {
+            "question": "How does flower preservation work?",
+            "answer": "<p>Your flowers are carefully dried, artistically arranged, and preserved in resin through a multi-stage process. Each piece is made by hand and cured over time to create a lasting keepsake that honors your memories.</p>"
+          }
+        },
+        "faq_nBtHp9": {
+          "type": "faq",
+          "settings": {
+            "question": "How long does the preservation process take?",
+            "answer": "<p>Turnaround is typically <strong>6–8 months</strong> from the time your deposit is received. This timeline reflects the detailed drying and resin curing process required for long-lasting results.</p>"
+          }
+        },
+        "faq_i6pYnk": {
+          "type": "faq",
+          "settings": {
+            "question": "When do I pay and how do I secure my order?",
+            "answer": "<p>A <strong>$150 deposit</strong> secures your spot in our floral preservation schedule and reserves your place in our calendar because we only have a limited number of spots in each month.</p>"
+          }
+        },
+        "faq_jWEVbQ": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I approve or customize the design?",
+            "answer": "<p>Yes. You’ll receive a custom layout for approval before resin work begins. Small adjustments are welcome, and upgrades or changes may be made depending on your order.</p>"
+          }
+        },
+        "faq_DA8q6W": {
+          "type": "faq",
+          "settings": {
+            "question": "Do you ship nationwide?",
+            "answer": "<p>Yes. We work with clients nationwide and ship finished resin keepsakes using trusted carriers. Shipping fees vary based on item size and destination.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_w3AFqC",
+        "faq_nBtHp9",
+        "faq_i6pYnk",
+        "faq_jWEVbQ",
+        "faq_DA8q6W"
+      ],
+      "name": "Custom FAQ (accordion)",
+      "settings": {
+        "full_width": false,
+        "show_divider": false,
+        "eyebrow": "",
+        "heading": "<strong>Frequently Asked Questions</strong>",
+        "heading_tag": "h2",
+        "heading_size": "h1",
+        "single_open": true,
+        "open_first": false,
+        "max_width": 980,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "bg_color": "#ffffff",
+        "heading_color": "#bb3263",
+        "eyebrow_color": "#6b6b6b",
+        "question_color": "#1a1b18",
+        "answer_color": "#6b6b6b",
+        "divider_color": "#e6e6e6",
+        "icon_color": "#bb3263",
+        "enable_card_bg": false,
+        "card_bg_color": "#f7e9ef",
+        "card_radius": 14,
+        "card_padding_y": 28,
+        "card_padding_x": 34
+      }
+    },
+    "custom_split_section_pJEP97": {
+      "type": "custom-split-section",
+      "blocks": {
+        "benefit_dmyaFY": {
+          "type": "benefit",
+          "settings": {
+            "label": "WOMAN OWNED AND OPERATED"
+          }
+        },
+        "benefit_X9Rhpq": {
+          "type": "benefit",
+          "settings": {
+            "label": "TRUSTED BY TOP FLORISTS IN NEW YORK"
+          }
+        },
+        "benefit_hQm3MA": {
+          "type": "benefit",
+          "settings": {
+            "label": "LIMITED SPOTS EACH MONTH"
+          }
+        },
+        "benefit_zMYqtt": {
+          "type": "benefit",
+          "settings": {
+            "label": "VIP COMMUNICATION & CUSTOM SERVICE"
+          }
+        }
+      },
+      "block_order": [
+        "benefit_dmyaFY",
+        "benefit_X9Rhpq",
+        "benefit_hQm3MA",
+        "benefit_zMYqtt"
+      ],
+      "name": "Split hero + benefit bar",
+      "settings": {
+        "show_divider": false,
+        "image": "shopify://shop_images/hexagon_preserved_wedding_roses_resin_with_candle_holders.webp",
+        "reverse_layout": false,
+        "eyebrow": "SAVE THE MOMENTS YOU SHOULD NEVER FORGET",
+        "heading": "Don’t Let Your Special Day Become A Memory",
+        "text": "<p>You only get one bouquet. One day. One chance to keep it and share with future generations. Most brides say \"I wish I booked sooner.\" We promise you'll be glad you did.</p>",
+        "heading_tag": "h2",
+        "heading_size": "h1",
+        "content_bg_color": "#fff8fb",
+        "content_bg_image": "shopify://shop_images/Copy_of_Background_1.webp",
+        "content_overlay_opacity": 0,
+        "button_label": "Reserve Your spot",
+        "button_link": "shopify://products/wedding-bouquet-preservation-reservation-deposit",
+        "use_theme_button": false,
+        "button_bg": "#bb3263",
+        "button_text": "#ffffff",
+        "show_bar": false,
+        "bar_bg_color": "#bb3263",
+        "bar_text_color": "#ffffff",
+        "bar_gap": 16,
+        "radius": 0,
+        "min_height_desktop": 520,
+        "min_height_mobile": 460,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "value_prop_strip_X8YAd7": {
+      "type": "value-prop-strip",
+      "blocks": {
+        "text_HPWPpT": {
+          "type": "text",
+          "settings": {
+            "text": "Ships Nationwide Across the US",
+            "link": ""
+          }
+        },
+        "text_XFV7C7": {
+          "type": "text",
+          "settings": {
+            "text": "TRUSTED BY TOP FLORISTS IN NEW YORK",
+            "link": ""
+          }
+        },
+        "text_Xetjgj": {
+          "type": "text",
+          "settings": {
+            "text": "VIP Communication & White-Glove Support",
+            "link": ""
+          }
+        },
+        "text_GTWFP7": {
+          "type": "text",
+          "settings": {
+            "text": "Handcrafted, One-of-a-Kind Preservation Pieces",
+            "link": ""
+          }
+        },
+        "text_hLYmDJ": {
+          "type": "text",
+          "settings": {
+            "text": "Museum-Grade Resin for Long-Term Clarity",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_HPWPpT",
+        "text_XFV7C7",
+        "text_Xetjgj",
+        "text_GTWFP7",
+        "text_hLYmDJ"
+      ],
+      "name": "Value prop strip",
+      "settings": {
+        "full_width": true,
+        "disable_default_content": false,
+        "bg_color": "#bb3263",
+        "text_color": "#ffffff",
+        "border_size": 0,
+        "border_color": "#bb3263",
+        "padding_y": 10,
+        "padding_x": 16,
+        "gap": 36,
+        "font_size": 11,
+        "letter_spacing": 12,
+        "font_weight": "700",
+        "uppercase": true,
+        "text_opacity": 100,
+        "icon_size": 18,
+        "icon_opacity": 100,
+        "enable_carousel": false,
+        "carousel_speed": 16,
+        "pause_on_hover": true,
+        "mobile_behavior": "scroll"
+      }
+    },
+    "belhor_and_after_HkNx9f": {
+      "type": "belhor-and-after",
+      "blocks": {
+        "slide_yMHDPD": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/0337F227-74E3-4F09-9B59-BB3B7A2267A0.webp",
+            "alt_text": "Transformation"
+          }
+        },
+        "slide_nKQpqf": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/9C6944C1-455F-4ABA-842B-C5EB775CAAEE.webp",
+            "alt_text": "Transformation"
+          }
+        },
+        "slide_MXhLY8": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/DB01ACD8-C7C7-4F1A-A52E-08B4A46B8A18.webp",
+            "alt_text": "Transformation"
+          }
+        },
+        "slide_GqaTx8": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Copy_of_F19E3DEF-AB0D-465E-A648-6148956A3DCF.png",
+            "alt_text": "Transformation"
+          }
+        },
+        "slide_YiVhrb": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Copy_of_88A4BD34-8037-4348-825C-3F2FC666A997.png",
+            "alt_text": "Transformation"
+          }
+        },
+        "slide_MTqaFT": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Copy_of_1E984158-9D84-4AAD-B2CF-D6E637B53505.png",
+            "alt_text": "Transformation"
+          }
+        }
+      },
+      "block_order": [
+        "slide_yMHDPD",
+        "slide_nKQpqf",
+        "slide_MXhLY8",
+        "slide_GqaTx8",
+        "slide_YiVhrb",
+        "slide_MTqaFT"
+      ],
+      "name": "Transformations carousel",
+      "settings": {
+        "eyebrow": "OUR TRANSFORMATIONS",
+        "title": "BeFlohr & After",
+        "heading_tag": "h2",
+        "heading_size": 42,
+        "eyebrow_size": 11,
+        "heading_color": "#bb3263",
+        "eyebrow_color": "#2b2b2b",
+        "autoplay": true,
+        "speed": 1.2,
+        "slide_width": 300,
+        "slide_width_mobile": 240,
+        "gap": 14,
+        "radius": 6,
+        "aspect_ratio_desktop": "3 / 4",
+        "aspect_ratio_mobile": "3 / 4",
+        "show_whole_image": true,
+        "media_height": 530,
+        "media_height_mobile": 260,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "custom_hero_section_aLwdmd",
+    "value_prop_strip_DLezfU",
+    "value_prop_strip_XnPLgL",
+    "custom_heading_66R8aJ",
+    "1657186368671b5306",
+    "1653279596fd537671",
+    "reveal-banner",
+    "custom_featured_collection_LREPij",
+    "guarantees_xDqgEW",
+    "custom_featured_collection_jbqJ9R",
+    "value_prop_strip_iqydyA",
+    "custom_feauted_multiple_collections_3UaHfD",
+    "quote_image_strip_9f6azV",
+    "custom_process_cfb9Y6",
+    "custom_heading_a4HEHV",
+    "custom_liquid_eebixX",
+    "373a156c-25da-4d93-aad2-e35ef2842efc",
+    "guarantees",
+    "custom_lead_capture_banner_UPrTYr1",
+    "custom_faq_KKcLmV",
+    "custom_split_section_pJEP97",
+    "value_prop_strip_X8YAd7",
+    "belhor_and_after_HkNx9f"
+  ]
+}

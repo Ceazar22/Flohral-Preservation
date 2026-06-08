@@ -1,0 +1,110 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.footer-group.name",
+  "type": "footer",
+  "sections": {
+    "custom_footer_ygpDUk": {
+      "type": "custom-footer",
+      "name": "Custom footer (simple)",
+      "settings": {
+        "margin_top": 52,
+        "line_offset": 0,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "logo": "shopify://shop_images/Flohral_preservation_logo.webp",
+        "logo_width": 350,
+        "mobile_logo_width": 300,
+        "tagline": "",
+        "description": "<p>Flohral Preservation transforms your special flowers into forever keepsakes, preserving and sharing the love memories they hold forever.</p>",
+        "show_menu_headings": false,
+        "menu_1_heading": "Menu",
+        "menu_1": "footer",
+        "menu_2_heading": "Resources",
+        "menu_2": "footer-menu-copy",
+        "use_custom_mobile_menus": true,
+        "mobile_menu_1": "footer-menu-mobile-1",
+        "mobile_menu_2": "footer-menu-mobile",
+        "mobile_menu_gap": 24,
+        "mobile_menu_font_size": 16,
+        "mobile_description_font_size": 14,
+        "newsletter_enable": true,
+        "newsletter_text": "<p>Join to get exclusive deals, news, and updates on special events.</p>",
+        "mobile_newsletter_text_size": 16,
+        "form_source": "shopify",
+        "newsletter_iframe": "<iframe\n    src=\"https://the.flohralpreservation.com/widget/form/gGrm8h70l8o4nBxvUzwm\"\n    style=\"width:100%; height:auto; border:none; border-radius:0; display:block; margin-bottom:-100px; padding:0;\"\n    id=\"inline-gGrm8h70l8o4nBxvUzwm\"\n    data-layout=\"{'id':'INLINE'}\"\n    data-trigger-type=\"alwaysShow\"\n    data-trigger-value=\"\"\n    data-activation-type=\"alwaysActivated\"\n    data-activation-value=\"\"\n    data-deactivation-type=\"neverDeactivate\"\n    data-deactivation-value=\"\"\n    data-form-name=\"Shopify Newsletter Form ✅\"\n    data-layout-iframe-id=\"inline-gGrm8h70l8o4nBxvUzwm\"\n    data-form-id=\"gGrm8h70l8o4nBxvUzwm\"\n    title=\"Shopify Newsletter Form ✅\">\n</iframe>\n\n<script src=\"https://the.flohralpreservation.com/js/form_embed.js\"></script>",
+        "email_placeholder": "Your email",
+        "button_label": "JOIN NOW",
+        "success_message": "Thanks! Your message has been sent.",
+        "show_instagram": true,
+        "instagram_label": "Check out our Instagram",
+        "instagram_handle": "@flohral_preservation",
+        "instagram_url": "https://www.instagram.com/flohral_preservation/",
+        "copyright_text": "All Rights Reserved",
+        "copyright_font_size": 15,
+        "privacy_label": "Privacy Policy",
+        "privacy_link": "",
+        "terms_label": "Terms and Conditions",
+        "terms_link": "",
+        "bg_color": "#ffffff",
+        "text_color": "#2b2b2b",
+        "muted_color": "#6b6b6b",
+        "accent_color": "#bb3263",
+        "line_color": "#e6e6e6"
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "footer-0": {
+          "type": "link_list",
+          "settings": {
+            "heading": "DISCOVER FLOHRAL",
+            "menu": "main-menu",
+            "enable_highlight": false,
+            "highlight_style": "marker"
+          }
+        }
+      },
+      "block_order": [
+        "footer-0"
+      ],
+      "disabled": true,
+      "settings": {
+        "show_divider": true,
+        "newsletter_enable": true,
+        "newsletter_heading": "Exclusive benefits",
+        "newsletter_text": "<p>Apply for our free membership to receive exclusive deals, news, and events.</p>",
+        "return_url": "",
+        "enable_follow_on_shop": true,
+        "show_social": true,
+        "social_heading": "",
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "payment_enable": true,
+        "show_policy": true,
+        "copyright_text": "All rights reserved.",
+        "colors_text": "#42474c",
+        "colors_heading": "#6b7177",
+        "colors_link": "#212326",
+        "colors_border": "#d2d5d9",
+        "colors_background": "#ffffff",
+        "gradient_background": "",
+        "colors_highlight": "#ffb503",
+        "enable_highlight": false,
+        "highlight_style": "marker"
+      }
+    }
+  },
+  "order": [
+    "custom_footer_ygpDUk",
+    "footer"
+  ]
+}

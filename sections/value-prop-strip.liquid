@@ -1,0 +1,474 @@
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --strip-bg: {{ section.settings.bg_color }};
+    --strip-text: {{ section.settings.text_color }};
+    --strip-border-color: {{ section.settings.border_color }};
+    --strip-border-size: {{ section.settings.border_size }}px;
+
+    --strip-pad-y: {{ section.settings.padding_y }}px;
+    --strip-pad-x: {{ section.settings.padding_x }}px;
+
+    --strip-font-size: {{ section.settings.font_size }}px;
+
+    /* letter spacing stored as integer: 12 => 0.12em */
+    --strip-letter-spacing: {{ section.settings.letter_spacing | divided_by: 100.0 }}em;
+
+    --strip-gap: {{ section.settings.gap }}px;
+
+    --strip-icon-size: {{ section.settings.icon_size }}px;
+    --strip-font-weight: {{ section.settings.font_weight }};
+
+    --strip-speed: {{ section.settings.carousel_speed }}s;
+  }
+{%- endstyle -%}
+
+<style>
+  #shopify-section-{{ section.id }} .value-strip{
+    background: var(--strip-bg);
+    color: var(--strip-text);
+    border-top: var(--strip-border-size) solid var(--strip-border-color);
+    border-bottom: var(--strip-border-size) solid var(--strip-border-color);
+  }
+
+  #shopify-section-{{ section.id }} .value-strip__wrap{
+    padding: var(--strip-pad-y) var(--strip-pad-x);
+    position: relative;
+  }
+
+  /* Default inner (non-carousel) */
+  #shopify-section-{{ section.id }} .value-strip__inner{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--strip-gap);
+    font-size: var(--strip-font-size);
+    letter-spacing: var(--strip-letter-spacing);
+    font-weight: var(--strip-font-weight);
+    line-height: 1;
+  }
+
+  #shopify-section-{{ section.id }} .value-strip__item{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-transform: {% if section.settings.uppercase %}uppercase{% else %}none{% endif %};
+    white-space: nowrap;
+    opacity: {{ section.settings.text_opacity | divided_by: 100.0 }};
+    flex: 0 0 auto;
+  }
+
+  #shopify-section-{{ section.id }} .value-strip__item a{
+    color: inherit;
+    text-decoration: none;
+  }
+
+  #shopify-section-{{ section.id }} .value-strip__item a:hover{
+    text-decoration: underline;
+  }
+
+  /* Icon block */
+  #shopify-section-{{ section.id }} .value-strip__icon{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--strip-icon-size);
+    height: var(--strip-icon-size);
+    flex: 0 0 auto;
+    opacity: {{ section.settings.icon_opacity | divided_by: 100.0 }};
+  }
+
+  #shopify-section-{{ section.id }} .value-strip__icon img,
+  #shopify-section-{{ section.id }} .value-strip__icon svg{
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .value-strip__icon svg{
+    color: var(--strip-text);
+  }
+
+  /* Mobile behavior (when NOT rotating) */
+  @media (max-width: 989px){
+    #shopify-section-{{ section.id }} .value-strip__inner{
+      {% if section.settings.mobile_behavior == 'scroll' %}
+        justify-content: flex-start;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      {% else %}
+        flex-wrap: wrap;
+      {% endif %}
+    }
+
+    #shopify-section-{{ section.id }} .value-strip__inner::-webkit-scrollbar{
+      display:none;
+    }
+  }
+
+  /* =========================
+     ROTATION MODE
+     ========================= */
+  #shopify-section-{{ section.id }} .value-strip--carousel .value-strip__wrap{
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .value-strip--carousel .value-strip__inner{
+    justify-content: flex-start;
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .value-strip__track{
+    display: flex;
+    align-items: center;
+    gap: var(--strip-gap);
+    width: max-content;
+    min-width: max-content;
+    will-change: transform;
+    animation: px-strip-marquee var(--strip-speed) linear infinite;
+  }
+
+  {% if section.settings.pause_on_hover %}
+  @media (hover:hover){
+    #shopify-section-{{ section.id }} .value-strip--carousel .value-strip__wrap:hover .value-strip__track{
+      animation-play-state: paused;
+    }
+  }
+  {% endif %}
+
+  @media (prefers-reduced-motion: reduce){
+    #shopify-section-{{ section.id }} .value-strip__track{
+      animation: none !important;
+      transform: none !important;
+    }
+  }
+
+  @keyframes px-strip-marquee{
+    from { transform: translateX(0); }
+    to   { transform: translateX(-25%); }
+  }
+
+  /* =========================
+     MOBILE MANUAL SLIDER MODE
+     ========================= */
+  #shopify-section-{{ section.id }} .value-strip__mobile-nav{
+    display: none;
+  }
+
+  @media (max-width: 989px){
+    #shopify-section-{{ section.id }} .value-strip--manual .value-strip__wrap{
+      overflow: hidden;
+    }
+
+    #shopify-section-{{ section.id }} .value-strip--manual .value-strip__inner{
+      position: relative;
+      justify-content: center;
+      overflow: hidden;
+      min-height: calc(var(--strip-icon-size) + 4px);
+    }
+
+    #shopify-section-{{ section.id }} .value-strip--manual .value-strip__item,
+    #shopify-section-{{ section.id }} .value-strip--manual .value-strip__icon{
+      display: none;
+      justify-content: center;
+      text-align: center;
+      margin: 0 auto;
+      max-width: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .value-strip--manual .value-strip__mobile-slide.is-active{
+      display: inline-flex;
+    }
+
+    #shopify-section-{{ section.id }} .value-strip--manual .value-strip__mobile-nav{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    #shopify-section-{{ section.id }} .value-strip--manual .value-strip__nav-btn{
+      pointer-events: auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--strip-text);
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    #shopify-section-{{ section.id }} .value-strip--manual .value-strip__nav-btn svg{
+      width: 14px;
+      height: 14px;
+      display: block;
+    }
+
+    #shopify-section-{{ section.id }} .value-strip--manual .value-strip__nav-btn--prev{
+      margin-left: -4px;
+    }
+
+    #shopify-section-{{ section.id }} .value-strip--manual .value-strip__nav-btn--next{
+      margin-right: -4px;
+    }
+
+    #shopify-section-{{ section.id }} .value-strip--manual .value-strip__inner{
+      padding-left: 26px;
+      padding-right: 26px;
+    }
+  }
+</style>
+
+{%- capture default_strip_items -%}
+  <div class="value-strip__item value-strip__mobile-slide" role="listitem">WOMAN OWNED AND OPERATED</div>
+  <div class="value-strip__item value-strip__mobile-slide" role="listitem">Trusted by top florists in the usa</div>
+  <div class="value-strip__item value-strip__mobile-slide" role="listitem">MUSEUM-GRADE RESIN FOR LONG-TERM CLARITY</div>
+  <div class="value-strip__item value-strip__mobile-slide" role="listitem">VIP COMMUNICATION &amp; WHITE-GLOVE SUPPORT</div>
+{%- endcapture -%}
+
+{%- capture custom_strip_items -%}
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+
+      {%- when 'text' -%}
+        <div class="value-strip__item value-strip__mobile-slide" role="listitem" {{ block.shopify_attributes }}>
+          {%- if block.settings.link != blank -%}
+            <a href="{{ block.settings.link }}">
+              {{ block.settings.text }}
+            </a>
+          {%- else -%}
+            {{ block.settings.text }}
+          {%- endif -%}
+        </div>
+
+      {%- when 'icon' -%}
+        <div class="value-strip__icon value-strip__mobile-slide" aria-hidden="true" {{ block.shopify_attributes }}>
+          {%- if block.settings.icon_image != blank -%}
+            {{ block.settings.icon_image
+              | image_url: width: 200
+              | image_tag: loading: 'lazy', alt: block.settings.icon_alt
+            }}
+          {%- else -%}
+            {{ block.settings.icon_svg }}
+          {%- endif -%}
+        </div>
+
+    {%- endcase -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- liquid
+  assign strip_items = default_strip_items
+  if section.settings.disable_default_content and custom_strip_items != blank
+    assign strip_items = custom_strip_items
+  endif
+-%}
+
+<div class="value-strip {% if section.settings.enable_carousel %}value-strip--carousel{% else %}value-strip--manual{% endif %}">
+  <div class="value-strip__wrap {% unless section.settings.full_width %}page-width{% endunless %}">
+    <div class="value-strip__inner" role="list" aria-label="Highlights" id="value-strip-inner-{{ section.id }}">
+      {%- if section.settings.enable_carousel -%}
+        <div class="value-strip__track" aria-hidden="true">
+          {{ strip_items }}
+          {{ strip_items }}
+          {{ strip_items }}
+          {{ strip_items }}
+        </div>
+        <span class="visually-hidden">{{ strip_items | strip_html }}</span>
+      {%- else -%}
+        {{ strip_items }}
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.enable_carousel == false -%}
+      <div class="value-strip__mobile-nav" id="value-strip-nav-{{ section.id }}">
+        <button type="button" class="value-strip__nav-btn value-strip__nav-btn--prev" aria-label="Previous value">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M15.5 4.5L8 12l7.5 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button type="button" class="value-strip__nav-btn value-strip__nav-btn--next" aria-label="Next value">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M8.5 4.5L16 12l-7.5 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{%- if section.settings.enable_carousel == false -%}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const sectionEl = document.getElementById('shopify-section-{{ section.id }}');
+      if (!sectionEl) return;
+
+      const inner = sectionEl.querySelector('#value-strip-inner-{{ section.id }}');
+      const nav = sectionEl.querySelector('#value-strip-nav-{{ section.id }}');
+      if (!inner || !nav) return;
+
+      const slides = Array.from(inner.querySelectorAll('.value-strip__mobile-slide'));
+      const prevBtn = nav.querySelector('.value-strip__nav-btn--prev');
+      const nextBtn = nav.querySelector('.value-strip__nav-btn--next');
+
+      if (!slides.length || !prevBtn || !nextBtn) return;
+
+      let currentIndex = 0;
+
+      function isMobile() {
+        return window.innerWidth <= 989;
+      }
+
+      function showSlide(index) {
+        slides.forEach(function (slide, i) {
+          slide.classList.toggle('is-active', i === index);
+        });
+      }
+
+      function resetDesktop() {
+        slides.forEach(function (slide) {
+          slide.classList.remove('is-active');
+        });
+      }
+
+      function applyMode() {
+        if (isMobile()) {
+          showSlide(currentIndex);
+        } else {
+          resetDesktop();
+        }
+      }
+
+      prevBtn.addEventListener('click', function () {
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        showSlide(currentIndex);
+      });
+
+      nextBtn.addEventListener('click', function () {
+        currentIndex = (currentIndex + 1) % slides.length;
+        showSlide(currentIndex);
+      });
+
+      window.addEventListener('resize', applyMode);
+
+      applyMode();
+    });
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Value prop strip",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "checkbox", "id": "full_width", "label": "Full width", "default": true },
+    { "type": "checkbox", "id": "disable_default_content", "label": "Disable default content and use custom block content", "default": false },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#bb3263" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#ffffff" },
+
+    { "type": "header", "content": "Border" },
+    { "type": "range", "id": "border_size", "min": 0, "max": 6, "step": 1, "unit": "px", "label": "Border size", "default": 0 },
+    { "type": "color", "id": "border_color", "label": "Border color", "default": "#bb3263" },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_y", "min": 6, "max": 40, "step": 2, "unit": "px", "label": "Padding Y", "default": 10 },
+    { "type": "range", "id": "padding_x", "min": 10, "max": 60, "step": 2, "unit": "px", "label": "Padding X", "default": 16 },
+    { "type": "range", "id": "gap", "min": 8, "max": 80, "step": 2, "unit": "px", "label": "Gap between items", "default": 36 },
+
+    { "type": "header", "content": "Typography" },
+    { "type": "range", "id": "font_size", "min": 10, "max": 18, "step": 1, "unit": "px", "label": "Font size", "default": 11 },
+
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "label": "Letter spacing (0–40 = 0.00–0.40em)",
+      "default": 12
+    },
+
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "default": "700",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra bold" }
+      ]
+    },
+    { "type": "checkbox", "id": "uppercase", "label": "Uppercase", "default": true },
+    { "type": "range", "id": "text_opacity", "min": 60, "max": 100, "step": 5, "unit": "%", "label": "Text opacity", "default": 100 },
+
+    { "type": "header", "content": "Icon" },
+    { "type": "range", "id": "icon_size", "min": 12, "max": 40, "step": 1, "unit": "px", "label": "Icon size", "default": 18 },
+    { "type": "range", "id": "icon_opacity", "min": 60, "max": 100, "step": 5, "unit": "%", "label": "Icon opacity", "default": 100 },
+
+    { "type": "header", "content": "Rotation" },
+    { "type": "checkbox", "id": "enable_carousel", "label": "Enable rotation", "default": true },
+    { "type": "range", "id": "carousel_speed", "min": 6, "max": 40, "step": 1, "unit": "s", "label": "Rotation speed (lower = faster)", "default": 16 },
+    { "type": "checkbox", "id": "pause_on_hover", "label": "Pause on hover", "default": true },
+
+    { "type": "header", "content": "Mobile" },
+    {
+      "type": "select",
+      "id": "mobile_behavior",
+      "label": "Mobile layout (when rotation is off)",
+      "default": "scroll",
+      "options": [
+        { "value": "scroll", "label": "Horizontal scroll" },
+        { "value": "wrap", "label": "Wrap to lines" }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        { "type": "inline_richtext", "id": "text", "label": "Text", "default": "WOMAN OWNED AND OPERATED" },
+        { "type": "url", "id": "link", "label": "Optional link" }
+      ]
+    },
+    {
+      "type": "icon",
+      "name": "Icon",
+      "settings": [
+        { "type": "image_picker", "id": "icon_image", "label": "Icon image (optional)" },
+        { "type": "text", "id": "icon_alt", "label": "Alt text", "default": "Divider icon" },
+        {
+          "type": "liquid",
+          "id": "icon_svg",
+          "label": "SVG icon (used if no image)",
+          "default": "<svg viewBox='0 0 24 24' aria-hidden='true'><circle cx='12' cy='12' r='10' fill='none' stroke='currentColor' stroke-width='2'/><path d='M8 8l8 8M16 8l-8 8' stroke='currentColor' stroke-width='2' stroke-linecap='round'/></svg>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Value prop strip",
+      "blocks": [
+        { "type": "text", "settings": { "text": "WOMAN OWNED AND OPERATED" } },
+        { "type": "text", "settings": { "text": "TRUSTED BY TOP FLORISTS IN NEW YORK" } },
+        { "type": "icon" },
+        { "type": "text", "settings": { "text": "LIMITED SPOTS EACH MONTH" } },
+        { "type": "text", "settings": { "text": "VIP COMMUNICATION & CUSTOM SERVICE" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
