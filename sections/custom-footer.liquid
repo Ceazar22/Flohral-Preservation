@@ -204,7 +204,7 @@
     width: calc(100% + 40px) !important;
     max-width: none !important;
     margin-left: -20px;
-    min-height: 400px;
+    min-height: 0 !important;
     border: 0 !important;
     display: block;
   }
@@ -277,7 +277,7 @@
   }
 
   #shopify-section-{{ section.id }} .cf__ig{
-    margin-top: 14px;
+    margin-top: 20px;
   }
 
   #shopify-section-{{ section.id }} .cf__ig-label{
@@ -369,7 +369,7 @@
   @media (max-width: 749px){
     #shopify-section-{{ section.id }} .cf__top{
       padding-top: 34px;
-      padding-bottom: 18px;
+      padding-bottom: 28px;
     }
 
     #shopify-section-{{ section.id }} .cf__grid{
@@ -380,13 +380,18 @@
 
     #shopify-section-{{ section.id }} .cf__brand{
       display: grid;
-      justify-items: center;
+      justify-items: start;
+      row-gap: 12px;
       width: 100%;
+      max-width: 34ch;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
     }
 
     #shopify-section-{{ section.id }} .cf__brand-logo{
-      justify-content: center;
-      margin-bottom: 10px;
+      justify-content: flex-start;
+      margin-bottom: 4px;
     }
 
     #shopify-section-{{ section.id }} .cf__brand-logo img{
@@ -395,10 +400,14 @@
 
     #shopify-section-{{ section.id }} .cf__desc{
       max-width: 34ch;
-      margin-left: auto;
-      margin-right: auto;
       font-size: var(--cf-mobile-desc-size);
       line-height: 1.35;
+    }
+
+    #shopify-section-{{ section.id }} .cf__ig--brand{
+      margin-top: 4px;
+      text-align: left;
+      justify-self: start;
     }
 
     #shopify-section-{{ section.id }} nav.cf__col{
@@ -449,10 +458,6 @@
       margin-right: auto;
     }
 
-    #shopify-section-{{ section.id }} .cf__ig{
-      text-align: center;
-    }
-
     #shopify-section-{{ section.id }} .cf__bottom-inner{
       justify-content: center;
       text-align: center;
@@ -491,6 +496,30 @@
           <div class="cf__desc rte">
             {{ section.settings.description }}
           </div>
+
+          {%- if section.settings.show_instagram and section.settings.instagram_handle != blank -%}
+            <div class="cf__ig cf__ig--brand">
+              <div class="cf__ig-label">{{ section.settings.instagram_label }}</div>
+
+              {%- assign ig_url = section.settings.instagram_url | default: 'https://www.instagram.com/' -%}
+
+              <a
+                class="cf__ig-link"
+                href="{{ ig_url }}"
+                target="_blank"
+                rel="noopener"
+                aria-label="Instagram">
+                <span class="cf__ig-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M7.5 2.8h9A4.7 4.7 0 0 1 21.2 7.5v9a4.7 4.7 0 0 1-4.7 4.7h-9A4.7 4.7 0 0 1 2.8 16.5v-9A4.7 4.7 0 0 1 7.5 2.8Z" stroke="currentColor" stroke-width="1.6"/>
+                    <path d="M12 16.1a4.1 4.1 0 1 0 0-8.2 4.1 4.1 0 0 0 0 8.2Z" stroke="currentColor" stroke-width="1.6"/>
+                    <path d="M17.3 6.7h.01" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+                  </svg>
+                </span>
+                <span class="cf__ig-handle">{{ section.settings.instagram_handle }}</span>
+              </a>
+            </div>
+          {%- endif -%}
         </div>
 
         {%- if has_menu_1 -%}
@@ -590,29 +619,6 @@
             {%- endif -%}
           {%- endif -%}
 
-          {%- if section.settings.show_instagram and section.settings.instagram_handle != blank -%}
-            <div class="cf__ig">
-              <div class="cf__ig-label">{{ section.settings.instagram_label }}</div>
-
-              {%- assign ig_url = section.settings.instagram_url | default: 'https://www.instagram.com/' -%}
-
-              <a
-                class="cf__ig-link"
-                href="{{ ig_url }}"
-                target="_blank"
-                rel="noopener"
-                aria-label="Instagram">
-                <span class="cf__ig-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M7.5 2.8h9A4.7 4.7 0 0 1 21.2 7.5v9a4.7 4.7 0 0 1-4.7 4.7h-9A4.7 4.7 0 0 1 2.8 16.5v-9A4.7 4.7 0 0 1 7.5 2.8Z" stroke="currentColor" stroke-width="1.6"/>
-                    <path d="M12 16.1a4.1 4.1 0 1 0 0-8.2 4.1 4.1 0 0 0 0 8.2Z" stroke="currentColor" stroke-width="1.6"/>
-                    <path d="M17.3 6.7h.01" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
-                  </svg>
-                </span>
-                <span class="cf__ig-handle">{{ section.settings.instagram_handle }}</span>
-              </a>
-            </div>
-          {%- endif -%}
         </div>
 
       </div>
