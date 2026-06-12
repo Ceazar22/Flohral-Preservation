@@ -11,19 +11,29 @@
     assign view_url = routes.collections_url
   endif
 
-  assign show_slider = false
+  assign enable_desktop_slider = false
   if section.settings.enable_slider_desktop and collections_to_display > section.settings.columns_desktop
-    assign show_slider = true
-  elsif section.settings.swipe_on_mobile and collections_to_display > 2
+    assign enable_desktop_slider = true
+  endif
+
+  assign enable_mobile_slider = false
+  if section.settings.swipe_on_mobile and collections_to_display > 2
+    assign enable_mobile_slider = true
+  endif
+
+  assign show_slider = false
+  if enable_desktop_slider or enable_mobile_slider
     assign show_slider = true
   endif
 
   assign ul_slider_class = ''
   if show_slider
-    if section.settings.enable_slider_desktop
-      assign ul_slider_class = 'slider slider--tablet-up'
-    else
-      assign ul_slider_class = 'slider slider--tablet'
+    assign ul_slider_class = 'slider'
+    if enable_mobile_slider
+      assign ul_slider_class = ul_slider_class | append: ' slider--tablet'
+    endif
+    if enable_desktop_slider
+      assign ul_slider_class = ul_slider_class | append: ' slider--tablet-up'
     endif
   endif
 -%}
@@ -102,6 +112,28 @@
 
   #shopify-section-{{ section.id }} .fcsi__grid{
     gap: var(--fcsi-gap);
+  }
+
+  @media (min-width: 990px){
+    #shopify-section-{{ section.id }} .fcsi__grid.grid--5-col-desktop > .grid__item{
+      width: calc((100% - (var(--fcsi-gap) * 4)) / 5);
+      max-width: calc((100% - (var(--fcsi-gap) * 4)) / 5);
+    }
+
+    #shopify-section-{{ section.id }} .fcsi__grid.grid--4-col-desktop > .grid__item{
+      width: calc((100% - (var(--fcsi-gap) * 3)) / 4);
+      max-width: calc((100% - (var(--fcsi-gap) * 3)) / 4);
+    }
+
+    #shopify-section-{{ section.id }} .fcsi__grid.grid--3-col-desktop > .grid__item{
+      width: calc((100% - (var(--fcsi-gap) * 2)) / 3);
+      max-width: calc((100% - (var(--fcsi-gap) * 2)) / 3);
+    }
+
+    #shopify-section-{{ section.id }} .fcsi__grid.grid--2-col-desktop > .grid__item{
+      width: calc((100% - var(--fcsi-gap)) / 2);
+      max-width: calc((100% - var(--fcsi-gap)) / 2);
+    }
   }
 
   #shopify-section-{{ section.id }} .fcsi-card{
@@ -238,12 +270,73 @@
   }
 
   @media (max-width: 749px){
+    #shopify-section-{{ section.id }} .fcsi__grid.slider{
+      display: flex;
+      flex-wrap: nowrap;
+      gap: var(--fcsi-gap);
+    }
+
+    #shopify-section-{{ section.id }} .fcsi__grid.slider > .grid__item{
+      flex: 0 0 calc(100% - 56px);
+      width: calc(100% - 56px);
+      min-width: calc(100% - 56px);
+      max-width: calc(100% - 56px);
+    }
+
     #shopify-section-{{ section.id }} .fcsi-card__title{
       font-size: 16px;
     }
 
     #shopify-section-{{ section.id }} .fcsi-btn{
       min-width: 220px;
+    }
+
+    #shopify-section-{{ section.id }} .fcsi__wrap .slider-buttons{
+      position: absolute;
+      top: 38%;
+      left: 0;
+      right: 0;
+      z-index: 5;
+      transform: translateY(-50%);
+      display: flex !important;
+      align-items: center;
+      justify-content: space-between;
+      pointer-events: none;
+      padding: 0 4px;
+    }
+
+    #shopify-section-{{ section.id }} .fcsi__wrap .slider-button{
+      pointer-events: auto;
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
+      min-height: 34px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.9);
+      border: 1px solid rgba(0,0,0,.08);
+      box-shadow: 0 4px 14px rgba(0,0,0,.14);
+      color: #111;
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+    }
+
+    #shopify-section-{{ section.id }} .fcsi__wrap .slider-button[disabled]{
+      opacity: .35;
+    }
+
+    #shopify-section-{{ section.id }} .fcsi__wrap .slider-button svg{
+      width: 14px;
+      height: 14px;
+    }
+
+    #shopify-section-{{ section.id }} .fcsi__wrap .slider-button--prev{
+      transform: translateX(2px);
+    }
+
+    #shopify-section-{{ section.id }} .fcsi__wrap .slider-button--next{
+      transform: translateX(-2px);
     }
   }
 
@@ -315,7 +408,7 @@
                 endif
               -%}
 
-              <li class="grid__item{% if show_slider %} slider__slide{% endif %}" {{ block.shopify_attributes }}>
+              <li id="Slide-{{ section.id }}-{{ forloop.index }}" class="grid__item{% if show_slider %} slider__slide{% endif %}" {{ block.shopify_attributes }}>
                 <div class="fcsi-card">
                   <a class="{{ media_classes }}" href="{{ c.url }}">
                     {%- if section.settings.show_heart -%}
@@ -366,7 +459,7 @@
             {%- endfor -%}
           {%- else -%}
             {%- for i in (1..4) -%}
-              <li class="grid__item{% if show_slider %} slider__slide{% endif %}">
+              <li id="Slide-{{ section.id }}-{{ forloop.index }}" class="grid__item{% if show_slider %} slider__slide{% endif %}">
                 <div class="fcsi-card">
                   <div class="fcsi-card__media has-bg">
                     {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}

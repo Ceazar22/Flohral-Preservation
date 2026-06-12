@@ -124,6 +124,24 @@
       grid-template-columns: 1fr;
     }
   }
+
+  @media (max-width: 749px){
+    #shopify-section-{{ section.id }} .section--padding{
+      padding-bottom: 0;
+    }
+
+    #shopify-section-{{ section.id }} .contact-wrap{
+      padding-bottom: 0;
+    }
+
+    #shopify-section-{{ section.id }} .side-block:last-child{
+      margin-bottom: 0;
+    }
+
+    #shopify-section-{{ section.id }} .side-logo img{
+      margin-top: 0;
+    }
+  }
 </style>
 
 {%- comment -%}
