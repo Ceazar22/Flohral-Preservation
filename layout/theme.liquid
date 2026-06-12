@@ -166,7 +166,50 @@
     {% render 'transition-cover' %}
 
     <div class="transition-body">
-      {% sections 'header-group' %}
+      <div class="site-header-sticky-parent">
+        {% sections 'header-group' %}
+      </div>
+      <script>
+        (function () {
+          var headerParent = document.querySelector('.site-header-sticky-parent');
+          if (!headerParent) return;
+          var lastScrollY = window.scrollY || window.pageYOffset || 0;
+          var scrollStopTimer;
+
+          function updateHeaderOffset() {
+            var height = Math.ceil(headerParent.getBoundingClientRect().height);
+            document.documentElement.style.setProperty('--site-header-height', height + 'px');
+            document.body.classList.add('has-site-fixed-header');
+          }
+
+          function showHeader() {
+            document.body.classList.remove('site-header-is-hidden');
+          }
+
+          function onScroll() {
+            var currentScrollY = window.scrollY || window.pageYOffset || 0;
+            var scrollingDown = currentScrollY > lastScrollY;
+
+            window.clearTimeout(scrollStopTimer);
+
+            if (scrollingDown && currentScrollY > headerParent.offsetHeight) {
+              document.body.classList.add('site-header-is-hidden');
+            }
+
+            scrollStopTimer = window.setTimeout(showHeader, 180);
+            lastScrollY = currentScrollY;
+          }
+
+          updateHeaderOffset();
+          window.addEventListener('load', updateHeaderOffset);
+          window.addEventListener('resize', updateHeaderOffset);
+          window.addEventListener('scroll', onScroll, { passive: true });
+
+          if ('ResizeObserver' in window) {
+            new ResizeObserver(updateHeaderOffset).observe(headerParent);
+          }
+        })();
+      </script>
 
       <div class="transition-content">
         <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">

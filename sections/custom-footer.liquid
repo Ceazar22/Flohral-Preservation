@@ -197,11 +197,13 @@
   #shopify-section-{{ section.id }} .cf__iframe{
     width: 100%;
     max-width: 420px;
+    overflow: hidden;
   }
 
   #shopify-section-{{ section.id }} .cf__iframe iframe{
-    width: 100% !important;
-    max-width: 100% !important;
+    width: calc(100% + 40px) !important;
+    max-width: none !important;
+    margin-left: -20px;
     min-height: 400px;
     border: 0 !important;
     display: block;
@@ -361,6 +363,103 @@
 
     #shopify-section-{{ section.id }} .cf__legal{
       gap: 18px;
+    }
+  }
+
+  @media (max-width: 749px){
+    #shopify-section-{{ section.id }} .cf__top{
+      padding-top: 34px;
+      padding-bottom: 18px;
+    }
+
+    #shopify-section-{{ section.id }} .cf__grid{
+      justify-items: center;
+      text-align: center;
+      gap: 24px;
+    }
+
+    #shopify-section-{{ section.id }} .cf__brand{
+      display: grid;
+      justify-items: center;
+      width: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .cf__brand-logo{
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    #shopify-section-{{ section.id }} .cf__brand-logo img{
+      width: min(100%, var(--cf-mobile-logo-w));
+    }
+
+    #shopify-section-{{ section.id }} .cf__desc{
+      max-width: 34ch;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: var(--cf-mobile-desc-size);
+      line-height: 1.35;
+    }
+
+    #shopify-section-{{ section.id }} nav.cf__col{
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .cf__mobile-menu-wrap{
+      display: block;
+      width: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .cf__mobile-menus{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, max-content));
+      justify-content: center;
+      column-gap: var(--cf-mobile-menu-gap);
+      row-gap: 10px;
+      text-align: left;
+    }
+
+    #shopify-section-{{ section.id }} .cf__mobile-menu{
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      font-size: var(--cf-mobile-menu-font-size);
+      line-height: 1.25;
+    }
+
+    #shopify-section-{{ section.id }} .cf__grid > .cf__col:last-child{
+      width: min(100%, 420px);
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .cf__nl-text{
+      margin-left: auto;
+      margin-right: auto;
+      font-size: var(--cf-mobile-newsletter-text-size);
+      font-weight: 700;
+      color: var(--cf-accent);
+      max-width: 26ch;
+    }
+
+    #shopify-section-{{ section.id }} .cf__iframe,
+    #shopify-section-{{ section.id }} .cf__newsletter{
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #shopify-section-{{ section.id }} .cf__ig{
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .cf__bottom-inner{
+      justify-content: center;
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .cf__legal{
+      justify-content: center;
     }
   }
 </style>

@@ -354,7 +354,7 @@
   {%- endcapture -%}
 {%- endif -%}
 
-<{% if enable_sticky_header %}sticky-header data-scroll-up{% else %}header-wrapper{% endif %} class="header-wrapper{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}{% if section.settings.uppercase_menu_items %} header-wrapper--uppercase{% endif %}{% if enable_transparent_header %} header-transparent{% if section.settings.show_transparent_header_border %} header-transparent--border-bottom{% endif %}{% endif %}">
+<{% if enable_sticky_header %}sticky-header{% else %}header-wrapper{% endif %} class="header-wrapper{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}{% if section.settings.uppercase_menu_items %} header-wrapper--uppercase{% endif %}{% if enable_transparent_header %} header-transparent{% if section.settings.show_transparent_header_border %} header-transparent--border-bottom{% endif %}{% endif %}">
   <header class="header header--{{ logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width header-section--padding">
     <div class="header__left
       {%- if language_selector != blank or country_selector != blank -%}
@@ -652,21 +652,11 @@
       this.currentScrollTop = 0;
       this.preventReveal = false;
       this.scrollUpActive = false;
-
-      this.onScrollHandler = this.onScroll.bind(this);
-      this.hideHeaderOnScrollUp = () => this.preventReveal = true;
-
-      window.addEventListener('scroll', this.onScrollHandler, false);
-      this.addEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp);
-
-      this.createObserver();
+      this.reveal();
     }
 
     disconnectedCallback() {
       super.disconnectedCallback();
-
-      this.removeEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp);
-      window.removeEventListener('scroll', this.onScrollHandler);
     }
 
     createObserver() {
@@ -694,51 +684,11 @@
     }
 
     onScroll() {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-      if (theme.config.mqlSmall || this.scrollUpActive) {
-        if (scrollTop > this.currentScrollTop && scrollTop > this.headerBounds.bottom) {
-          requestAnimationFrame(this.hide.bind(this));
-        }
-        else if (scrollTop < this.currentScrollTop && scrollTop > this.headerBounds.bottom) {
-          if (!this.preventReveal) {
-            requestAnimationFrame(this.reveal.bind(this));
-          }
-          else {
-            window.clearTimeout(this.isScrolling);
-
-            this.isScrolling = setTimeout(() => {
-              this.preventReveal = false;
-            }, 66);
-
-            requestAnimationFrame(this.hide.bind(this));
-          }
-        }
-        else if (scrollTop <= this.headerBounds.top) {
-          requestAnimationFrame(this.reset.bind(this));
-        }
-      }
-      else {
-        if (scrollTop > this.headerBounds.bottom) {
-          if (this.sticky()) return;
-          
-          requestAnimationFrame(this.hide.bind(this));
-
-          setTimeout(() => {
-            requestAnimationFrame(this.reveal.bind(this));
-          }, 300);
-        }
-        else if (scrollTop <= this.headerBounds.top) {
-          requestAnimationFrame(this.reset.bind(this));
-        }
-      }
-
-      this.currentScrollTop = scrollTop;
+      this.reveal();
     }
 
     hide() {
-      this.header.classList.add('shopify-section-header-hidden', 'shopify-section-header-sticky');
-      document.body.classList.add('shopify-body-section-header-hidden', 'shopify-body-section-header-sticky');
+      this.reveal();
     }
 
     reveal() {
@@ -749,8 +699,7 @@
     }
 
     reset() {
-      this.header.classList.remove('shopify-section-header-hidden', 'shopify-section-header-sticky', 'animate');
-      document.body.classList.remove('shopify-body-section-header-hidden', 'shopify-body-section-header-sticky');
+      this.reveal();
     }
 
     sticky() {

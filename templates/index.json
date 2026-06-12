@@ -839,7 +839,7 @@
         "button_radius": 0,
         "button_padding_y": 14,
         "button_padding_x": 38,
-        "button_spacing_top": 50,
+        "button_spacing_top": 60,
         "card_ratio": "1 / 1",
         "image_fit": "cover",
         "card_radius": 0,
