@@ -348,6 +348,20 @@
   }
 
   @media (max-width: 989px){
+    #shopify-section-{{ section.id }} .cf{
+      width: 100vw;
+      max-width: 100vw;
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+    }
+
+    #shopify-section-{{ section.id }} .cf .page-width{
+      width: 100%;
+      max-width: none;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
     #shopify-section-{{ section.id }} .cf__top{
       padding-top: 26px;
     }
@@ -355,13 +369,121 @@
     #shopify-section-{{ section.id }} .cf__grid{
       grid-template-columns: 1fr !important;
       gap: 26px;
+      justify-items: center;
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .cf__brand{
+      display: grid;
+      justify-items: center;
+      row-gap: 12px;
+      width: 100%;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .cf__brand-logo{
+      justify-content: center;
+      margin-bottom: 4px;
+    }
+
+    #shopify-section-{{ section.id }} .cf__brand-logo img{
+      width: min(100%, var(--cf-mobile-logo-w));
     }
 
     #shopify-section-{{ section.id }} .cf__desc{
-      max-width: none;
+      width: 100%;
+      max-width: 100%;
+      font-size: var(--cf-mobile-desc-size);
+      line-height: 1.35;
+    }
+
+    #shopify-section-{{ section.id }} nav.cf__col{
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .cf__mobile-menu-wrap{
+      display: block;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .cf__mobile-menus{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      justify-content: stretch;
+      width: 100%;
+      max-width: 100%;
+      column-gap: max(var(--cf-mobile-menu-gap), 56px);
+      row-gap: 10px;
+      text-align: left;
+    }
+
+    #shopify-section-{{ section.id }} .cf__mobile-menu{
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      width: 100%;
+      font-size: var(--cf-mobile-menu-font-size);
+      line-height: 1.25;
+    }
+
+    #shopify-section-{{ section.id }} .cf__mobile-menu:first-child{
+      justify-items: center;
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .cf__mobile-menu:last-child{
+      justify-items: center;
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .cf__grid > .cf__col:last-child{
+      width: min(100%, 420px);
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .cf__nl-text{
+      margin-left: auto;
+      margin-right: auto;
+      font-size: var(--cf-mobile-newsletter-text-size);
+      font-weight: 700;
+      color: var(--cf-accent);
+      width: 100%;
+      max-width: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .cf__iframe,
+    #shopify-section-{{ section.id }} .cf__newsletter{
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #shopify-section-{{ section.id }} .cf__ig{
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .cf__ig-link{
+      justify-content: center;
+    }
+
+    #shopify-section-{{ section.id }} .cf__bottom-inner{
+      justify-content: center;
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .cf__copy{
+      width: 100%;
     }
 
     #shopify-section-{{ section.id }} .cf__legal{
+      justify-content: center;
       gap: 18px;
     }
   }
@@ -373,94 +495,7 @@
     }
 
     #shopify-section-{{ section.id }} .cf__grid{
-      justify-items: center;
-      text-align: center;
       gap: 24px;
-    }
-
-    #shopify-section-{{ section.id }} .cf__brand{
-      display: grid;
-      justify-items: start;
-      row-gap: 12px;
-      width: 100%;
-      max-width: 34ch;
-      margin-left: auto;
-      margin-right: auto;
-      text-align: left;
-    }
-
-    #shopify-section-{{ section.id }} .cf__brand-logo{
-      justify-content: flex-start;
-      margin-bottom: 4px;
-    }
-
-    #shopify-section-{{ section.id }} .cf__brand-logo img{
-      width: min(100%, var(--cf-mobile-logo-w));
-    }
-
-    #shopify-section-{{ section.id }} .cf__desc{
-      max-width: 34ch;
-      font-size: var(--cf-mobile-desc-size);
-      line-height: 1.35;
-    }
-
-    #shopify-section-{{ section.id }} .cf__ig--brand{
-      margin-top: 4px;
-      text-align: left;
-      justify-self: start;
-    }
-
-    #shopify-section-{{ section.id }} nav.cf__col{
-      display: none;
-    }
-
-    #shopify-section-{{ section.id }} .cf__mobile-menu-wrap{
-      display: block;
-      width: 100%;
-    }
-
-    #shopify-section-{{ section.id }} .cf__mobile-menus{
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, max-content));
-      justify-content: center;
-      column-gap: var(--cf-mobile-menu-gap);
-      row-gap: 10px;
-      text-align: left;
-    }
-
-    #shopify-section-{{ section.id }} .cf__mobile-menu{
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      gap: 10px;
-      font-size: var(--cf-mobile-menu-font-size);
-      line-height: 1.25;
-    }
-
-    #shopify-section-{{ section.id }} .cf__grid > .cf__col:last-child{
-      width: min(100%, 420px);
-      text-align: center;
-    }
-
-    #shopify-section-{{ section.id }} .cf__nl-text{
-      margin-left: auto;
-      margin-right: auto;
-      font-size: var(--cf-mobile-newsletter-text-size);
-      font-weight: 700;
-      color: var(--cf-accent);
-      max-width: 26ch;
-    }
-
-    #shopify-section-{{ section.id }} .cf__iframe,
-    #shopify-section-{{ section.id }} .cf__newsletter{
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    #shopify-section-{{ section.id }} .cf__bottom-inner{
-      justify-content: center;
-      text-align: center;
     }
 
     #shopify-section-{{ section.id }} .cf__legal{
@@ -496,30 +531,6 @@
           <div class="cf__desc rte">
             {{ section.settings.description }}
           </div>
-
-          {%- if section.settings.show_instagram and section.settings.instagram_handle != blank -%}
-            <div class="cf__ig cf__ig--brand">
-              <div class="cf__ig-label">{{ section.settings.instagram_label }}</div>
-
-              {%- assign ig_url = section.settings.instagram_url | default: 'https://www.instagram.com/' -%}
-
-              <a
-                class="cf__ig-link"
-                href="{{ ig_url }}"
-                target="_blank"
-                rel="noopener"
-                aria-label="Instagram">
-                <span class="cf__ig-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M7.5 2.8h9A4.7 4.7 0 0 1 21.2 7.5v9a4.7 4.7 0 0 1-4.7 4.7h-9A4.7 4.7 0 0 1 2.8 16.5v-9A4.7 4.7 0 0 1 7.5 2.8Z" stroke="currentColor" stroke-width="1.6"/>
-                    <path d="M12 16.1a4.1 4.1 0 1 0 0-8.2 4.1 4.1 0 0 0 0 8.2Z" stroke="currentColor" stroke-width="1.6"/>
-                    <path d="M17.3 6.7h.01" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
-                  </svg>
-                </span>
-                <span class="cf__ig-handle">{{ section.settings.instagram_handle }}</span>
-              </a>
-            </div>
-          {%- endif -%}
         </div>
 
         {%- if has_menu_1 -%}
@@ -617,6 +628,30 @@
                 {{ section.settings.newsletter_iframe }}
               </div>
             {%- endif -%}
+          {%- endif -%}
+
+          {%- if section.settings.show_instagram and section.settings.instagram_handle != blank -%}
+            <div class="cf__ig">
+              <div class="cf__ig-label">{{ section.settings.instagram_label }}</div>
+
+              {%- assign ig_url = section.settings.instagram_url | default: 'https://www.instagram.com/' -%}
+
+              <a
+                class="cf__ig-link"
+                href="{{ ig_url }}"
+                target="_blank"
+                rel="noopener"
+                aria-label="Instagram">
+                <span class="cf__ig-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M7.5 2.8h9A4.7 4.7 0 0 1 21.2 7.5v9a4.7 4.7 0 0 1-4.7 4.7h-9A4.7 4.7 0 0 1 2.8 16.5v-9A4.7 4.7 0 0 1 7.5 2.8Z" stroke="currentColor" stroke-width="1.6"/>
+                    <path d="M12 16.1a4.1 4.1 0 1 0 0-8.2 4.1 4.1 0 0 0 0 8.2Z" stroke="currentColor" stroke-width="1.6"/>
+                    <path d="M17.3 6.7h.01" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+                  </svg>
+                </span>
+                <span class="cf__ig-handle">{{ section.settings.instagram_handle }}</span>
+              </a>
+            </div>
           {%- endif -%}
 
         </div>
