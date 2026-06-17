@@ -354,7 +354,15 @@
   {%- endcapture -%}
 {%- endif -%}
 
-<{% if enable_sticky_header %}sticky-header{% else %}header-wrapper{% endif %} class="header-wrapper{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}{% if section.settings.uppercase_menu_items %} header-wrapper--uppercase{% endif %}{% if enable_transparent_header %} header-transparent{% if section.settings.show_transparent_header_border %} header-transparent--border-bottom{% endif %}{% endif %}">
+{%- capture header_wrapper_classes -%}
+  header-wrapper{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}{% if section.settings.uppercase_menu_items %} header-wrapper--uppercase{% endif %}{% if enable_transparent_header %} header-transparent{% if section.settings.show_transparent_header_border %} header-transparent--border-bottom{% endif %}{% endif %}
+{%- endcapture -%}
+
+{%- if enable_sticky_header -%}
+  <sticky-header class="{{ header_wrapper_classes | strip }}">
+{%- else -%}
+  <header-wrapper class="{{ header_wrapper_classes | strip }}">
+{%- endif -%}
   <header class="header header--{{ logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width header-section--padding">
     <div class="header__left
       {%- if language_selector != blank or country_selector != blank -%}
@@ -602,7 +610,11 @@
     </div>
   </header>
   <span class="header-background"></span>
-</{% if enable_sticky_header %}sticky-header{% else %}header-wrapper{% endif %}>
+{%- if enable_sticky_header -%}
+  </sticky-header>
+{%- else -%}
+  </header-wrapper>
+{%- endif -%}
 
 {% javascript %}
   class HeaderWrapper extends HTMLElement {
