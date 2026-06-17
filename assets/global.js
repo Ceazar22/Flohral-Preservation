@@ -1972,8 +1972,16 @@ class AnimateSticky extends HTMLElement {
 
   onScroll() {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const triggerOffset = parseFloat(this.dataset.triggerOffset || '0') || 0;
+    const resetOffset = parseFloat(this.dataset.resetOffset || '0') || 0;
+    const triggerPoint = scrollTop + (window.innerHeight * triggerOffset);
+    const offsetTop = this.getOffsetTop(this);
+    const parent = this.parentElement;
+    const resetPoint = resetOffset && parent ? offsetTop + (parent.offsetHeight * resetOffset) : 0;
 
-    if (scrollTop > this.getOffsetTop(this)) {
+    if (resetPoint && triggerPoint > resetPoint) {
+      window.requestAnimationFrame(this.reset.bind(this));
+    } else if (triggerPoint > offsetTop) {
       window.requestAnimationFrame(this.reveal.bind(this));
     } else {
       window.requestAnimationFrame(this.reset.bind(this));

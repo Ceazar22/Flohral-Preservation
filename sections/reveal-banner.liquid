@@ -126,7 +126,7 @@
 >
   <div class="banner-wrapper page-width{% if section.settings.full_width %} page-width--full-width{% endif %}">
     {%- if reveal -%}
-      <animate-sticky></animate-sticky>
+      <animate-sticky data-trigger-offset="0.65" data-reset-offset="0.85"></animate-sticky>
     {%- endif -%}
 
     <div id="Banner-{{ section.id }}" class="banner--reveal{% if section.settings.image != blank %} banner--stacked{% endif %}{% if section.settings.show_text_below %} banner--mobile-bottom{% endif %}">
