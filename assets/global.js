@@ -1979,7 +1979,7 @@ class AnimateSticky extends HTMLElement {
     const parent = this.parentElement;
     const resetPoint = resetOffset && parent ? offsetTop + (parent.offsetHeight * resetOffset) : 0;
 
-    if (resetPoint && triggerPoint > resetPoint) {
+    if (resetPoint && scrollTop > resetPoint) {
       window.requestAnimationFrame(this.reset.bind(this));
     } else if (triggerPoint > offsetTop) {
       window.requestAnimationFrame(this.reveal.bind(this));
@@ -3323,3 +3323,9 @@ class HeaderPopover extends HTMLElement {
   }
 }
 customElements.define('header-popover', HeaderPopover);
+
+(function() {
+  var style = document.createElement('style');
+  style.textContent = '.composer-bar-wrapper { margin-top: 0 !important; }';
+  document.head.appendChild(style);
+})();
