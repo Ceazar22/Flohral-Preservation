@@ -67,6 +67,8 @@
       '    bottom: 84px !important;',
       '    top: auto !important;',
       '    width: 376px !important;',
+      '    height: 100% !important;',
+      '    max-height: 60vh !important;',
       '    transform: none !important;',
       '    z-index: 2147483647 !important;',
       '  }',
@@ -139,8 +141,8 @@
       if (isOpen) {
         host.style.setProperty('position', 'fixed', 'important');
         host.style.setProperty('width', '376px', 'important');
-        host.style.setProperty('height', 'unset', 'important');
-        host.style.setProperty('max-height', 'unset', 'important');
+        host.style.setProperty('height', '100%', 'important');
+        host.style.setProperty('max-height', '60vh', 'important');
         host.style.setProperty('left', 'auto', 'important');
         host.style.setProperty('right', '12px', 'important');
         host.style.setProperty('bottom', '84px', 'important');
@@ -158,13 +160,13 @@
       if (chatUi) {
         chatUi.style.setProperty('width', 'unset', 'important');
         chatUi.style.setProperty('height', 'unset', 'important');
-        chatUi.style.setProperty('max-height', 'unset', 'important');
+        chatUi.style.setProperty('max-height', '100%', 'important');
       }
 
       if (interstitialView) {
         interstitialView.style.setProperty('width', 'unset', 'important');
         interstitialView.style.setProperty('height', 'unset', 'important');
-        interstitialView.style.setProperty('max-height', 'unset', 'important');
+        interstitialView.style.setProperty('max-height', '100%', 'important');
       }
 
       if (composerBarWrapper) {
