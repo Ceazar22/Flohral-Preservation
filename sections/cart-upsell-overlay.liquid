@@ -13,14 +13,21 @@
 {% endcomment %}
 
 {%- liquid
-  assign has_rainer_paid_tag = false
+  assign has_retainer_paid_tag = false
 
-  if customer and customer.tags contains 'Rainer Paid'
-    assign has_rainer_paid_tag = true
+  if customer
+    for tag in customer.tags
+      assign normalized_tag = tag | strip | downcase
+
+      if normalized_tag == 'retainer paid' or normalized_tag == 'retainer-paid'
+        assign has_retainer_paid_tag = true
+        break
+      endif
+    endfor
   endif
 -%}
 
-{%- if request.page_type == 'cart' and has_rainer_paid_tag -%}
+{%- if request.page_type == 'cart' and has_retainer_paid_tag -%}
   {%- liquid
     assign upsell_collection = collections['all']
     assign comparison_price = 0
