@@ -76,6 +76,32 @@
     margin: 0;
   }
 
+  #shopify-section-{{ section.id }} .map-split__header-hours-title{
+    margin: 16px 0 8px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    color: rgba(var(--color-foreground), .7);
+  }
+
+  #shopify-section-{{ section.id }} .map-split__header-hours{
+    width: min(100%, 320px);
+    margin: 0 auto;
+    color: rgb(var(--color-foreground));
+  }
+
+  #shopify-section-{{ section.id }} .map-split__header-hours table{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1.3rem;
+  }
+
+  #shopify-section-{{ section.id }} .map-split__header-hours td{
+    padding: 10px 12px;
+    border: 1px solid rgba(var(--color-foreground), .12);
+    text-align: left;
+  }
+
   #shopify-section-{{ section.id }} .map-split__grid{
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -308,6 +334,30 @@
           {%- break -%}
         {%- endif -%}
       {%- endfor -%}
+
+      {%- liquid
+        assign mobile_hours_title = ''
+        assign mobile_hours_html = ''
+      -%}
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'subheading' -%}
+          {%- assign mobile_hours_title = block.settings.subheading -%}
+        {%- elsif block.type == 'custom_liquid' and mobile_hours_html == blank -%}
+          {%- assign mobile_hours_html = block.settings.custom_liquid -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- if mobile_hours_html != blank -%}
+        {%- if mobile_hours_title != blank -%}
+          <p class="map-split__header-hours-title">{{ mobile_hours_title }}</p>
+        {%- endif -%}
+
+        <div class="map-split__header-hours rte">
+          {{ mobile_hours_html }}
+        </div>
+      {%- endif -%}
     </div>
 
     <div class="map-split">
