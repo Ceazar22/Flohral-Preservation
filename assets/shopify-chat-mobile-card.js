@@ -86,9 +86,20 @@
     style.textContent = [
       '#chat-ui.chat-ui {',
       '  width: unset !important;',
+      '  height: 100% !important;',
+      '  max-height: 100% !important;',
+      '  display: flex !important;',
+      '  flex-direction: column !important;',
       '  border-radius: 10px !important;',
       '  overflow: hidden !important;',
       '  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22) !important;',
+      '}',
+      '.chat-app.chat-app--is-open,',
+      '.chat-app.chat-app--is-mobile,',
+      '.chat-app.chat-app--is-open > div,',
+      '.chat-app.chat-app--is-mobile > div {',
+      '  height: 100% !important;',
+      '  max-height: 100% !important;',
       '}',
       '#chat-ui .interstitial-view__welcome,',
       '#chat-ui .interstitial-view__welcome.is-mobile {',
@@ -129,6 +140,8 @@
     hosts.forEach(function (host) {
       var chatUi = host.shadowRoot && (host.shadowRoot.querySelector('#chat-ui.chat-ui') || host.shadowRoot.getElementById('chat-ui'));
       var interstitialView = host.shadowRoot && host.shadowRoot.querySelector('.interstitial-view.is-mobile');
+      var chatApp = host.shadowRoot && host.shadowRoot.querySelector('.chat-app');
+      var chatAppInner = chatApp && chatApp.querySelector('div');
       var composerBarWrapper = host.shadowRoot && host.shadowRoot.querySelector('.composer-bar-wrapper');
       var launcherButton = host.shadowRoot && host.shadowRoot.querySelector('.chat-toggle.chat-toggle--bottom-right');
       var closeButton = host.shadowRoot && host.shadowRoot.querySelector('.chat-app--close-button.chat-app--close-button-bottom-right');
@@ -159,15 +172,25 @@
 
       if (chatUi) {
         chatUi.style.setProperty('width', 'unset', 'important');
-        chatUi.style.setProperty('height', 'unset', 'important');
+        chatUi.style.setProperty('height', '100%', 'important');
         chatUi.style.setProperty('max-height', '100%', 'important');
+        chatUi.style.setProperty('display', 'flex', 'important');
+        chatUi.style.setProperty('flex-direction', 'column', 'important');
+        chatUi.style.setProperty('overflow', 'hidden', 'important');
       }
 
       if (interstitialView) {
         interstitialView.style.setProperty('width', 'unset', 'important');
-        interstitialView.style.setProperty('height', 'unset', 'important');
+        interstitialView.style.setProperty('height', '100%', 'important');
         interstitialView.style.setProperty('max-height', '100%', 'important');
       }
+
+      [chatApp, chatAppInner].forEach(function (element) {
+        if (!element) return;
+
+        element.style.setProperty('height', '100%', 'important');
+        element.style.setProperty('max-height', '100%', 'important');
+      });
 
       if (composerBarWrapper) {
         composerBarWrapper.style.setProperty('margin', '0', 'important');
