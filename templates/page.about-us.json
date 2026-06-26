@@ -255,7 +255,7 @@
         "heading_tag": "h2",
         "heading_size_mode": "theme",
         "heading_size_manual": 54,
-        "bg_color": "#ffffff",
+        "bg_color": "linear-gradient(0deg, rgb(255 255 255), rgba(255, 240, 242, 1) 100%)",
         "eyebrow_color": "#6b6b6b",
         "heading_color": "#bb3263",
         "subheading_color": "#111111",
@@ -333,7 +333,7 @@
         "colors_background": "#ffffff",
         "gradient_background": "",
         "padding_top": 0,
-        "padding_bottom": 0
+        "padding_bottom": 40
       }
     },
     "custom_video_stats_banner_nRKEaY": {
@@ -738,11 +738,11 @@
     "image_banner_bJP364",
     "custom_image_with_text_hKpY7c",
     "history_timeline_JC8YAc",
-    "custom_heading_66R8aJ",
-    "1657186368671b5306",
     "custom_video_stats_banner_nRKEaY",
     "custom_heading_split_RiPgVq",
     "custom_image_text_amqd3T",
+    "custom_heading_66R8aJ",
+    "1657186368671b5306",
     "custom_lead_capture_banner_UPrTYr",
     "custom_faq_AboutUs_K2dR8m",
     "custom_split_section_8JLhrY",

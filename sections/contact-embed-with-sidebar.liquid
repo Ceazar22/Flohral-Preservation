@@ -58,7 +58,13 @@
 
   /* Sidebar blocks */
   #shopify-section-{{ section.id }} .contact-side{
+    display: flex;
+    flex-direction: column;
     color: var(--text-color);
+  }
+
+  #shopify-section-{{ section.id }} .side-block-container{
+    flex: 1 1 auto;
   }
 
   #shopify-section-{{ section.id }} .side-block{
@@ -123,6 +129,10 @@
     #shopify-section-{{ section.id }} .contact-grid{
       grid-template-columns: 1fr;
     }
+
+    #shopify-section-{{ section.id }} .contact-side{
+      flex-direction: row;
+    }
   }
 
   @media (max-width: 749px){
@@ -165,8 +175,9 @@
 
         <!-- RIGHT -->
         <div class="contact-side">
-          {%- for block in section.blocks -%}
-            {%- case block.type -%}
+          <div class="side-block-container">
+            {%- for block in section.blocks -%}
+              {%- case block.type -%}
 
  {%- when 'info' -%}
   <div class="side-block" style="text-align: {{ block.settings.align }};" {{ block.shopify_attributes }}>
@@ -254,14 +265,18 @@
                   </div>
                 </div>
 
-              {%- when 'logo' -%}
-                <div class="side-block side-logo" style="text-align: {{ block.settings.align }}; --logo-max: {{ block.settings.max_width }}px;" {{ block.shopify_attributes }}>
-                  {%- if block.settings.image != blank -%}
-                    {{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy' }}
-                  {%- endif -%}
-                </div>
+              {%- endcase -%}
+            {%- endfor -%}
+          </div>
 
-            {%- endcase -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'logo' -%}
+              <div class="side-block side-logo" style="text-align: {{ block.settings.align }}; --logo-max: {{ block.settings.max_width }}px;" {{ block.shopify_attributes }}>
+                {%- if block.settings.image != blank -%}
+                  {{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy' }}
+                {%- endif -%}
+              </div>
+            {%- endif -%}
           {%- endfor -%}
         </div>
 
