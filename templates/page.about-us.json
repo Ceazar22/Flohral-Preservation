@@ -242,100 +242,6 @@
         "padding_bottom": 40
       }
     },
-    "custom_heading_66R8aJ": {
-      "type": "custom-heading",
-      "name": "Heading",
-      "settings": {
-        "show_divider": false,
-        "eyebrow": "",
-        "heading": "<strong>Our Partnered Florists</strong>",
-        "subheading": "",
-        "use_highlight": false,
-        "highlight_style": "marker",
-        "heading_tag": "h2",
-        "heading_size_mode": "theme",
-        "heading_size_manual": 54,
-        "bg_color": "linear-gradient(0deg, rgb(255 255 255), rgba(255, 240, 242, 1) 100%)",
-        "eyebrow_color": "#6b6b6b",
-        "heading_color": "#bb3263",
-        "subheading_color": "#111111",
-        "padding_top": 48,
-        "padding_bottom": 0
-      }
-    },
-    "1657186368671b5306": {
-      "type": "scrolling-promotion",
-      "blocks": {
-        "6ea42339-eed6-4ca4-92ce-e5574685b25c": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Broderick_s_Flowers_Gifts.webp",
-            "height": 100,
-            "link": "shopify://pages/vendors"
-          }
-        },
-        "1657186368977c9b66-0": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Lucille_s_Florist.webp",
-            "height": 100,
-            "link": "shopify://pages/vendors"
-          }
-        },
-        "1657186368977c9b66-1": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Pearl_River_Florist.webp",
-            "height": 100,
-            "link": "shopify://pages/vendors"
-          }
-        },
-        "1657186368977c9b66-2": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Flowers_by_Brian_b3f8f1fe-343c-4654-85e1-cf125bc70b25.webp",
-            "height": 100,
-            "link": "shopify://pages/vendors"
-          }
-        },
-        "1657186368977c9b66-3": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Stemtations.webp",
-            "height": 100,
-            "link": "shopify://pages/vendors"
-          }
-        },
-        "image_AU8X6i": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Wildflowers_Florist.webp",
-            "height": 100,
-            "link": "shopify://pages/vendors"
-          }
-        }
-      },
-      "block_order": [
-        "6ea42339-eed6-4ca4-92ce-e5574685b25c",
-        "1657186368977c9b66-0",
-        "1657186368977c9b66-1",
-        "1657186368977c9b66-2",
-        "1657186368977c9b66-3",
-        "image_AU8X6i"
-      ],
-      "settings": {
-        "direction": "left",
-        "speed": 1.2,
-        "show_divider": false,
-        "use_custom_colors": false,
-        "colors_icon": "#ffffff",
-        "colors_text": "#1a1b18",
-        "colors_background": "#ffffff",
-        "gradient_background": "",
-        "padding_top": 0,
-        "padding_bottom": 40
-      }
-    },
     "custom_video_stats_banner_nRKEaY": {
       "type": "custom-video-stats-banner",
       "blocks": {
@@ -469,6 +375,7 @@
         "max_width": 1200,
         "columns_desktop": 3,
         "columns_mobile": "1",
+        "cards_mobile_768": "3",
         "image_aspect_ratio": "3 / 4",
         "background_mode": "half",
         "bg_color": "#ffffff",
@@ -482,6 +389,100 @@
         "card_content_opacity": 93,
         "card_content_border": "#e6e6e6",
         "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "custom_heading_66R8aJ": {
+      "type": "custom-heading",
+      "name": "Heading",
+      "settings": {
+        "show_divider": false,
+        "eyebrow": "",
+        "heading": "<strong>Our Partnered Florists</strong>",
+        "subheading": "",
+        "use_highlight": false,
+        "highlight_style": "marker",
+        "heading_tag": "h2",
+        "heading_size_mode": "theme",
+        "heading_size_manual": 54,
+        "bg_color": "linear-gradient(0deg, rgb(255 255 255), rgba(255, 240, 242, 1) 100%)",
+        "eyebrow_color": "#6b6b6b",
+        "heading_color": "#bb3263",
+        "subheading_color": "#111111",
+        "padding_top": 48,
+        "padding_bottom": 0
+      }
+    },
+    "1657186368671b5306": {
+      "type": "scrolling-promotion",
+      "blocks": {
+        "6ea42339-eed6-4ca4-92ce-e5574685b25c": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Broderick_s_Flowers_Gifts.webp",
+            "height": 100,
+            "link": "shopify://pages/vendors"
+          }
+        },
+        "1657186368977c9b66-0": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Lucille_s_Florist.webp",
+            "height": 100,
+            "link": "shopify://pages/vendors"
+          }
+        },
+        "1657186368977c9b66-1": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Pearl_River_Florist.webp",
+            "height": 100,
+            "link": "shopify://pages/vendors"
+          }
+        },
+        "1657186368977c9b66-2": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Flowers_by_Brian_b3f8f1fe-343c-4654-85e1-cf125bc70b25.webp",
+            "height": 100,
+            "link": "shopify://pages/vendors"
+          }
+        },
+        "1657186368977c9b66-3": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Stemtations.webp",
+            "height": 100,
+            "link": "shopify://pages/vendors"
+          }
+        },
+        "image_AU8X6i": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Wildflowers_Florist.webp",
+            "height": 100,
+            "link": "shopify://pages/vendors"
+          }
+        }
+      },
+      "block_order": [
+        "6ea42339-eed6-4ca4-92ce-e5574685b25c",
+        "1657186368977c9b66-0",
+        "1657186368977c9b66-1",
+        "1657186368977c9b66-2",
+        "1657186368977c9b66-3",
+        "image_AU8X6i"
+      ],
+      "settings": {
+        "direction": "left",
+        "speed": 1.2,
+        "show_divider": false,
+        "use_custom_colors": false,
+        "colors_icon": "#ffffff",
+        "colors_text": "#1a1b18",
+        "colors_background": "#ffffff",
+        "gradient_background": "",
+        "padding_top": 0,
         "padding_bottom": 40
       }
     },
@@ -506,7 +507,7 @@
         "heading_tag": "h2",
         "heading_size": 30,
         "button_label": "DOWNLOAD Here",
-        "button_link": "https://flohralpreservations.com/the-ultimate-wedding-guide",
+        "button_link": "https://wedding.flohralpreservation.com/the-ultimate-wedding-guide",
         "button_bg": "#bb3263",
         "button_text": "#ffffff",
         "button_radius": 2,

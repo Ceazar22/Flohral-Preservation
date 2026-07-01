@@ -127,6 +127,7 @@
       "name": "Value prop strip",
       "settings": {
         "full_width": true,
+        "disable_default_content": false,
         "bg_color": "#bb3263",
         "text_color": "#ffffff",
         "border_size": 0,
@@ -360,7 +361,7 @@
         "heading_tag": "h2",
         "heading_size": 36,
         "button_label": "DOWNLOAD THE GUIDE",
-        "button_link": "https://flohralpreservations.com/how-to-safely-ship-your-flowers-guide",
+        "button_link": "https://wedding.flohralpreservation.com/how-to-safely-ship-your-flowers-guide",
         "button_bg": "#bb3263",
         "button_text": "#ffffff",
         "button_radius": 2,
@@ -486,6 +487,7 @@
       "name": "Value prop strip",
       "settings": {
         "full_width": true,
+        "disable_default_content": false,
         "bg_color": "#b23b5a",
         "text_color": "#ffffff",
         "border_size": 0,

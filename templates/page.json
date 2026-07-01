@@ -557,9 +557,7 @@
           "settings": {
             "text": "<p>620 King Street West<br>Toronto, ON M5V 1M7, Canada</p><p>Mon - Fri, 8:30am - 10:30pm<br>Saturday, 8:30am - 10:30pm<br>Sunday, 8:30am - 10:30pm</p>",
             "text_size": "typeset2",
-            "secondary_color": false,
-            "enable_highlight": false,
-            "highlight_style": "marker"
+            "secondary_color": false
           }
         },
         "button_Cc4Pfi": {
@@ -581,9 +579,7 @@
       "name": "t:sections.map.presets.name",
       "settings": {
         "map_address": "620 King St W, Toronto, ON M5V 1M7, Canada",
-        "map_api_key": "",
         "map_zoom": 14,
-        "map_style": "silver",
         "image_position": "center center",
         "text_box_position": "middle-left",
         "text_alignment": "left",

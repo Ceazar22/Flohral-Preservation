@@ -344,7 +344,6 @@
         "show_secondary_image": false,
         "show_vendor": false,
         "show_rating": true,
-        "show_quick_buy": true,
         "enable_quick_view": true,
         "enable_color_swatches": true,
         "padding_top": 36,
@@ -653,9 +652,7 @@
       ],
       "settings": {
         "map_address": "620 King St W, Toronto, ON M5V 1M7, Canada",
-        "map_api_key": "",
         "map_zoom": 14,
-        "map_style": "standard",
         "image_position": "center center",
         "text_box_position": "middle-left",
         "text_alignment": "left",
