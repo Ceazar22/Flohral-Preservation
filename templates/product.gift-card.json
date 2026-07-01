@@ -178,7 +178,6 @@
         "show_secondary_image": false,
         "show_vendor": false,
         "show_rating": true,
-        "show_quick_buy": true,
         "enable_quick_view": true,
         "enable_color_swatches": true,
         "padding_top": 36,

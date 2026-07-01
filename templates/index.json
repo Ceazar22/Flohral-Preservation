@@ -519,7 +519,7 @@
       "type": "custom-featured-collection",
       "name": "Custom featured collection",
       "settings": {
-        "collection": "signature-items",
+        "collection": "signature-wedding-flower-keepsakes",
         "heading_eyebrow": "Crafted to Last a Lifetime",
         "heading": "<strong> Signature Floral Preservation</strong>",
         "heading_size": "h1",
@@ -666,7 +666,7 @@
       "type": "custom-featured-collection",
       "name": "Custom featured collection",
       "settings": {
-        "collection": "most-popular-resin-keepsakes",
+        "collection": "most-popular-keepsakes",
         "heading_eyebrow": "Our Most-Requested Designs",
         "heading": "<strong>Most Popular Floral Resin Keepsakes</strong>",
         "heading_size": "h1",
@@ -775,35 +775,35 @@
         "collection_t9WXMH": {
           "type": "collection",
           "settings": {
-            "collection": "engraving",
+            "collection": "custom-engraving-floral-preservation",
             "custom_tag": "Engraving"
           }
         },
         "collection_qbKUmY": {
           "type": "collection",
           "settings": {
-            "collection": "most-popular-resin-keepsakes",
+            "collection": "most-popular-keepsakes",
             "custom_tag": "COLLECTION"
           }
         },
         "collection_68LK8z": {
           "type": "collection",
           "settings": {
-            "collection": "new-release-keepsakes",
+            "collection": "new-resin-floral-preservation-designs",
             "custom_tag": "COLLECTION"
           }
         },
         "collection_aUkGVn": {
           "type": "collection",
           "settings": {
-            "collection": "popular-add-ons-floral-preservation",
+            "collection": "resin-floral-preservation-keepsakes",
             "custom_tag": "COLLECTION"
           }
         },
         "collection_pxdVkq": {
           "type": "collection",
           "settings": {
-            "collection": "signature-items",
+            "collection": "signature-wedding-flower-keepsakes",
             "custom_tag": "COLLECTION"
           }
         }
@@ -1162,7 +1162,7 @@
         "heading_tag": "h2",
         "heading_size": 30,
         "button_label": "DOWNLOAD THE GUIDE",
-        "button_link": "https://flohralpreservations.com/8-things-every-brides-wishes",
+        "button_link": "https://wedding.flohralpreservation.com/8-things-every-brides-wishes",
         "button_bg": "#bb3263",
         "button_text": "#ffffff",
         "button_radius": 2,

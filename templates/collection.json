@@ -33,28 +33,28 @@
         "tile_MV9nHC": {
           "type": "tile",
           "settings": {
-            "collection": "signature-items",
+            "collection": "signature-wedding-flower-keepsakes",
             "label": "Collection"
           }
         },
         "tile_VUC7Hz": {
           "type": "tile",
           "settings": {
-            "collection": "most-popular-resin-keepsakes",
+            "collection": "most-popular-keepsakes",
             "label": "Collection"
           }
         },
         "tile_iD9qeM": {
           "type": "tile",
           "settings": {
-            "collection": "new-release-keepsakes",
+            "collection": "new-resin-floral-preservation-designs",
             "label": "Collection"
           }
         },
         "tile_XEkc3F": {
           "type": "tile",
           "settings": {
-            "collection": "popular-add-ons-floral-preservation",
+            "collection": "resin-floral-preservation-keepsakes",
             "label": "Collection"
           }
         }
@@ -296,6 +296,7 @@
         "heading_tag": "h2",
         "columns_mobile": "1",
         "swipe_on_mobile": true,
+        "cards_mobile_768": "3",
         "image_ratio": "portrait",
         "image_position": "center center",
         "enable_image_fill": true,
