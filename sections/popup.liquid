@@ -8,39 +8,157 @@
   if section.settings.only_visitor and customer
     assign show_popup = false
   endif
-
-  assign show_image = false
-  if section.settings.text_box_position == 'center' and section.settings.image != blank
-    if section.settings.image_position == 'top' or section.settings.image_position == 'bottom'
-      assign show_image = true
-    elsif section.settings.width >= 720
-      assign show_image = true
-    endif
-  endif
 -%}
 
 {%- if show_popup -%}
   {%- style -%}
-    #shopify-section-{{ section.id }} .popup {
-      --popup-width: {{ section.settings.width }}px;
-      --popup-padding: {{ section.settings.padding }}px;
-      --gradient-background: {% if section.settings.gradient_background != blank %}{{ section.settings.gradient_background }}{% else %}{{ section.settings.colors_background }}{% endif %};
-      --color-background: {{ section.settings.colors_background.red }}, {{ section.settings.colors_background.green }}, {{ section.settings.colors_background.blue }};
-      --color-foreground: {{ section.settings.colors_text.red }}, {{ section.settings.colors_text.green }}, {{ section.settings.colors_text.blue }};
-      --color-border: {{ section.settings.colors_border.red }}, {{ section.settings.colors_border.green }}, {{ section.settings.colors_border.blue }};
-      --color-shadow: {{ section.settings.colors_shadow.red }}, {{ section.settings.colors_shadow.green }}, {{ section.settings.colors_shadow.blue }};
-      --color-link: var(--color-foreground);
-      --color-heading: var(--color-foreground);
-      --color-button-background: {{ section.settings.colors_button_background.red }}, {{ section.settings.colors_button_background.green }}, {{ section.settings.colors_button_background.blue }};
-      --color-button-text: {{ section.settings.colors_button_label.red }}, {{ section.settings.colors_button_label.green }}, {{ section.settings.colors_button_label.blue }};
-      --color-button-border: var(--color-button-background);
-      --color-highlight: {{ section.settings.colors_highlight.red }}, {{ section.settings.colors_highlight.green }}, {{ section.settings.colors_highlight.blue }};
+    promo-popup,
+    .promo-popup {
+      z-index: 9999 !important;
     }
 
-    #shopify-section-{{ section.id }} .button--tertiary {
-      --color-button-text: var(--color-foreground);
-      --color-button-border: var(--color-border);
-      --color-button-background: var(--color-background);
+    .exit-popup {
+      display: flex;
+      width: min(1100px, 95vw);
+      overflow: visible;
+    }
+
+    .exit-popup__image-side {
+      position: relative;
+      flex: 0 0 50%;
+      min-height: 650px;
+      overflow: hidden;
+    }
+
+    .exit-popup__image-side img,
+    .exit-popup__image-side svg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    .exit-popup__badge {
+      position: absolute;
+      top: 1.4rem;
+      left: 1.4rem;
+      background: #fff;
+      color: #1a1b18;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      z-index: 2;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.12);
+    }
+
+    .exit-popup__content-side {
+      flex: 1 1 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 3rem 3.5rem;
+      background: #fff;
+    }
+
+    .exit-popup__eyebrow {
+      font-size: 1.05rem;
+      letter-spacing: 0.2em;
+      color: #aaa;
+      text-transform: uppercase;
+      margin: 0 0 1.2rem;
+      font-weight: 500;
+    }
+
+    .exit-popup__heading {
+      font-size: clamp(2.2rem, 3vw, 2.8rem);
+      line-height: 1.18;
+      font-weight: 700;
+      color: #1a1b18;
+      margin: 0 0 1rem;
+    }
+
+    .exit-popup__subtext {
+      font-size: 1.3rem;
+      color: #888;
+      line-height: 1.6;
+      margin: 0 0 1.5rem;
+    }
+
+    .exit-popup__form-wrapper {
+      width: 100%;
+      min-height: 400px;
+    }
+
+    .exit-popup__form-wrapper iframe {
+      width: 100%;
+      min-height: 400px !important;
+      border: none;
+      display: block;
+    }
+
+    @media screen and (max-width: 749px) {
+      .exit-popup {
+        flex-direction: column;
+        width: 95vw;
+      }
+
+      .exit-popup__image-side {
+        flex: 0 0 220px;
+        min-height: unset;
+      }
+
+      .exit-popup__content-side {
+        padding: 2rem 1.8rem;
+      }
+
+      .exit-popup__heading {
+        font-size: 2rem;
+      }
+    }
+
+    @media screen and (max-width: 450px) {
+      .promo-popup {
+        padding: 0 !important;
+      }
+
+      .popup-wrapper {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        height: 100dvh;
+        max-height: 100dvh;
+        align-self: stretch;
+      }
+
+      .exit-popup {
+        flex-direction: column;
+        width: 100vw;
+        height: 100dvh;
+        max-height: 100dvh;
+      }
+
+      .exit-popup__image-side {
+        flex: 0 0 200px;
+        min-height: unset;
+      }
+
+      .exit-popup__content-side {
+        flex: 1 1 auto;
+        padding: 1.5rem;
+        overflow-y: auto;
+      }
+
+      .exit-popup__form-wrapper iframe {
+        height: 380px;
+      }
+
+      .popup-close {
+        top: 0.5rem;
+        right: 0.5rem;
+      }
     }
   {%- endstyle -%}
 
@@ -48,181 +166,57 @@
   <noscript>{{ 'section-popup.css' | asset_url | stylesheet_tag }}</noscript>
   <script src="{{ 'popup.js' | asset_url }}" defer="defer"></script>
 
-  <promo-popup data-section-id="{{ section.id }}" class="hidden" data-delay="{{ section.settings.delay }}" data-expiry="{{ section.settings.expiry }}" data-test-mode="{% if section.settings.mode == 'testing' %}true{% else %}false{% endif %}">
-    {%- assign floating = section.blocks | where: "type", "floating" | first -%}
-    {%- unless floating and section.blocks.size == 1 %}
-    <div class="promo-popup" data-position="{{ section.settings.text_box_position }}">
-      {%- if section.settings.text_box_position == 'center' -%}
-        <div class="popup-overlay" data-popup-toggle></div>
-      {%- endif -%}
+  <promo-popup data-section-id="{{ section.id }}" class="hidden" data-delay="{{ section.settings.delay }}" data-expiry="{{ section.settings.expiry }}" data-test-mode="true">
+    <div class="promo-popup" data-position="center">
+      <div class="popup-overlay" data-popup-toggle></div>
       <div class="popup-wrapper">
         <button class="popup-close" type="button" aria-label="{{ 'accessibility.close' | t }}" data-popup-toggle>
           <span class="icon icon-plus-alt"></span>
         </button>
-        <div class="popup {{ section.settings.text_alignment }}{% if show_image %} popup-image--{{ section.settings.image_position }}{% endif %}">
-          {%- if show_image -%}
-            <div class="media-wrapper popup__image-wrapper">
-              <div class="media popup__image">
-                {%- capture sizes -%}(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc((100vw - 10rem) / 2), calc(100vw - 3rem){%- endcapture -%}
-                {{ section.settings.image | image_url: width: 1500 | image_tag:
-                  loading: 'lazy',
-                  class: 'image-fit',
-                  sizes: sizes,
-                  widths: '165, 360, 535, 750, 1100, 1500',
-                  is: 'lazy-image'
-                }}
-              </div>
-            </div>
-          {%- endif -%}
-          <div class="popup__content-wrapper">
-            <div class="popup__content">
-              {%- for block in section.blocks -%}
-                {%- case block.type -%}
-                  {%- when 'heading' -%}
-                    <{{ block.settings.heading_tag }} class="popup__heading {{ block.settings.heading_size }}" {{ block.shopify_attributes }}>
-                      {%- render 'highlight-text', 
-                        hl_input: block.settings.heading, 
-                        hl_style: block.settings.highlight_style,
-                        hl_enable: block.settings.enable_highlight,
-                        hl_animateWrap: true -%}
-                    </{{ block.settings.heading_tag }}>
-                  {%- when 'subheading' -%}
-                    <p class="popup__subheading {{ block.settings.subheading_size }}" {{ block.shopify_attributes }}>
-                      {%- render 'highlight-text', 
-                        hl_input: block.settings.subheading, 
-                        hl_style: block.settings.highlight_style,
-                        hl_enable: block.settings.enable_highlight,
-                        hl_animateWrap: true -%}
-                    </p>
-                  {%- when 'text' -%}
-                    <div class="popup__text{% if block.settings.secondary_color %} popup__text--colored{% endif %} {{ block.settings.text_size }} rte" {{ block.shopify_attributes }}>
-                      {%- render 'highlight-text', 
-                        hl_input: block.settings.text, 
-                        hl_style: block.settings.highlight_style,
-                        hl_enable: block.settings.enable_highlight,
-                        hl_animateWrap: true -%}
-                    </div>
-                  {%- when 'button' -%}
-                    {%- if block.settings.button_label != blank -%}
-                      {%- if block.settings.button_style_secondary -%}
-                        <a class="button button--small button--cta"{% if block.settings.button_link != blank %} href="{{ block.settings.button_link }}"{% else %} role="link" aria-disabled="true"{% endif %} {{ block.shopify_attributes }}>
-                          <span class="label">{{ block.settings.button_label | escape }}</span>
-                          {% render 'icon', icon: 'arrow' %}
-                        </a>
-                      {%- else -%}
-                        <a class="button button--small"{% if block.settings.button_link != blank %} href="{{ block.settings.button_link }}"{% else %} role="link" aria-disabled="true"{% endif %} {{ block.shopify_attributes }}>
-                          {{ block.settings.button_label | escape }}
-                        </a>
-                      {%- endif -%}
-                    {%- endif -%}
-                  {%- when 'newsletter' -%}
-                    <div {{ block.shopify_attributes }}>
-                      {%- assign return_url = section.settings.return_url | default: 'back' | append: '' -%}
-                      {% form 'customer', class: 'popup__newsletter', id: 'form__popup_newsletter', return_to: return_url %}
-                        <input type="hidden" name="contact[tags]" value="newsletter"/>
-                        {%- if form.errors -%}
-                          <small class="form__message errors" id="Newsletter-error--{{ section.id }}">
-                            {% render 'icon', icon: 'error' %}
-                            {{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}
-                          </small>
-                        {%- endif -%}
-                        {%- if form.posted_successfully? -%}
-                          <p class="form__message h3" id="Newsletter-success--{{ section.id }}" tabindex="-1" autofocus>
-                            {% render 'icon', icon: 'success' %}
-                            {{ 'newsletter.success' | t }}
-                          </p>
-                        {%- endif -%}
+        <div class="popup exit-popup">
 
-                        {%- unless form.posted_successfully? -%}
-                          <div class="field">
-                            <input
-                              id="NewsletterForm--{{ section.id }}"
-                              type="email"
-                              name="contact[email]"
-                              class="field__input required{% if form.errors %} invalid{% endif %}"
-                              value="{{ form.email }}"
-                              aria-required="true"
-                              autocorrect="off"
-                              autocapitalize="off"
-                              autocomplete="email"
-                              {% if form.errors %}
-                                autofocus
-                                aria-invalid="true"
-                                aria-describedby="Newsletter-error--{{ section.id }}"
-                              {% elsif form.posted_successfully? %}
-                                aria-describedby="Newsletter-success--{{ section.id }}"
-                              {% endif %}
-                              placeholder="{{ 'newsletter.label' | t }}"
-                              required
-                            />
-                            <label class="visually-hidden" for="NewsletterForm--{{ section.id }}">{{ 'newsletter.label' | t }}</label>
-                            <button type="submit" class="button{% if block.settings.button_style_secondary %} button--tertiary{% endif %}{% if block.settings.button_full_width %} button--full-width{% endif %} button--small" name="commit">
-                              <span class="label">{{ 'newsletter.button_label' | t }}</span>
-                              {% render 'icon', icon: 'arrow' %}
-                            </button>
-                          </div>
-                          <div class="field newsletter__text rte">
-                            {%- render 'highlight-text', 
-                              hl_input: block.settings.text, 
-                              hl_style: block.settings.highlight_style,
-                              hl_enable: block.settings.enable_highlight,
-                              hl_animateWrap: true -%}
-                          </div>
-                        {%- endunless -%}
-                      {% endform %}
-                    </div>
-                  {%- when 'social_media' -%}
-                    <ul class="list-unstyled list-social{% if block.settings.mobile_disabled %} small-hide{% endif %}" role="list">
-                      {%- render 'social-icons' -%}
-                    </ul>
+          <div class="exit-popup__image-side">
+            <span class="exit-popup__badge">LIMITED SPOT</span>
+            {%- if section.settings.image != blank -%}
+              {{ section.settings.image | image_url: width: 900 | image_tag:
+                loading: 'lazy',
+                is: 'lazy-image',
+                alt: 'Flohral preserved bouquet'
+              }}
+            {%- else -%}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder' }}
+            {%- endif -%}
+          </div>
 
-                  {%- when 'custom-html' -%}
-                    <div class="custom-html">
-                        {{ block.settings.custom-html }} 
-                    </div>
-                {%- endcase %}
-              {%- endfor %}
+          <div class="exit-popup__content-side">
+            <p class="exit-popup__eyebrow">WAIT, BEFORE YOU GO</p>
+            <h2 class="exit-popup__heading">Don't let your bouquet fade away forever.</h2>
+            <p class="exit-popup__subtext">Join brides who preserve their wedding day beautifully get updates about our new arrivals, special promotions and online exclusives.</p>
+            <div class="exit-popup__form-wrapper">
+              <iframe
+                src="https://the.flohralpreservation.com/widget/form/pZg0bjnK6wik5PaPA9hT"
+                style="width:100%;height:100%;border:none;border-radius:0px"
+                id="inline-pZg0bjnK6wik5PaPA9hT"
+                data-layout="{'id':'INLINE'}"
+                data-trigger-type="alwaysShow"
+                data-trigger-value=""
+                data-activation-type="alwaysActivated"
+                data-activation-value=""
+                data-deactivation-type="neverDeactivate"
+                data-deactivation-value=""
+                data-form-name="Shopify Exit Pop Up ✅"
+                data-height="400"
+                data-layout-iframe-id="inline-pZg0bjnK6wik5PaPA9hT"
+                data-form-id="pZg0bjnK6wik5PaPA9hT"
+                title="Shopify Exit Pop Up ✅"
+              ></iframe>
+              <script src="https://the.flohralpreservation.com/js/form_embed.js"></script>
             </div>
           </div>
+
         </div>
       </div>
     </div>
-    {%- endunless -%}
-
-    {%- if floating -%}
-      {%- style -%}
-        #shopify-section-{{ section.id }} .popup-floating {
-          --color-foreground: {{ floating.settings.colors_text.red }}, {{ floating.settings.colors_text.green }}, {{ floating.settings.colors_text.blue }};
-          --color-link: var(--color-foreground);
-          --color-heading: var(--color-foreground);
-        }
-      {%- endstyle -%}
-      <div class="popup-floating popup-floating--{{ floating.settings.text_box_position }}{% if floating.settings.mobile_disabled %} small-hide{% endif %}">
-        {%- if floating.settings.show_social_media != 'none' -%}
-          <social-floating class="social-floating{% if floating.settings.show_social_media == 'all' %} social-floating--all{% endif %}{% if floating.settings.mobile_hide_social_media %} small-hide{% endif %}">
-            <button type="button" class="list-social__link link link--text link-with-icon" data-social-toggle>
-              {%- render 'icon', icon: 'share-nodes' -%}
-            </button>
-            <div class="social-floating-wrapper">
-              <div class="social-floating-card">
-                <button class="popup-close medium-hide large-up-hide" type="button" aria-label="{{ 'accessibility.close' | t }}" data-social-toggle>
-                  <span class="icon icon-plus-alt"></span>
-                </button>
-                <p class="popup__subheading h5 medium-hide large-up-hide">{{ floating.settings.mobile_social_heading | escape }}</p>
-                <ul class="list-unstyled list-social" role="list">
-                  {%- render 'social-icons' -%}
-                </ul>
-              </div>
-            </div>
-          </social-floating>
-        {%- endif -%}
-        {%- if floating.settings.subheading != blank -%}
-          <div class="popup-open"{% if section.blocks.size > 1 %} data-popup-toggle{% endif %}>
-            <p class="h5">{{ floating.settings.subheading | escape }}</p>
-          </div>
-        {%- endif -%}
-      </div>
-    {%- endif -%}
   </promo-popup>
 {%- endif -%}
 
@@ -245,18 +239,9 @@
           "type": "select",
           "id": "heading_size",
           "options": [
-            {
-              "value": "h3",
-              "label": "t:sections.all.heading_size.options__1.label"
-            },
-            {
-              "value": "h2",
-              "label": "t:sections.all.heading_size.options__2.label"
-            },
-            {
-              "value": "h1",
-              "label": "t:sections.all.heading_size.options__3.label"
-            }
+            { "value": "h3", "label": "t:sections.all.heading_size.options__1.label" },
+            { "value": "h2", "label": "t:sections.all.heading_size.options__2.label" },
+            { "value": "h1", "label": "t:sections.all.heading_size.options__3.label" }
           ],
           "default": "h2",
           "label": "t:sections.all.heading_size.label"
@@ -265,42 +250,15 @@
           "type": "select",
           "id": "heading_tag",
           "options": [
-            {
-              "value": "h1",
-              "label": "t:sections.all.heading_tag.options__1.label"
-            },
-            {
-              "value": "h2",
-              "label": "t:sections.all.heading_tag.options__2.label"
-            },
-            {
-              "value": "h3",
-              "label": "t:sections.all.heading_tag.options__3.label"
-            },
-            {
-              "value": "h4",
-              "label": "t:sections.all.heading_tag.options__4.label"
-            },
-            {
-              "value": "h5",
-              "label": "t:sections.all.heading_tag.options__5.label"
-            },
-            {
-              "value": "h6",
-              "label": "t:sections.all.heading_tag.options__6.label"
-            },
-            {
-              "value": "div",
-              "label": "t:sections.all.heading_tag.options__7.label"
-            },
-            {
-              "value": "span",
-              "label": "t:sections.all.heading_tag.options__8.label"
-            },
-            {
-              "value": "p",
-              "label": "t:sections.all.heading_tag.options__9.label"
-            }
+            { "value": "h1", "label": "t:sections.all.heading_tag.options__1.label" },
+            { "value": "h2", "label": "t:sections.all.heading_tag.options__2.label" },
+            { "value": "h3", "label": "t:sections.all.heading_tag.options__3.label" },
+            { "value": "h4", "label": "t:sections.all.heading_tag.options__4.label" },
+            { "value": "h5", "label": "t:sections.all.heading_tag.options__5.label" },
+            { "value": "h6", "label": "t:sections.all.heading_tag.options__6.label" },
+            { "value": "div", "label": "t:sections.all.heading_tag.options__7.label" },
+            { "value": "span", "label": "t:sections.all.heading_tag.options__8.label" },
+            { "value": "p", "label": "t:sections.all.heading_tag.options__9.label" }
           ],
           "default": "h2",
           "label": "t:sections.all.heading_tag.label",
@@ -321,42 +279,15 @@
           "type": "select",
           "id": "highlight_style",
           "options": [
-            {
-              "value": "marker",
-              "label": "t:sections.all.highlight.style.options__1.label"
-            },
-            {
-              "value": "circle",
-              "label": "t:sections.all.highlight.style.options__2.label"
-            },
-            {
-              "value": "underline",
-              "label": "t:sections.all.highlight.style.options__3.label"
-            },
-            {
-              "value": "bold-underline",
-              "label": "t:sections.all.highlight.style.options__4.label"
-            },
-            {
-              "value": "modern-underline",
-              "label": "t:sections.all.highlight.style.options__5.label"
-            },
-            {
-              "value": "sketch-underline",
-              "label": "t:sections.all.highlight.style.options__6.label"
-            },
-            {
-              "value": "squiggle",
-              "label": "t:sections.all.highlight.style.options__7.label"
-            },
-            {
-              "value": "heavy-squiggle",
-              "label": "t:sections.all.highlight.style.options__8.label"
-            },
-            {
-              "value": "solid-color",
-              "label": "t:sections.all.highlight.style.options__9.label"
-            }
+            { "value": "marker", "label": "t:sections.all.highlight.style.options__1.label" },
+            { "value": "circle", "label": "t:sections.all.highlight.style.options__2.label" },
+            { "value": "underline", "label": "t:sections.all.highlight.style.options__3.label" },
+            { "value": "bold-underline", "label": "t:sections.all.highlight.style.options__4.label" },
+            { "value": "modern-underline", "label": "t:sections.all.highlight.style.options__5.label" },
+            { "value": "sketch-underline", "label": "t:sections.all.highlight.style.options__6.label" },
+            { "value": "squiggle", "label": "t:sections.all.highlight.style.options__7.label" },
+            { "value": "heavy-squiggle", "label": "t:sections.all.highlight.style.options__8.label" },
+            { "value": "solid-color", "label": "t:sections.all.highlight.style.options__9.label" }
           ],
           "default": "marker",
           "label": "t:sections.all.highlight.style.label"
@@ -378,18 +309,9 @@
           "type": "select",
           "id": "subheading_size",
           "options": [
-            {
-              "value": "h5",
-              "label": "t:sections.all.subheading_size.options__1.label"
-            },
-            {
-              "value": "h4",
-              "label": "t:sections.all.subheading_size.options__2.label"
-            },
-            {
-              "value": "h3",
-              "label": "t:sections.all.subheading_size.options__3.label"
-            }
+            { "value": "h5", "label": "t:sections.all.subheading_size.options__1.label" },
+            { "value": "h4", "label": "t:sections.all.subheading_size.options__2.label" },
+            { "value": "h3", "label": "t:sections.all.subheading_size.options__3.label" }
           ],
           "default": "h5",
           "label": "t:sections.all.subheading_size.label"
@@ -409,42 +331,15 @@
           "type": "select",
           "id": "highlight_style",
           "options": [
-            {
-              "value": "marker",
-              "label": "t:sections.all.highlight.style.options__1.label"
-            },
-            {
-              "value": "circle",
-              "label": "t:sections.all.highlight.style.options__2.label"
-            },
-            {
-              "value": "underline",
-              "label": "t:sections.all.highlight.style.options__3.label"
-            },
-            {
-              "value": "bold-underline",
-              "label": "t:sections.all.highlight.style.options__4.label"
-            },
-            {
-              "value": "modern-underline",
-              "label": "t:sections.all.highlight.style.options__5.label"
-            },
-            {
-              "value": "sketch-underline",
-              "label": "t:sections.all.highlight.style.options__6.label"
-            },
-            {
-              "value": "squiggle",
-              "label": "t:sections.all.highlight.style.options__7.label"
-            },
-            {
-              "value": "heavy-squiggle",
-              "label": "t:sections.all.highlight.style.options__8.label"
-            },
-            {
-              "value": "solid-color",
-              "label": "t:sections.all.highlight.style.options__9.label"
-            }
+            { "value": "marker", "label": "t:sections.all.highlight.style.options__1.label" },
+            { "value": "circle", "label": "t:sections.all.highlight.style.options__2.label" },
+            { "value": "underline", "label": "t:sections.all.highlight.style.options__3.label" },
+            { "value": "bold-underline", "label": "t:sections.all.highlight.style.options__4.label" },
+            { "value": "modern-underline", "label": "t:sections.all.highlight.style.options__5.label" },
+            { "value": "sketch-underline", "label": "t:sections.all.highlight.style.options__6.label" },
+            { "value": "squiggle", "label": "t:sections.all.highlight.style.options__7.label" },
+            { "value": "heavy-squiggle", "label": "t:sections.all.highlight.style.options__8.label" },
+            { "value": "solid-color", "label": "t:sections.all.highlight.style.options__9.label" }
           ],
           "default": "marker",
           "label": "t:sections.all.highlight.style.label"
@@ -466,18 +361,9 @@
           "type": "select",
           "id": "text_size",
           "options": [
-            {
-              "value": "typeset",
-              "label": "t:sections.all.text_size.options__1.label"
-            },
-            {
-              "value": "typeset2",
-              "label": "t:sections.all.text_size.options__2.label"
-            },
-            {
-              "value": "typeset3",
-              "label": "t:sections.all.text_size.options__3.label"
-            }
+            { "value": "typeset", "label": "t:sections.all.text_size.options__1.label" },
+            { "value": "typeset2", "label": "t:sections.all.text_size.options__2.label" },
+            { "value": "typeset3", "label": "t:sections.all.text_size.options__3.label" }
           ],
           "default": "typeset",
           "label": "t:sections.all.text_size.label"
@@ -503,42 +389,15 @@
           "type": "select",
           "id": "highlight_style",
           "options": [
-            {
-              "value": "marker",
-              "label": "t:sections.all.highlight.style.options__1.label"
-            },
-            {
-              "value": "circle",
-              "label": "t:sections.all.highlight.style.options__2.label"
-            },
-            {
-              "value": "underline",
-              "label": "t:sections.all.highlight.style.options__3.label"
-            },
-            {
-              "value": "bold-underline",
-              "label": "t:sections.all.highlight.style.options__4.label"
-            },
-            {
-              "value": "modern-underline",
-              "label": "t:sections.all.highlight.style.options__5.label"
-            },
-            {
-              "value": "sketch-underline",
-              "label": "t:sections.all.highlight.style.options__6.label"
-            },
-            {
-              "value": "squiggle",
-              "label": "t:sections.all.highlight.style.options__7.label"
-            },
-            {
-              "value": "heavy-squiggle",
-              "label": "t:sections.all.highlight.style.options__8.label"
-            },
-            {
-              "value": "solid-color",
-              "label": "t:sections.all.highlight.style.options__9.label"
-            }
+            { "value": "marker", "label": "t:sections.all.highlight.style.options__1.label" },
+            { "value": "circle", "label": "t:sections.all.highlight.style.options__2.label" },
+            { "value": "underline", "label": "t:sections.all.highlight.style.options__3.label" },
+            { "value": "bold-underline", "label": "t:sections.all.highlight.style.options__4.label" },
+            { "value": "modern-underline", "label": "t:sections.all.highlight.style.options__5.label" },
+            { "value": "sketch-underline", "label": "t:sections.all.highlight.style.options__6.label" },
+            { "value": "squiggle", "label": "t:sections.all.highlight.style.options__7.label" },
+            { "value": "heavy-squiggle", "label": "t:sections.all.highlight.style.options__8.label" },
+            { "value": "solid-color", "label": "t:sections.all.highlight.style.options__9.label" }
           ],
           "default": "marker",
           "label": "t:sections.all.highlight.style.label"
@@ -612,42 +471,15 @@
           "type": "select",
           "id": "highlight_style",
           "options": [
-            {
-              "value": "marker",
-              "label": "t:sections.all.highlight.style.options__1.label"
-            },
-            {
-              "value": "circle",
-              "label": "t:sections.all.highlight.style.options__2.label"
-            },
-            {
-              "value": "underline",
-              "label": "t:sections.all.highlight.style.options__3.label"
-            },
-            {
-              "value": "bold-underline",
-              "label": "t:sections.all.highlight.style.options__4.label"
-            },
-            {
-              "value": "modern-underline",
-              "label": "t:sections.all.highlight.style.options__5.label"
-            },
-            {
-              "value": "sketch-underline",
-              "label": "t:sections.all.highlight.style.options__6.label"
-            },
-            {
-              "value": "squiggle",
-              "label": "t:sections.all.highlight.style.options__7.label"
-            },
-            {
-              "value": "heavy-squiggle",
-              "label": "t:sections.all.highlight.style.options__8.label"
-            },
-            {
-              "value": "solid-color",
-              "label": "t:sections.all.highlight.style.options__9.label"
-            }
+            { "value": "marker", "label": "t:sections.all.highlight.style.options__1.label" },
+            { "value": "circle", "label": "t:sections.all.highlight.style.options__2.label" },
+            { "value": "underline", "label": "t:sections.all.highlight.style.options__3.label" },
+            { "value": "bold-underline", "label": "t:sections.all.highlight.style.options__4.label" },
+            { "value": "modern-underline", "label": "t:sections.all.highlight.style.options__5.label" },
+            { "value": "sketch-underline", "label": "t:sections.all.highlight.style.options__6.label" },
+            { "value": "squiggle", "label": "t:sections.all.highlight.style.options__7.label" },
+            { "value": "heavy-squiggle", "label": "t:sections.all.highlight.style.options__8.label" },
+            { "value": "solid-color", "label": "t:sections.all.highlight.style.options__9.label" }
           ],
           "default": "marker",
           "label": "t:sections.all.highlight.style.label"
@@ -690,18 +522,9 @@
           "type": "select",
           "id": "show_social_media",
           "options": [
-            {
-              "value": "none",
-              "label": "t:sections.popup.blocks.floating.settings.show_social_media.options__1.label"
-            },
-            {
-              "value": "all",
-              "label": "t:sections.popup.blocks.floating.settings.show_social_media.options__2.label"
-            },
-            {
-              "value": "hover",
-              "label": "t:sections.popup.blocks.floating.settings.show_social_media.options__3.label"
-            }
+            { "value": "none", "label": "t:sections.popup.blocks.floating.settings.show_social_media.options__1.label" },
+            { "value": "all", "label": "t:sections.popup.blocks.floating.settings.show_social_media.options__2.label" },
+            { "value": "hover", "label": "t:sections.popup.blocks.floating.settings.show_social_media.options__3.label" }
           ],
           "default": "all",
           "label": "t:sections.popup.blocks.floating.settings.show_social_media.label"
@@ -710,14 +533,8 @@
           "type": "select",
           "id": "text_box_position",
           "options": [
-            {
-              "value": "left",
-              "label": "t:sections.popup.blocks.floating.settings.text_box_position.options__1.label"
-            },
-            {
-              "value": "right",
-              "label": "t:sections.popup.blocks.floating.settings.text_box_position.options__2.label"
-            }
+            { "value": "left", "label": "t:sections.popup.blocks.floating.settings.text_box_position.options__1.label" },
+            { "value": "right", "label": "t:sections.popup.blocks.floating.settings.text_box_position.options__2.label" }
           ],
           "default": "left",
           "label": "t:sections.popup.blocks.floating.settings.text_box_position.label"
@@ -762,22 +579,15 @@
           "label": "Custom HTML"
         }
       ]
-
-    },
+    }
   ],
   "settings": [
     {
       "type": "select",
       "id": "mode",
       "options": [
-        {
-          "value": "enabled",
-          "label": "t:sections.popup.settings.mode.options__1.label"
-        },
-        {
-          "value": "testing",
-          "label": "t:sections.popup.settings.mode.options__2.label"
-        }
+        { "value": "enabled", "label": "t:sections.popup.settings.mode.options__1.label" },
+        { "value": "testing", "label": "t:sections.popup.settings.mode.options__2.label" }
       ],
       "default": "enabled",
       "label": "t:sections.popup.settings.mode.label",
@@ -847,18 +657,9 @@
       "type": "select",
       "id": "text_alignment",
       "options": [
-        {
-          "value": "left",
-          "label": "t:sections.popup.settings.text_alignment.options__1.label"
-        },
-        {
-          "value": "center",
-          "label": "t:sections.popup.settings.text_alignment.options__2.label"
-        },
-        {
-          "value": "right",
-          "label": "t:sections.popup.settings.text_alignment.options__3.label"
-        }
+        { "value": "left", "label": "t:sections.popup.settings.text_alignment.options__1.label" },
+        { "value": "center", "label": "t:sections.popup.settings.text_alignment.options__2.label" },
+        { "value": "right", "label": "t:sections.popup.settings.text_alignment.options__3.label" }
       ],
       "default": "left",
       "label": "t:sections.popup.settings.text_alignment.label"
@@ -867,18 +668,9 @@
       "type": "select",
       "id": "text_box_position",
       "options": [
-        {
-          "value": "center",
-          "label": "t:sections.popup.settings.text_box_position.options__1.label"
-        },
-        {
-          "value": "bottom-left",
-          "label": "t:sections.popup.settings.text_box_position.options__2.label"
-        },
-        {
-          "value": "bottom-right",
-          "label": "t:sections.popup.settings.text_box_position.options__3.label"
-        }
+        { "value": "center", "label": "t:sections.popup.settings.text_box_position.options__1.label" },
+        { "value": "bottom-left", "label": "t:sections.popup.settings.text_box_position.options__2.label" },
+        { "value": "bottom-right", "label": "t:sections.popup.settings.text_box_position.options__3.label" }
       ],
       "default": "center",
       "label": "t:sections.popup.settings.text_box_position.label"
@@ -901,22 +693,10 @@
       "type": "select",
       "id": "image_position",
       "options": [
-        {
-          "value": "top",
-          "label": "t:sections.popup.settings.image_position.options__1.label"
-        },
-        {
-          "value": "left",
-          "label": "t:sections.popup.settings.image_position.options__2.label"
-        },
-        {
-          "value": "right",
-          "label": "t:sections.popup.settings.image_position.options__3.label"
-        },
-        {
-          "value": "bottom",
-          "label": "t:sections.popup.settings.image_position.options__4.label"
-        }
+        { "value": "top", "label": "t:sections.popup.settings.image_position.options__1.label" },
+        { "value": "left", "label": "t:sections.popup.settings.image_position.options__2.label" },
+        { "value": "right", "label": "t:sections.popup.settings.image_position.options__3.label" },
+        { "value": "bottom", "label": "t:sections.popup.settings.image_position.options__4.label" }
       ],
       "default": "top",
       "label": "t:sections.popup.settings.image_position.label",
@@ -976,21 +756,11 @@
   ],
   "default": {
     "blocks": [
-      {
-        "type": "subheading"
-      },
-      {
-        "type": "text"
-      },
-      {
-        "type": "newsletter"
-      },
-      {
-        "type": "social_media"
-      },
-      {
-        "type": "floating"
-      }
+      { "type": "subheading" },
+      { "type": "text" },
+      { "type": "newsletter" },
+      { "type": "social_media" },
+      { "type": "floating" }
     ]
   },
   "enabled_on": {
