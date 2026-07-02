@@ -4,10 +4,6 @@
   if section.settings.only_homepage and request.page_type != 'index'
     assign show_popup = false
   endif
-
-  if section.settings.only_visitor and customer
-    assign show_popup = false
-  endif
 -%}
 
 {%- if show_popup -%}
