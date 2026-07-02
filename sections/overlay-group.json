@@ -121,6 +121,7 @@
         "padding": 40,
         "text_alignment": "center",
         "text_box_position": "center",
+        "image": "shopify://shop_images/Copy_of_hexagon_and_jewelry_box_1.png",
         "image_position": "left",
         "colors_button_label": "#ffffff",
         "colors_button_background": "#bb3263",
