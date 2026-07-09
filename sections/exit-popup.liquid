@@ -151,7 +151,7 @@
   <noscript>{{ 'section-popup.css' | asset_url | stylesheet_tag }}</noscript>
   <script src="{{ 'popup.js' | asset_url }}" defer="defer"></script>
 
-  <promo-popup data-section-id="{{ section.id }}" class="hidden" data-delay="999999" data-expiry="{{ section.settings.expiry }}" data-test-mode="true">
+  <promo-popup data-section-id="{{ section.id }}" data-popup-kind="exit" class="hidden" data-delay="999999" data-expiry="{{ section.settings.expiry }}" data-test-mode="true">
     <div class="promo-popup" data-position="center">
       <div class="popup-overlay" data-popup-toggle></div>
       <div class="popup-wrapper">
@@ -220,29 +220,12 @@
         }
       }
 
-      var observer = new MutationObserver(function (mutations) {
-        mutations.forEach(function (mutation) {
-          if (mutation.attributeName !== 'class') return;
-          var target = mutation.target;
-          if (!target.classList.contains('promo-popup')) return;
-          var wasActive = mutation.oldValue && mutation.oldValue.includes('is-active');
-          var isNowInactive = !target.classList.contains('is-active');
-          if (wasActive && isNowInactive) {
-            var exitPopupEl = document.querySelector('promo-popup[data-section-id="' + sectionId + '"]');
-            if (exitPopupEl && !exitPopupEl.contains(target)) {
-              openExitPopup();
-            }
-          }
-        });
-      });
+      document.addEventListener('promo-popup:closed', function (event) {
+        var closedPopup = event.target;
+        if (!closedPopup || closedPopup.dataset.sectionId === sectionId) return;
+        if (event.detail && event.detail.popupKind === 'exit') return;
 
-      document.addEventListener('DOMContentLoaded', function () {
-        observer.observe(document.body, {
-          subtree: true,
-          attributes: true,
-          attributeOldValue: true,
-          attributeFilter: ['class']
-        });
+        openExitPopup();
       });
     })();
   </script>

@@ -1,3 +1,4 @@
+if (!customElements.get('social-floating')) {
 class SocialFloating extends HTMLElement {
   constructor() {
     super();
@@ -42,7 +43,9 @@ class SocialFloating extends HTMLElement {
   }
 }
 customElements.define('social-floating', SocialFloating);
+}
 
+if (!customElements.get('promo-popup')) {
 class PromoPopup extends HTMLElement {
   constructor() {
     super();
@@ -72,7 +75,7 @@ class PromoPopup extends HTMLElement {
       button.addEventListener('click', this.onButtonClick.bind(this));
     });
 
-    if (!this.getCookie(this.cookieName) || this.dataset.testMode === 'true') {
+    if (this.dataset.showEveryLoad === 'true' || !this.getCookie(this.cookieName) || this.dataset.testMode === 'true') {
       this.init();
     }
   }
@@ -153,7 +156,20 @@ class PromoPopup extends HTMLElement {
       if (this.popup.dataset.position === 'center') {
         document.body.classList.remove(this.classes.bodyClass);
       }
+
+      this.dispatchEvent(new CustomEvent('promo-popup:closed', {
+        bubbles: true,
+        detail: {
+          sectionId: this.dataset.sectionId,
+          popupKind: this.dataset.popupKind || 'promo'
+        }
+      }));
     }, 500);
+
+    if (this.dataset.showEveryLoad === 'true') {
+      this.removeCookie(this.cookieName);
+      return;
+    }
 
     // Remove a cookie in case it was set in test mode
     if (this.dataset.testMode === 'true') {
@@ -178,3 +194,4 @@ class PromoPopup extends HTMLElement {
   }
 }
 customElements.define('promo-popup', PromoPopup);
+}
