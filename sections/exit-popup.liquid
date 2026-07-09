@@ -131,6 +131,10 @@
         justify-content: flex-start !important;
       }
 
+      .exit-popup__eyebrow {
+        padding-top: 0 !important;
+      }
+
       .exit-popup__heading {
         font-size: 1.8rem !important;
       }
@@ -211,6 +215,13 @@
       var sectionId = '{{ section.id }}';
       var triggered = false;
       var outsideHoverTriggered = false;
+      var canShowExitPopup = false;
+      var lastScrollY = window.scrollY || window.pageYOffset || 0;
+      var upwardScrollDistance = 0;
+
+      setTimeout(function () {
+        canShowExitPopup = true;
+      }, 10000);
 
       function openExitPopup() {
         if (triggered) return;
@@ -243,19 +254,52 @@
         }
       });
 
-      document.addEventListener('mousemove', function (event) {
+      function handleExitIntent(event) {
         if (outsideHoverTriggered || triggered) return;
-        if (event.clientY > 80) return;
-
-        var mainPopup = document.querySelector('promo-popup[data-popup-kind="main"]');
-        if (!mainPopup) return;
-
-        var mainPopupPanel = mainPopup.querySelector('.promo-popup');
-        if (!mainPopupPanel || !mainPopupPanel.classList.contains('is-active')) return;
+        if (!canShowExitPopup) return;
 
         outsideHoverTriggered = true;
         openExitPopup();
+      }
+
+      document.addEventListener('mousemove', function (event) {
+        if (event.clientY > 80) return;
+        handleExitIntent(event);
       });
+
+      document.addEventListener('mouseout', function (event) {
+        if (event.relatedTarget || event.toElement) return;
+
+        var leftViewport =
+          event.clientY <= 0 ||
+          event.clientX <= 0 ||
+          event.clientX >= window.innerWidth ||
+          event.clientY >= window.innerHeight;
+
+        if (leftViewport) handleExitIntent(event);
+      });
+
+      window.addEventListener('scroll', function () {
+        if (outsideHoverTriggered || triggered) return;
+        if (!canShowExitPopup) return;
+        if (!window.matchMedia('(max-width: 1024px), (hover: none), (pointer: coarse)').matches) return;
+
+        var currentScrollY = window.scrollY || window.pageYOffset || 0;
+        var delta = lastScrollY - currentScrollY;
+
+        if (delta > 0) {
+          upwardScrollDistance += delta;
+        } else if (delta < 0) {
+          upwardScrollDistance = 0;
+        }
+
+        lastScrollY = currentScrollY;
+
+        if (upwardScrollDistance >= 80) {
+          outsideHoverTriggered = true;
+          openExitPopup();
+        }
+      }, { passive: true });
     })();
   </script>
 {%- endif -%}
