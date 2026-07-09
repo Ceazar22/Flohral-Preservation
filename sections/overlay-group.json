@@ -102,7 +102,7 @@
         "only_homepage": false,
         "only_visitor": false,
         "return_url": "",
-        "delay": 30,
+        "delay": 10,
         "expiry": 30,
         "width": 760,
         "padding": 40,

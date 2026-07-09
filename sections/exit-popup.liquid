@@ -240,23 +240,18 @@
         if (!closedPopup) return;
         if (event.detail && event.detail.popupKind === 'exit') {
           closeOtherPopups(closedPopup);
-          return;
         }
-        if (closedPopup.dataset.sectionId === sectionId) return;
-
-        openExitPopup();
       });
 
-      document.addEventListener('mouseover', function (event) {
+      document.addEventListener('mousemove', function (event) {
         if (outsideHoverTriggered || triggered) return;
+        if (event.clientY > 80) return;
 
         var mainPopup = document.querySelector('promo-popup[data-popup-kind="main"]');
         if (!mainPopup) return;
 
         var mainPopupPanel = mainPopup.querySelector('.promo-popup');
         if (!mainPopupPanel || !mainPopupPanel.classList.contains('is-active')) return;
-
-        if (event.target.closest('promo-popup[data-popup-kind="main"] .popup-wrapper')) return;
 
         outsideHoverTriggered = true;
         openExitPopup();
