@@ -141,7 +141,7 @@ promo-popup.hidden {
   max-width: 100%;
   width: 100vw;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
   scrollbar-width: thin;

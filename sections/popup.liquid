@@ -4,229 +4,819 @@
   if section.settings.only_homepage and request.page_type != 'index'
     assign show_popup = false
   endif
+
+  if section.settings.only_visitor and customer
+    assign show_popup = false
+  endif
+
+  assign show_image = false
+  if section.settings.text_box_position == 'center' and section.settings.image != blank
+    if section.settings.image_position == 'top' or section.settings.image_position == 'bottom'
+      assign show_image = true
+    elsif section.settings.width >= 720
+      assign show_image = true
+    endif
+  endif
 -%}
 
 {%- if show_popup -%}
   {%- style -%}
-    promo-popup,
+    #shopify-section-{{ section.id }} .popup {
+      --popup-width: {{ section.settings.width }}px;
+      --popup-padding: {{ section.settings.padding }}px;
+      --gradient-background: {% if section.settings.gradient_background != blank %}{{ section.settings.gradient_background }}{% else %}{{ section.settings.colors_background }}{% endif %};
+      --color-background: {{ section.settings.colors_background.red }}, {{ section.settings.colors_background.green }}, {{ section.settings.colors_background.blue }};
+      --color-foreground: {{ section.settings.colors_text.red }}, {{ section.settings.colors_text.green }}, {{ section.settings.colors_text.blue }};
+      --color-border: {{ section.settings.colors_border.red }}, {{ section.settings.colors_border.green }}, {{ section.settings.colors_border.blue }};
+      --color-shadow: {{ section.settings.colors_shadow.red }}, {{ section.settings.colors_shadow.green }}, {{ section.settings.colors_shadow.blue }};
+      --color-link: var(--color-foreground);
+      --color-heading: var(--color-foreground);
+      --color-button-background: {{ section.settings.colors_button_background.red }}, {{ section.settings.colors_button_background.green }}, {{ section.settings.colors_button_background.blue }};
+      --color-button-text: {{ section.settings.colors_button_label.red }}, {{ section.settings.colors_button_label.green }}, {{ section.settings.colors_button_label.blue }};
+      --color-button-border: var(--color-button-background);
+      --color-highlight: {{ section.settings.colors_highlight.red }}, {{ section.settings.colors_highlight.green }}, {{ section.settings.colors_highlight.blue }};
+    }
+
+    #shopify-section-{{ section.id }} .button--tertiary {
+      --color-button-text: var(--color-foreground);
+      --color-button-border: var(--color-border);
+      --color-button-background: var(--color-background);
+    }
+
+    .mini-cart--open .promo-popup,
+    .facet-drawer--open .promo-popup,
+    .menu-drawer--open .promo-popup,
+    .menu-mobile--open .promo-popup,
+    .pickup-availability--open .promo-popup,
+    .quick-view--open .promo-popup,
+    .search-modal--open .promo-popup,
+    .details-modal--open .promo-popup {
+      z-index: 15;
+    }
+
+    promo-popup.hidden {
+      display: block !important;
+    }
+
     .promo-popup {
-      z-index: 9999 !important;
-    }
-
-    .exit-popup {
-      display: flex;
-      width: min(1200px, 95vw) !important;
-      height: min(600px, 85vh) !important;
-      overflow: hidden;
-    }
-
-    .exit-popup__image-side {
-      position: relative;
-      flex: 0 0 50%;
-      overflow: hidden;
-    }
-
-    .exit-popup__image-side img,
-    .exit-popup__image-side svg {
+      display: none;
+      position: fixed;
+      z-index: 111;
+      bottom: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      object-position: center;
-      display: block;
+      justify-content: center;
+      pointer-events: none;
+      --popup-max-width: 100vw;
+      --popup-max-height: 100vh;
     }
 
-    .exit-popup__badge {
+    .promo-popup[data-position=bottom-left] {
+      justify-content: flex-start;
+    }
+
+    .promo-popup[data-position=bottom-right] {
+      justify-content: flex-end;
+    }
+
+    .promo-popup.is-active {
+      display: flex;
+      animation: fade-in var(--duration-long) ease;
+    }
+
+    .promo-popup.is-closing {
+      animation: fade-out var(--duration-long) ease;
+    }
+
+    .popup-wrapper {
+      pointer-events: visible;
+      z-index: 30;
+      position: relative;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      align-self: flex-end;
+      width: 100%;
+      max-width: var(--popup-max-width);
+      max-height: var(--popup-max-height);
+    }
+
+    @media screen and (min-width: 750px) {
+      .popup-wrapper {
+        width: auto;
+      }
+    }
+
+    .promo-popup.is-active .popup-wrapper {
+      display: flex;
+      animation: popup-in var(--duration-long) ease;
+    }
+
+    .promo-popup.is-closing .popup-wrapper {
+      animation: popup-out var(--duration-long) ease;
+    }
+
+    @keyframes popup-in {
+      0% { transform: scale(0.93); }
+      to { transform: scale(1); }
+    }
+
+    @keyframes popup-out {
+      0% { transform: scale(1); }
+      to { transform: scale(0.93); }
+    }
+
+    @media screen and (min-width: 750px) {
+      .promo-popup--open {
+        overflow: hidden;
+      }
+
+      .promo-popup--open .transition-content,
+      .promo-popup--open .announcement-bar,
+      .promo-popup--open .header-wrapper {
+        padding-inline-end: var(--scrollbar-width);
+      }
+
+      .promo-popup {
+        padding: 5rem;
+        --popup-max-width: calc(100vw - 10rem);
+        --popup-max-height: calc(100vh - 10rem);
+      }
+
+      .promo-popup[data-position=bottom-left],
+      .promo-popup[data-position=bottom-right] {
+        padding: 2rem;
+      }
+
+      .promo-popup[data-position=center] .popup-wrapper {
+        align-self: center;
+      }
+
+      .promo-popup .popup-overlay {
+        pointer-events: visible;
+        display: block;
+        position: absolute;
+        z-index: 25;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        cursor: url(cross.svg), url(cross.png), zoom-out;
+        background-color: rgba(var(--color-overlay), 0.5);
+      }
+    }
+
+    .popup {
+      height: 100%;
+      display: flex;
+      cursor: initial;
+      color: rgb(var(--color-foreground));
+      background: var(--gradient-background);
+      background-color: rgb(var(--color-background));
+      box-shadow: 0 0 4rem rgba(var(--color-foreground), 0.2);
+      max-width: 100%;
+      width: 100vw;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+    }
+
+    @media screen and (min-width: 750px) {
+      .popup {
+        width: min(var(--popup-width), var(--popup-max-width));
+      }
+    }
+
+    .popup::-webkit-scrollbar {
+      appearance: none;
+      width: 0.9rem;
+      background-clip: padding-box;
+      border: 0.3rem solid transparent;
+      border-radius: 1.6rem;
+      background-color: rgba(var(--color-border), 0.3);
+    }
+
+    .popup::-webkit-scrollbar-thumb {
+      border: 0.3rem solid transparent;
+      background-clip: padding-box;
+      border-radius: 1.6rem;
+      background-color: rgb(var(--color-border));
+    }
+
+    .popup.center .field__input { text-align: center; }
+    .popup.right .field__input { text-align: end; }
+    .popup.center .list-social { justify-content: center; margin-inline-start: 0; }
+    .popup.right .list-social { justify-content: flex-end; margin-inline-end: -1.2rem; }
+
+    .popup-close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       position: absolute;
-      top: 1.4rem;
-      left: 1.4rem;
-      background: #fff;
-      color: #1a1b18;
-      font-size: 1rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 0.5rem 1.2rem;
-      border-radius: 50px;
-      z-index: 2;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.12);
+      height: 4.4rem;
+      width: 4.4rem;
+      border-radius: 50%;
+      top: 1rem;
+      right: 1rem;
+      color: rgb(var(--color-foreground));
+      background-color: transparent;
+      border: none;
+      outline: none;
+      padding: 0;
+      cursor: pointer;
+      z-index: 5;
     }
 
-    .exit-popup__content-side {
-      flex: 1 1 50%;
+    .popup-close::after {
+      content: '';
+      z-index: -1;
+      position: absolute;
+      width: 3.4rem;
+      height: 3.4rem;
+      border-radius: 50%;
+      background-color: rgb(var(--color-background));
+      box-shadow: 0 0 4rem rgba(var(--color-foreground), 0.2);
+    }
+
+    .popup-close .icon {
+      pointer-events: none;
+      position: relative;
+      width: 1.6rem;
+      height: 1.6rem;
+      transition: transform var(--duration-default) ease;
+      will-change: transform;
+      transform: scale(1) rotate(45deg);
+    }
+
+    @media screen and (hover: hover) {
+      .popup-close:hover .icon {
+        transform: scale(0.8) rotate(135deg);
+      }
+    }
+
+    .popup__image-wrapper {
+      display: none;
+    }
+
+    @media screen and (min-width: 750px) {
+      .popup-image--top { flex-direction: column; }
+      .popup-image--bottom { flex-direction: column-reverse; }
+
+      .popup-image--left,
+      .popup-image--right {
+        --image-width: 26rem;
+        width: calc(min(var(--popup-width), var(--popup-max-width)) - var(--image-width));
+        transition: width var(--duration-long) ease;
+      }
+
+      .popup__content-wrapper {
+        transition: padding var(--duration-long) ease;
+      }
+
+      .popup__image-wrapper {
+        display: block;
+        flex: 0 0 auto;
+      }
+
+      .popup__image {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      [data-lazy-image] .popup-image--left .popup__image-wrapper.loading,
+      [data-lazy-image] .popup-image--right .popup__image-wrapper.loading {
+        position: absolute;
+      }
+
+      .popup-image--left .popup__image-wrapper,
+      .popup-image--right .popup__image-wrapper {
+        width: var(--image-width);
+        height: 100%;
+        position: absolute;
+        top: 0;
+      }
+
+      .popup-image--left .popup__image-wrapper { left: 0; right: auto; }
+      .popup-image--right .popup__image-wrapper { right: 0; left: auto; }
+
+      .popup-image--left .popup__image,
+      .popup-image--right .popup__image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
+
+      .promo-popup.show-image .popup-image--left,
+      .promo-popup.show-image .popup-image--right {
+        width: min(var(--popup-width), var(--popup-max-width));
+      }
+
+      .promo-popup.show-image .popup-image--left .popup__content-wrapper {
+        padding-inline-start: var(--image-width);
+      }
+
+      .promo-popup.show-image .popup-image--right .popup__content-wrapper {
+        padding-inline-end: var(--image-width);
+      }
+    }
+
+    @media screen and (min-width: 990px) {
+      .popup-image--left,
+      .popup-image--right {
+        --image-width: 36rem;
+      }
+    }
+
+    .popup__content-wrapper {
+      flex: 1 1 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .popup__content {
+      padding: 2.5rem 1.5rem;
+    }
+
+    .popup__content * { overflow-wrap: break-word; }
+    .popup__content > * { margin-top: 0; margin-bottom: 0; }
+    .popup__content > * + * { margin-top: 2rem; }
+    .popup__content > * + a { margin-top: 3rem; }
+    .popup__content form-state { display: block; }
+
+    .popup__content .popup__newsletter {
+      display: block;
+      margin-top: 3rem;
+    }
+
+    .popup__content .list-social { margin-bottom: -1rem; }
+
+    .popup__content :first-child:is(.list-social) {
+      margin-top: -1rem;
+      margin-bottom: 0;
+    }
+
+    @media screen and (min-width: 750px) {
+      .popup__content {
+        max-height: 100%;
+        padding: calc(var(--popup-padding) * 0.75);
+        overflow-x: hidden;
+        overflow-y: auto;
+        scroll-snap-type: y mandatory;
+        scroll-behavior: smooth;
+        scrollbar-width: thin;
+      }
+
+      .popup__content::-webkit-scrollbar {
+        appearance: none;
+        width: 0.9rem;
+        background-clip: padding-box;
+        border: 0.3rem solid transparent;
+        border-radius: 1.6rem;
+        background-color: rgba(var(--color-border), 0.3);
+      }
+
+      .popup__content::-webkit-scrollbar-thumb {
+        border: 0.3rem solid transparent;
+        background-clip: padding-box;
+        border-radius: 1.6rem;
+        background-color: rgb(var(--color-border));
+      }
+
+      .popup__content .popup__newsletter { margin-top: 4rem; }
+
+      .popup-image--left .popup__content,
+      .popup-image--right .popup__content {
+        background: var(--gradient-background);
+        background-color: rgb(var(--color-background));
+        max-width: calc(min(var(--popup-width), var(--popup-max-width)) - var(--image-width));
+      }
+    }
+
+    @media screen and (min-width: 990px) {
+      .popup__content { padding: var(--popup-padding); }
+    }
+
+    .popup__content > .popup__subheading + * { margin-top: 1rem; }
+
+    .popup__subheading {
+      text-transform: uppercase;
+      letter-spacing: 0.3rem;
+      color: rgba(var(--color-foreground), 0.55);
+    }
+
+    .popup__text { max-width: 72.6rem; }
+
+    .popup__text--colored { color: rgba(var(--color-foreground), 0.55); }
+
+    .popup__text--colored.rte a {
+      color: rgb(var(--color-link));
+      background-image: linear-gradient(to top, rgb(var(--color-border)) 0px, rgb(var(--color-border)) 0px), linear-gradient(to top, transparent 0px, transparent 0px);
+    }
+
+    .popup__newsletter .field {
+      display: flex;
+      flex-wrap: wrap;
+      row-gap: 1rem;
+    }
+
+    [data-button-round] .popup__newsletter .field { column-gap: 1rem; }
+    .popup__newsletter .field + .field { margin-top: 2rem; }
+
+    .popup__newsletter .field__input {
+      width: auto;
+      margin: 0;
+      border-radius: var(--button-radius);
+    }
+
+    .popup__newsletter .field__input::placeholder { color: inherit; }
+
+    .popup__newsletter .button {
+      min-height: 4.2rem;
+      min-width: auto;
+      margin: 0;
+      margin-inline-start: -0.1rem;
+      width: auto;
+    }
+
+    .popup__newsletter .button .label { display: none; }
+    .popup__newsletter .button .icon { width: 1.8rem; }
+
+    @media screen and (min-width: 750px) {
+      .popup__newsletter .button--full-width { width: 100%; }
+      .popup__newsletter .button { min-height: 4.5rem; }
+      .popup__newsletter .button .label { display: initial; }
+      .popup__newsletter .button .icon { display: none; }
+    }
+
+    .popup__newsletter .newsletter__text {
+      display: block;
+      font-size: 1.3rem;
+      line-height: normal;
+      color: rgba(var(--color-foreground), 0.55);
+    }
+
+    .popup__newsletter .form__message {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .popup-floating {
+      position: fixed;
+      z-index: 20;
+      bottom: 20rem;
+      width: 5rem;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      padding: 3rem 3.5rem;
-      background: #fff;
+      align-items: center;
     }
 
-    .exit-popup__eyebrow {
-      font-size: 1.05rem;
-      letter-spacing: 0.2em;
-      color: #aaa;
+    .popup-floating--left { left: 0; }
+    .popup-floating--right { right: 0; }
+
+    .popup-floating .popup-open {
+      writing-mode: tb-rl;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      backface-visibility: hidden;
+    }
+
+    .popup-floating .popup-open[data-popup-toggle] { cursor: pointer; }
+    .popup-floating--left .popup-open { transform: rotate(-180deg); }
+
+    .popup-floating .popup-open .h5 {
+      margin: 0;
+      padding: 1rem 0;
+      font-size: 1.1rem;
       text-transform: uppercase;
-      margin: 0 0 1.2rem;
-      font-weight: 500;
+      letter-spacing: 0.1rem;
     }
 
-    .exit-popup__heading {
-      font-size: clamp(2.2rem, 3vw, 2.8rem);
-      line-height: 1.18;
-      font-weight: 700;
-      color: #1a1b18;
-      margin: 0 0 1rem;
+    @media screen and (hover: hover) {
+      .popup-floating .popup-open[data-popup-toggle]:hover .h5 {
+        animation: beat .6s infinite ease;
+      }
     }
 
-    .exit-popup__subtext {
-      font-size: 1.3rem;
-      color: #888;
-      line-height: 1.6;
-      margin: 0 0 1.5rem;
-    }
-
-    .exit-popup__form-wrapper {
-      width: 100%;
-      min-height: 400px;
-    }
-
-    .exit-popup__form-wrapper iframe {
-      width: 100%;
-      min-height: 400px !important;
-      border: none;
+    .social-floating {
       display: block;
+      position: relative;
+    }
+
+    @media screen and (min-width: 750px) {
+      .popup-floating {
+        bottom: 50%;
+        transform: translateY(50%);
+      }
+
+      .social-floating > .list-social__link .icon {
+        width: 2rem;
+        height: 2rem;
+      }
+
+      .popup-floating .popup-open .h5 {
+        transition-duration: var(--duration-default);
+        transition-property: transform, opacity, visibility;
+        transition-timing-function: ease;
+      }
+
+      .social-floating .social-floating-wrapper {
+        z-index: 1;
+        position: absolute;
+        top: 100%;
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(0.8);
+        transition-duration: var(--duration-short);
+        transition-property: transform, opacity, visibility;
+        transition-timing-function: ease;
+      }
+
+      .social-floating .list-social {
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        row-gap: 0;
+      }
+
+      @media screen and (hover: hover) {
+        .social-floating:not(.social-floating--all):hover .social-floating-wrapper {
+          opacity: 1;
+          visibility: visible;
+          transform: scale(1);
+          transition-duration: var(--duration-default);
+        }
+
+        .social-floating:not(.social-floating--all):hover + .popup-open .h5 {
+          transform: scale(1.2);
+          opacity: 0;
+          visibility: hidden;
+          transition-duration: var(--duration-short);
+        }
+      }
+
+      .social-floating--all > .list-social__link { display: none; }
+
+      .social-floating--all .social-floating-wrapper {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: scale(1);
+      }
     }
 
     @media screen and (max-width: 749px) {
-      .exit-popup {
-        flex-direction: column;
-        width: 95vw;
+      .popup-floating {
+        width: 4rem;
+        background-color: rgb(var(--color-background));
+        box-shadow: 0 0 4rem rgba(var(--color-foreground), 0.2);
       }
 
-      .exit-popup__image-side {
-        flex: 0 0 220px;
-        min-height: unset;
+      .social-floating { border-bottom: 0.1rem solid rgba(var(--color-border), 0.6); }
+      .social-floating > .list-social__link::after { border-radius: 0; }
+
+      .social-floating .social-floating-wrapper {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
       }
 
-      .exit-popup__content-side {
-        padding: 2rem 1.8rem;
+      body:not(.shopify-body-section-header-sticky) .social-floating .social-floating-wrapper,
+      .shopify-body-section-header-hidden .social-floating .social-floating-wrapper {
+        bottom: var(--mobile-dock-height, 0);
       }
 
-      .exit-popup__heading {
-        font-size: 2rem;
-      }
-    }
-
-    @media screen and (max-width: 767px) {
-      .promo-popup {
-        padding: 0 !important;
-        align-items: stretch !important;
-        justify-content: stretch !important;
-      }
-
-      .popup-wrapper {
-        width: 100vw !important;
-        max-width: 100vw !important;
-        height: 100dvh !important;
-        max-height: 100dvh !important;
-        align-self: stretch !important;
+      .social-floating .social-floating-wrapper::before {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        right: 1.5rem;
+        top: 0;
+        left: 1.5rem;
+        height: 2rem;
+        border-radius: 100%;
+        box-shadow: 0 0 4rem rgba(var(--color-foreground), 0.2);
       }
 
-      .popup.exit-popup {
-        flex-direction: column !important;
-        width: 100vw !important;
-        height: 100dvh !important;
-        max-height: 100dvh !important;
+      .social-floating .social-floating-card {
+        padding: 2.5rem 1.5rem;
+        background-color: rgb(var(--color-background));
       }
 
-      .exit-popup__image-side {
-        flex: 0 0 38% !important;
-        min-height: unset !important;
+      .social-floating.is-active .social-floating-wrapper {
+        display: block;
+        animation: fade-in var(--duration-long) ease;
       }
 
-      .exit-popup__content-side {
-        flex: 1 1 auto !important;
-        padding: 1.5rem !important;
-        overflow-y: auto !important;
-        justify-content: flex-start !important;
+      .social-floating.is-closing .social-floating-wrapper {
+        animation: fade-out var(--duration-long) ease;
       }
 
-      .exit-popup__heading {
-        font-size: 1.8rem !important;
+      .social-floating.is-active .social-floating-card {
+        animation: popup-in var(--duration-long) ease;
       }
 
-      .exit-popup__subtext {
-        font-size: 1.2rem !important;
-        margin-bottom: 1rem !important;
+      .social-floating.is-closing .social-floating-card {
+        animation: popup-out var(--duration-long) ease;
       }
 
-      .exit-popup__form-wrapper,
-      .exit-popup__form-wrapper iframe {
-        min-height: 360px !important;
+      .social-floating .popup__subheading {
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+        text-align: center;
       }
 
-      .popup-close {
-        top: 0.5rem !important;
-        right: 0.5rem !important;
-        z-index: 10 !important;
+      .social-floating .list-social {
+        justify-content: center;
+        margin-bottom: -1rem;
       }
     }
   {%- endstyle -%}
 
-  <link rel="stylesheet" href="{{ 'section-popup.css' | asset_url }}" media="print" onload="this.media='all'">
-  <noscript>{{ 'section-popup.css' | asset_url | stylesheet_tag }}</noscript>
   <script src="{{ 'popup.js' | asset_url }}" defer="defer"></script>
 
-  <promo-popup data-section-id="{{ section.id }}" class="hidden" data-delay="{{ section.settings.delay }}" data-expiry="{{ section.settings.expiry }}" data-test-mode="true">
-    <div class="promo-popup" data-position="center">
-      <div class="popup-overlay" data-popup-toggle></div>
+  <promo-popup data-section-id="{{ section.id }}" class="hidden" data-delay="{{ section.settings.delay }}" data-expiry="{{ section.settings.expiry }}" data-test-mode="{% if section.settings.mode == 'testing' %}true{% else %}false{% endif %}">
+    {%- assign floating = section.blocks | where: "type", "floating" | first -%}
+    {%- unless floating and section.blocks.size == 1 %}
+    <div class="promo-popup" data-position="{{ section.settings.text_box_position }}">
+      {%- if section.settings.text_box_position == 'center' -%}
+        <div class="popup-overlay" data-popup-toggle></div>
+      {%- endif -%}
       <div class="popup-wrapper">
         <button class="popup-close" type="button" aria-label="{{ 'accessibility.close' | t }}" data-popup-toggle>
           <span class="icon icon-plus-alt"></span>
         </button>
-        <div class="popup exit-popup">
+        <div class="popup {{ section.settings.text_alignment }}{% if show_image %} popup-image--{{ section.settings.image_position }}{% endif %}">
+          {%- if show_image -%}
+            <div class="media-wrapper popup__image-wrapper">
+              <div class="media popup__image">
+                {%- capture sizes -%}(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc((100vw - 10rem) / 2), calc(100vw - 3rem){%- endcapture -%}
+                {{ section.settings.image | image_url: width: 1500 | image_tag:
+                  loading: 'lazy',
+                  class: 'image-fit',
+                  sizes: sizes,
+                  widths: '165, 360, 535, 750, 1100, 1500',
+                  is: 'lazy-image'
+                }}
+              </div>
+            </div>
+          {%- endif -%}
+          <div class="popup__content-wrapper">
+            <div class="popup__content">
+              {%- for block in section.blocks -%}
+                {%- case block.type -%}
+                  {%- when 'heading' -%}
+                    <{{ block.settings.heading_tag }} class="popup__heading {{ block.settings.heading_size }}" {{ block.shopify_attributes }}>
+                      {%- render 'highlight-text',
+                        hl_input: block.settings.heading,
+                        hl_style: block.settings.highlight_style,
+                        hl_enable: block.settings.enable_highlight,
+                        hl_animateWrap: true -%}
+                    </{{ block.settings.heading_tag }}>
+                  {%- when 'subheading' -%}
+                    <p class="popup__subheading {{ block.settings.subheading_size }}" {{ block.shopify_attributes }}>
+                      {%- render 'highlight-text',
+                        hl_input: block.settings.subheading,
+                        hl_style: block.settings.highlight_style,
+                        hl_enable: block.settings.enable_highlight,
+                        hl_animateWrap: true -%}
+                    </p>
+                  {%- when 'text' -%}
+                    <div class="popup__text{% if block.settings.secondary_color %} popup__text--colored{% endif %} {{ block.settings.text_size }} rte" {{ block.shopify_attributes }}>
+                      {%- render 'highlight-text',
+                        hl_input: block.settings.text,
+                        hl_style: block.settings.highlight_style,
+                        hl_enable: block.settings.enable_highlight,
+                        hl_animateWrap: true -%}
+                    </div>
+                  {%- when 'button' -%}
+                    {%- if block.settings.button_label != blank -%}
+                      {%- if block.settings.button_style_secondary -%}
+                        <a class="button button--small button--cta"{% if block.settings.button_link != blank %} href="{{ block.settings.button_link }}"{% else %} role="link" aria-disabled="true"{% endif %} {{ block.shopify_attributes }}>
+                          <span class="label">{{ block.settings.button_label | escape }}</span>
+                          {% render 'icon', icon: 'arrow' %}
+                        </a>
+                      {%- else -%}
+                        <a class="button button--small"{% if block.settings.button_link != blank %} href="{{ block.settings.button_link }}"{% else %} role="link" aria-disabled="true"{% endif %} {{ block.shopify_attributes }}>
+                          {{ block.settings.button_label | escape }}
+                        </a>
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- when 'newsletter' -%}
+                    <div {{ block.shopify_attributes }}>
+                      {%- assign return_url = section.settings.return_url | default: 'back' | append: '' -%}
+                      {% form 'customer', class: 'popup__newsletter', id: 'form__popup_newsletter', return_to: return_url %}
+                        <input type="hidden" name="contact[tags]" value="newsletter"/>
+                        {%- if form.errors -%}
+                          <small class="form__message errors" id="Newsletter-error--{{ section.id }}">
+                            {% render 'icon', icon: 'error' %}
+                            {{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}
+                          </small>
+                        {%- endif -%}
+                        {%- if form.posted_successfully? -%}
+                          <p class="form__message h3" id="Newsletter-success--{{ section.id }}" tabindex="-1" autofocus>
+                            {% render 'icon', icon: 'success' %}
+                            {{ 'newsletter.success' | t }}
+                          </p>
+                        {%- endif -%}
 
-          <div class="exit-popup__image-side">
-            <span class="exit-popup__badge">LIMITED SPOT</span>
-            {%- if section.settings.image != blank -%}
-              {{ section.settings.image | image_url: width: 900 | image_tag:
-                loading: 'lazy',
-                is: 'lazy-image',
-                alt: 'Flohral preserved bouquet'
-              }}
-            {%- else -%}
-              {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder' }}
-            {%- endif -%}
-          </div>
-
-          <div class="exit-popup__content-side">
-            <p class="exit-popup__eyebrow">WAIT, BEFORE YOU GO</p>
-            <h2 class="exit-popup__heading">Don't let your bouquet fade away forever.</h2>
-            <p class="exit-popup__subtext">Join brides who preserve their wedding day beautifully get updates about our new arrivals, special promotions and online exclusives.</p>
-            <div class="exit-popup__form-wrapper">
-              <iframe
-                src="https://the.flohralpreservation.com/widget/form/pZg0bjnK6wik5PaPA9hT"
-                style="width:100%;height:100%;border:none;border-radius:0px"
-                id="inline-pZg0bjnK6wik5PaPA9hT"
-                data-layout="{'id':'INLINE'}"
-                data-trigger-type="alwaysShow"
-                data-trigger-value=""
-                data-activation-type="alwaysActivated"
-                data-activation-value=""
-                data-deactivation-type="neverDeactivate"
-                data-deactivation-value=""
-                data-form-name="Shopify Exit Pop Up ✅"
-                data-height="400"
-                data-layout-iframe-id="inline-pZg0bjnK6wik5PaPA9hT"
-                data-form-id="pZg0bjnK6wik5PaPA9hT"
-                title="Shopify Exit Pop Up ✅"
-              ></iframe>
-              <script src="https://the.flohralpreservation.com/js/form_embed.js"></script>
+                        {%- unless form.posted_successfully? -%}
+                          <div class="field">
+                            <input
+                              id="NewsletterForm--{{ section.id }}"
+                              type="email"
+                              name="contact[email]"
+                              class="field__input required{% if form.errors %} invalid{% endif %}"
+                              value="{{ form.email }}"
+                              aria-required="true"
+                              autocorrect="off"
+                              autocapitalize="off"
+                              autocomplete="email"
+                              {% if form.errors %}
+                                autofocus
+                                aria-invalid="true"
+                                aria-describedby="Newsletter-error--{{ section.id }}"
+                              {% elsif form.posted_successfully? %}
+                                aria-describedby="Newsletter-success--{{ section.id }}"
+                              {% endif %}
+                              placeholder="{{ 'newsletter.label' | t }}"
+                              required
+                            />
+                            <label class="visually-hidden" for="NewsletterForm--{{ section.id }}">{{ 'newsletter.label' | t }}</label>
+                            <button type="submit" class="button{% if block.settings.button_style_secondary %} button--tertiary{% endif %}{% if block.settings.button_full_width %} button--full-width{% endif %} button--small" name="commit">
+                              <span class="label">{{ 'newsletter.button_label' | t }}</span>
+                              {% render 'icon', icon: 'arrow' %}
+                            </button>
+                          </div>
+                          <div class="field newsletter__text rte">
+                            {%- render 'highlight-text',
+                              hl_input: block.settings.text,
+                              hl_style: block.settings.highlight_style,
+                              hl_enable: block.settings.enable_highlight,
+                              hl_animateWrap: true -%}
+                          </div>
+                        {%- endunless -%}
+                      {% endform %}
+                    </div>
+                  {%- when 'social_media' -%}
+                    <ul class="list-unstyled list-social{% if block.settings.mobile_disabled %} small-hide{% endif %}" role="list">
+                      {%- render 'social-icons' -%}
+                    </ul>
+                {%- endcase %}
+              {%- endfor %}
             </div>
           </div>
-
         </div>
       </div>
     </div>
+    {%- endunless -%}
+
+    {%- if floating -%}
+      {%- style -%}
+        #shopify-section-{{ section.id }} .popup-floating {
+          --color-foreground: {{ floating.settings.colors_text.red }}, {{ floating.settings.colors_text.green }}, {{ floating.settings.colors_text.blue }};
+          --color-link: var(--color-foreground);
+          --color-heading: var(--color-foreground);
+        }
+      {%- endstyle -%}
+      <div class="popup-floating popup-floating--{{ floating.settings.text_box_position }}{% if floating.settings.mobile_disabled %} small-hide{% endif %}">
+        {%- if floating.settings.show_social_media != 'none' -%}
+          <social-floating class="social-floating{% if floating.settings.show_social_media == 'all' %} social-floating--all{% endif %}{% if floating.settings.mobile_hide_social_media %} small-hide{% endif %}">
+            <button type="button" class="list-social__link link link--text link-with-icon" data-social-toggle>
+              {%- render 'icon', icon: 'share-nodes' -%}
+            </button>
+            <div class="social-floating-wrapper">
+              <div class="social-floating-card">
+                <button class="popup-close medium-hide large-up-hide" type="button" aria-label="{{ 'accessibility.close' | t }}" data-social-toggle>
+                  <span class="icon icon-plus-alt"></span>
+                </button>
+                <p class="popup__subheading h5 medium-hide large-up-hide">{{ floating.settings.mobile_social_heading | escape }}</p>
+                <ul class="list-unstyled list-social" role="list">
+                  {%- render 'social-icons' -%}
+                </ul>
+              </div>
+            </div>
+          </social-floating>
+        {%- endif -%}
+        {%- if floating.settings.subheading != blank -%}
+          <div class="popup-open"{% if section.blocks.size > 1 %} data-popup-toggle{% endif %}>
+            <p class="h5">{{ floating.settings.subheading | escape }}</p>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
   </promo-popup>
 {%- endif -%}
 
@@ -576,17 +1166,6 @@
           "id": "mobile_social_heading",
           "default": "Follow us",
           "label": "t:sections.popup.blocks.floating.settings.mobile_social_heading.label"
-        }
-      ]
-    },
-    {
-      "type": "custom-html",
-      "name": "custom-html",
-      "settings": [
-        {
-          "type": "html",
-          "id": "custom-html",
-          "label": "Custom HTML"
         }
       ]
     }
