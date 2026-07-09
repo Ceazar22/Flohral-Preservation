@@ -647,7 +647,7 @@
 
   <script src="{{ 'popup.js' | asset_url }}" defer="defer"></script>
 
-  <promo-popup data-section-id="{{ section.id }}" class="hidden" data-delay="{{ section.settings.delay }}" data-expiry="{{ section.settings.expiry }}" data-test-mode="{% if section.settings.mode == 'testing' %}true{% else %}false{% endif %}">
+  <promo-popup data-section-id="{{ section.id }}" data-popup-kind="main" class="hidden" data-delay="{{ section.settings.delay }}" data-expiry="{{ section.settings.expiry }}" data-test-mode="{% if section.settings.mode == 'testing' %}true{% else %}false{% endif %}" data-show-every-load="true">
     {%- assign floating = section.blocks | where: "type", "floating" | first -%}
     {%- unless floating and section.blocks.size == 1 %}
     <div class="promo-popup" data-position="{{ section.settings.text_box_position }}">
