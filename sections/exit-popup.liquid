@@ -210,6 +210,7 @@
 
       var sectionId = '{{ section.id }}';
       var triggered = false;
+      var outsideHoverTriggered = false;
 
       function openExitPopup() {
         if (triggered) return;
@@ -220,11 +221,44 @@
         }
       }
 
+      function closeOtherPopups(exitPopup) {
+        document.querySelectorAll('promo-popup').forEach(function (popup) {
+          if (popup !== exitPopup && popup.close) popup.close();
+        });
+      }
+
+      var exitPopup = document.querySelector('promo-popup[data-section-id="' + sectionId + '"]');
+      if (exitPopup) {
+        exitPopup.addEventListener('click', function (event) {
+          if (!event.target.closest('[data-popup-toggle]')) return;
+          closeOtherPopups(exitPopup);
+        }, true);
+      }
+
       document.addEventListener('promo-popup:closed', function (event) {
         var closedPopup = event.target;
-        if (!closedPopup || closedPopup.dataset.sectionId === sectionId) return;
-        if (event.detail && event.detail.popupKind === 'exit') return;
+        if (!closedPopup) return;
+        if (event.detail && event.detail.popupKind === 'exit') {
+          closeOtherPopups(closedPopup);
+          return;
+        }
+        if (closedPopup.dataset.sectionId === sectionId) return;
 
+        openExitPopup();
+      });
+
+      document.addEventListener('mouseover', function (event) {
+        if (outsideHoverTriggered || triggered) return;
+
+        var mainPopup = document.querySelector('promo-popup[data-popup-kind="main"]');
+        if (!mainPopup) return;
+
+        var mainPopupPanel = mainPopup.querySelector('.promo-popup');
+        if (!mainPopupPanel || !mainPopupPanel.classList.contains('is-active')) return;
+
+        if (event.target.closest('promo-popup[data-popup-kind="main"] .popup-wrapper')) return;
+
+        outsideHoverTriggered = true;
         openExitPopup();
       });
     })();
