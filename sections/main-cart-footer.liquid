@@ -30,20 +30,6 @@
     endif
   endif
 
-  assign retainer_paid_discount_amount = 0
-  assign subtotal_before_retainer_paid = 0
-
-  for item in cart.items
-    assign subtotal_before_retainer_paid = subtotal_before_retainer_paid | plus: item.original_line_price
-
-    if item.line_level_discount_allocations.size > 0
-      for discount_allocation in item.line_level_discount_allocations
-        if discount_allocation.discount_application.title == 'Retainer Paid'
-          assign retainer_paid_discount_amount = retainer_paid_discount_amount | plus: discount_allocation.amount
-        endif
-      endfor
-    endif
-  endfor
 -%}
 
 {%- style -%}
@@ -80,34 +66,6 @@
     pointer-events: none;
   }
 
-  #shopify-section-{{ section.id }} .cart-retainer-paid-summary {
-    margin: 10px 0 0;
-  }
-
-  #shopify-section-{{ section.id }} .cart-retainer-paid-summary__discount {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    margin: 8px 0 0;
-    font-size: 14px;
-  }
-
-  #shopify-section-{{ section.id }} .cart-retainer-paid-summary__discount-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  #shopify-section-{{ section.id }} .cart-retainer-paid-summary__discount-value {
-    white-space: nowrap;
-  }
-
-  #shopify-section-{{ section.id }} .cart-retainer-paid-summary__total {
-    margin-top: 14px;
-    padding-top: 14px;
-    border-top: 1px solid rgba(var(--color-foreground), 0.14);
-  }
 {%- endstyle -%}
 
 {{ 'component-cart.css' | asset_url | stylesheet_tag }}
@@ -204,50 +162,26 @@
         {%- case block.type -%}
           {%- when 'subtotal' -%}
             <div class="js-contents" {{ block.shopify_attributes }}>
-              {%- if retainer_paid_discount_amount > 0 -%}
-                <div class="totals">
-                  <p class="totals__subtotal h3">{{ 'sections.cart.subtotal' | t }}</p>
-                  <p class="totals__subtotal-value">
-                    {{ subtotal_before_retainer_paid | money_with_currency }}
-                  </p>
-                </div>
-
-                <div class="cart-retainer-paid-summary">
-                  <div class="cart-retainer-paid-summary__discount">
-                    <span class="cart-retainer-paid-summary__discount-label">
-                      {% render 'icon', icon: 'discount' %}
-                      Retainer Paid
-                    </span>
-
-                    <span class="cart-retainer-paid-summary__discount-value">
-                      &minus;{{ retainer_paid_discount_amount | money_with_currency }}
-                    </span>
-                  </div>
-
-                  <div class="totals cart-retainer-paid-summary__total">
-                    <p class="totals__subtotal h3">Subtotal after credit</p>
-                    <p class="totals__subtotal-value">
-                      {{ cart.total_price | money_with_currency }}
-                    </p>
-                  </div>
-                </div>
-              {%- else -%}
-                <div class="totals">
-                  <p class="totals__subtotal h3">{{ 'sections.cart.subtotal' | t }}</p>
-                  <p class="totals__subtotal-value">{{ cart.total_price | money_with_currency }}</p>
-                </div>
-              {%- endif -%}
+              <div class="totals">
+                <p class="totals__subtotal h3">{{ 'sections.cart.subtotal' | t }}</p>
+                <p class="totals__subtotal-value">{{ cart.total_price | money_with_currency }}</p>
+              </div>
 
               <div>
-                {%- if cart.cart_level_discount_applications.size > 0 -%}
-                  <ul class="discounts list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">
-                    {%- for discount in cart.cart_level_discount_applications -%}
+                {%- capture visible_cart_discounts_html -%}
+                  {%- for discount in cart.cart_level_discount_applications -%}
+                    {%- unless discount.title == 'Retainer Paid' -%}
                       <li class="discounts__discount discounts__discount--end">
                         {% render 'icon', icon: 'discount' %}
                         {{ discount.title }}
                         (&#8211;{{ discount.total_allocated_amount | money }})
                       </li>
-                    {%- endfor -%}
+                    {%- endunless -%}
+                  {%- endfor -%}
+                {%- endcapture -%}
+                {%- if visible_cart_discounts_html != blank -%}
+                  <ul class="discounts list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">
+                    {{ visible_cart_discounts_html }}
                   </ul>
                 {%- endif -%}
               </div>
