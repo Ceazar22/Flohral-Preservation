@@ -17,8 +17,8 @@
         "announcement_brziXP": {
           "type": "announcement",
           "settings": {
-            "text": "<strong>Get Our New Wedding Planning Guide </strong><a href=\"https://flohralpreservations.com/the-ultimate-wedding-guide\" target=\"_blank\" title=\"https://flohralpreservations.com/the-ultimate-wedding-guide\"><strong>Click Here</strong></a>",
-            "text_on_mobile": "<a href=\"https://flohralpreservations.com/the-ultimate-wedding-guide\" target=\"_blank\" title=\"https://flohralpreservations.com/the-ultimate-wedding-guide\"><strong>NEW Wedding Planning Guide</strong></a>",
+            "text": "<strong>Get Our New Wedding Planning Guide </strong><a href=\"https://wedding.flohralpreservation.com/the-ultimate-wedding-guide\" target=\"_blank\" title=\"https://wedding.flohralpreservation.com/the-ultimate-wedding-guide\"><strong>Click Here</strong></a>",
+            "text_on_mobile": "<a href=\"https://wedding.flohralpreservation.com/the-ultimate-wedding-guide\" target=\"_blank\" title=\"https://wedding.flohralpreservation.com/the-ultimate-wedding-guide\"><strong>NEW Wedding Planning Guide</strong></a>",
             "text_size": 13,
             "link": "",
             "enable_highlight": false,
