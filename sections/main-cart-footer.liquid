@@ -21,9 +21,9 @@
     if cart == empty
       assign minimum_checkout_is_met = false
       assign minimum_checkout_remaining = minimum_checkout_amount_cents
-    elsif cart.total_price < minimum_checkout_amount_cents
+    elsif cart.original_total_price < minimum_checkout_amount_cents
       assign minimum_checkout_is_met = false
-      assign minimum_checkout_remaining = minimum_checkout_amount_cents | minus: cart.total_price
+      assign minimum_checkout_remaining = minimum_checkout_amount_cents | minus: cart.original_total_price
     else
       assign minimum_checkout_is_met = true
       assign minimum_checkout_remaining = 0
@@ -164,7 +164,7 @@
             <div class="js-contents" {{ block.shopify_attributes }}>
               <div class="totals">
                 <p class="totals__subtotal h3">{{ 'sections.cart.subtotal' | t }}</p>
-                <p class="totals__subtotal-value">{{ cart.total_price | money_with_currency }}</p>
+                <p class="totals__subtotal-value">{{ cart.original_total_price | money_with_currency }}</p>
               </div>
 
               <div>
@@ -352,7 +352,7 @@
 
       var minimumCents = parseInt(footer.dataset.minimumCheckoutCents || '0', 10);
       var currency = cart.currency || footer.dataset.cartCurrency || 'USD';
-      var totalPrice = Number(cart.total_price || 0);
+      var totalPrice = Number(cart.total_price || 0) + Number(cart.total_discount || 0);
       var itemCount = Number(cart.item_count || 0);
       var minimumText = footer.querySelector('[data-cart-minimum-text]');
       var checkoutButton = footer.querySelector('[data-cart-checkout-button]');
